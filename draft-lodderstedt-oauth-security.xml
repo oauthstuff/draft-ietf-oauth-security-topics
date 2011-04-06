@@ -348,22 +348,23 @@
       the OAuth 2.0 protocol to mitigate attacks and security issues.</t>
 
       <section title="Tokens">
-        <t>OAuth makes extensive use of tokens. Tokens can be implemented in 2
+        <t>OAuth makes extensive use of all kinds of tokens (access tokens,
+        refresh tokens, authorization codes). Tokens can be implemented in 2
         ways as follows:</t>
 
         <t><list style="hanging">
             <t hangText="Handle (or artifact)">a reference to some internal
             data structure within the authorization server, the internal data
             structure contains the attributes of the token, such as user id,
-            scope, etc. Handles typically require a communication between
-            resource server and token server in order to validate the token
-            and obtain token-bound data. Handles enable simple revocation and
-            do not require cryptographic mechanisms to protected token content
-            from being modified. As a disadvantage, they require additional
-            resource/token server communication impacting on performance and
-            scalability. An authorization code (OAuth Section 4.1.2) is an
-            example of a 'handle' token. An access token may also be
-            implemented as a handle token. A 'handle' token is often referred
+            scope, etc. Handles enable simple revocation and do not require
+            cryptographic mechanisms to protected token content from being
+            modified. On the other hand, handles require communication between
+            issuing and consuming entity (e.g. authorization and resource
+            server) in order to validate the token and obtain token-bound
+            data. This communication might have an negative impact on
+            performance and scalability if both entities reside on different
+            system. Handles are therefore typically used if the issuing and
+            consuming entity are the same. A 'handle' token is often referred
             to as an 'opaque' token because the resource server does not need
             to be able to interpret the token directly, it simply uses the
             token.</t>
@@ -375,8 +376,9 @@
             Kerberos tickets. Assertions can typically directly be validated
             and used by a resource server without interactions with the
             authorization server. This results in better performance and
-            scalability. Implementing token revocation is more difficult with
-            assertions than with handles.</t>
+            scalability in deployment where issuing and consuming entity
+            reside on different systems. Implementing token revocation is more
+            difficult with assertions than with handles.</t>
           </list>Tokens can be sent to resource server in two ways:</t>
 
         <t>
@@ -394,9 +396,10 @@
             <t hangText="proof token">A 'proof token' is a token that can only
             be used by a specific client. Each use of the token, requires the
             client to perform some action that proves that it is the
-            authorized user of the token. Examples of this are MAC (mutual
-            authentication) and HoK (holder-of-key) tokens (cf. <xref
-            target="I-D.hammer-oauth-v2-mac-token" />.</t>
+            authorized user of the token. Examples of this are MAC tokens,
+            which require the client to digitally sign the resource request
+            with a secret corresponding to the particular token send with the
+            request (cf. <xref target="I-D.hammer-oauth-v2-mac-token" />.</t>
           </list>
         </t>
       </section>
@@ -447,23 +450,22 @@
       <section title="Redirect-URI">
         <t>A Redirect-uri helps to identify clients and prevents phishing
         attacks from other clients attempting to trick the user into believing
-        the phisher is the client. The redirect URI is pre-registered as
-        requests with authorization code or token will be directed to that
-        URI. Moreover, the value of the actual redirect_uri has to be
-        presented and is verified when an authorization code is exchanged for
-        tokens. This helps to prevent session fixation attacks.</t>
+        the phisher is the client. The value of the actual redirect_uri used
+        in the authorization request has to be presented and is verified when
+        an authorization code is exchanged for tokens. This helps to prevent
+        session fixation attacks. Moreover, the authorization server may
+        require clients to pre-register their redirect URIs and validate the
+        redirect_uri in the authorization request in order to detect malicious
+        clients. </t>
       </section>
 
       <section title="Access Token">
-        <t>An Access Token is used by a client to access a resource. An access
-        token must be acquired using a HTTP POST operation to ensure no
-        logging or caching of requests. Access tokens typically have short
-        life-spans (minutes or hours) that cover typical session lifetimes. An
-        access token may be refreshed through the use of a Refresh Token.</t>
-
-        <t>The short lifespan of an access token enables the possibility of
-        revocation by requiring the client to refresh their access token at
-        regular intervals.</t>
+        <t>An Access Token is used by a client to access a resource. Access
+        tokens typically have short life-spans (minutes or hours) that cover
+        typical session lifetimes. An access token may be refreshed through
+        the use of a Refresh Token. The short lifespan of an access token in
+        combination with the usage of refresh tokens allows for an efficient
+        implementation of the revocation of an access authorization.</t>
       </section>
 
       <section title="Refresh Token">
@@ -1345,7 +1347,7 @@
             grant type in an attempt to get another user (victim) to log-in
             and authorize access to his/her resources. The goal is to
             associate an access authorization for resources of the victim with
-            the user account of the attacker on a client site. </t>
+            the user account of the attacker on a client site.</t>
 
             <t>The attacker abuses an existing client application and combines
             it with his own counterfeit web site. The attack depends on the
@@ -1353,7 +1355,7 @@
             certain resource server. The victim, seeing only a normal request
             from an expected application, approves the request. The attacker
             then uses the victim's authorization to gain access to the
-            information unknowingly authorized by the victim. </t>
+            information unknowingly authorized by the victim.</t>
 
             <t>The attacker conducts the following flow:</t>
 
@@ -1383,7 +1385,7 @@
                 site.</t>
 
                 <t>The attacker obtains the authorization code from his web
-                site by means out of scope of this document. </t>
+                site by means out of scope of this document.</t>
 
                 <t>He then constructs a redirect_uri to the target web site
                 (or app) based on the original authorization request's
@@ -2667,7 +2669,7 @@
             attacker must use another redirect_uri in order to get access to
             the authorization code. Deployments might consider the possibility
             of an attacker using spoofing attacks to a victims device to
-            circumvent this security measure. </t>
+            circumvent this security measure.</t>
 
             <t>Note: Pre-registering clients might not scale in some
             deployments (manual process) or require dynamic client
@@ -2934,6 +2936,8 @@
           <t>merged 4.4.1.5 into 4.4.1.2</t>
 
           <t>corrected some typos</t>
+
+          <t>reformulated session fixation</t>
         </list>
       </t>
     </appendix>
