@@ -50,7 +50,7 @@
       </address>
     </author>
 
-    <date day="4" month="April" year="2011" />
+    <date day="7" month="April" year="2011" />
 
     <area>Applications Area</area>
 
@@ -115,15 +115,11 @@
         and other credentials.</t>
 
         <t>Authorization server MUST NOT issue client secrets to native or
-        user agent-based applications. An authorization server MAY issue a
-        client secret for an installation of an native application on a
+        user agent-based applications in general. An authorization server MAY
+        issue a client secret for an installation of a native application on a
         specific device. Alternatively, authorization servers MUST utilize
         other means than client authentication to achieve their security
         objectives.</t>
-
-        <t>Authorization servers MUST NOT automatically process (without user
-        interaction) repeated authorizations without authenticating the
-        client.</t>
       </section>
 
       <section title="Malicious Client Obtains Authorization">
@@ -152,12 +148,32 @@
         the binding of this data to the particular application and to approve
         the authorization request.</t>
 
+        <t>Authorization servers MUST NOT automatically process (without user
+        interaction) repeated authorizations without authenticating the
+        client.</t>
+
         <t>The authorization server SHOULD require clients to pre-register
         their redirect_uri's and validate the actual redirect_uri against the
         pre-registered value.</t>
 
         <t>It is higly RECOMMENDED that the authorization server limits the
         scope of tokens.</t>
+      </section>
+
+      <section title="Access Tokens">
+        <t>Access tokens MUST only be accessible to the authorization server,
+        the resource servers this token is valid for and the client to whom
+        they have been issued. The only exception is the implicit grant where
+        the user agent gets access to the access token that is transmitted in
+        the URI fragment.</t>
+
+        <t>Authorization server as well as application developers MUST ensure
+        confidentiality of access tokens, on transit and in storage.
+        Application developers MUST NOT store access tokens in non-transient
+        memory.</t>
+
+        <t>Authorization servers MUST ensure that access tokens cannot be
+        manufactured, modified, or guessed.</t>
       </section>
 
       <section title="Refresh Tokens">
@@ -179,22 +195,6 @@
         confidentiality of refresh tokens, on transit and in storage.</t>
 
         <t>Authorization servers MUST ensure that refresh tokens cannot be
-        manufactured, modified, or guessed.</t>
-      </section>
-
-      <section title="Access Tokens">
-        <t>Access tokens MUST only be accessible to the authorization server,
-        the resource servers this token is valid for and the client to whom
-        they have been issued. The only exception is the implicit grant where
-        the user agent gets access to the access token that is transmitted in
-        the URI fragment.</t>
-
-        <t>Authorization server as well as application developers MUST ensure
-        confidentiality of access tokens, on transit and in storage.
-        Application developers MUST NOT store access tokens in non-transient
-        memory.</t>
-
-        <t>Authorization servers MUST ensure that access tokens cannot be
         manufactured, modified, or guessed.</t>
       </section>
 
@@ -239,8 +239,10 @@
 
         <t>When creating token handles or other secrets not intended for usage
         by human users, the authorization server MUST include a reasonable
-        level of entropy in order to mitigate the risk of guessing
-        attacks.</t>
+        level of entropy in order to mitigate the risk of guessing attacks.
+        When creating secrets intended for usage by human users, the
+        authorization server MUST utilize other means to protect those
+        secrets.</t>
       </section>
 
       <section title="Phishing Attacks">
@@ -262,7 +264,7 @@
       <section title="Authorization Code Disclosure">
         <t>Confidentiality of authorization codes MUST be ensured on
         transport. Note: Since the code is transmitted via browser redirects,
-        it may also be disclosed through browser histories and HTTP
+        it could also be disclosed through browser histories and HTTP
         referers.</t>
 
         <t>The authorization server and the client MUST ensure that the
@@ -301,25 +303,24 @@
         often used for legacy/migration reasons. It reduces the overall risk
         of storing username and password in the client.</t>
 
-        <t>It has higher risk then the other OAuth protocol flows because it
-        maintains the password anti-pattern and the client could abuse the
-        user id and password. Additionally, because the user does not have
-        control over the authorization process, clients using this grant type
-        are not limited by scope, but instead have potentially the same
-        capabilities as the user themselves. The client could also acquire
-        long-living tokens and pass them up to a attacker web service for
-        further abuse.</t>
+        <t>It has higher risk than the other OAuth grant types because it
+        maintains the password anti-pattern. The client could abuse the
+        password or the password could unintentionally be disclosed on the
+        client site e.g. through log files. Additionally, because the user
+        does not have control over the authorization process, clients could
+        acquire tokens with much broader scope and longer livetime than
+        desired by the user.</t>
+
+        <t>The authorization server MUST ensure the resource owner's control
+        and transparency with respect to all authorizations issued to
+        clients.</t>
 
         <t>Authorization servers and application developers SHOULD minimize
-        use of this grant type. Other flows which facilitate user control and
-        transparency should be used instead.</t>
+        use of this grant type. Other grant types which facilitate user
+        control and transparency should be used instead.</t>
 
         <t>The authorization server SHOULD generally restrict the scope of
         access tokens issued by this grant type.</t>
-
-        <t>The authorization server MUST ensure the resource owners control
-        and transparency with respect to all authorizations issued to
-        clients.</t>
       </section>
     </section>
 
