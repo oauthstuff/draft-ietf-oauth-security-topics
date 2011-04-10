@@ -42,7 +42,7 @@
       </address>
     </author>
 
-    <date day="14" month="March" year="2011" />
+    <date day="14" month="April" year="2011" />
 
     <area>Applications Area</area>
 
@@ -456,7 +456,7 @@
         session fixation attacks. Moreover, the authorization server may
         require clients to pre-register their redirect URIs and validate the
         redirect_uri in the authorization request in order to detect malicious
-        clients. </t>
+        clients.</t>
       </section>
 
       <section title="Access Token">
@@ -508,9 +508,8 @@
         requesting consent for scope requested by a particular client. The
         client identity may be used to limit the number of request for a
         particular client or to charge the client per request. Client Identity
-        may furthermore be useful to differentiate (e.g. in server log files)
-        between accesses by end-user, and delegated accesses by client on
-        behalf of a user.</t>
+        may furthermore be useful to differentiate access by different
+        clients, e.g. in server log files.</t>
 
         <t>The <spanx style="emph">client_secret</spanx> is used to verify the
         client identifier. This should only be used where the client is
@@ -1314,15 +1313,15 @@
           </section>
 
           <section title="Threat: Authorization code phishing">
-            <t>A hostile party could act as the client web server and get
+            <t>A hostile party could impersonate the client site and get
             access to the authorization code. This could be achieved using DNS
-            or ARP spoofing. This applies to client, which are web
-            applications.</t>
+            or ARP spoofing. This applies to clients, which are web
+            applications, thus the redirect URI is not local to the host where
+            the user's browser is running.</t>
 
             <t>Impact: This affects web applications and may lead to a
             disclosure of authorization codes and, potentially, the
-            corresponding access and refresh tokens. Moreover, the client may
-            impersonate the end-users session on the client site.</t>
+            corresponding access and refresh tokens.</t>
 
             <t>Countermeasures:</t>
 
@@ -1333,12 +1332,50 @@
                 authorization code to a certain client can be validated in a
                 reliable way (see <xref target="bind_code_client_id" />).</t>
 
+                <t>The redirect_uri of the client SHOULD point to a HTTPS
+                protected endpoint and the browser shall be utilized to
+                authenticate this redirect_uri using server authentication
+                (see <xref target="server_authn" />).</t>
+              </list>
+            </t>
+          </section>
+
+          <section title="Threat: User session impersonation">
+            <t>A hostile party could impersonate the client site and
+            impersonate the user's session on this client. This could be
+            achieved using DNS or ARP spoofing. This applies to clients, which
+            are web applications, thus the redirect URI is not local to the
+            host where the user's browser is running.</t>
+
+            <t>Impact: An attacker who intercepts the authorization code as it
+            is sent by the browser to the callback endpoint can gain access to
+            protected resources by submitting the authorization code to the
+            client. The client will exchange the authorization code for an
+            access token and use the access token to access protected
+            resources for the benefit of the attacker, delivering protected
+            resources to the attacker, or modifying protected resources as
+            directed by the attacker. If OAuth is used by the client to
+            delegate authentication to a social site (e.g. as in the
+            implementation of the "Facebook Login" button), the attacker can
+            use the intercapted authorization code to log in to the client as
+            the user.</t>
+
+            <t>Note: Authenticating the client during authorization code
+            exchange will not help to detect such an attack as it is the
+            legitimate client that obtains the tokens.</t>
+
+            <t>Countermeasures:</t>
+
+            <t>
+              <list style="symbols">
                 <t>In order to prevent an attacker from impersonating the
-                end-users session, the redirect_uri of the client should point
+                end-users session, the redirect_uri of the client MUST point
                 to a HTTPS protected endpoint and the browser shall be
                 utilized to authenticate this redirect_uri using server
-                authentication (see<xref target="server_authn" />).</t>
+                authentication (see <xref target="server_authn" />)</t>
               </list>
+
+              
             </t>
           </section>
 
@@ -1547,7 +1584,7 @@
                 end-users session, the redirect_uri of the client should point
                 to a HTTPS protected endpoint and the browser shall be
                 utilized to authenticate this redirect_uri using server
-                authentication (see<xref target="server_authn" />).</t>
+                authentication (see <xref target="server_authn" />).</t>
               </list>
             </t>
 
@@ -2376,9 +2413,14 @@
             risk of guessing attacks. The token value MUST be constructed from
             a cryptographically strong random or pseudo-random number sequence
             [RFC1750] generated by the Authorization Server. The probability
-            of any two Authorization Code values being identical MUST be less
-            than or equal to 2^(-128) and SHOULD be less than or equal to
-            2^(-160).</t>
+            of any two token values being identical MUST be less than or equal
+            to 2^(-128) and SHOULD be less than or equal to 2^(-160).</t>
+          </section>
+
+          <section title="Assertion formats">
+            <t>For service providers intending to implement an assertion-based
+            token design it is highly recommended to adopt a standard
+            assertion format (such as SAML or JWT).</t>
           </section>
         </section>
 
@@ -2905,7 +2947,8 @@
     </section>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
-      <t>We would like to thank Francisco Corella for his feedback.</t>
+      <t>We would like to thank Hui-Lan Lu, Francisco Corella, and James H.
+      Manger for their comments.</t>
     </section>
 
     <appendix title="Document History">
@@ -2938,6 +2981,8 @@
           <t>corrected some typos</t>
 
           <t>reformulated session fixation</t>
+
+          <t>added new section "User session impersonation"</t>
         </list>
       </t>
     </appendix>
