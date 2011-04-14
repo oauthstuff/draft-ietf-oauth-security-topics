@@ -1788,7 +1788,7 @@
           <t>Client credentials (see <xref target="I-D.ietf-oauth-v2" />,
           Section 3) consist of an identifier (not secret) combined with an
           additional means (such as a matching client secret) of
-          authenticating a client. </t>
+          authenticating a client.</t>
 
           <t>[[Threats seem to be covered elsewhere such as <xref
           target="eavesdropping" />]]</t>
@@ -2214,8 +2214,6 @@
                   identifier has a known format, ensure that the supplied
                   value matches the identifier syntax rules.</t>
                 </list>
-
-                
               </t>
             </section>
 
@@ -3025,6 +3023,9 @@
           <t>reformulated session fixation</t>
 
           <t>added new section "User session impersonation"</t>
+
+          <t>worked out or reworked sections 2.3.3, 4.4.2.4, 4.4.4, 5.1.4.1.2,
+          5.1.4.1.4, 5.2.3.5</t>
         </list>
       </t>
     </appendix>
