@@ -227,9 +227,12 @@
 
           <t>
             <list style="symbols">
-              <t>client id (and secret)</t>
+              <t>client id (and client secret or corresponding client
+              credential)</t>
 
-              <t>refresh tokens (persistent) access tokens (transient)</t>
+              <t>one or more refresh tokens (persistent) and access tokens
+              (transient) per end-user or other security-context or delegation
+              context</t>
 
               <t>trusted CA certs (HTTPS)</t>
 
@@ -1183,7 +1186,8 @@
             </t>
           </section>
 
-          <section title="Threat: Eavesdropping or leaking authorization codes">
+          <section anchor="eavesdropping"
+                   title="Threat: Eavesdropping or leaking authorization codes">
             <t>An attacker could try to eavesdrop transmission of the
             authorization code between authorization server and client.
             Furthermore, authorization codes are passed via the browser which
@@ -1374,8 +1378,6 @@
                 utilized to authenticate this redirect_uri using server
                 authentication (see <xref target="server_authn" />)</t>
               </list>
-
-              
             </t>
           </section>
 
@@ -1569,22 +1571,26 @@
             clients implemented within the Web Browser in a scripting
             language.</t>
 
-            <t>Impact: TBD</t>
+            <t>Impact: The attacker could obtain user credential information
+            and assume the full identity of the user.</t>
 
             <t>Countermeasures:</t>
 
             <t>
               <list style="symbols">
-                <t>The authorization server MUST require the client to
-                authenticate with a secret, so the binding of the
-                authorization code to a certain client can be validated in a
-                reliable way (see <xref target="bind_code_client_id" />).</t>
+                <t>The authorization server must authenticate the server from
+                which scripts are obtained (see <xref
+                target="server_authn" />).</t>
 
-                <t>In order to prevent an attacker from impersonating the
-                end-users session, the redirect_uri of the client should point
-                to a HTTPS protected endpoint and the browser shall be
-                utilized to authenticate this redirect_uri using server
-                authentication (see <xref target="server_authn" />).</t>
+                <t>The client must ensure that scripts obtained have not been
+                altered in transport (see <xref
+                target="conf_requests" />).</t>
+
+                <t>Introduce one time per-use secrets (e.g. client_secret)
+                values that can only be used by scripts in a small time window
+                once loaded from a server. The intention would be to reduce
+                the effectiveness of copying client-side scripts for re-use in
+                an attackers modified code. [[pending discussion]]</t>
               </list>
             </t>
 
@@ -1779,7 +1785,13 @@
         </section>
 
         <section title="Client Credentials">
-          <t>[TBD]</t>
+          <t>Client credentials (see <xref target="I-D.ietf-oauth-v2" />,
+          Section 3) consist of an identifier (not secret) combined with an
+          additional means (such as a matching client secret) of
+          authenticating a client. </t>
+
+          <t>[[Threats seem to be covered elsewhere such as <xref
+          target="eavesdropping" />]]</t>
         </section>
       </section>
 
@@ -1787,7 +1799,7 @@
         <t />
 
         <section title="Threat: Eavesdropping refresh tokens from authorization server">
-          <t>An attacker may eavesdrop refresh tokens when they are
+          <t>dAn attacker may eavesdrop refresh tokens when they are
           transmitted from the authorization server to the client.</t>
 
           <t>Countermeasures:</t>
@@ -2180,7 +2192,31 @@
 
             <section anchor="std_sql"
                      title="Standard SQL inj. Countermeasures">
-              <t>[TBD]</t>
+              <t>If a client identifier or other authentication component is
+              queried or compared against a SQL Database it may become
+              possible for an injection attack to occur if parameters received
+              are not validated before submission to the database.</t>
+
+              <t>
+                <list style="symbols">
+                  <t>Ensure that server code is using the minimum database
+                  privileges possible to reduce the "surface" of possible
+                  attacks.</t>
+
+                  <t>Avoid dynamic SQL using concatenated input. If possible,
+                  use static SQL.</t>
+
+                  <t>When using dynamic SQL, parameterize queries using bind
+                  arguments. Bind arguments eliminate possibility of SQL
+                  injections.</t>
+
+                  <t>Filter and sanitize the input. For example, if an
+                  identifier has a known format, ensure that the supplied
+                  value matches the identifier syntax rules.</t>
+                </list>
+
+                
+              </t>
             </section>
 
             <section anchor="noclear"
@@ -2196,7 +2232,13 @@
             </section>
 
             <section title="Encryption of credentials">
-              <t>[TBD]</t>
+              <t>For client applicatinos, insecurely persisted client
+              credentials are easy targets for attackers to obtain. Store
+              client credentials using an encrypted persistence mechanism such
+              as a keystore or database. Note that compiling client
+              credentials directly into client code makes client applications
+              vulnerable to scanning as well as difficult to administer should
+              client credentials change over time.</t>
             </section>
 
             <section title="Use of asymmetric cryptography">
@@ -2611,7 +2653,7 @@
 
             <t>
               <list style="symbols">
-                <t>...</t>
+                <t>... [[Not sure what is meant here]]</t>
 
                 <t>...</t>
               </list>
@@ -2631,7 +2673,7 @@
 
             <t>
               <list style="symbols">
-                <t>...</t>
+                <t>...[[Not sure what is meant here]]</t>
 
                 <t>...</t>
               </list>
