@@ -169,7 +169,7 @@
 
         <t>Authorization server as well as application developers MUST ensure
         confidentiality of access tokens, on transit and in storage.
-        Application developers MUST NOT store access tokens in non-transient
+        Application developers MUST NOT store access tokens in non-persistent
         memory.</t>
 
         <t>Authorization servers MUST ensure that access tokens cannot be

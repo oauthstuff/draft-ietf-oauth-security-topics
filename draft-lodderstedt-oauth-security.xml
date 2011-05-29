@@ -937,7 +937,8 @@
           </t>
         </section>
 
-        <section title="Threat: Malicious client obtains existing authorization by fraud">
+        <section anchor="mal_client3"
+                 title="Threat: Malicious client obtains existing authorization by fraud">
           <t>Authorization servers may wish to automatically process
           authorization requests from clients which have been previously
           authorized by the user. When the user is redirected to the
@@ -1374,12 +1375,10 @@
                 utilized to authenticate this redirect_uri using server
                 authentication (see <xref target="server_authn" />)</t>
               </list>
-
-              
             </t>
           </section>
 
-          <section title="Threat: Session fixation">
+          <section anchor="session_fixation" title="Threat: Session fixation">
             <t>The session fixation attack leverages the authorization code
             grant type in an attempt to get another user (victim) to log-in
             and authorize access to his/her resources. The goal is to
@@ -1554,7 +1553,8 @@
             </t>
           </section>
 
-          <section title="Threat: Malicious client obtains authorization">
+          <section anchor="mal_client2"
+                   title="Threat: Malicious client obtains authorization">
             <t>An malicious client could attempt to obtain a token by
             fraud.</t>
 
@@ -2672,8 +2672,9 @@
             properties of the client. But this would at least help to prevent
             several replay attacks. Moreover, deployment-specific client_id
             and secret allow to selectively revoke all refresh tokens of a
-            specific deployment at once. This is a countermeasure against the
-            following threats:</t>
+            specific deployment at once.</t>
+
+            <t>This is a countermeasure against the following threats:</t>
 
             <t>
               <list style="symbols">
@@ -2692,21 +2693,21 @@
             this document. Every actual redirect_uri sent with the respective
             client_id to the end-user authorization endpoint must comply with
             that pattern. Otherwise the authorization server must assume the
-            inbound GET request has been sent by an attacker and refuse
-            it.</t>
-
-            <t>Note: the authorization server MUST NOT redirect the user agent
-            back to the redirect_uri of the authorization request.</t>
+            inbound GET request has been sent by an attacker and refuse it.
+            Note: the authorization server MUST NOT redirect the user agent
+            back to the redirect_uri of such an authorization request.</t>
 
             <t><list style="symbols">
                 <t>Session fixation: allows to detect session fixation
                 attempts already after first redirect to end-user
-                authorization endpoint</t>
+                authorization endpoint (<xref
+                target="session_fixation" />).</t>
 
                 <t>For clients with validated properties, this measure also
                 helps to detect malicious apps early in the end-user
                 authorization process. This reduces the need for a interactive
-                validation by the user.</t>
+                validation by the user (<xref target="mal_client" />, <xref
+                target="mal_client2" />).</t>
               </list>The underlying assumption of this measure is that an
             attacker must use another redirect_uri in order to get access to
             the authorization code. Deployments might consider the possibility
