@@ -42,7 +42,7 @@
       </address>
     </author>
 
-    <date day="01" month="June" year="2011" />
+    <date day="14" month="April" year="2011" />
 
     <area>Applications Area</area>
 
@@ -138,7 +138,7 @@
         </t>
       </section>
 
-      <section title="Attack Assumptions">
+      <section anchor="" title="Attack Assumptions">
         <t>The following assumptions relate to an attacker and resources
         available to an attacker:</t>
 
@@ -1364,7 +1364,7 @@
 
           <section title="Threat: Login CSRF [[TBD]]">
             <t>The attacker tricks the victim in login in to a service using
-            tha attackers credentials.</t>
+            tha attackers credentials. </t>
 
             <t>http://hublog.hubmed.org/archives/001755.html</t>
 
@@ -1385,6 +1385,8 @@
                 (state parameter) and validate the binding on response
                 time.</t>
               </list>
+
+              
             </t>
           </section>
 
@@ -3143,37 +3145,9 @@
       James H. Manger for their comments and contributions.</t>
     </section>
 
-  </middle>
-
-  <back>
-    <references title="Normative References">
-      <?rfc include="reference.RFC.2119"?>
-
-      <?rfc include="reference.I-D.ietf-oauth-v2.xml"?>
-    </references>
-
-    <references title="Informative References">
-      <?rfc include="reference.I-D.lodderstedt-oauth-revocation.xml"?>
-
-      <?rfc include="reference.I-D.ietf-oauth-v2-bearer.xml"?>
-
-      <?rfc include="reference.I-D.hammer-oauth-v2-mac-token.xml"?>
-
-      <reference anchor="portable-contacts">
-        <front>
-          <title>Portable Contacts 1.0 Draft C</title>
-
-          <author fullname="Joseph Smarr" initials="J." surname="Smarr">
-            <organization></organization>
-          </author>
-
-          <date day="5" month="August" year="2008" />
-        </front>
-      </reference>
-    </references>
-	
-	    <section title="Document History">
+    <appendix title="Document History">
       <t>[[ to be removed by RFC editor before publication as an RFC ]]</t>
+
       <t>-1</t>
 
       <t>
@@ -3211,7 +3185,34 @@
           proposed by Eric Pflam</t>
         </list>
       </t>
-    </section> 
+    </appendix>
+  </middle>
 
+  <back>
+    <references title="Normative References">
+      <?rfc include="reference.RFC.2119"?>
+
+      <?rfc include="reference.I-D.ietf-oauth-v2.xml"?>
+    </references>
+
+    <references title="Informative References">
+      <?rfc include="reference.I-D.lodderstedt-oauth-revocation.xml"?>
+
+      <?rfc include="reference.I-D.ietf-oauth-v2-bearer.xml"?>
+
+      <?rfc include="reference.I-D.hammer-oauth-v2-mac-token.xml"?>
+
+      <reference anchor="portable-contacts">
+        <front>
+          <title>Portable Contacts 1.0 Draft C</title>
+
+          <author fullname="Joseph Smarr" initials="J." surname="Smarr">
+            <organization></organization>
+          </author>
+
+          <date day="5" month="August" year="2008" />
+        </front>
+      </reference>
+    </references>
   </back>
 </rfc>
