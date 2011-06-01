@@ -2,7 +2,7 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
 <?rfc toc="yes"?>
 <?rfc tocompact="yes"?>
-<?rfc tocdepth="2"?>
+<?rfc tocdepth="3"?>
 <?rfc tocindent="yes"?>
 <?rfc symrefs="yes"?>
 <?rfc sortrefs="yes"?>
@@ -456,10 +456,11 @@
         the phisher is the client. The value of the actual redirect_uri used
         in the authorization request has to be presented and is verified when
         an authorization code is exchanged for tokens. This helps to prevent
-        session fixation attacks. Moreover, the authorization server may
-        require clients to pre-register their redirect URIs and validate the
-        redirect_uri in the authorization request in order to detect malicious
-        clients.</t>
+        attacks, where the authorization code is revealed through redirectors
+        and counterfeit web app clients. Moreover, the authorization server
+        may require clients to pre-register their redirect URIs and validate
+        the redirect_uri in the authorization request in order to detect
+        malicious clients.</t>
       </section>
 
       <section title="Access Token">
@@ -1093,7 +1094,7 @@
           </t>
         </section>
 
-        <section title="DoS on dynamic client secret creation">
+        <section title="Threat: DoS on dynamic client secret creation">
           <t>If an authorization servers includes a nontrivial amount of
           entropy in client secrets and if the authorization server
           automatically grants them, an attacker could exhaust the pool by
@@ -1345,6 +1346,43 @@
             </t>
           </section>
 
+          <section title="Threat: Cross-Site Request Forgery (CSRF/XSRF) [[TBD]]">
+            <t>Cross-Site Request Forgery (CSRF) is a web-based attack whereby
+            HTTP requests are transmitted from a user that the website trusts
+            or has authenticated. CSRF attacks on OAuth approvals can allow an
+            attacker to obtain authorization to OAuth Protected Resources
+            without the consent of the User. </t>
+
+            <t>The state parameter should be used to mitigate against CSRF
+            attacks, particularly for login CSRF attacks. It is strongly
+            RECOMMENDED that the client sends the state parameter with
+            authorization requests to the authorization server. The
+            authorization server will send it in the response when redirecting
+            the user to back to the client which SHOULD then validate the
+            state parameter matches on the response. </t>
+          </section>
+
+          <section title="Threat: Clickjacking [[TBD]]">
+            <t>Clickjacking is the process of tricking users into revealing
+            confidential information or taking control of their computer while
+            clicking on seemingly innocuous web pages. In more detail, a
+            malicious site loads the target site in a transparent iframe
+            overlaid on top of a set of dummy buttons which are carefully
+            constructed to be placed directly under important buttons on the
+            target site. When a user clicks a visible button, they are
+            actually clicking a button (such as an "Authorize" button) on the
+            hidden page. To prevent clickjacking (and phishing attacks),
+            native applications SHOULD use external browsers instead of
+            embedding browsers in an iFrame when requesting end-user
+            authorization. For newer browsers, avoidance of iFrames can be
+            enforced server side by using the X-FRAME-OPTION header. This
+            header can have two values, deny and sameorigin, which will block
+            any framing or framing by sites with a different origin,
+            respectively. For older browsers, javascript framebusting
+            techniques can be used but may not be effective in all browsers.
+            </t>
+          </section>
+
           <section title="Threat: User session impersonation">
             <t>A hostile party could impersonate the client site and
             impersonate the user's session on this client. This could be
@@ -1382,12 +1420,15 @@
             </t>
           </section>
 
-          <section anchor="session_fixation" title="Threat: Session fixation">
-            <t>The session fixation attack leverages the authorization code
-            grant type in an attempt to get another user (victim) to log-in
-            and authorize access to his/her resources. The goal is to
-            associate an access authorization for resources of the victim with
-            the user account of the attacker on a client site.</t>
+          <section anchor="authz_code_leakage"
+                   title="Threat: Authorization code leakage through counterfeit web site">
+            <t>The attack leverages the authorization code grant type in an
+            attempt to get another user (victim) to log-in, authorize access
+            to his/her resources, and sub-sequently obtain the authorization
+            code and inject it into a client application using the attacker's
+            account. The goal is to associate an access authorization for
+            resources of the victim with the user account of the attacker on a
+            client site.</t>
 
             <t>The attacker abuses an existing client application and combines
             it with his own counterfeit web site. The attack depends on the
@@ -1416,7 +1457,7 @@
                 (e.g. an email link, or blog link). The way the attacker
                 achieve that goal is out of scope.</t>
 
-                <t>Having clicked, the link, the victim is requested to
+                <t>Having clicked the link, the victim is requested to
                 authenticate and authorize the client site to have access.</t>
 
                 <t>After completion of the authorization process, the
@@ -1467,14 +1508,14 @@
                 deployment-specific client ids and secrets (see <xref
                 target="depl_specific_secretes" />, along with the binding of
                 authorization code to client_id (see <xref
-                target="bind_code_client_id" />), to detect a session fixation
+                target="bind_code_client_id" />), to detect such an attack
                 because the attacker does not have access the
                 deployment-specific secret. Thus he will not be able to
                 exchange the authorization code.</t>
 
                 <t>The client may consider to use other flows, which are not
-                vulnerable to session fixation attacks such as "Implicit
-                Grant" or "Resource Owner Password Credentials" (see <xref
+                vulnerable to this kind of attacks such as "Implicit Grant" or
+                "Resource Owner Password Credentials" (see <xref
                 target="implicite_flow" /> or <xref target="pwd_flow" />).</t>
               </list>
             </t>
@@ -1501,15 +1542,95 @@
               </list>
             </t>
           </section>
+
+          <section title="Threat: DoS using manufactured authorization codes">
+            <t>An attacker who owns a botnet can locate the redirect URIs of
+            clients that listen on HTTP, access them with random authorization
+            codes, and cause a large number of HTTPS connections to be
+            concentrated onto the authorization server. This can result in a
+            DoS attack on the authorization server.</t>
+
+            <t>This attack can still be effective even when CSRF defense/the
+            'state' parameter are deployed on the client side. With such a
+            defense, the attacker might need to incur an additional HTTP
+            request to obtain a valid CSRF code/ state parameter. This
+            apparently cuts down the effectiveness of the attack by a factor
+            of 2. However, if the HTTPS/HTTP cost ratio is higher than 2 (the
+            cost factor is estimated to be around 3.5x at
+            http://www.semicomplete.com/blog/geekery/ssl-latency.html), the
+            attacker still achieves a magnification of resource utilization at
+            the expense of the authorization server.</t>
+
+            <t>Impact: There are a few effects that the attacker can
+            accomplish with this OAuth flow that they cannot easily achieve
+            otherwise.</t>
+
+            <t><list style="numbers">
+                <t>Connection laundering: With the clients as the relay
+                between the attacker and the authorization server, the
+                authorization server learns little or no information about the
+                identity of the attacker. Defenses such rate limiting on the
+                offending attacker machines are less effective due to the
+                difficulty to identify the attacking machines. Although an
+                attacker could also launder its connections through an
+                anonymizing systems such as Tor, the effectiveness of that
+                approach depends on the capacity of the anonyming system. On
+                the other hand, a potentially large number of OAuth clients
+                could be utilized for this attack.</t>
+
+                <t>Asymmetric resource utilization: The attacker incurs the
+                cost of an HTTP connection and causes an HTTPS connection to
+                be made on the authorization server; and the attacker can
+                co-ordinate the timing of such HTTPS connections across
+                multiple clients relatively easily. Although the attacker
+                could achieve something similar, say, by including an iframe
+                pointing to the HTTPS URL of the authorization server in an
+                HTTP web page and lure web users to visit that page, timing
+                attacks using such a scheme may be more difficult as it seems
+                nontrivial to synchronize a large number of users to
+                simultaneously visit a particular site under the attacker's
+                control.</t>
+              </list>Countermeasures</t>
+
+            <t>
+              <list style="symbols">
+                <t>Though not a complete countermeasure by themselves, CSRF
+                defense and the 'state' parameter created with secure random
+                codes SHOULD be deployed on the client side. The client SHOULD
+                forward the authorization code to the authorization server
+                only after both the CSRF token and the 'state' parameter are
+                validated.</t>
+
+                <t>If the client authenticates the user, either through a
+                single sign on protocol ( such as OpenID / Facebook Connect )
+                or through local authentication, the client SHOULD suspend the
+                access by a user account if the number of invalid
+                authorization codes submitted by this user exceeds a certain
+                threshold.</t>
+
+                <t>The authorization server SHOULD send an error response to
+                the client reporting an invalid authorization code and rate
+                limit or disallow connections from clients whose number of
+                invalid requests exceeds a threshold.</t>
+
+                <t>The authorization server MAY in addition sign the
+                authorization code using the public key from its SSL
+                certificate, and require the client to validate the signature.
+                To enhance interoperability between multiple clients and
+                authorization servers, a standard procedure to create and
+                validate the signature (including what attributes to sign) MAY
+                be developed and agreed between the clients and the
+                servers.</t>
+              </list>
+            </t>
+          </section>
         </section>
 
         <section anchor="implicite_flow" title="Implicit Grant">
-          <t />
-
-          <t>In the implict grant flow, the access token is directly returned
-          to the client as fragment part of the redirect_uri. It is assumed
-          that the token is not send to the redirect_uri target since HTTP
-          user agents do not send fragments server requests. Thus an attacker
+          <t>he implict grant flow, the access token is directly returned to
+          the client as fragment part of the redirect_uri. It is assumed that
+          the token is not send to the redirect_uri target since HTTP user
+          agents do not send fragments server requests. Thus an attacker
           cannot eavesdrop the access token on this communication path and It
           cannot leak through HTTP referer headers.</t>
 
@@ -2740,10 +2861,10 @@
             back to the redirect_uri of such an authorization request.</t>
 
             <t><list style="symbols">
-                <t>Session fixation: allows to detect session fixation
-                attempts already after first redirect to end-user
-                authorization endpoint (<xref
-                target="session_fixation" />).</t>
+                <t>Authorization code leakage through conterfeit web site:
+                allows to detect attack attempts already after first redirect
+                to end-user authorization endpoint (<xref
+                target="authz_code_leakage" />).</t>
 
                 <t>For clients with validated properties, this measure also
                 helps to detect malicious apps early in the end-user
@@ -2847,8 +2968,9 @@
             against:</t>
 
             <t><list style="symbols">
-                <t>Session fixation since an attacker cannot use another
-                client_id to exchange an authorization code into a token</t>
+                <t>replay of authorization codes with different client
+                credentials since an attacker cannot use another client_id to
+                exchange an authorization code into a token</t>
 
                 <t>Online guessing of authorization codes</t>
               </list>Note: This binding MUST be protected from unauthorized
@@ -2858,12 +2980,13 @@
           <section anchor="bind_code_redirect"
                    title="Binding of authorization code to redirect_uri">
             <t>The authorization server MUST bind every authorization code to
-            the redirect_uri used as redirect target of the client in the
-            end-user authorization process. This binding MUST be validated
+            the actual redirect_uri used as redirect target of the client in
+            the end-user authorization process. This binding MUST be validated
             when the client attempts to exchange the respective authorization
             code for an access token. This measure is a countermeasure against
-            session fixation since an attacker cannot use another redirect_uri
-            to exchange an authorization code into a token.</t>
+            authorization code leakage through counterfeit web sites since an
+            attacker cannot use another redirect_uri to exchange an
+            authorization code into a token.</t>
 
             <t />
           </section>
@@ -2990,8 +3113,8 @@
     </section>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
-      <t>We would like to thank Hui-Lan Lu, Francisco Corella, and James H.
-      Manger for their comments.</t>
+      <t>We would like to thank Hui-Lan Lu, Francisco Corella, Eric Pflam, and
+      James H. Manger for their comments and contributions.</t>
     </section>
 
     <appendix title="Document History">
@@ -3023,12 +3146,15 @@
 
           <t>corrected some typos</t>
 
-          <t>reformulated session fixation</t>
+          <t>reformulated session fixation, renamed sections</t>
 
           <t>added new section "User session impersonation"</t>
 
           <t>worked out or reworked sections 2.3.3, 4.4.2.4, 4.4.4, 5.1.4.1.2,
           5.1.4.1.4, 5.2.3.5</t>
+
+          <t>added new threat "DoS using manufactured authorization codes" as
+          proposed by Eric Pflam</t>
         </list>
       </t>
     </appendix>
