@@ -2,7 +2,7 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
 <?rfc toc="yes"?>
 <?rfc tocompact="yes"?>
-<?rfc tocdepth="3"?>
+<?rfc tocdepth="4"?>
 <?rfc tocindent="yes"?>
 <?rfc symrefs="yes"?>
 <?rfc sortrefs="yes"?>
@@ -1058,70 +1058,6 @@
         <section anchor="code_flow" title="Authorization Code">
           <t></t>
 
-          <section anchor="mal_client"
-                   title="Threat: Malicious client obtains authorization">
-            <t>A malicious client could counterfeit a valid client and obtain
-            an access authorization that way. The malicious client could even
-            utilize screen scraping techniques in order to simulate the user
-            consent in the authorization flow.</t>
-
-            <t>Assumption: It is not the task of the authorization server to
-            protect the end-user's device from malicious software. This is the
-            responsibility of the platform running on the particular device
-            probably in cooperation with other components of the respective
-            ecosystem (e.g. an application management infrastructure). The
-            sole responsibility of the authorization server is to control
-            access to the end-user's resources living in resource servers and
-            to prevent unauthorized access to them. Based on this assumption,
-            the following countermeasures are available to cope with the
-            threat.</t>
-
-            <t>Countermeasures:</t>
-
-            <t><list style="symbols">
-                <t>The authorization server should authentication the client,
-                if possible (see <xref
-                target="depl_specific_secretes"></xref>). Note: the
-                authentication takes place after the end-user has authorized
-                the access.</t>
-
-                <t>The authorization server should validate the client's
-                redirect_uri against the pre-registered redirect_uri, if one
-                exists (see <xref target="val_redirect"></xref>). Note: The
-                validation of the redirect_uri is the only technical mean to
-                recognize a malicious client id in advance of the
-                authorization process. Further note this does not work for
-                native applications because in contrast to web applications
-                this URI is not bound to a single communication endpoint. The
-                valid client's redirect_uri (typically with custom scheme) can
-                be used by a malicious on any device.</t>
-
-                <t>After authenticating the end-user, the authorization server
-                should ask him/her for consent. In this context, the user
-                shall be explained the purpose, scope, and duration of the
-                authorization. Moreover, the authorization server must view to
-                the end-user the meta data it associates with the particular
-                client. It is up to the user to validate the binding of this
-                data to the particular application (e.g. Name) and to approve
-                the authorization request. (see <xref
-                target="validation_end_user"></xref>).</t>
-
-                <t>The authorization server must not perform automatic
-                re-authorizations for clients it is unable to reliably
-                authenticate or validate (see <xref
-                target="automatic_processing"></xref>).</t>
-
-                <t>If the authorization server automatically authenticates the
-                end-user, it may nevertheless require some user input in order
-                to prevent screen scraping. Examples are CAPTCHAs or
-                user-specific secret like PIN codes.</t>
-
-                <t>The authorization server may also limit the scope of tokens
-                it issues to clients it cannot reliably authenticate (see
-                <xref target="limit_scope"></xref>).</t>
-              </list></t>
-          </section>
-
           <section anchor="eavesdropping"
                    title="Threat: Eavesdropping or leaking authorization codes">
             <t>An attacker could try to eavesdrop transmission of the
@@ -1249,6 +1185,70 @@
               </list></t>
           </section>
 
+          <section anchor="mal_client"
+                   title="Threat: Malicious client obtains authorization">
+            <t>A malicious client could counterfeit a valid client and obtain
+            an access authorization that way. The malicious client could even
+            utilize screen scraping techniques in order to simulate the user
+            consent in the authorization flow.</t>
+
+            <t>Assumption: It is not the task of the authorization server to
+            protect the end-user's device from malicious software. This is the
+            responsibility of the platform running on the particular device
+            probably in cooperation with other components of the respective
+            ecosystem (e.g. an application management infrastructure). The
+            sole responsibility of the authorization server is to control
+            access to the end-user's resources living in resource servers and
+            to prevent unauthorized access to them. Based on this assumption,
+            the following countermeasures are available to cope with the
+            threat.</t>
+
+            <t>Countermeasures:</t>
+
+            <t><list style="symbols">
+                <t>The authorization server should authentication the client,
+                if possible (see <xref
+                target="depl_specific_secretes"></xref>). Note: the
+                authentication takes place after the end-user has authorized
+                the access.</t>
+
+                <t>The authorization server should validate the client's
+                redirect_uri against the pre-registered redirect_uri, if one
+                exists (see <xref target="val_redirect"></xref>). Note: The
+                validation of the redirect_uri is the only technical mean to
+                recognize a malicious client id in advance of the
+                authorization process. Further note this does not work for
+                native applications because in contrast to web applications
+                this URI is not bound to a single communication endpoint. The
+                valid client's redirect_uri (typically with custom scheme) can
+                be used by a malicious on any device.</t>
+
+                <t>After authenticating the end-user, the authorization server
+                should ask him/her for consent. In this context, the user
+                shall be explained the purpose, scope, and duration of the
+                authorization. Moreover, the authorization server must view to
+                the end-user the meta data it associates with the particular
+                client. It is up to the user to validate the binding of this
+                data to the particular application (e.g. Name) and to approve
+                the authorization request. (see <xref
+                target="validation_end_user"></xref>).</t>
+
+                <t>The authorization server must not perform automatic
+                re-authorizations for clients it is unable to reliably
+                authenticate or validate (see <xref
+                target="automatic_processing"></xref>).</t>
+
+                <t>If the authorization server automatically authenticates the
+                end-user, it may nevertheless require some user input in order
+                to prevent screen scraping. Examples are CAPTCHAs or
+                user-specific secret like PIN codes.</t>
+
+                <t>The authorization server may also limit the scope of tokens
+                it issues to clients it cannot reliably authenticate (see
+                <xref target="limit_scope"></xref>).</t>
+              </list></t>
+          </section>
+
           <section title="Threat: Authorization code phishing">
             <t>A hostile party could impersonate the client site and get
             access to the authorization code. This could be achieved using DNS
@@ -1276,38 +1276,6 @@
               </list></t>
           </section>
 
-          <section title="Threat: CSRF attack against redirect-uri [TBD]">
-            <t>TBD - b</t>
-
-            <t>b'</t>
-
-            <t>The attacker tricks the victim in login in to a service using
-            tha attackers credentials.</t>
-
-            <t>http://hublog.hubmed.org/archives/001755.html</t>
-
-            <t>As more and more web sites rely on identity data A
-            specialization of this attack (e.g. the access token obtained from
-            a 3rd party IDP by utilizing a OAuth flow).</t>
-
-            <t>Impact: the victim's data (probably account with the site)
-            become associated with the attackers account, so the attacker can
-            sub.sequently access this data using his account with the 3rd
-            party IDP.</t>
-
-            <t>Countermeasure:</t>
-
-            <t><list style="symbols">
-                <t>bind the authorization request to a certain user agent
-                (state parameter) and validate the binding on response
-                time.</t>
-              </list></t>
-          </section>
-
-          <section title="Threat: Session Fixation [TBD]">
-            <t>TBD - a</t>
-          </section>
-
           <section title="Threat: User session impersonation">
             <t>A hostile party could impersonate the client site and
             impersonate the user's session on this client. This could be
@@ -1325,7 +1293,7 @@
             directed by the attacker. If OAuth is used by the client to
             delegate authentication to a social site (e.g. as in the
             implementation of the "Facebook Login" button), the attacker can
-            use the intercapted authorization code to log in to the client as
+            use the intercepted authorization code to log in to the client as
             the user.</t>
 
             <t>Note: Authenticating the client during authorization code
@@ -1354,8 +1322,8 @@
             client site.</t>
 
             <t>The attacker abuses an existing client application and combines
-            it with his own counterfeit web site. The attack depends on the
-            victim expecting the client application to request access to a
+            it with his own counterfeit client web site. The attack depends on
+            the victim expecting the client application to request access to a
             certain resource server. The victim, seeing only a normal request
             from an expected application, approves the request. The attacker
             then uses the victim's authorization to gain access to the
@@ -1438,6 +1406,65 @@
                 "Resource Owner Password Credentials" (see <xref
                 target="implicite_flow"></xref> or <xref
                 target="pwd_flow"></xref>).</t>
+              </list></t>
+          </section>
+
+          <section title="Threat: CSRF attack against redirect-uri [TBD]">
+            <t>TBD - b</t>
+
+            <t>b'</t>
+
+            <t>The attacker tricks the victim in login in to a service using
+            tha attackers credentials.</t>
+
+            <t>http://hublog.hubmed.org/archives/001755.html</t>
+
+            <t>As more and more web sites rely on identity data A
+            specialization of this attack (e.g. the access token obtained from
+            a 3rd party IDP by utilizing a OAuth flow).</t>
+
+            <t>Impact: the victim's data (probably account with the site)
+            become associated with the attackers account, so the attacker can
+            sub.sequently access this data using his account with the 3rd
+            party IDP.</t>
+
+            <t>Countermeasure:</t>
+
+            <t><list style="symbols">
+                <t>bind the authorization request to a certain user agent
+                (state parameter) and validate the binding on response
+                time.</t>
+              </list></t>
+          </section>
+
+          <section title="Threat: Session Fixation [TBD]">
+            <t>TBD - a</t>
+          </section>
+
+          <section title="Threat: Clickjacking attack against authorization">
+            <t>With Clickjacking, a malicious site loads the target site in a
+            transparent iframe overlaid on top of a set of dummy buttons which
+            are carefully constructed to be placed directly under important
+            buttons on the target site. When a user clicks a visible button,
+            they are actually clicking a button (such as an "Authorize"
+            button) on the hidden page.</t>
+
+            <t>Impact: An attacker can steal a user's authentication
+            credentials and access their resources</t>
+
+            <t>Countermeasure</t>
+
+            <t><list style="symbols">
+                <t>Native applications SHOULD use external browsers instead of
+                embedding browsers in an iFrame when requesting end-user
+                authorization</t>
+
+                <t>For newer browsers, avoidance of iFrames can be enforced
+                server side by using the X-FRAME-OPTION header - <xref
+                target="clickjacking_xframe"></xref></t>
+
+                <t>For older browsers, javascript framebusting techniques can
+                be used but may not be effective in all browsers.</t>
               </list></t>
           </section>
 
@@ -1540,33 +1567,6 @@
                 servers.</t>
               </list></t>
           </section>
-
-          <section title="Threat: Clickjacking attack against authorization">
-            <t>With Clickjacking, a malicious site loads the target site in a
-            transparent iframe overlaid on top of a set of dummy buttons which
-            are carefully constructed to be placed directly under important
-            buttons on the target site. When a user clicks a visible button,
-            they are actually clicking a button (such as an "Authorize"
-            button) on the hidden page.</t>
-
-            <t>Impact: An attacker can steal a user's authentication
-            credentials and access their resources</t>
-
-            <t>Countermeasure</t>
-
-            <t><list style="symbols">
-                <t>Native applications SHOULD use external browsers instead of
-                embedding browsers in an iFrame when requesting end-user
-                authorization</t>
-
-                <t>For newer browsers, avoidance of iFrames can be enforced
-                server side by using the X-FRAME-OPTION header - <xref
-                target="clickjacking_xframe"></xref></t>
-
-                <t>For older browsers, javascript framebusting techniques can
-                be used but may not be effective in all browsers.</t>
-              </list></t>
-          </section>
         </section>
 
         <section anchor="implicite_flow" title="Implicit Grant">
@@ -1658,7 +1658,7 @@
             <t></t>
           </section>
 
-          <section title="CSRF attack against redirect-uri">
+          <section title="Threat: CSRF attack against redirect-uri">
             <t>Cross-Site Request Forgery (CSRF) is a web-based attack whereby
             HTTP requests are transmitted from a user that the website trusts
             or has authenticated (e.g., via HTTP redirects or HTML forms).
@@ -3095,7 +3095,8 @@
 
           <t>corrected some typos</t>
 
-          <t>reformulated session fixation, renamed sections</t>
+          <t>reformulated "session fixation", renamed respective sections into
+          "authorization code disclosure through counterfeit client"</t>
 
           <t>added new section "User session impersonation"</t>
 
@@ -3104,6 +3105,11 @@
 
           <t>added new threat "DoS using manufactured authorization codes" as
           proposed by Eric Pflam</t>
+
+          <t>addeed XSRF and clickjacking (incl. state parameter
+          explanation)</t>
+
+          <t>changed sub-section order in section 4.4,1</t>
         </list></t>
     </section>
   </back>
