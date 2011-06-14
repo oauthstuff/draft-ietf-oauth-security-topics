@@ -466,7 +466,7 @@
         <t>The state parameter is used to link requests and callbacks to
         prevent CSRF attacks where an attacker authorizes access to his own
         resources and then tricks a users into following a redirect with the
-        attacker's token</t>
+        attacker's token.</t>
       </section>
 
       <section title="Refresh Token">
@@ -1276,23 +1276,11 @@
               </list></t>
           </section>
 
-          <section title="Threat: Cross-Site Request Forgery (CSRF/XSRF) [[TBD]]">
-            <t>Cross-Site Request Forgery (CSRF) is a web-based attack whereby
-            HTTP requests are transmitted from a user that the website trusts
-            or has authenticated. CSRF attacks on OAuth approvals can allow an
-            attacker to obtain authorization to OAuth Protected Resources
-            without the consent of the User.</t>
+          <section title="Threat: CSRF attack against redirect-uri [TBD]">
+            <t>TBD - b</t>
 
-            <t>The state parameter should be used to mitigate against CSRF
-            attacks, particularly for login CSRF attacks. It is strongly
-            RECOMMENDED that the client sends the state parameter with
-            authorization requests to the authorization server. The
-            authorization server will send it in the response when redirecting
-            the user to back to the client which SHOULD then validate the
-            state parameter matches on the response.</t>
-          </section>
+            <t>b'</t>
 
-          <section title="Threat: Login CSRF [[TBD]]">
             <t>The attacker tricks the victim in login in to a service using
             tha attackers credentials.</t>
 
@@ -1314,6 +1302,10 @@
                 (state parameter) and validate the binding on response
                 time.</t>
               </list></t>
+          </section>
+
+          <section title="Threat: Session Fixation [TBD]">
+            <t>TBD - a</t>
           </section>
 
           <section title="Threat: User session impersonation">
@@ -1352,7 +1344,7 @@
           </section>
 
           <section anchor="authz_code_leakage"
-                   title="Threat: Authorization code leakage through counterfeit web site">
+                   title="Threat: Authorization code leakage through counterfeit client">
             <t>The attack leverages the authorization code grant type in an
             attempt to get another user (victim) to log-in, authorize access
             to his/her resources, and sub-sequently obtain the authorization
@@ -1669,7 +1661,7 @@
           <section title="CSRF attack against redirect-uri">
             <t>Cross-Site Request Forgery (CSRF) is a web-based attack whereby
             HTTP requests are transmitted from a user that the website trusts
-            or has authenticated _(e.g., via HTTP redirects or HTML forms)_.
+            or has authenticated (e.g., via HTTP redirects or HTML forms).
             CSRF attacks on OAuth approvals can allow an attacker to obtain
             authorization to OAuth Protected Resources without the consent of
             the User.</t>
@@ -2640,7 +2632,7 @@
               </list></t>
           </section>
 
-          <section anchor="clickjacking_xframe" title="X-RAME-OPTION header">
+          <section anchor="clickjacking_xframe" title="X-FRAME-OPTION header">
             <t>For newer browsers, avoidance of iFrames can be enforced server
             side by using the X-FRAME-OPTION header. This header can have two
             values, deny and sameorigin, which will block any framing or
