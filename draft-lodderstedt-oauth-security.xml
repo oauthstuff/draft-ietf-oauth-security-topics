@@ -42,7 +42,7 @@
       </address>
     </author>
 
-    <date day="01" month="June" year="2011" />
+    <date day="16" month="June" year="2011" />
 
     <area>Applications Area</area>
 
@@ -74,12 +74,12 @@
       target="I-D.ietf-oauth-v2"></xref>. It contains the following
       content:<list style="symbols">
           <t>Documents any assumptions and scope considered when creating the
-          threat model</t>
+          threat model.</t>
 
-          <t>Describe the security features in-built into the OAuth protocol
-          and how they are intended to thwart attacks</t>
+          <t>Describes the security features in-built into the OAuth protocol
+          and how they are intended to thwart attacks.</t>
 
-          <t>Give a comprehensive threat model for OAuth and describes the
+          <t>Gives a comprehensive threat model for OAuth and describes the
           respective counter measures to thwart those threats.</t>
         </list>Threats include any intentional attacks on OAuth tokens and
       resources protected by OAuth tokens as well as security risks introduced
@@ -513,10 +513,12 @@
         clients, e.g. in server log files.</t>
 
         <t>The <spanx style="emph">client_secret</spanx> is used to verify the
-        client identifier. This should only be used where the client is
-        capable of keeping its secret confidential. The client identity can
-        also be verified using the <spanx style="emph">redirect_uri</spanx> or
-        by the <spanx style="emph">end-user</spanx>.</t>
+        client identifier. The authorization server should only rely on client
+        authentication where these secrets can be deployed to the clients in a
+        secure manner and the client is capable of keeping its secret
+        confidential. The client identity can also be verified using the
+        <spanx style="emph">redirect_uri</spanx> or by the <spanx
+        style="emph">end-user</spanx>.</t>
 
         <t>Clients (and the trustworthiness of its identity) can be classifed
         by using the following parameters:</t>
@@ -620,12 +622,11 @@
           approaches an attacker could utilize to obtain the client
           secret.</t>
 
-          <t><spanx style="strong">Attack: Obtain Secret From Source Code or
-          Binary.</spanx> This applies for all client profiles and especially
-          for open source projects, where the source code is public
-          accessible. Even if the attacker does not has access to the source
-          code, it could reverse engineer secrets from the binary of native
-          apps.</t>
+          <t><spanx style="strong">Attack: Obtain Secret From Source Code or Binary.</spanx>
+          This applies for all client profiles and especially for open source
+          projects, where the source code is public accessible. Even if the
+          attacker does not has access to the source code, it could reverse
+          engineer secrets from the binary of native apps.</t>
 
           <t><spanx>Countermeasures:</spanx></t>
 
@@ -674,11 +675,7 @@
           <t><list style="symbols">
               <t>The authorization server must validate the client id
               associated with the particular refresh token with every refresh
-              request <spanx style="emph">[TL: it's to weak in my opinion -
-              should be "Bind refresh token to client and authenticate client
-              with every access (if client can be authenticated)", just a
-              binding to the client id is not kind of useless</spanx>] - <xref
-              target="binding_refresh_client_id"></xref></t>
+              request- <xref target="binding_refresh_client_id"></xref></t>
 
               <t>Limited scope tokens - <xref target="limit_scope"></xref></t>
 
@@ -693,10 +690,9 @@
               Replacement) - <xref target="refresh_replace"></xref></t>
             </list> <spanx style="strong"></spanx></t>
 
-          <t><spanx style="strong">Attack: Obtain Refresh Token from Web
-          application.</spanx> An attack may obtain the refresh tokens issued
-          to a web server client. Impact: Exposure of all refresh tokens on
-          that side.</t>
+          <t><spanx style="strong">Attack: Obtain Refresh Token from Web application.</spanx>
+          An attack may obtain the refresh tokens issued to a web server
+          client. Impact: Exposure of all refresh tokens on that side.</t>
 
           <t><spanx style="emph">Countermeasures:</spanx> <list
               style="symbols">
@@ -709,9 +705,9 @@
               target="strong_client_authn"></xref></t>
             </list> <spanx style="strong"></spanx></t>
 
-          <t><spanx style="strong">Attack: Obtain Refresh Token from Native
-          clients.</spanx> On native clients, leakage of a refresh token
-          typically affects a single user, only.</t>
+          <t><spanx style="strong">Attack: Obtain Refresh Token from Native clients.</spanx>
+          On native clients, leakage of a refresh token typically affects a
+          single user, only.</t>
 
           <t><spanx style="emph">Read from local filesystem:</spanx> The
           attacker could try get file system access on the device and read the
@@ -1053,11 +1049,7 @@
         response types and/or grant types on the end-user authorization and
         tokens endpoint, respectively.</t>
 
-        <t></t>
-
         <section anchor="code_flow" title="Authorization Code">
-          <t></t>
-
           <section anchor="eavesdropping"
                    title="Threat: Eavesdropping or leaking authorization codes">
             <t>An attacker could try to eavesdrop transmission of the
@@ -1409,36 +1401,48 @@
               </list></t>
           </section>
 
-          <section title="Threat: CSRF attack against redirect-uri [TBD]">
-            <t>TBD - b</t>
+          <section title="Threat: CSRF attack against redirect-uri">
+            <t>Cross-Site Request Forgery (CSRF) is a web-based attack whereby
+            HTTP requests are transmitted from a user that the website trusts
+            or has authenticated (e.g., via HTTP redirects or HTML forms).
+            CSRF attacks on OAuth approvals can allow an attacker to obtain
+            authorization to OAuth protected resources without the consent of
+            the User.</t>
 
-            <t>b'</t>
+            <t>This attack works against the redirect-uri used in the
+            authorization code flow. An attacker could authorize an
+            authorization code to their own protected resources on an
+            authorization server. He then aborts the redirect flow back to the
+            client on his device and tricks the victim into executing the
+            redirect back to the client. The client receives the redirect,
+            fetches the token(s) from the authorization server and asscociates
+            the victim's client session with the resources accessible using
+            the token. </t>
 
-            <t>The attacker tricks the victim in login in to a service using
-            tha attackers credentials.</t>
+            <t>Impact: The user accesses resources on behalf of the attacker.
+            The effective impact depends on the type of resource accessed. For
+            example, the user may upload private items to an attacker's
+            resources. Or when using OAuth in 3rd party login scenarios, the
+            user may associate his client account with the attacker's idenity
+            at the external identity provider. This way the attacker could
+            easily accces the victim's data at the client by logging in from
+            another device with his credentials at the external identity
+            provider.</t>
 
-            <t>http://hublog.hubmed.org/archives/001755.html</t>
-
-            <t>As more and more web sites rely on identity data A
-            specialization of this attack (e.g. the access token obtained from
-            a 3rd party IDP by utilizing a OAuth flow).</t>
-
-            <t>Impact: the victim's data (probably account with the site)
-            become associated with the attackers account, so the attacker can
-            sub.sequently access this data using his account with the 3rd
-            party IDP.</t>
-
-            <t>Countermeasure:</t>
+            <t>Countermeasures:</t>
 
             <t><list style="symbols">
-                <t>bind the authorization request to a certain user agent
-                (state parameter) and validate the binding on response
-                time.</t>
-              </list></t>
-          </section>
+                <t>The state parameter should be used to link the
+                authorization request with the redirect-uri used deliver the
+                access token. This will ensure the client is not tricked into
+                completing any redirect callback unless it is linked to an
+                authorization request the client initiated. The state
+                parameter should be unguessable and the client should be
+                capable of keeping the state parameter secret.</t>
 
-          <section title="Threat: Session Fixation [TBD]">
-            <t>TBD - a</t>
+                <t>Client developers and end-user can be educated not follow
+                untrusted urls.</t>
+              </list></t>
           </section>
 
           <section title="Threat: Clickjacking attack against authorization">
@@ -1654,8 +1658,6 @@
                 the effectiveness of copying client-side scripts for re-use in
                 an attackers modified code. [[pending discussion]]</t>
               </list></t>
-
-            <t></t>
           </section>
 
           <section title="Threat: CSRF attack against redirect-uri">
@@ -1663,7 +1665,7 @@
             HTTP requests are transmitted from a user that the website trusts
             or has authenticated (e.g., via HTTP redirects or HTML forms).
             CSRF attacks on OAuth approvals can allow an attacker to obtain
-            authorization to OAuth Protected Resources without the consent of
+            authorization to OAuth protected resources without the consent of
             the User.</t>
 
             <t>This attack works against the redirect-uri used in the implicit
@@ -1674,8 +1676,15 @@
             protection against this attack, the user may have the attacker's
             access token authorized within their client.</t>
 
-            <t>Impact: A user will be authorized with an attacker's access
-            token and may upload items to an attacker's resources.</t>
+            <t>Impact: The user accesses resources on behalf of the attacker.
+            The effective impact depends on the type of resource accessed. For
+            example, the user may upload private items to an attacker's
+            resources. Or when using OAuth in 3rd party login scenarios, the
+            user may associate his client account with the attacker's idenity
+            at the external identity provider. This way the attacker could
+            easily accces the victim's data at the client by logging in from
+            another device with his credentials at the external identity
+            provider.</t>
 
             <t>Countermeasures:</t>
 
@@ -1684,10 +1693,9 @@
                 authorization request with the redirect-uri used deliver the
                 access token. This will ensure the client is not tricked into
                 completing any redirect callback unless it is linked to an
-                authorization request the client initiated</t>
-
-                <t>The state parameter should be unguessable and the client
-                should be capable of keeping the state parameter secret</t>
+                authorization request the client initiated. The state
+                parameter should be unguessable and the client should be
+                capable of keeping the state parameter secret.</t>
 
                 <t>Client developers and end-user can be educated not follow
                 untrusted urls.</t>
@@ -1879,8 +1887,6 @@
       </section>
 
       <section title="Refreshing an Access Token">
-        <t></t>
-
         <section title="Threat: Eavesdropping refresh tokens from authorization server">
           <t>dAn attacker may eavesdrop refresh tokens when they are
           transmitted from the authorization server to the client.</t>
@@ -1963,8 +1969,6 @@
       </section>
 
       <section title="Accessing Protected Resources">
-        <t></t>
-
         <section title="Threat: Eavesdropping access tokens on transport">
           <t>An attacker could try to obtain a valid access token on transport
           between client and resource server. As access tokens are shared
@@ -2151,11 +2155,7 @@
       <t>This section describes the countermeasures as recommended to mitigate
       the threats as described in Section 4.</t>
 
-      <t></t>
-
       <section title="General">
-        <t></t>
-
         <section anchor="conf_requests" title="Confidentiality of Requests">
           <t>This is applicable to all requests sent from client to
           authorization server or resource server. While OAuth provides a
@@ -2239,13 +2239,9 @@
 
           <section anchor="cred_storage_prot"
                    title="Credential storage protection">
-            <t></t>
-
             <section anchor="std_sys" title="Standard system security means">
               <t>A server system may be locked down so that no attacker may
               get access to sensible configuration files and databases.</t>
-
-              <t></t>
             </section>
 
             <section anchor="std_sql"
@@ -2303,8 +2299,6 @@
           </section>
 
           <section anchor="online_secrets" title="Online attacks on secrets">
-            <t></t>
-
             <section anchor="pwd_policy" title="Password policy">
               <t>The authorization server may decide to enforce a complex user
               password policy in order to increase the user passwords'
@@ -2356,8 +2350,6 @@
         </section>
 
         <section title="Tokens (access, refresh, code)">
-          <t></t>
-
           <section anchor="limit_scope" title="Limit token scope">
             <t>The authorization server may decide to reduce or limit the
             scope associated with a token. Basis of this decision is out of
@@ -2529,11 +2521,7 @@
       </section>
 
       <section title="Authorization Server">
-        <t></t>
-
         <section title="Authorization Codes">
-          <t></t>
-
           <section anchor="automatic_code_revocation"
                    title="Automatic revocation of derived tokens if abuse is detected">
             <t>If an Authorization Server observes multiple attempts to redeem
@@ -2543,8 +2531,6 @@
         </section>
 
         <section anchor="refresh_tokens" title="Refresh tokens">
-          <t></t>
-
           <section anchor="restricted_refresh"
                    title="Restricted issuance of refresh tokens">
             <t>The authorization server may decide based on an appropriate
@@ -2846,8 +2832,6 @@
         </section>
 
         <section title="End-user authorization">
-          <t></t>
-
           <section anchor="automatic_processing"
                    title="Automatic processing of repeated authorizations requires client validation">
             <t>Authorization servers should not automatically process repeat
@@ -2915,24 +2899,18 @@
             authorization code leakage through counterfeit web sites since an
             attacker cannot use another redirect_uri to exchange an
             authorization code into a token.</t>
-
-            <t></t>
           </section>
         </section>
       </section>
 
       <section title="Client App Security">
-        <t></t>
-
         <section anchor="cred_software"
                  title="Don't store credentials in code or resources bundled with software packages">
           <t>[Anything more to say ? :-)]</t>
         </section>
 
         <section anchor="std_web"
-                 title="Standard web server protection measures (for config files and databases)">
-          <t></t>
-        </section>
+                 title="Standard web server protection measures (for config files and databases)"></section>
 
         <section anchor="secure_storage"
                  title="Store secrets in a secure storage">
@@ -2955,9 +2933,7 @@
         </section>
 
         <section anchor="device_lock"
-                 title="Utilize device lock to prevent unauthorized device access">
-          <t></t>
-        </section>
+                 title="Utilize device lock to prevent unauthorized device access"></section>
 
         <section title="Platform security measures">
           <t><list style="symbols">
@@ -2966,15 +2942,11 @@
               <t>software package signatures</t>
 
               <t>Remote removal</t>
-
-              <t></t>
             </list></t>
         </section>
       </section>
 
       <section title="Resource Servers">
-        <t></t>
-
         <section anchor="authz_header" title="Authorization headers">
           <t>Authorization headers are recognized and specially treated by
           HTTP proxies and servers. Thus the usage of such headers for sending
@@ -3106,7 +3078,7 @@
           <t>added new threat "DoS using manufactured authorization codes" as
           proposed by Eric Pflam</t>
 
-          <t>addeed XSRF and clickjacking (incl. state parameter
+          <t>added XSRF and clickjacking (incl. state parameter
           explanation)</t>
 
           <t>changed sub-section order in section 4.4,1</t>

@@ -145,10 +145,10 @@
 <tr><td class="header">Open Authentication Protocol</td><td class="header">T. Lodderstedt, Ed.</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">Deutsche Telekom AG</td></tr>
 <tr><td class="header">Intended status: Standards Track</td><td class="header">M. McGloin</td></tr>
-<tr><td class="header">Expires: December 3, 2011</td><td class="header">IBM</td></tr>
+<tr><td class="header">Expires: December 18, 2011</td><td class="header">IBM</td></tr>
 <tr><td class="header">&nbsp;</td><td class="header">P. Hunt</td></tr>
 <tr><td class="header">&nbsp;</td><td class="header">Oracle Corporation</td></tr>
-<tr><td class="header">&nbsp;</td><td class="header">June 01, 2011</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">June 16, 2011</td></tr>
 </table></td></tr></table>
 <h1><br />OAuth 2.0 Threat Model and Security Considerations<br />draft-lodderstedt-oauth-security-02</h1>
 
@@ -175,7 +175,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on December 3, 2011.</p>
+This Internet-Draft will expire on December 18, 2011.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -210,6 +210,14 @@ Authorization Servers<br />
 Resource Server<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor8">2.3.3.</a>&nbsp;
 Client<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor9">2.3.3.1.</a>&nbsp;
+Web Server<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor10">2.3.3.2.</a>&nbsp;
+Native Applications<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor11">2.3.3.3.</a>&nbsp;
+User Agent<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor12">2.3.3.4.</a>&nbsp;
+Autonomous<br />
 <a href="#anchor13">3.</a>&nbsp;
 Security Features<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor14">3.1.</a>&nbsp;
@@ -225,84 +233,130 @@ Redirect-URI<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor19">3.6.</a>&nbsp;
 Access Token<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor20">3.7.</a>&nbsp;
-Refresh Token<br />
+State parameter<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor21">3.8.</a>&nbsp;
+Refresh Token<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor22">3.9.</a>&nbsp;
 Client Authentication<br />
-<a href="#anchor22">4.</a>&nbsp;
+<a href="#anchor23">4.</a>&nbsp;
 Security Threat Model<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor23">4.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor24">4.1.</a>&nbsp;
 Clients<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#ObtainClientSecrets">4.1.1.</a>&nbsp;
 Threat: Obtain Client Secrets<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor24">4.1.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor25">4.1.2.</a>&nbsp;
 Threat: Obtain Refresh Tokens<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor25">4.1.3.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor26">4.1.3.</a>&nbsp;
 Threat: Obtain Access Tokens<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor26">4.1.4.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor27">4.1.4.</a>&nbsp;
 Threat: End-user credentials phished using compromised or embedded browser<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor27">4.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor28">4.2.</a>&nbsp;
 Authorization Endpoint<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor28">4.2.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor29">4.2.1.</a>&nbsp;
 Threat: Password phishing by counterfeit authorization server<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor29">4.2.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor30">4.2.2.</a>&nbsp;
 Threat: User unintentionally grants too much access scope<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#mal_client3">4.2.3.</a>&nbsp;
 Threat: Malicious client obtains existing authorization by fraud<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor30">4.2.4.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor31">4.2.4.</a>&nbsp;
 Threat: Open redirector<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor31">4.3.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor32">4.3.</a>&nbsp;
 Token endpoint<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor32">4.3.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor33">4.3.1.</a>&nbsp;
 Threat: Eavesdropping access tokens<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor33">4.3.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor34">4.3.2.</a>&nbsp;
 Threat: Obtain access tokens from authorization server database<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor34">4.3.3.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor35">4.3.3.</a>&nbsp;
 Threat: Obtain client credentials over non secure transport<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor35">4.3.4.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor36">4.3.4.</a>&nbsp;
 Threat: Obtain client secret from authorization server database<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor36">4.3.5.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor37">4.3.5.</a>&nbsp;
 Threat: Obtain client secret by online guessing<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor37">4.3.6.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor38">4.3.6.</a>&nbsp;
 Threat: DoS on dynamic client secret creation<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor38">4.4.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor39">4.4.</a>&nbsp;
 Obtaining Authorization<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#code_flow">4.4.1.</a>&nbsp;
 Authorization Code<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#eavesdropping">4.4.1.1.</a>&nbsp;
+Threat: Eavesdropping or leaking authorization codes<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor40">4.4.1.2.</a>&nbsp;
+Threat: Obtain authorization codes from authorization server database<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor41">4.4.1.3.</a>&nbsp;
+Threat: Online guessing of authorization codes<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#mal_client">4.4.1.4.</a>&nbsp;
+Threat: Malicious client obtains authorization<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor42">4.4.1.5.</a>&nbsp;
+Threat: Authorization code phishing<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor43">4.4.1.6.</a>&nbsp;
+Threat: User session impersonation<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#authz_code_leakage">4.4.1.7.</a>&nbsp;
+Threat: Authorization code leakage through counterfeit client<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor44">4.4.1.8.</a>&nbsp;
+Threat: CSRF attack against redirect-uri<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor45">4.4.1.9.</a>&nbsp;
+Threat: Clickjacking attack against authorization<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor46">4.4.1.10.</a>&nbsp;
+Threat: DoS, Exhaustion of resources attacks<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor47">4.4.1.11.</a>&nbsp;
+Threat: DoS using manufactured authorization codes<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#implicite_flow">4.4.2.</a>&nbsp;
 Implicit Grant<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor48">4.4.2.1.</a>&nbsp;
+Threat: Access token leak in transport/end-points<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor49">4.4.2.2.</a>&nbsp;
+Threat: Access token leak in browser history<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#mal_client2">4.4.2.3.</a>&nbsp;
+Threat: Malicious client obtains authorization<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor50">4.4.2.4.</a>&nbsp;
+Threat: Manipulation of scripts<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor51">4.4.2.5.</a>&nbsp;
+Threat: CSRF attack against redirect-uri<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#pwd_flow">4.4.3.</a>&nbsp;
 Resource Owner Password Credentials<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor57">4.4.4.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor52">4.4.3.1.</a>&nbsp;
+Threat: Accidental exposure of passwords at client site<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor53">4.4.3.2.</a>&nbsp;
+Threat: Client obtains scopes without end-user authorization<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor54">4.4.3.3.</a>&nbsp;
+Threat: Client obtains refresh token through automatic authorization<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor55">4.4.3.4.</a>&nbsp;
+Threat: Obtain user passwords on transport<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor56">4.4.3.5.</a>&nbsp;
+Threat: Obtain user passwords from authorization server database<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor57">4.4.3.6.</a>&nbsp;
+Threat: Online guessing<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor58">4.4.4.</a>&nbsp;
 Client Credentials<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor58">4.5.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor59">4.5.</a>&nbsp;
 Refreshing an Access Token<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor59">4.5.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor60">4.5.1.</a>&nbsp;
 Threat: Eavesdropping refresh tokens from authorization server<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor60">4.5.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor61">4.5.2.</a>&nbsp;
 Threat: Obtaining refresh token from authorization server database<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor61">4.5.3.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor62">4.5.3.</a>&nbsp;
 Threat: Obtain refresh token by online guessing<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor62">4.5.4.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor63">4.5.4.</a>&nbsp;
 Threat: Obtain refresh token phishing by counterfeit authorization server<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor63">4.6.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor64">4.6.</a>&nbsp;
 Accessing Protected Resources<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor64">4.6.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor65">4.6.1.</a>&nbsp;
 Threat: Eavesdropping access tokens on transport<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor65">4.6.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor66">4.6.2.</a>&nbsp;
 Threat: Replay authorized resource server requests<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor66">4.6.3.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor67">4.6.3.</a>&nbsp;
 Threat: Guessing access tokens<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor67">4.6.4.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor68">4.6.4.</a>&nbsp;
 Threat: Access token phishing by counterfeit resource server<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor68">4.6.5.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor69">4.6.5.</a>&nbsp;
 Threat: Abuse of token by legitimate resource server or client<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor69">4.6.6.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor70">4.6.6.</a>&nbsp;
 Threat: Leak of confidential data in HTTP-Proxies<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor70">4.6.7.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor71">4.6.7.</a>&nbsp;
 Threat: Token leakage via logfiles and HTTP referrers<br />
 <a href="#security_considerations">5.</a>&nbsp;
 Security Considerations<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor71">5.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor72">5.1.</a>&nbsp;
 General<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#conf_requests">5.1.1.</a>&nbsp;
 Confidentiality of Requests<br />
@@ -310,23 +364,91 @@ Confidentiality of Requests<br />
 Server authentication<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#informed">5.1.3.</a>&nbsp;
 Always keep the resource owner informed<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor72">5.1.4.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor73">5.1.4.</a>&nbsp;
 Credentials<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor75">5.1.5.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#cred_storage_prot">5.1.4.1.</a>&nbsp;
+Credential storage protection<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#online_secrets">5.1.4.2.</a>&nbsp;
+Online attacks on secrets<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor76">5.1.5.</a>&nbsp;
 Tokens (access, refresh, code)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#limit_scope">5.1.5.1.</a>&nbsp;
+Limit token scope<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#exp_time">5.1.5.2.</a>&nbsp;
+Expiration time<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#short_exp_time">5.1.5.3.</a>&nbsp;
+Short expiration time<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#one_time_usage">5.1.5.4.</a>&nbsp;
+Limit number of usages/ One time usage<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#bind_token_rs">5.1.5.5.</a>&nbsp;
+Bind tokens to a particular resource server (Audience)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#endpoint_audience">5.1.5.6.</a>&nbsp;
+Use endpoint address as token audience<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#audience_token_scope">5.1.5.7.</a>&nbsp;
+Audience and Token scopes<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#bind_token_client_id">5.1.5.8.</a>&nbsp;
+Bind token to client id<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#signed_tokens">5.1.5.9.</a>&nbsp;
+Signed tokens<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#enc_token">5.1.5.10.</a>&nbsp;
+Encryption of token content<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#random_entropy">5.1.5.11.</a>&nbsp;
+Random token value with high entropy<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor77">5.1.5.12.</a>&nbsp;
+Assertion formats<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#access_tokens">5.1.6.</a>&nbsp;
 Access tokens<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor77">5.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor78">5.2.</a>&nbsp;
 Authorization Server<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor78">5.2.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor79">5.2.1.</a>&nbsp;
 Authorization Codes<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#automatic_code_revocation">5.2.1.1.</a>&nbsp;
+Automatic revocation of derived tokens if abuse is detected<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#refresh_tokens">5.2.2.</a>&nbsp;
 Refresh tokens<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#restricted_refresh">5.2.2.1.</a>&nbsp;
+Restricted issuance of refresh tokens<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#binding_refresh_client_id">5.2.2.2.</a>&nbsp;
+Binding of refresh token to client_id<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#refresh_replace">5.2.2.3.</a>&nbsp;
+Refresh Token Replacement<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#refresh_revocation">5.2.2.4.</a>&nbsp;
+Refresh Token Revocation<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#user_secret">5.2.2.5.</a>&nbsp;
+Combine refresh token requests with user-provided secret<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#device_id">5.2.2.6.</a>&nbsp;
+Device identification<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#clickjacking_xframe">5.2.2.7.</a>&nbsp;
+X-FRAME-OPTION header<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#client_aa">5.2.3.</a>&nbsp;
 Client authentication and authorization<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor79">5.2.4.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#dont_issue">5.2.3.1.</a>&nbsp;
+Don't issue secrets to clients with inappropriate security policy<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#forced_user_consent">5.2.3.2.</a>&nbsp;
+Clients without secret require user consent<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#client_id_redirect">5.2.3.3.</a>&nbsp;
+Client_id only in combination with redirect_uri<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#depl_specific_secretes">5.2.3.4.</a>&nbsp;
+Deployment-specific client secrets<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#val_redirect">5.2.3.5.</a>&nbsp;
+Validation of pre-registered redirect_uri<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#client_secret_revocation">5.2.3.6.</a>&nbsp;
+Client secret revocation<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#strong_client_authn">5.2.3.7.</a>&nbsp;
+Use strong client authentication (e.g. client_assertion / client_token)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor80">5.2.4.</a>&nbsp;
 End-user authorization<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor80">5.3.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#automatic_processing">5.2.4.1.</a>&nbsp;
+Automatic processing of repeated authorizations requires client validation<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#informed_decisions">5.2.4.2.</a>&nbsp;
+Informed decisions based on transparency<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#validation_end_user">5.2.4.3.</a>&nbsp;
+Validation of client properties by end-user<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#bind_code_client_id">5.2.4.4.</a>&nbsp;
+Binding of authorization code to client_id<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#bind_code_redirect">5.2.4.5.</a>&nbsp;
+Binding of authorization code to redirect_uri<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor81">5.3.</a>&nbsp;
 Client App Security<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#cred_software">5.3.1.</a>&nbsp;
 Don't store credentials in code or resources bundled with software packages<br />
@@ -336,9 +458,9 @@ Standard web server protection measures (for config files and databases)<br />
 Store secrets in a secure storage<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#device_lock">5.3.4.</a>&nbsp;
 Utilize device lock to prevent unauthorized device access<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor81">5.3.5.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor82">5.3.5.</a>&nbsp;
 Platform security measures<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor82">5.4.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor83">5.4.</a>&nbsp;
 Resource Servers<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#authz_header">5.4.1.</a>&nbsp;
 Authorization headers<br />
@@ -356,7 +478,7 @@ References<br />
 Normative References<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">8.2.</a>&nbsp;
 Informative References<br />
-<a href="#anchor85">Appendix&nbsp;A.</a>&nbsp;
+<a href="#anchor86">Appendix&nbsp;A.</a>&nbsp;
 Document History<br />
 <a href="#rfc.authors">&#167;</a>&nbsp;
 Authors' Addresses<br />
@@ -370,11 +492,11 @@ Introduction</h3>
 
 <p>This document gives security considerations based on a comprehensive threat model for the OAuth 2.0 Protocol <a class='info' href='#I-D.ietf-oauth-v2'>[I&#8209;D.ietf&#8209;oauth&#8209;v2]<span> (</span><span class='info'>Hammer-Lahav, E., Recordon, D., and D. Hardt, &ldquo;The OAuth 2.0 Authorization Protocol,&rdquo; May&nbsp;2011.</span><span>)</span></a>. It contains the following content:</p>
 <ul class="text">
-<li>Documents any assumptions and scope considered when creating the threat model
+<li>Documents any assumptions and scope considered when creating the threat model.
 </li>
-<li>Describe the security features in-built into the OAuth protocol and how they are intended to thwart attacks
+<li>Describes the security features in-built into the OAuth protocol and how they are intended to thwart attacks.
 </li>
-<li>Give a comprehensive threat model for OAuth and describes the respective counter measures to thwart those threats.
+<li>Gives a comprehensive threat model for OAuth and describes the respective counter measures to thwart those threats.
 </li>
 </ul><p>Threats include any intentional attacks on OAuth tokens and resources protected by OAuth tokens as well as security risks introduced if the proper security measures are not put in place. Threats are structured along the lines of the protocol structure to aid development teams implement each part of the protocol securely. For example all threats for granting access or all threats for a particular client profile or all threats for protecting the resource server.
 </p>
@@ -663,13 +785,20 @@ Access Token</h3>
 <a name="anchor20"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.7"></a><h3>3.7.&nbsp;
-Refresh Token</h3>
+State parameter</h3>
 
-<p>A Refresh Token is coupled with a short access token lifetime, can be used to grant longer access to resources without involving end user authorization. This offers an advantage where resource servers and authorization servers are not the same entity, e.g. in a distributed environment, as the refresh token must always be exchanged at the authorization server. The authorization server can revoke the refresh token at any time causing the granted access to be revoked once the current access token expires. Because of this, a short access token lifetime is important if timely revocation is a high priority.
+<p>The state parameter is used to link requests and callbacks to prevent CSRF attacks where an attacker authorizes access to his own resources and then tricks a users into following a redirect with the attacker's token.
 </p>
 <a name="anchor21"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.8"></a><h3>3.8.&nbsp;
+Refresh Token</h3>
+
+<p>A Refresh Token is coupled with a short access token lifetime, can be used to grant longer access to resources without involving end user authorization. This offers an advantage where resource servers and authorization servers are not the same entity, e.g. in a distributed environment, as the refresh token must always be exchanged at the authorization server. The authorization server can revoke the refresh token at any time causing the granted access to be revoked once the current access token expires. Because of this, a short access token lifetime is important if timely revocation is a high priority.
+</p>
+<a name="anchor22"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.9"></a><h3>3.9.&nbsp;
 Client Authentication</h3>
 
 <p>Authentication protocols have typically not taken into account the identity of the software component acting on behalf of the end-user. OAuth does this in order to increase security level in delegated authorization scenarios and because the client will be able to act without the user's presence. By authenticating a client when requesting an access token, the token service is able to assess whether a given client and authorization code meets appropriate security requirements and binds the authorization code approved by the user to the client making the request.
@@ -684,7 +813,7 @@ Client Authentication</h3>
 </li>
 </ul><p>The client identity may also be used by the authorization server to display relevant registration information to a user when requesting consent for scope requested by a particular client. The client identity may be used to limit the number of request for a particular client or to charge the client per request. Client Identity may furthermore be useful to differentiate access by different clients, e.g. in server log files.
 </p>
-<p>The <em>client_secret</em> is used to verify the client identifier. This should only be used where the client is capable of keeping its secret confidential. The client identity can also be verified using the <em>redirect_uri</em> or by the <em>end-user</em>.
+<p>The <em>client_secret</em> is used to verify the client identifier. The authorization server should only rely on client authentication where these secrets can be deployed to the clients in a secure manner and the client is capable of keeping its secret confidential. The client identity can also be verified using the <em>redirect_uri</em> or by the <em>end-user</em>.
 </p>
 <p>Clients (and the trustworthiness of its identity) can be classifed by using the following parameters:
 </p>
@@ -714,14 +843,14 @@ Client Authentication</h3>
 </dd>
 </dl></blockquote><p>Use of the client secret is considered a relatively weak form of credential for the client. Use of stronger mechanisms such as a client assertion (e.g. SAML), key cryptography, are preferred.
 </p>
-<a name="anchor22"></a><br /><hr />
+<a name="anchor23"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4"></a><h3>4.&nbsp;
 Security Threat Model</h3>
 
 <p>This sections gives a comprehensive threat model of OAuth 2.0. Threats are grouped first by attackes directed against an OAuth component, which are client, authorization server, and resource server. Subsequently, they are grouped by flow, e.g. obtain token or access protected resources. Every countermeasure description refers to a detailed description in <a class='info' href='#security_considerations'>Section&nbsp;5<span> (</span><span class='info'>Security Considerations</span><span>)</span></a>.
 </p>
-<a name="anchor23"></a><br /><hr />
+<a name="anchor24"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.1"></a><h3>4.1.&nbsp;
 Clients</h3>
@@ -751,8 +880,7 @@ Threat: Obtain Client Secrets</h3>
 </li>
 </ul><p>Depending on the client category, there are the following approaches an attacker could utilize to obtain the client secret.
 </p>
-<p><strong>Attack: Obtain Secret From Source Code or
-          Binary.</strong> This applies for all client profiles and especially for open source projects, where the source code is public accessible. Even if the attacker does not has access to the source code, it could reverse engineer secrets from the binary of native apps.
+<p><strong>Attack: Obtain Secret From Source Code or Binary.</strong> This applies for all client profiles and especially for open source projects, where the source code is public accessible. Even if the attacker does not has access to the source code, it could reverse engineer secrets from the binary of native apps.
 </p>
 <p><em>Countermeasures:</em>
 </p>
@@ -782,7 +910,7 @@ Threat: Obtain Client Secrets</h3>
 </li>
 </ul>
 
-<a name="anchor24"></a><br /><hr />
+<a name="anchor25"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.1.2"></a><h3>4.1.2.&nbsp;
 Threat: Obtain Refresh Tokens</h3>
@@ -791,10 +919,7 @@ Threat: Obtain Refresh Tokens</h3>
 </p>
 <p></p>
 <ul class="text">
-<li>The authorization server must validate the client id associated with the particular refresh token with every refresh request <em>[TL: it's to weak in my opinion -
-              should be "Bind refresh token to client and authenticate client
-              with every access (if client can be authenticated)", just a
-              binding to the client id is not kind of useless</em>] - <a class='info' href='#binding_refresh_client_id'>Section&nbsp;5.2.2.2<span> (</span><span class='info'>Binding of refresh token to client_id</span><span>)</span></a>
+<li>The authorization server must validate the client id associated with the particular refresh token with every refresh request- <a class='info' href='#binding_refresh_client_id'>Section&nbsp;5.2.2.2<span> (</span><span class='info'>Binding of refresh token to client_id</span><span>)</span></a>
 </li>
 <li>Limited scope tokens - <a class='info' href='#limit_scope'>Section&nbsp;5.1.5.1<span> (</span><span class='info'>Limit token scope</span><span>)</span></a>
 </li>
@@ -806,8 +931,7 @@ Threat: Obtain Refresh Tokens</h3>
 </li>
 </ul><p> <strong></strong>
 </p>
-<p><strong>Attack: Obtain Refresh Token from Web
-          application.</strong> An attack may obtain the refresh tokens issued to a web server client. Impact: Exposure of all refresh tokens on that side.
+<p><strong>Attack: Obtain Refresh Token from Web application.</strong> An attack may obtain the refresh tokens issued to a web server client. Impact: Exposure of all refresh tokens on that side.
 </p>
 <p><em>Countermeasures:</em> </p>
 <ul class="text">
@@ -817,8 +941,7 @@ Threat: Obtain Refresh Tokens</h3>
 </li>
 </ul><p> <strong></strong>
 </p>
-<p><strong>Attack: Obtain Refresh Token from Native
-          clients.</strong> On native clients, leakage of a refresh token typically affects a single user, only.
+<p><strong>Attack: Obtain Refresh Token from Native clients.</strong> On native clients, leakage of a refresh token typically affects a single user, only.
 </p>
 <p><em>Read from local filesystem:</em> The attacker could try get file system access on the device and read the refresh tokens. The attacker could utilize a malicious app for that purpose.
 </p>
@@ -872,7 +995,7 @@ Threat: Obtain Refresh Tokens</h3>
 </li>
 </ul>
 
-<a name="anchor25"></a><br /><hr />
+<a name="anchor26"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.1.3"></a><h3>4.1.3.&nbsp;
 Threat: Obtain Access Tokens</h3>
@@ -895,7 +1018,7 @@ Threat: Obtain Access Tokens</h3>
 </li>
 </ul>
 
-<a name="anchor26"></a><br /><hr />
+<a name="anchor27"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.1.4"></a><h3>4.1.4.&nbsp;
 Threat: End-user credentials phished using compromised or embedded browser</h3>
@@ -916,14 +1039,14 @@ Threat: End-user credentials phished using compromised or embedded browser</h3>
 </li>
 </ul>
 
-<a name="anchor27"></a><br /><hr />
+<a name="anchor28"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.2"></a><h3>4.2.&nbsp;
 Authorization Endpoint</h3>
 
 <p>
 </p>
-<a name="anchor28"></a><br /><hr />
+<a name="anchor29"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.2.1"></a><h3>4.2.1.&nbsp;
 Threat: Password phishing by counterfeit authorization server</h3>
@@ -940,7 +1063,7 @@ Threat: Password phishing by counterfeit authorization server</h3>
 </li>
 </ul>
 
-<a name="anchor29"></a><br /><hr />
+<a name="anchor30"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.2.2"></a><h3>4.2.2.&nbsp;
 Threat: User unintentionally grants too much access scope</h3>
@@ -976,7 +1099,7 @@ Threat: Malicious client obtains existing authorization by fraud</h3>
 </li>
 </ul>
 
-<a name="anchor30"></a><br /><hr />
+<a name="anchor31"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.2.4"></a><h3>4.2.4.&nbsp;
 Threat: Open redirector</h3>
@@ -993,14 +1116,14 @@ Threat: Open redirector</h3>
 </li>
 </ul>
 
-<a name="anchor31"></a><br /><hr />
+<a name="anchor32"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.3"></a><h3>4.3.&nbsp;
 Token endpoint</h3>
 
 <p>
 </p>
-<a name="anchor32"></a><br /><hr />
+<a name="anchor33"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.3.1"></a><h3>4.3.1.&nbsp;
 Threat: Eavesdropping access tokens</h3>
@@ -1019,7 +1142,7 @@ Threat: Eavesdropping access tokens</h3>
 </li>
 </ul>
 
-<a name="anchor33"></a><br /><hr />
+<a name="anchor34"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.3.2"></a><h3>4.3.2.&nbsp;
 Threat: Obtain access tokens from authorization server database</h3>
@@ -1038,7 +1161,7 @@ Threat: Obtain access tokens from authorization server database</h3>
 </li>
 </ul>
 
-<a name="anchor34"></a><br /><hr />
+<a name="anchor35"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.3.3"></a><h3>4.3.3.&nbsp;
 Threat: Obtain client credentials over non secure transport</h3>
@@ -1055,7 +1178,7 @@ Threat: Obtain client credentials over non secure transport</h3>
 </li>
 </ul>
 
-<a name="anchor35"></a><br /><hr />
+<a name="anchor36"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.3.4"></a><h3>4.3.4.&nbsp;
 Threat: Obtain client secret from authorization server database</h3>
@@ -1070,7 +1193,7 @@ Threat: Obtain client secret from authorization server database</h3>
 </li>
 </ul>
 
-<a name="anchor36"></a><br /><hr />
+<a name="anchor37"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.3.5"></a><h3>4.3.5.&nbsp;
 Threat: Obtain client secret by online guessing</h3>
@@ -1087,7 +1210,7 @@ Threat: Obtain client secret by online guessing</h3>
 </li>
 </ul>
 
-<a name="anchor37"></a><br /><hr />
+<a name="anchor38"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.3.6"></a><h3>4.3.6.&nbsp;
 Threat: DoS on dynamic client secret creation</h3>
@@ -1102,52 +1225,21 @@ Threat: DoS on dynamic client secret creation</h3>
 </li>
 </ul>
 
-<a name="anchor38"></a><br /><hr />
+<a name="anchor39"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.4"></a><h3>4.4.&nbsp;
 Obtaining Authorization</h3>
 
 <p>This section covers threats which are specific to certain flows utilized to obtain access tokens. Each flow is characterized by response types and/or grant types on the end-user authorization and tokens endpoint, respectively.
 </p>
-<p>
-</p>
 <a name="code_flow"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.4.1"></a><h3>4.4.1.&nbsp;
 Authorization Code</h3>
 
-<p>
-</p>
-<a name="mal_client"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.4.1.1"></a><h3>4.4.1.1.&nbsp;
-Threat: Malicious client obtains authorization</h3>
-
-<p>A malicious client could counterfeit a valid client and obtain an access authorization that way. The malicious client could even utilize screen scraping techniques in order to simulate the user consent in the authorization flow.
-</p>
-<p>Assumption: It is not the task of the authorization server to protect the end-user's device from malicious software. This is the responsibility of the platform running on the particular device probably in cooperation with other components of the respective ecosystem (e.g. an application management infrastructure). The sole responsibility of the authorization server is to control access to the end-user's resources living in resource servers and to prevent unauthorized access to them. Based on this assumption, the following countermeasures are available to cope with the threat.
-</p>
-<p>Countermeasures:
-</p>
-<p></p>
-<ul class="text">
-<li>The authorization server should authentication the client, if possible (see <a class='info' href='#depl_specific_secretes'>Section&nbsp;5.2.3.4<span> (</span><span class='info'>Deployment-specific client secrets</span><span>)</span></a>). Note: the authentication takes place after the end-user has authorized the access.
-</li>
-<li>The authorization server should validate the client's redirect_uri against the pre-registered redirect_uri, if one exists (see <a class='info' href='#val_redirect'>Section&nbsp;5.2.3.5<span> (</span><span class='info'>Validation of pre-registered redirect_uri</span><span>)</span></a>). Note: The validation of the redirect_uri is the only technical mean to recognize a malicious client id in advance of the authorization process. Further note this does not work for native applications because in contrast to web applications this URI is not bound to a single communication endpoint. The valid client's redirect_uri (typically with custom scheme) can be used by a malicious on any device.
-</li>
-<li>After authenticating the end-user, the authorization server should ask him/her for consent. In this context, the user shall be explained the purpose, scope, and duration of the authorization. Moreover, the authorization server must view to the end-user the meta data it associates with the particular client. It is up to the user to validate the binding of this data to the particular application (e.g. Name) and to approve the authorization request. (see <a class='info' href='#validation_end_user'>Section&nbsp;5.2.4.3<span> (</span><span class='info'>Validation of client properties by end-user</span><span>)</span></a>).
-</li>
-<li>The authorization server must not perform automatic re-authorizations for clients it is unable to reliably authenticate or validate (see <a class='info' href='#automatic_processing'>Section&nbsp;5.2.4.1<span> (</span><span class='info'>Automatic processing of repeated authorizations requires client validation</span><span>)</span></a>).
-</li>
-<li>If the authorization server automatically authenticates the end-user, it may nevertheless require some user input in order to prevent screen scraping. Examples are CAPTCHAs or user-specific secret like PIN codes.
-</li>
-<li>The authorization server may also limit the scope of tokens it issues to clients it cannot reliably authenticate (see <a class='info' href='#limit_scope'>Section&nbsp;5.1.5.1<span> (</span><span class='info'>Limit token scope</span><span>)</span></a>).
-</li>
-</ul>
-
 <a name="eavesdropping"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.4.1.2"></a><h3>4.4.1.2.&nbsp;
+<a name="rfc.section.4.4.1.1"></a><h3>4.4.1.1.&nbsp;
 Threat: Eavesdropping or leaking authorization codes</h3>
 
 <p>An attacker could try to eavesdrop transmission of the authorization code between authorization server and client. Furthermore, authorization codes are passed via the browser which may unintentionally leak those codes to untrusted web sites and attackers by different ways:
@@ -1184,9 +1276,9 @@ Threat: Eavesdropping or leaking authorization codes</h3>
 </li>
 </ul>
 
-<a name="anchor39"></a><br /><hr />
+<a name="anchor40"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.4.1.3"></a><h3>4.4.1.3.&nbsp;
+<a name="rfc.section.4.4.1.2"></a><h3>4.4.1.2.&nbsp;
 Threat: Obtain authorization codes from authorization server database</h3>
 
 <p>This threat is applicable if the authorization server stores authorization codes as handles in a database. An attacker may obtain authorization codes from the authorization server's database by gaining access to the database or launching a SQL injection attack. Impact: disclosure of all authorization codes, most likely along with the respective redirect_uri and client_id values.
@@ -1205,9 +1297,9 @@ Threat: Obtain authorization codes from authorization server database</h3>
 </li>
 </ul>
 
-<a name="anchor40"></a><br /><hr />
+<a name="anchor41"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.4.1.4"></a><h3>4.4.1.4.&nbsp;
+<a name="rfc.section.4.4.1.3"></a><h3>4.4.1.3.&nbsp;
 Threat: Online guessing of authorization codes</h3>
 
 <p>An attacker may try to guess valid authorization code values and send it using the grant type &#8222;code&#8220; in order to obtain a valid access token. Impact: disclosure of single access token (+probably refresh token)
@@ -1228,7 +1320,34 @@ Threat: Online guessing of authorization codes</h3>
 </li>
 </ul>
 
-<a name="anchor41"></a><br /><hr />
+<a name="mal_client"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.4.1.4"></a><h3>4.4.1.4.&nbsp;
+Threat: Malicious client obtains authorization</h3>
+
+<p>A malicious client could counterfeit a valid client and obtain an access authorization that way. The malicious client could even utilize screen scraping techniques in order to simulate the user consent in the authorization flow.
+</p>
+<p>Assumption: It is not the task of the authorization server to protect the end-user's device from malicious software. This is the responsibility of the platform running on the particular device probably in cooperation with other components of the respective ecosystem (e.g. an application management infrastructure). The sole responsibility of the authorization server is to control access to the end-user's resources living in resource servers and to prevent unauthorized access to them. Based on this assumption, the following countermeasures are available to cope with the threat.
+</p>
+<p>Countermeasures:
+</p>
+<p></p>
+<ul class="text">
+<li>The authorization server should authentication the client, if possible (see <a class='info' href='#depl_specific_secretes'>Section&nbsp;5.2.3.4<span> (</span><span class='info'>Deployment-specific client secrets</span><span>)</span></a>). Note: the authentication takes place after the end-user has authorized the access.
+</li>
+<li>The authorization server should validate the client's redirect_uri against the pre-registered redirect_uri, if one exists (see <a class='info' href='#val_redirect'>Section&nbsp;5.2.3.5<span> (</span><span class='info'>Validation of pre-registered redirect_uri</span><span>)</span></a>). Note: The validation of the redirect_uri is the only technical mean to recognize a malicious client id in advance of the authorization process. Further note this does not work for native applications because in contrast to web applications this URI is not bound to a single communication endpoint. The valid client's redirect_uri (typically with custom scheme) can be used by a malicious on any device.
+</li>
+<li>After authenticating the end-user, the authorization server should ask him/her for consent. In this context, the user shall be explained the purpose, scope, and duration of the authorization. Moreover, the authorization server must view to the end-user the meta data it associates with the particular client. It is up to the user to validate the binding of this data to the particular application (e.g. Name) and to approve the authorization request. (see <a class='info' href='#validation_end_user'>Section&nbsp;5.2.4.3<span> (</span><span class='info'>Validation of client properties by end-user</span><span>)</span></a>).
+</li>
+<li>The authorization server must not perform automatic re-authorizations for clients it is unable to reliably authenticate or validate (see <a class='info' href='#automatic_processing'>Section&nbsp;5.2.4.1<span> (</span><span class='info'>Automatic processing of repeated authorizations requires client validation</span><span>)</span></a>).
+</li>
+<li>If the authorization server automatically authenticates the end-user, it may nevertheless require some user input in order to prevent screen scraping. Examples are CAPTCHAs or user-specific secret like PIN codes.
+</li>
+<li>The authorization server may also limit the scope of tokens it issues to clients it cannot reliably authenticate (see <a class='info' href='#limit_scope'>Section&nbsp;5.1.5.1<span> (</span><span class='info'>Limit token scope</span><span>)</span></a>).
+</li>
+</ul>
+
+<a name="anchor42"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.4.1.5"></a><h3>4.4.1.5.&nbsp;
 Threat: Authorization code phishing</h3>
@@ -1247,51 +1366,14 @@ Threat: Authorization code phishing</h3>
 </li>
 </ul>
 
-<a name="anchor42"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.4.1.6"></a><h3>4.4.1.6.&nbsp;
-Threat: Cross-Site Request Forgery (CSRF/XSRF) [[TBD]]</h3>
-
-<p>Cross-Site Request Forgery (CSRF) is a web-based attack whereby HTTP requests are transmitted from a user that the website trusts or has authenticated. CSRF attacks on OAuth approvals can allow an attacker to obtain authorization to OAuth Protected Resources without the consent of the User.
-</p>
-<p>The state parameter should be used to mitigate against CSRF attacks, particularly for login CSRF attacks. It is strongly RECOMMENDED that the client sends the state parameter with authorization requests to the authorization server. The authorization server will send it in the response when redirecting the user to back to the client which SHOULD then validate the state parameter matches on the response.
-</p>
 <a name="anchor43"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.4.1.7"></a><h3>4.4.1.7.&nbsp;
-Threat: Login CSRF [[TBD]]</h3>
-
-<p>The attacker tricks the victim in login in to a service using tha attackers credentials.
-</p>
-<p>http://hublog.hubmed.org/archives/001755.html
-</p>
-<p>As more and more web sites rely on identity data A specialization of this attack (e.g. the access token obtained from a 3rd party IDP by utilizing a OAuth flow).
-</p>
-<p>Impact: the victim's data (probably account with the site) become associated with the attackers account, so the attacker can sub.sequently access this data using his account with the 3rd party IDP.
-</p>
-<p>Countermeasure:
-</p>
-<p></p>
-<ul class="text">
-<li>bind the authorization request to a certain user agent (state parameter) and validate the binding on response time.
-</li>
-</ul>
-
-<a name="anchor44"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.4.1.8"></a><h3>4.4.1.8.&nbsp;
-Threat: Clickjacking [[TBD]]</h3>
-
-<p>Clickjacking is the process of tricking users into revealing confidential information or taking control of their computer while clicking on seemingly innocuous web pages. In more detail, a malicious site loads the target site in a transparent iframe overlaid on top of a set of dummy buttons which are carefully constructed to be placed directly under important buttons on the target site. When a user clicks a visible button, they are actually clicking a button (such as an "Authorize" button) on the hidden page. To prevent clickjacking (and phishing attacks), native applications SHOULD use external browsers instead of embedding browsers in an iFrame when requesting end-user authorization. For newer browsers, avoidance of iFrames can be enforced server side by using the X-FRAME-OPTION header. This header can have two values, deny and sameorigin, which will block any framing or framing by sites with a different origin, respectively. For older browsers, javascript framebusting techniques can be used but may not be effective in all browsers.
-</p>
-<a name="anchor45"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.4.1.9"></a><h3>4.4.1.9.&nbsp;
+<a name="rfc.section.4.4.1.6"></a><h3>4.4.1.6.&nbsp;
 Threat: User session impersonation</h3>
 
 <p>A hostile party could impersonate the client site and impersonate the user's session on this client. This could be achieved using DNS or ARP spoofing. This applies to clients, which are web applications, thus the redirect URI is not local to the host where the user's browser is running.
 </p>
-<p>Impact: An attacker who intercepts the authorization code as it is sent by the browser to the callback endpoint can gain access to protected resources by submitting the authorization code to the client. The client will exchange the authorization code for an access token and use the access token to access protected resources for the benefit of the attacker, delivering protected resources to the attacker, or modifying protected resources as directed by the attacker. If OAuth is used by the client to delegate authentication to a social site (e.g. as in the implementation of the "Facebook Login" button), the attacker can use the intercapted authorization code to log in to the client as the user.
+<p>Impact: An attacker who intercepts the authorization code as it is sent by the browser to the callback endpoint can gain access to protected resources by submitting the authorization code to the client. The client will exchange the authorization code for an access token and use the access token to access protected resources for the benefit of the attacker, delivering protected resources to the attacker, or modifying protected resources as directed by the attacker. If OAuth is used by the client to delegate authentication to a social site (e.g. as in the implementation of the "Facebook Login" button), the attacker can use the intercepted authorization code to log in to the client as the user.
 </p>
 <p>Note: Authenticating the client during authorization code exchange will not help to detect such an attack as it is the legitimate client that obtains the tokens.
 </p>
@@ -1305,12 +1387,12 @@ Threat: User session impersonation</h3>
 
 <a name="authz_code_leakage"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.4.1.10"></a><h3>4.4.1.10.&nbsp;
-Threat: Authorization code leakage through counterfeit web site</h3>
+<a name="rfc.section.4.4.1.7"></a><h3>4.4.1.7.&nbsp;
+Threat: Authorization code leakage through counterfeit client</h3>
 
 <p>The attack leverages the authorization code grant type in an attempt to get another user (victim) to log-in, authorize access to his/her resources, and sub-sequently obtain the authorization code and inject it into a client application using the attacker's account. The goal is to associate an access authorization for resources of the victim with the user account of the attacker on a client site.
 </p>
-<p>The attacker abuses an existing client application and combines it with his own counterfeit web site. The attack depends on the victim expecting the client application to request access to a certain resource server. The victim, seeing only a normal request from an expected application, approves the request. The attacker then uses the victim's authorization to gain access to the information unknowingly authorized by the victim.
+<p>The attacker abuses an existing client application and combines it with his own counterfeit client web site. The attack depends on the victim expecting the client application to request access to a certain resource server. The victim, seeing only a normal request from an expected application, approves the request. The attacker then uses the victim's authorization to gain access to the information unknowingly authorized by the victim.
 </p>
 <p>The attacker conducts the following flow:
 </p>
@@ -1350,9 +1432,51 @@ Threat: Authorization code leakage through counterfeit web site</h3>
 </li>
 </ul>
 
+<a name="anchor44"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.4.1.8"></a><h3>4.4.1.8.&nbsp;
+Threat: CSRF attack against redirect-uri</h3>
+
+<p>Cross-Site Request Forgery (CSRF) is a web-based attack whereby HTTP requests are transmitted from a user that the website trusts or has authenticated (e.g., via HTTP redirects or HTML forms). CSRF attacks on OAuth approvals can allow an attacker to obtain authorization to OAuth protected resources without the consent of the User.
+</p>
+<p>This attack works against the redirect-uri used in the authorization code flow. An attacker could authorize an authorization code to their own protected resources on an authorization server. He then aborts the redirect flow back to the client on his device and tricks the victim into executing the redirect back to the client. The client receives the redirect, fetches the token(s) from the authorization server and asscociates the victim's client session with the resources accessible using the token. 
+</p>
+<p>Impact: The user accesses resources on behalf of the attacker. The effective impact depends on the type of resource accessed. For example, the user may upload private items to an attacker's resources. Or when using OAuth in 3rd party login scenarios, the user may associate his client account with the attacker's idenity at the external identity provider. This way the attacker could easily accces the victim's data at the client by logging in from another device with his credentials at the external identity provider.
+</p>
+<p>Countermeasures:
+</p>
+<p></p>
+<ul class="text">
+<li>The state parameter should be used to link the authorization request with the redirect-uri used deliver the access token. This will ensure the client is not tricked into completing any redirect callback unless it is linked to an authorization request the client initiated. The state parameter should be unguessable and the client should be capable of keeping the state parameter secret.
+</li>
+<li>Client developers and end-user can be educated not follow untrusted urls.
+</li>
+</ul>
+
+<a name="anchor45"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.4.1.9"></a><h3>4.4.1.9.&nbsp;
+Threat: Clickjacking attack against authorization</h3>
+
+<p>With Clickjacking, a malicious site loads the target site in a transparent iframe overlaid on top of a set of dummy buttons which are carefully constructed to be placed directly under important buttons on the target site. When a user clicks a visible button, they are actually clicking a button (such as an "Authorize" button) on the hidden page.
+</p>
+<p>Impact: An attacker can steal a user's authentication credentials and access their resources
+</p>
+<p>Countermeasure
+</p>
+<p></p>
+<ul class="text">
+<li>Native applications SHOULD use external browsers instead of embedding browsers in an iFrame when requesting end-user authorization
+</li>
+<li>For newer browsers, avoidance of iFrames can be enforced server side by using the X-FRAME-OPTION header - <a class='info' href='#clickjacking_xframe'>Section&nbsp;5.2.2.7<span> (</span><span class='info'>X-FRAME-OPTION header</span><span>)</span></a>
+</li>
+<li>For older browsers, javascript framebusting techniques can be used but may not be effective in all browsers.
+</li>
+</ul>
+
 <a name="anchor46"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.4.1.11"></a><h3>4.4.1.11.&nbsp;
+<a name="rfc.section.4.4.1.10"></a><h3>4.4.1.10.&nbsp;
 Threat: DoS, Exhaustion of resources attacks</h3>
 
 <p>If an authorization server includes a nontrivial amount of entropy in authorization codes or access tokens (limiting the number of possible codes/tokens) and automatically grants either without user intervention and has no limit on code or access tokens per user, an attacker could exhaust the pool by repeatedly directing user(s) browser to request code or access tokens. This is because more entropy means a larger number of tokens can be issued.
@@ -1367,7 +1491,7 @@ Threat: DoS, Exhaustion of resources attacks</h3>
 
 <a name="anchor47"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.4.1.12"></a><h3>4.4.1.12.&nbsp;
+<a name="rfc.section.4.4.1.11"></a><h3>4.4.1.11.&nbsp;
 Threat: DoS using manufactured authorization codes</h3>
 
 <p>An attacker who owns a botnet can locate the redirect URIs of clients that listen on HTTP, access them with random authorization codes, and cause a large number of HTTPS connections to be concentrated onto the authorization server. This can result in a DoS attack on the authorization server.
@@ -1446,7 +1570,7 @@ Threat: Malicious client obtains authorization</h3>
 
 <p>An malicious client could attempt to obtain a token by fraud.
 </p>
-<p>The same countermeasures as for <a class='info' href='#mal_client'>Section&nbsp;4.4.1.1<span> (</span><span class='info'>Threat: Malicious client obtains authorization</span><span>)</span></a> are applicable, except client authentication.
+<p>The same countermeasures as for <a class='info' href='#mal_client'>Section&nbsp;4.4.1.4<span> (</span><span class='info'>Threat: Malicious client obtains authorization</span><span>)</span></a> are applicable, except client authentication.
 </p>
 <a name="anchor50"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -1469,8 +1593,27 @@ Threat: Manipulation of scripts</h3>
 </li>
 </ul>
 
-<p>
+<a name="anchor51"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.4.2.5"></a><h3>4.4.2.5.&nbsp;
+Threat: CSRF attack against redirect-uri</h3>
+
+<p>Cross-Site Request Forgery (CSRF) is a web-based attack whereby HTTP requests are transmitted from a user that the website trusts or has authenticated (e.g., via HTTP redirects or HTML forms). CSRF attacks on OAuth approvals can allow an attacker to obtain authorization to OAuth protected resources without the consent of the User.
 </p>
+<p>This attack works against the redirect-uri used in the implicit grant flow. An attacker could acquire an access token to their own protected resources. He could then construct a redirect-uri and embed their access token in that uri. If he can trick the user into following the redirect-uri and the client does not have protection against this attack, the user may have the attacker's access token authorized within their client.
+</p>
+<p>Impact: The user accesses resources on behalf of the attacker. The effective impact depends on the type of resource accessed. For example, the user may upload private items to an attacker's resources. Or when using OAuth in 3rd party login scenarios, the user may associate his client account with the attacker's idenity at the external identity provider. This way the attacker could easily accces the victim's data at the client by logging in from another device with his credentials at the external identity provider.
+</p>
+<p>Countermeasures:
+</p>
+<p></p>
+<ul class="text">
+<li>The state parameter should be used to link the authorization request with the redirect-uri used deliver the access token. This will ensure the client is not tricked into completing any redirect callback unless it is linked to an authorization request the client initiated. The state parameter should be unguessable and the client should be capable of keeping the state parameter secret.
+</li>
+<li>Client developers and end-user can be educated not follow untrusted urls.
+</li>
+</ul>
+
 <a name="pwd_flow"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.4.3"></a><h3>4.4.3.&nbsp;
@@ -1492,7 +1635,7 @@ Resource Owner Password Credentials</h3>
 </li>
 </ul>
 
-<a name="anchor51"></a><br /><hr />
+<a name="anchor52"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.4.3.1"></a><h3>4.4.3.1.&nbsp;
 Threat: Accidental exposure of passwords at client site</h3>
@@ -1511,7 +1654,7 @@ Threat: Accidental exposure of passwords at client site</h3>
 </li>
 </ul>
 
-<a name="anchor52"></a><br /><hr />
+<a name="anchor53"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.4.3.2"></a><h3>4.4.3.2.&nbsp;
 Threat: Client obtains scopes without end-user authorization</h3>
@@ -1530,7 +1673,7 @@ Threat: Client obtains scopes without end-user authorization</h3>
 </li>
 </ul>
 
-<a name="anchor53"></a><br /><hr />
+<a name="anchor54"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.4.3.3"></a><h3>4.4.3.3.&nbsp;
 Threat: Client obtains refresh token through automatic authorization</h3>
@@ -1549,7 +1692,7 @@ Threat: Client obtains refresh token through automatic authorization</h3>
 </li>
 </ul>
 
-<a name="anchor54"></a><br /><hr />
+<a name="anchor55"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.4.3.4"></a><h3>4.4.3.4.&nbsp;
 Threat: Obtain user passwords on transport</h3>
@@ -1568,7 +1711,7 @@ Threat: Obtain user passwords on transport</h3>
 </li>
 </ul>
 
-<a name="anchor55"></a><br /><hr />
+<a name="anchor56"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.4.3.5"></a><h3>4.4.3.5.&nbsp;
 Threat: Obtain user passwords from authorization server database</h3>
@@ -1585,7 +1728,7 @@ Threat: Obtain user passwords from authorization server database</h3>
 </li>
 </ul>
 
-<a name="anchor56"></a><br /><hr />
+<a name="anchor57"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.4.3.6"></a><h3>4.4.3.6.&nbsp;
 Threat: Online guessing</h3>
@@ -1612,23 +1755,21 @@ Threat: Online guessing</h3>
 </li>
 </ul>
 
-<a name="anchor57"></a><br /><hr />
+<a name="anchor58"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.4.4"></a><h3>4.4.4.&nbsp;
 Client Credentials</h3>
 
 <p>Client credentials (see <a class='info' href='#I-D.ietf-oauth-v2'>[I&#8209;D.ietf&#8209;oauth&#8209;v2]<span> (</span><span class='info'>Hammer-Lahav, E., Recordon, D., and D. Hardt, &ldquo;The OAuth 2.0 Authorization Protocol,&rdquo; May&nbsp;2011.</span><span>)</span></a>, Section 3) consist of an identifier (not secret) combined with an additional means (such as a matching client secret) of authenticating a client.
 </p>
-<p>[[Threats seem to be covered elsewhere such as <a class='info' href='#eavesdropping'>Section&nbsp;4.4.1.2<span> (</span><span class='info'>Threat: Eavesdropping or leaking authorization codes</span><span>)</span></a>]]
+<p>[[Threats seem to be covered elsewhere such as <a class='info' href='#eavesdropping'>Section&nbsp;4.4.1.1<span> (</span><span class='info'>Threat: Eavesdropping or leaking authorization codes</span><span>)</span></a>]]
 </p>
-<a name="anchor58"></a><br /><hr />
+<a name="anchor59"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.5"></a><h3>4.5.&nbsp;
 Refreshing an Access Token</h3>
 
-<p>
-</p>
-<a name="anchor59"></a><br /><hr />
+<a name="anchor60"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.5.1"></a><h3>4.5.1.&nbsp;
 Threat: Eavesdropping refresh tokens from authorization server</h3>
@@ -1645,7 +1786,7 @@ Threat: Eavesdropping refresh tokens from authorization server</h3>
 </li>
 </ul>
 
-<a name="anchor60"></a><br /><hr />
+<a name="anchor61"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.5.2"></a><h3>4.5.2.&nbsp;
 Threat: Obtaining refresh token from authorization server database</h3>
@@ -1664,7 +1805,7 @@ Threat: Obtaining refresh token from authorization server database</h3>
 </li>
 </ul>
 
-<a name="anchor61"></a><br /><hr />
+<a name="anchor62"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.5.3"></a><h3>4.5.3.&nbsp;
 Threat: Obtain refresh token by online guessing</h3>
@@ -1687,7 +1828,7 @@ Threat: Obtain refresh token by online guessing</h3>
 </li>
 </ul>
 
-<a name="anchor62"></a><br /><hr />
+<a name="anchor63"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.5.4"></a><h3>4.5.4.&nbsp;
 Threat: Obtain refresh token phishing by counterfeit authorization server</h3>
@@ -1702,14 +1843,12 @@ Threat: Obtain refresh token phishing by counterfeit authorization server</h3>
 </li>
 </ul>
 
-<a name="anchor63"></a><br /><hr />
+<a name="anchor64"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.6"></a><h3>4.6.&nbsp;
 Accessing Protected Resources</h3>
 
-<p>
-</p>
-<a name="anchor64"></a><br /><hr />
+<a name="anchor65"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.6.1"></a><h3>4.6.1.&nbsp;
 Threat: Eavesdropping access tokens on transport</h3>
@@ -1728,7 +1867,7 @@ Threat: Eavesdropping access tokens on transport</h3>
 </li>
 </ul>
 
-<a name="anchor65"></a><br /><hr />
+<a name="anchor66"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.6.2"></a><h3>4.6.2.&nbsp;
 Threat: Replay authorized resource server requests</h3>
@@ -1745,7 +1884,7 @@ Threat: Replay authorized resource server requests</h3>
 </li>
 </ul>
 
-<a name="anchor66"></a><br /><hr />
+<a name="anchor67"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.6.3"></a><h3>4.6.3.&nbsp;
 Threat: Guessing access tokens</h3>
@@ -1766,7 +1905,7 @@ Threat: Guessing access tokens</h3>
 </li>
 </ul>
 
-<a name="anchor67"></a><br /><hr />
+<a name="anchor68"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.6.4"></a><h3>4.6.4.&nbsp;
 Threat: Access token phishing by counterfeit resource server</h3>
@@ -1787,7 +1926,7 @@ Threat: Access token phishing by counterfeit resource server</h3>
 </li>
 </ul>
 
-<a name="anchor68"></a><br /><hr />
+<a name="anchor69"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.6.5"></a><h3>4.6.5.&nbsp;
 Threat: Abuse of token by legitimate resource server or client</h3>
@@ -1802,7 +1941,7 @@ Threat: Abuse of token by legitimate resource server or client</h3>
 </li>
 </ul>
 
-<a name="anchor69"></a><br /><hr />
+<a name="anchor70"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.6.6"></a><h3>4.6.6.&nbsp;
 Threat: Leak of confidential data in HTTP-Proxies</h3>
@@ -1819,7 +1958,7 @@ Threat: Leak of confidential data in HTTP-Proxies</h3>
 </li>
 </ul>
 
-<a name="anchor70"></a><br /><hr />
+<a name="anchor71"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.6.7"></a><h3>4.6.7.&nbsp;
 Threat: Token leakage via logfiles and HTTP referrers</h3>
@@ -1851,15 +1990,11 @@ Security Considerations</h3>
 
 <p>This section describes the countermeasures as recommended to mitigate the threats as described in Section 4.
 </p>
-<p>
-</p>
-<a name="anchor71"></a><br /><hr />
+<a name="anchor72"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.1"></a><h3>5.1.&nbsp;
 General</h3>
 
-<p>
-</p>
 <a name="conf_requests"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.1.1"></a><h3>5.1.1.&nbsp;
@@ -1923,7 +2058,7 @@ Always keep the resource owner informed</h3>
 </li>
 </ul>
 
-<a name="anchor72"></a><br /><hr />
+<a name="anchor73"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.1.4"></a><h3>5.1.4.&nbsp;
 Credentials</h3>
@@ -1935,16 +2070,12 @@ Credentials</h3>
 <a name="rfc.section.5.1.4.1"></a><h3>5.1.4.1.&nbsp;
 Credential storage protection</h3>
 
-<p>
-</p>
 <a name="std_sys"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.1.4.1.1"></a><h3>5.1.4.1.1.&nbsp;
 Standard system security means</h3>
 
 <p>A server system may be locked down so that no attacker may get access to sensible configuration files and databases.
-</p>
-<p>
 </p>
 <a name="std_sql"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -1972,14 +2103,14 @@ No cleartext storage of credentials</h3>
 
 <p>The authorization server may consider to not store credential in clear text. Typical approaches are to store hashes instead. If the credential lacks a reasonable entropy level (because it is a user password) an additional salt will harden the storage to prevent offline dictionary attacks. Note: Some authentication protocols require the authorization server to have access to the secret in the clear. Those protocols cannot be implemented if the server only has access to hashes.
 </p>
-<a name="anchor73"></a><br /><hr />
+<a name="anchor74"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.1.4.1.4"></a><h3>5.1.4.1.4.&nbsp;
 Encryption of credentials</h3>
 
 <p>For client applicatinos, insecurely persisted client credentials are easy targets for attackers to obtain. Store client credentials using an encrypted persistence mechanism such as a keystore or database. Note that compiling client credentials directly into client code makes client applications vulnerable to scanning as well as difficult to administer should client credentials change over time.
 </p>
-<a name="anchor74"></a><br /><hr />
+<a name="anchor75"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.1.4.1.5"></a><h3>5.1.4.1.5.&nbsp;
 Use of asymmetric cryptography</h3>
@@ -1991,8 +2122,6 @@ Use of asymmetric cryptography</h3>
 <a name="rfc.section.5.1.4.2"></a><h3>5.1.4.2.&nbsp;
 Online attacks on secrets</h3>
 
-<p>
-</p>
 <a name="pwd_policy"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.1.4.2.1"></a><h3>5.1.4.2.1.&nbsp;
@@ -2036,13 +2165,11 @@ Usage of CAPTCHAs</h3>
 </p>
 <p>Note: this has a negative impact on user experience.
 </p>
-<a name="anchor75"></a><br /><hr />
+<a name="anchor76"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.1.5"></a><h3>5.1.5.&nbsp;
 Tokens (access, refresh, code)</h3>
 
-<p>
-</p>
 <a name="limit_scope"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.1.5.1"></a><h3>5.1.5.1.&nbsp;
@@ -2178,7 +2305,7 @@ Random token value with high entropy</h3>
 
 <p>When creating token handles, the authorization server MUST include a reasonable level of entropy in order to mitigate the risk of guessing attacks. The token value MUST be constructed from a cryptographically strong random or pseudo-random number sequence [RFC1750] generated by the Authorization Server. The probability of any two token values being identical MUST be less than or equal to 2^(-128) and SHOULD be less than or equal to 2^(-160).
 </p>
-<a name="anchor76"></a><br /><hr />
+<a name="anchor77"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.1.5.12"></a><h3>5.1.5.12.&nbsp;
 Assertion formats</h3>
@@ -2200,20 +2327,16 @@ Access tokens</h3>
 </li>
 </ul>
 
-<a name="anchor77"></a><br /><hr />
+<a name="anchor78"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
 Authorization Server</h3>
 
-<p>
-</p>
-<a name="anchor78"></a><br /><hr />
+<a name="anchor79"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.2.1"></a><h3>5.2.1.&nbsp;
 Authorization Codes</h3>
 
-<p>
-</p>
 <a name="automatic_code_revocation"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.2.1.1"></a><h3>5.2.1.1.&nbsp;
@@ -2226,8 +2349,6 @@ Automatic revocation of derived tokens if abuse is detected</h3>
 <a name="rfc.section.5.2.2"></a><h3>5.2.2.&nbsp;
 Refresh tokens</h3>
 
-<p>
-</p>
 <a name="restricted_refresh"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.2.2.1"></a><h3>5.2.2.1.&nbsp;
@@ -2291,6 +2412,23 @@ Device identification</h3>
 <p></p>
 <ul class="text">
 <li>phishing attacks
+</li>
+<li>...
+</li>
+</ul>
+
+<a name="clickjacking_xframe"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.2.2.7"></a><h3>5.2.2.7.&nbsp;
+X-FRAME-OPTION header</h3>
+
+<p>For newer browsers, avoidance of iFrames can be enforced server side by using the X-FRAME-OPTION header. This header can have two values, deny and sameorigin, which will block any framing or framing by sites with a different origin, respectively.
+</p>
+<p>This is a countermeasure against the following threats:
+</p>
+<p></p>
+<ul class="text">
+<li>clickjacking attacks
 </li>
 <li>...
 </li>
@@ -2396,9 +2534,9 @@ Validation of pre-registered redirect_uri</h3>
 </p>
 <p></p>
 <ul class="text">
-<li>Authorization code leakage through conterfeit web site: allows to detect attack attempts already after first redirect to end-user authorization endpoint (<a class='info' href='#authz_code_leakage'>Section&nbsp;4.4.1.10<span> (</span><span class='info'>Threat: Authorization code leakage through counterfeit web site</span><span>)</span></a>).
+<li>Authorization code leakage through conterfeit web site: allows to detect attack attempts already after first redirect to end-user authorization endpoint (<a class='info' href='#authz_code_leakage'>Section&nbsp;4.4.1.7<span> (</span><span class='info'>Threat: Authorization code leakage through counterfeit client</span><span>)</span></a>).
 </li>
-<li>For clients with validated properties, this measure also helps to detect malicious apps early in the end-user authorization process. This reduces the need for a interactive validation by the user (<a class='info' href='#mal_client'>Section&nbsp;4.4.1.1<span> (</span><span class='info'>Threat: Malicious client obtains authorization</span><span>)</span></a>, <a class='info' href='#mal_client2'>Section&nbsp;4.4.2.3<span> (</span><span class='info'>Threat: Malicious client obtains authorization</span><span>)</span></a>).
+<li>For clients with validated properties, this measure also helps to detect malicious apps early in the end-user authorization process. This reduces the need for a interactive validation by the user (<a class='info' href='#mal_client'>Section&nbsp;4.4.1.4<span> (</span><span class='info'>Threat: Malicious client obtains authorization</span><span>)</span></a>, <a class='info' href='#mal_client2'>Section&nbsp;4.4.2.3<span> (</span><span class='info'>Threat: Malicious client obtains authorization</span><span>)</span></a>).
 </li>
 </ul><p>The underlying assumption of this measure is that an attacker must use another redirect_uri in order to get access to the authorization code. Deployments might consider the possibility of an attacker using spoofing attacks to a victims device to circumvent this security measure.
 </p>
@@ -2430,13 +2568,11 @@ Use strong client authentication (e.g. client_assertion / client_token)</h3>
 
 <p>Assumption: prevents an attacker from obtaining a client secret because this secret is kept in some hardware security module?
 </p>
-<a name="anchor79"></a><br /><hr />
+<a name="anchor80"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.2.4"></a><h3>5.2.4.&nbsp;
 End-user authorization</h3>
 
-<p>
-</p>
 <a name="automatic_processing"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.2.4.1"></a><h3>5.2.4.1.&nbsp;
@@ -2488,15 +2624,11 @@ Binding of authorization code to redirect_uri</h3>
 
 <p>The authorization server MUST bind every authorization code to the actual redirect_uri used as redirect target of the client in the end-user authorization process. This binding MUST be validated when the client attempts to exchange the respective authorization code for an access token. This measure is a countermeasure against authorization code leakage through counterfeit web sites since an attacker cannot use another redirect_uri to exchange an authorization code into a token.
 </p>
-<p>
-</p>
-<a name="anchor80"></a><br /><hr />
+<a name="anchor81"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.3"></a><h3>5.3.&nbsp;
 Client App Security</h3>
 
-<p>
-</p>
 <a name="cred_software"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.3.1"></a><h3>5.3.1.&nbsp;
@@ -2509,8 +2641,6 @@ Don't store credentials in code or resources bundled with software packages</h3>
 <a name="rfc.section.5.3.2"></a><h3>5.3.2.&nbsp;
 Standard web server protection measures (for config files and databases)</h3>
 
-<p>
-</p>
 <a name="secure_storage"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.3.3"></a><h3>5.3.3.&nbsp;
@@ -2527,9 +2657,7 @@ Store secrets in a secure storage</h3>
 <a name="rfc.section.5.3.4"></a><h3>5.3.4.&nbsp;
 Utilize device lock to prevent unauthorized device access</h3>
 
-<p>
-</p>
-<a name="anchor81"></a><br /><hr />
+<a name="anchor82"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.3.5"></a><h3>5.3.5.&nbsp;
 Platform security measures</h3>
@@ -2542,17 +2670,13 @@ Platform security measures</h3>
 </li>
 <li>Remote removal
 </li>
-<li>
-</li>
 </ul>
 
-<a name="anchor82"></a><br /><hr />
+<a name="anchor83"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.4"></a><h3>5.4.&nbsp;
 Resource Servers</h3>
 
-<p>
-</p>
 <a name="authz_header"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.4.1"></a><h3>5.4.1.&nbsp;
@@ -2637,7 +2761,7 @@ References</h3>
 <td class="author-text">Smarr, J., &ldquo;Portable Contacts 1.0 Draft C,&rdquo; August&nbsp;2008.</td></tr>
 </table>
 
-<a name="anchor85"></a><br /><hr />
+<a name="anchor86"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
 Document History</h3>
@@ -2666,13 +2790,17 @@ Document History</h3>
 </li>
 <li>corrected some typos
 </li>
-<li>reformulated session fixation, renamed sections
+<li>reformulated "session fixation", renamed respective sections into "authorization code disclosure through counterfeit client"
 </li>
 <li>added new section "User session impersonation"
 </li>
 <li>worked out or reworked sections 2.3.3, 4.4.2.4, 4.4.4, 5.1.4.1.2, 5.1.4.1.4, 5.2.3.5
 </li>
 <li>added new threat "DoS using manufactured authorization codes" as proposed by Eric Pflam
+</li>
+<li>added XSRF and clickjacking (incl. state parameter explanation)
+</li>
+<li>changed sub-section order in section 4.4,1
 </li>
 </ul>
 
