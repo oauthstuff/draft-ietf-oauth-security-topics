@@ -145,10 +145,10 @@
 <tr><td class="header">Open Authentication Protocol</td><td class="header">T. Lodderstedt, Ed.</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">Deutsche Telekom AG</td></tr>
 <tr><td class="header">Intended status: Standards Track</td><td class="header">M. McGloin</td></tr>
-<tr><td class="header">Expires: December 18, 2011</td><td class="header">IBM</td></tr>
+<tr><td class="header">Expires: December 29, 2011</td><td class="header">IBM</td></tr>
 <tr><td class="header">&nbsp;</td><td class="header">P. Hunt</td></tr>
 <tr><td class="header">&nbsp;</td><td class="header">Oracle Corporation</td></tr>
-<tr><td class="header">&nbsp;</td><td class="header">June 16, 2011</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">June 27, 2011</td></tr>
 </table></td></tr></table>
 <h1><br />OAuth 2.0 Threat Model and Security Considerations<br />draft-lodderstedt-oauth-security-02</h1>
 
@@ -175,7 +175,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on December 18, 2011.</p>
+This Internet-Draft will expire on December 29, 2011.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -211,33 +211,33 @@ Resource Server<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor8">2.3.3.</a>&nbsp;
 Client<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor9">2.3.3.1.</a>&nbsp;
-Web Server<br />
+Web Application<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor10">2.3.3.2.</a>&nbsp;
 Native Applications<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor11">2.3.3.3.</a>&nbsp;
-User Agent<br />
+User-agent-based Applications<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor12">2.3.3.4.</a>&nbsp;
 Autonomous<br />
 <a href="#anchor13">3.</a>&nbsp;
 Security Features<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor14">3.1.</a>&nbsp;
 Tokens<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor15">3.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor15">3.1.1.</a>&nbsp;
 Scope<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor16">3.3.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor16">3.1.2.</a>&nbsp;
 Expires_In<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor17">3.4.</a>&nbsp;
-Authorization Code<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor18">3.5.</a>&nbsp;
-Redirect-URI<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor19">3.6.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor17">3.2.</a>&nbsp;
 Access Token<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor20">3.7.</a>&nbsp;
-State parameter<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor21">3.8.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor18">3.3.</a>&nbsp;
 Refresh Token<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor22">3.9.</a>&nbsp;
-Client Authentication<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor19">3.4.</a>&nbsp;
+Authorization Code<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor20">3.5.</a>&nbsp;
+Redirect-URI<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor21">3.6.</a>&nbsp;
+State parameter<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor22">3.7.</a>&nbsp;
+Client Identity<br />
 <a href="#anchor23">4.</a>&nbsp;
 Security Threat Model<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor24">4.1.</a>&nbsp;
@@ -551,7 +551,7 @@ Attack Assumptions</h3>
 </li>
 <li>It is assumed an attacker has unlimited resources to mount an attack.
 </li>
-<li>It is assumed that 2 parties involved in the OAuth 3 legged protocol may collude to mount an attack against the 3rd party. For example, the client and authorization server may be under control of an attacker and collude to trick a user to gain access to resources.
+<li>It is assumed that 2 of the 3 parties involved in the OAuth protocol may collude to mount an attack against the 3rd party. For example, the client and authorization server may be under control of an attacker and collude to trick a user to gain access to resources.
 </li>
 </ul>
 
@@ -562,7 +562,7 @@ Architectural assumptions</h3>
 
 <p>This section documents the assumptions about the features, limitations and design options of the different entities of a OAuth deployment along with the security-sensitive data-elements managed by those entity. These assumptions are the foundation of the treat analysis.
 </p>
-<p>The OAuth protocol leaves deployments with a certain degree of freedom how to implement and apply the standard. The core specification defines the core concepts of an authorization server and an resource server. Both servers can be implemented in the same server entity, or they may also be different entities. The later is typically the case for multi-service providers with a single authentication and authorization system, and are more typical in middleware architectures.
+<p>The OAuth protocol leaves deployments with a certain degree of freedom how to implement and apply the standard. The core specification defines the core concepts of an authorization server and a resource server. Both servers can be implemented in the same server entity, or they may also be different entities. The later is typically the case for multi-service providers with a single authentication and authorization system, and are more typical in middleware architectures.
 </p>
 <a name="anchor6"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -630,30 +630,22 @@ Client</h3>
 <a name="anchor9"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.2.3.3.1"></a><h3>2.3.3.1.&nbsp;
-Web Server</h3>
+Web Application</h3>
 
-<p>Such clients typically represent a web site with its own user management and login mechanism and have the following characteristics:
+<p>A web application is a client running on a web server, typically with its own user management. End-users access the client via an HTML user interface rendered in a user- agent on the end-user's device. The client credentials as well as any token issued to the client are stored on the web server and are not exposed to or accessible by the end-user. Tokens are bound to a single user identity at the site. The potential number of tokens affected by a security breach depends on number of site users.
 </p>
-<p></p>
-<ul class="text">
-<li>Tokens are bound to a single user identity at the site
-</li>
-<li>Web servers are able to protect client secrets
-</li>
-<li>The potential number of tokens affected by a security breach depends on number of site users.
-</li>
-</ul><p>Such clients are implemented using the authorization code flow (see <a class='info' href='#code_flow'>Section&nbsp;4.4.1<span> (</span><span class='info'>Authorization Code</span><span>)</span></a>).
+<p>Such clients are implemented using the authorization code grant type (see <a class='info' href='#code_flow'>Section&nbsp;4.4.1<span> (</span><span class='info'>Authorization Code</span><span>)</span></a>).
 </p>
 <a name="anchor10"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.2.3.3.2"></a><h3>2.3.3.2.&nbsp;
 Native Applications</h3>
 
-<p>This class of OAuth clients represent apps running on a user-controlled device, such as a notebook, PC, Tablet, Smartphone, or Gaming Console.
+<p>A native application is a client which is installed and executes on the end-user's device, such as a notebook, PC, Tablet, Smartphone, or Gaming Console. The OAuth protocol data and credentials are accessible to the end-user. It is assumed that such an application can protect dynamically issued credentials, such as refresh tokens, from eavesdropping by other applications residing on the same device.
 </p>
 <p>Massively distributed applications such as these cannot reliably keep secrets confidential, which are issued per software package. This is because such secrets would need to be transferred to the user device as part of the installation process. An attacker could reverse engineer any secret from the binary or accompanying resources. Native Applications are able to protect per installation/instance secrets (e.g. refresh tokens) to some extent.
 </p>
-<p>Device platforms typically allow users to lock the device with a pin and to segregate different apps or users (multi-user operation systems).
+<p>Device platforms typically allow users to lock the device with a PIN code and to segregate different apps or users (multi-user operation systems).
 </p>
 <p>Some devices can be identified/authenticated (to varying degrees of assurance):
 </p>
@@ -679,22 +671,22 @@ Native Applications</h3>
 </p>
 <p></p>
 <ul class="text">
-<li>The authorization code flow in combination with an embedded or external browser (<a class='info' href='#code_flow'>Section&nbsp;4.4.1<span> (</span><span class='info'>Authorization Code</span><span>)</span></a>)
+<li>The authorization code grant type in combination with an embedded or external browser (<a class='info' href='#code_flow'>Section&nbsp;4.4.1<span> (</span><span class='info'>Authorization Code</span><span>)</span></a>)
 </li>
-<li>The implicte grant flow in combination with an embedded or external browser (<a class='info' href='#implicite_flow'>Section&nbsp;4.4.2<span> (</span><span class='info'>Implicit Grant</span><span>)</span></a>)
+<li>The implict grant type in combination with an embedded or external browser (<a class='info' href='#implicite_flow'>Section&nbsp;4.4.2<span> (</span><span class='info'>Implicit Grant</span><span>)</span></a>)
 </li>
-<li>The resource owner password credentials flow can be used as well (<a class='info' href='#pwd_flow'>Section&nbsp;4.4.3<span> (</span><span class='info'>Resource Owner Password Credentials</span><span>)</span></a>)
+<li>The resource owner password credentials grant type can be used as well (<a class='info' href='#pwd_flow'>Section&nbsp;4.4.3<span> (</span><span class='info'>Resource Owner Password Credentials</span><span>)</span></a>)
 </li>
 </ul><p>Different threats exists for those implementation options, which are discussed in the respective sections of the threat model.
 </p>
 <a name="anchor11"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.2.3.3.3"></a><h3>2.3.3.3.&nbsp;
-User Agent</h3>
+User-agent-based Applications</h3>
 
-<p>[TBD]
+<p>A user-agent-based application is a client in which the client code is downloaded from a web server and executes within a user-agent on the end-user's device. The OAuth protocol data and credentials are accessible to the end-user. Since such applications directly reside within the user-agent, they can make seamless use of the user-agent capabilities in the end-user authorization process.
 </p>
-<p>Such client are implemented using the implicite grant flow (<a class='info' href='#implicite_flow'>Section&nbsp;4.4.2<span> (</span><span class='info'>Implicit Grant</span><span>)</span></a>).
+<p>Such client are implemented using the implicit grant grant type (<a class='info' href='#implicite_flow'>Section&nbsp;4.4.2<span> (</span><span class='info'>Implicit Grant</span><span>)</span></a>).
 </p>
 <a name="anchor12"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -703,7 +695,7 @@ Autonomous</h3>
 
 <p>Autonomous clients access resource services using rights grants by client credentials only. Thus the autonomous client becomes the &#8222;user&#8220;. Authenticating autonomous clients is conceptually similar to end-user authentication since the issued tokens refer to the client's identity. Autonomous clients shall always be required to use a secret or some other form of authentication (e.g. client assertion in the form of a SAML assertion or STS token) acceptable to the authorization/token services. The client must ensure the confidentiality of client_secret or other credential.
 </p>
-<p>Such client are implemented using the client credentials flow.
+<p>Such client are implemented using the client credentials grant type.
 </p>
 <a name="anchor13"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -717,7 +709,7 @@ Security Features</h3>
 <a name="rfc.section.3.1"></a><h3>3.1.&nbsp;
 Tokens</h3>
 
-<p>OAuth makes extensive use of all kinds of tokens (access tokens, refresh tokens, authorization codes). Tokens can be implemented in 2 ways as follows:
+<p>OAuth makes extensive use of all kinds of tokens (access tokens, refresh tokens, authorization codes). The information content of a token can be represented in two ways as follows:
 </p>
 <p></p>
 <blockquote class="text"><dl>
@@ -727,33 +719,61 @@ Tokens</h3>
 <dt>Assertions (aka self-contained token)</dt>
 <dd>a parseable token. An assertion typically has a duration, an audience, and is digitally signed containing information about the user and the client. Examples of assertion formats are SAML assertions and Kerberos tickets. Assertions can typically directly be validated and used by a resource server without interactions with the authorization server. This results in better performance and scalability in deployment where issuing and consuming entity reside on different systems. Implementing token revocation is more difficult with assertions than with handles.
 </dd>
-</dl></blockquote><p>Tokens can be sent to resource server in two ways:
+</dl></blockquote><p>Tokens can be used in two ways to invoke requests on resource servers as follows:
 </p>
 <p></p>
 <blockquote class="text"><dl>
 <dt>bearer token</dt>
-<dd>A 'bearer token' is a token that can be used by any client who has received the token (cf. <a class='info' href='#I-D.ietf-oauth-v2-bearer'>[I&#8209;D.ietf&#8209;oauth&#8209;v2&#8209;bearer]<span> (</span><span class='info'>Jones, M., Hardt, D., and D. Recordon, &ldquo;The OAuth 2.0 Protocol: Bearer Tokens,&rdquo; May&nbsp;2011.</span><span>)</span></a> . Because mere possession is enough to use the token it is important that communication between end-points be secured to ensure that only authorized end-points may capture the token. The bearer token is convenient to client applications as it does not require them to do anything to use them (such as a proof of identity). Bearer tokens have similar characteristics to web SSO cookies used in browsers.
+<dd>A 'bearer token' is a token that can be used by any client who has received the token (e.g. <a class='info' href='#I-D.ietf-oauth-v2-bearer'>[I&#8209;D.ietf&#8209;oauth&#8209;v2&#8209;bearer]<span> (</span><span class='info'>Jones, M., Hardt, D., and D. Recordon, &ldquo;The OAuth 2.0 Protocol: Bearer Tokens,&rdquo; June&nbsp;2011.</span><span>)</span></a>). Because mere possession is enough to use the token it is important that communication between end-points be secured to ensure that only authorized end-points may capture the token. The bearer token is convenient to client applications as it does not require them to do anything to use them (such as a proof of identity). Bearer tokens have similar characteristics to web SSO cookies used in browsers.
 </dd>
 <dt>proof token</dt>
-<dd>A 'proof token' is a token that can only be used by a specific client. Each use of the token, requires the client to perform some action that proves that it is the authorized user of the token. Examples of this are MAC tokens, which require the client to digitally sign the resource request with a secret corresponding to the particular token send with the request (cf. <a class='info' href='#I-D.hammer-oauth-v2-mac-token'>[I&#8209;D.hammer&#8209;oauth&#8209;v2&#8209;mac&#8209;token]<span> (</span><span class='info'>Hammer-Lahav, E., Barth, A., and B. Adida, &ldquo;HTTP Authentication: MAC Access Authentication,&rdquo; May&nbsp;2011.</span><span>)</span></a>.
+<dd>A 'proof token' is a token that can only be used by a specific client. Each use of the token, requires the client to perform some action that proves that it is the authorized user of the token. Examples of this are MAC tokens, which require the client to digitally sign the resource request with a secret corresponding to the particular token send with the request (e.g.<a class='info' href='#I-D.ietf-oauth-v2-http-mac'>[I&#8209;D.ietf&#8209;oauth&#8209;v2&#8209;http&#8209;mac]<span> (</span><span class='info'>Hammer-Lahav, E., Barth, A., and B. Adida, &ldquo;HTTP Authentication: MAC Access Authentication,&rdquo; May&nbsp;2011.</span><span>)</span></a>).
 </dd>
 </dl></blockquote>
 
 <a name="anchor15"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.3.2"></a><h3>3.2.&nbsp;
+<a name="rfc.section.3.1.1"></a><h3>3.1.1.&nbsp;
 Scope</h3>
 
 <p>A Scope represents the access authorization associated with a particular token with respect to resource servers, resources and methods on those resources. Scopes are the OAuth way to explicitly manage the power associated with an access token. A scope can be controlled by the authorization server and/or the end-user in order to limit access to resources for OAuth clients these parties deem less secure or trustworthy. Optionally, the client can request the scope to apply to the token but only for lesser scope than would otherwise be granted, e.g. to reduce the potential impact if this token is sent over non secure channels. A scope is typically complemented by a restriction on a token's lifetime.
 </p>
 <a name="anchor16"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.3.3"></a><h3>3.3.&nbsp;
+<a name="rfc.section.3.1.2"></a><h3>3.1.2.&nbsp;
 Expires_In</h3>
 
 <p>Expires_In allows an authorization server (based on its policies or on behalf of the end-user) to limit the lifetime of the access token. This mechanisms can be used to issue short-living tokens to OAuth clients the authorization server deems less secure or where sending tokens over non secure channels.
 </p>
 <a name="anchor17"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.2"></a><h3>3.2.&nbsp;
+Access Token</h3>
+
+<p>An access token is used by a client to access a resource. Access tokens typically have short life-spans (minutes or hours) that cover typical session lifetimes. An access token may be refreshed through the use of a refresh token. The short lifespan of an access token in combination with the usage of refresh tokens enables the possibility of passive revocation of access authorization on the expiry of the current access token.
+</p>
+<a name="anchor18"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.3"></a><h3>3.3.&nbsp;
+Refresh Token</h3>
+
+<p>A refresh token represents a long-lasting authorization of a certain client to access resources on behalf of a resource owner. Such tokens are exchanged between client and authorization server, only. Clients use this kind of token to obtain ("refresh") new access tokens used for resource server invocations. 
+</p>
+<p>A refresh token, coupled with a short access token lifetime, can be used to grant longer access to resources without involving end user authorization. This offers an advantage where resource servers and authorization servers are not the same entity, e.g. in a distributed environment, as the refresh token must always be exchanged at the authorization server. The authorization server can revoke the refresh token at any time causing the granted access to be revoked once the current access token expires. Because of this, a short access token lifetime is important if timely revocation is a high priority.
+</p>
+<p>The refresh token is also a secret bound to the client identifier and <em>instance</em> which originally requested the authorization and representing the original resource owner grant. This is ensured by the authorization process as follows:
+</p>
+<p></p>
+<ol class="text">
+<li>The resource owner and user-agent safely deliver the authorization code to the client instance in first place.
+</li>
+<li>The client uses it immediately in secure transport-level communications to the authorization server and then securely stores the long-lived refresh token.
+</li>
+<li>The client always uses the refresh token in secure transport-level communications to the authorization server to get an access token (and optionally rollover the refresh token).
+</li>
+</ol><p>So as long as the confidentiality of the particular token can be ensured by the client, a refresh tokens can also be used as an alternative mean to authenticate the client instance itself.
+</p>
+<a name="anchor19"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.4"></a><h3>3.4.&nbsp;
 Authorization Code</h3>
@@ -768,42 +788,28 @@ Authorization Code</h3>
 </li>
 </ol>
 
-<a name="anchor18"></a><br /><hr />
+<a name="anchor20"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.5"></a><h3>3.5.&nbsp;
 Redirect-URI</h3>
 
 <p>A Redirect-uri helps to identify clients and prevents phishing attacks from other clients attempting to trick the user into believing the phisher is the client. The value of the actual redirect_uri used in the authorization request has to be presented and is verified when an authorization code is exchanged for tokens. This helps to prevent attacks, where the authorization code is revealed through redirectors and counterfeit web app clients. Moreover, the authorization server may require clients to pre-register their redirect URIs and validate the redirect_uri in the authorization request in order to detect malicious clients.
 </p>
-<a name="anchor19"></a><br /><hr />
+<a name="anchor21"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.6"></a><h3>3.6.&nbsp;
-Access Token</h3>
-
-<p>An Access Token is used by a client to access a resource. Access tokens typically have short life-spans (minutes or hours) that cover typical session lifetimes. An access token may be refreshed through the use of a Refresh Token. The short lifespan of an access token in combination with the usage of refresh tokens allows for an efficient implementation of the revocation of an access authorization.
-</p>
-<a name="anchor20"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.3.7"></a><h3>3.7.&nbsp;
 State parameter</h3>
 
 <p>The state parameter is used to link requests and callbacks to prevent CSRF attacks where an attacker authorizes access to his own resources and then tricks a users into following a redirect with the attacker's token.
 </p>
-<a name="anchor21"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.3.8"></a><h3>3.8.&nbsp;
-Refresh Token</h3>
-
-<p>A Refresh Token is coupled with a short access token lifetime, can be used to grant longer access to resources without involving end user authorization. This offers an advantage where resource servers and authorization servers are not the same entity, e.g. in a distributed environment, as the refresh token must always be exchanged at the authorization server. The authorization server can revoke the refresh token at any time causing the granted access to be revoked once the current access token expires. Because of this, a short access token lifetime is important if timely revocation is a high priority.
-</p>
 <a name="anchor22"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.3.9"></a><h3>3.9.&nbsp;
-Client Authentication</h3>
+<a name="rfc.section.3.7"></a><h3>3.7.&nbsp;
+Client Identity</h3>
 
-<p>Authentication protocols have typically not taken into account the identity of the software component acting on behalf of the end-user. OAuth does this in order to increase security level in delegated authorization scenarios and because the client will be able to act without the user's presence. By authenticating a client when requesting an access token, the token service is able to assess whether a given client and authorization code meets appropriate security requirements and binds the authorization code approved by the user to the client making the request.
+<p>Authentication protocols have typically not taken into account the identity of the software component acting on behalf of the end-user. OAuth does this in order to increase the security level in delegated authorization scenarios and because the client will be able to act without the user's presence. Depending on the client type, the client identity can and should be authenticated (see below).
 </p>
-<p>OAuth uses the <em>client_id</em> to collate associated request to the same originator, such as
+<p>OAuth uses the <em>client_id</em> (client identity) to collate associated request to the same originator, such as
 </p>
 <p></p>
 <ul class="text">
@@ -813,7 +819,7 @@ Client Authentication</h3>
 </li>
 </ul><p>The client identity may also be used by the authorization server to display relevant registration information to a user when requesting consent for scope requested by a particular client. The client identity may be used to limit the number of request for a particular client or to charge the client per request. Client Identity may furthermore be useful to differentiate access by different clients, e.g. in server log files.
 </p>
-<p>The <em>client_secret</em> is used to verify the client identifier. The authorization server should only rely on client authentication where these secrets can be deployed to the clients in a secure manner and the client is capable of keeping its secret confidential. The client identity can also be verified using the <em>redirect_uri</em> or by the <em>end-user</em>.
+<p>The <em>client_secret</em> is used to verify the client identifier. The authorization server should only rely on this form of client authentication where these secrets can be deployed to the clients in a secure manner and the client is capable of keeping its secret confidential. Alternatively, the client identity can also be verified using the <em>redirect_uri</em> or by the <em>end-user</em>.
 </p>
 <p>Clients (and the trustworthiness of its identity) can be classifed by using the following parameters:
 </p>
@@ -833,7 +839,7 @@ Client Authentication</h3>
 <dd>Such an identity is used by multiple installations of the same software package. The identity of such a client can only be validated with the help of the end-user. This is a viable option for native apps in order to identify the client for the purpose of displaying meta information about the client to the user and to differentiate clients in log files. Revocation of such an identity will affect ALL deployments of the respective software.
 </dd>
 <dt>Deployment-independent client_id with pre-registered redirect_uri and with client_secret</dt>
-<dd>This is an option for native applications only, since web application would require different redirect URIs. This category is not advisable because the client secret cannot be protected appropriately (cf. <a class='info' href='#ObtainClientSecrets'>Section&nbsp;4.1.1<span> (</span><span class='info'>Threat: Obtain Client Secrets</span><span>)</span></a>). Due to its security weaknesses, such client identities have the same trustlevel as deployment-independent clients without secret. Revocation will affect ALL deployments.
+<dd>This is an option for native applications only, since web application would require different redirect URIs. This category is not advisable because the client secret cannot be protected appropriately (see <a class='info' href='#ObtainClientSecrets'>Section&nbsp;4.1.1<span> (</span><span class='info'>Threat: Obtain Client Secrets</span><span>)</span></a>). Due to its security weaknesses, such client identities have the same trustlevel as deployment-independent clients without secret. Revocation will affect ALL deployments.
 </dd>
 <dt>Deployment-specific client_id with pre-registered redirect_uri and with client_secret</dt>
 <dd>The client registration process insures the validation of the client's properties, such as redirect_uri, website address, web site name, contacts. Such a client identity can be utilized for all relevant use cases cited above. This level can be achieved for web applications in combination with a manual or user-bound registration process. Achieving this level for native applications is much more difficult. Either the installation of the app is conducted by an administrator, who validates the clients authenticity, or the process from validating the app to the installation of the app on the device and the creation of the client credentials is controlled end-to-end by a single entity (e.g. app market provider). Revocation will affect a single deployment only.
@@ -866,7 +872,7 @@ Threat: Obtain Client Secrets</h3>
 </p>
 <p></p>
 <ul class="text">
-<li>replay its tokens and authorization codes, or
+<li>replay its refresh tokens and authorization codes, or
 </li>
 <li>obtain tokens on behalf of the attacked client with the privileges of that client.
 </li>
@@ -880,7 +886,7 @@ Threat: Obtain Client Secrets</h3>
 </li>
 </ul><p>Depending on the client category, there are the following approaches an attacker could utilize to obtain the client secret.
 </p>
-<p><strong>Attack: Obtain Secret From Source Code or Binary.</strong> This applies for all client profiles and especially for open source projects, where the source code is public accessible. Even if the attacker does not has access to the source code, it could reverse engineer secrets from the binary of native apps.
+<p><strong>Attack: Obtain Secret From Source Code or Binary.</strong> This applies for all client profiles. For open source projects, secrets can be extracted directly from source code in their public repositories. Secrets can be extracted from application binaries just as easily when published source is not available to the attacker. Even if an application takes significant measures to obfuscate secrets in their application distribution one should consider that the secret can still be reverse-engineered by anyone with access to a complete functioning application bundle or binary.
 </p>
 <p><em>Countermeasures:</em>
 </p>
@@ -1439,7 +1445,7 @@ Threat: CSRF attack against redirect-uri</h3>
 
 <p>Cross-Site Request Forgery (CSRF) is a web-based attack whereby HTTP requests are transmitted from a user that the website trusts or has authenticated (e.g., via HTTP redirects or HTML forms). CSRF attacks on OAuth approvals can allow an attacker to obtain authorization to OAuth protected resources without the consent of the User.
 </p>
-<p>This attack works against the redirect-uri used in the authorization code flow. An attacker could authorize an authorization code to their own protected resources on an authorization server. He then aborts the redirect flow back to the client on his device and tricks the victim into executing the redirect back to the client. The client receives the redirect, fetches the token(s) from the authorization server and asscociates the victim's client session with the resources accessible using the token. 
+<p>This attack works against the redirect-uri used in the authorization code flow. An attacker could authorize an authorization code to their own protected resources on an authorization server. He then aborts the redirect flow back to the client on his device and tricks the victim into executing the redirect back to the client. The client receives the redirect, fetches the token(s) from the authorization server and asscociates the victim's client session with the resources accessible using the token.
 </p>
 <p>Impact: The user accesses resources on behalf of the attacker. The effective impact depends on the type of resource accessed. For example, the user may upload private items to an attacker's resources. Or when using OAuth in 3rd party login scenarios, the user may associate his client account with the attacker's idenity at the external identity provider. This way the attacker could easily accces the victim's data at the client by logging in from another device with his credentials at the external identity provider.
 </p>
@@ -1686,7 +1692,7 @@ Threat: Client obtains refresh token through automatic authorization</h3>
 <ul class="text">
 <li>Use other flows, which do not rely on the client's cooperation for resource owner interaction
 </li>
-<li>The authorization server may generally refuse to issue refresh tokens in this flow (see <a class='info' href='#restricted_refresh'>Section&nbsp;5.2.2.1<span> (</span><span class='info'>Restricted issuance of refresh tokens</span><span>)</span></a>). If the particular client is trustworthy and can be authenticated in a reliable way (cf. client authentication), the authorization server could relax that restriction. Resource owners may allow or deny (e.g. in their preferences) to issue refresh tokens using this flow as well.
+<li>The authorization server may generally refuse to issue refresh tokens in this flow (see <a class='info' href='#restricted_refresh'>Section&nbsp;5.2.2.1<span> (</span><span class='info'>Restricted issuance of refresh tokens</span><span>)</span></a>). If the particular client is trustworthy and can be authenticated in a reliable way (see client authentication), the authorization server could relax that restriction. Resource owners may allow or deny (e.g. in their preferences) to issue refresh tokens using this flow as well.
 </li>
 <li>The authorization server could notify the resource owner by an appropriate media, e.g. e-Mail, of the refresh token issued (see <a class='info' href='#informed'>Section&nbsp;5.1.3<span> (</span><span class='info'>Always keep the resource owner informed</span><span>)</span></a>).
 </li>
@@ -2243,7 +2249,7 @@ Limit number of usages/ One time usage</h3>
 <a name="rfc.section.5.1.5.5"></a><h3>5.1.5.5.&nbsp;
 Bind tokens to a particular resource server (Audience)</h3>
 
-<p>Authorization servers in multi-service environments may consider to issue tokens with different content to different resource servers and to explicitely indicate in the token the target server a token is intended to be sent to (cf. Audience in SAML Assertions). This countermeasure can be used in the following situations:
+<p>Authorization servers in multi-service environments may consider to issue tokens with different content to different resource servers and to explicitely indicate in the token the target server a token is intended to be sent to (see Audience in SAML Assertions). This countermeasure can be used in the following situations:
 </p>
 <p></p>
 <ul class="text">
@@ -2730,7 +2736,7 @@ IANA Considerations</h3>
 <a name="rfc.section.7"></a><h3>7.&nbsp;
 Acknowledgements</h3>
 
-<p>We would like to thank Hui-Lan Lu, Francisco Corella, Eric Pflam, and James H. Manger for their comments and contributions.
+<p>We would like to thank Hui-Lan Lu, Francisco Corella, Eric Pflam, Shane B Weeden, Skylar Woodward and James H. Manger for their comments and contributions.
 </p>
 <a name="rfc.references"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -2751,10 +2757,10 @@ References</h3>
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <h3>8.2.&nbsp;Informative References</h3>
 <table width="99%" border="0">
-<tr><td class="author-text" valign="top"><a name="I-D.hammer-oauth-v2-mac-token">[I-D.hammer-oauth-v2-mac-token]</a></td>
-<td class="author-text">Hammer-Lahav, E., Barth, A., and B. Adida, &ldquo;<a href="http://tools.ietf.org/html/draft-hammer-oauth-v2-mac-token-05">HTTP Authentication: MAC Access Authentication</a>,&rdquo; draft-hammer-oauth-v2-mac-token-05 (work in progress), May&nbsp;2011 (<a href="http://www.ietf.org/internet-drafts/draft-hammer-oauth-v2-mac-token-05.txt">TXT</a>, <a href="http://www.ietf.org/internet-drafts/draft-hammer-oauth-v2-mac-token-05.pdf">PDF</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="I-D.ietf-oauth-v2-bearer">[I-D.ietf-oauth-v2-bearer]</a></td>
-<td class="author-text">Jones, M., Hardt, D., and D. Recordon, &ldquo;<a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-bearer-05">The OAuth 2.0 Protocol: Bearer Tokens</a>,&rdquo; draft-ietf-oauth-v2-bearer-05 (work in progress), May&nbsp;2011 (<a href="http://www.ietf.org/internet-drafts/draft-ietf-oauth-v2-bearer-05.txt">TXT</a>, <a href="http://www.ietf.org/internet-drafts/draft-ietf-oauth-v2-bearer-05.pdf">PDF</a>).</td></tr>
+<td class="author-text">Jones, M., Hardt, D., and D. Recordon, &ldquo;<a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-bearer-06">The OAuth 2.0 Protocol: Bearer Tokens</a>,&rdquo; draft-ietf-oauth-v2-bearer-06 (work in progress), June&nbsp;2011 (<a href="http://www.ietf.org/internet-drafts/draft-ietf-oauth-v2-bearer-06.txt">TXT</a>, <a href="http://www.ietf.org/internet-drafts/draft-ietf-oauth-v2-bearer-06.pdf">PDF</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="I-D.ietf-oauth-v2-http-mac">[I-D.ietf-oauth-v2-http-mac]</a></td>
+<td class="author-text">Hammer-Lahav, E., Barth, A., and B. Adida, &ldquo;<a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-http-mac-00">HTTP Authentication: MAC Access Authentication</a>,&rdquo; draft-ietf-oauth-v2-http-mac-00 (work in progress), May&nbsp;2011 (<a href="http://www.ietf.org/internet-drafts/draft-ietf-oauth-v2-http-mac-00.txt">TXT</a>, <a href="http://www.ietf.org/internet-drafts/draft-ietf-oauth-v2-http-mac-00.pdf">PDF</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="I-D.lodderstedt-oauth-revocation">[I-D.lodderstedt-oauth-revocation]</a></td>
 <td class="author-text">Lodderstedt, T. and S. Dronia, &ldquo;<a href="http://tools.ietf.org/html/draft-lodderstedt-oauth-revocation-02">Token Revocation</a>,&rdquo; draft-lodderstedt-oauth-revocation-02 (work in progress), March&nbsp;2011 (<a href="http://www.ietf.org/internet-drafts/draft-lodderstedt-oauth-revocation-02.txt">TXT</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="portable-contacts">[portable-contacts]</a></td>
@@ -2800,7 +2806,11 @@ Document History</h3>
 </li>
 <li>added XSRF and clickjacking (incl. state parameter explanation)
 </li>
-<li>changed sub-section order in section 4.4,1
+<li>changed sub-section order in section 4.4.1
+</li>
+<li>Incorporated feedback from Skylar Woodward (client secrets) and Shane B Weeden (refresh tokens as client instance secret)
+</li>
+<li>Aligned client section with core draft's client type definition
 </li>
 </ul>
 
