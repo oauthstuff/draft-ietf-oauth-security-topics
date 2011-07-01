@@ -17,8 +17,8 @@
     <title abbrev="OAuth 2.0 Security">OAuth 2.0 Threat Model and Security
     Considerations</title>
 
-    <author fullname="Dr.-Ing. Torsten Lodderstedt" initials="T."
-            role="editor" surname="Lodderstedt">
+    <author fullname="Torsten Lodderstedt" initials="T." role="editor"
+            surname="Lodderstedt">
       <organization>Deutsche Telekom AG</organization>
 
       <address>
@@ -3085,7 +3085,7 @@
     <section title="Document History">
       <t>[[ to be removed by RFC editor before publication as an RFC ]]</t>
 
-      <t>-1</t>
+      <t>draft-lodderstedt-oauth-security-01</t>
 
       <t><list style="symbols">
           <t>section 4.4.1.2 - changed "resource server" to "client" in
@@ -3096,7 +3096,7 @@
           of the client"</t>
         </list></t>
 
-      <t>-2</t>
+      <t>draft-ietf-oauth-v2-threatmodel-00</t>
 
       <t><list style="symbols">
           <t>section 3.4 - added the purposes for using authorization
@@ -3124,11 +3124,13 @@
 
           <t>changed sub-section order in section 4.4.1</t>
 
-          <t>Incorporated feedback from Skylar Woodward (client secrets) and
+          <t>incorporated feedback from Skylar Woodward (client secrets) and
           Shane B Weeden (refresh tokens as client instance secret)</t>
 
-          <t>Aligned client section with core draft's client type
+          <t>aligned client section with core draft's client type
           definition</t>
+
+          <t>converted I-D into WG document</t>
         </list></t>
     </section>
   </back>
