@@ -42,7 +42,7 @@
       </address>
     </author>
 
-    <date day="01" month="July" year="2011" />
+    <date day="05" month="August" year="2011" />
 
     <area>Security Area</area>
 
@@ -132,7 +132,7 @@
             the portable contacts API (see <xref
             target="portable-contacts"></xref>). Such clients cannot be
             registered upfront with a particular deployment and must
-            dynamically discover the URLs relevant for the Oauth protocol.</t>
+            dynamically discover the URLs relevant for the OAuth protocol.</t>
           </list></t>
       </section>
 
@@ -227,7 +227,7 @@
               (transient) per end-user or other security-context or delegation
               context</t>
 
-              <t>trusted CA certs (HTTPS)</t>
+              <t>trusted CA certificates (HTTPS)</t>
 
               <t>per authorization process: redirect_uri, authorization
               code</t>
@@ -266,8 +266,8 @@
             extent.</t>
 
             <t>Device platforms typically allow users to lock the device with
-            a PIN code and to segregate different apps or users (multi-user
-            operation systems).</t>
+            a PIN code and to segregate different applications or users
+            (multi-user operation systems).</t>
 
             <t>Some devices can be identified/authenticated (to varying
             degrees of assurance):</t>
@@ -278,8 +278,8 @@
 
                 <t>Set top boxes, gaming consoles, others by using
                 certificates and TPM module - Note: This does not help to
-                identify client apps but may be used to bound tokens to
-                devices and to detect token theft</t>
+                identify client applications but may be used to bound tokens
+                to devices and to detect token theft</t>
               </list>Mobile devices, such as handsets or smart phones have the
             following special characteristics:</t>
 
@@ -305,7 +305,7 @@
                 embedded or external browser (<xref
                 target="code_flow"></xref>)</t>
 
-                <t>The implict grant type in combination with an embedded or
+                <t>The implicit grant type in combination with an embedded or
                 external browser (<xref target="implicite_flow"></xref>)</t>
 
                 <t>The resource owner password credentials grant type can be
@@ -324,7 +324,7 @@
             seamless use of the user-agent capabilities in the end-user
             authorization process.</t>
 
-            <t>Such client are implemented using the implicit grant grant type
+            <t>Such client are implemented using the implicit grant type
             (<xref target="implicite_flow"></xref>).</t>
           </section>
 
@@ -395,8 +395,8 @@
             authorized end-points may capture the token. The bearer token is
             convenient to client applications as it does not require them to
             do anything to use them (such as a proof of identity). Bearer
-            tokens have similar characteristics to web SSO cookies used in
-            browsers.</t>
+            tokens have similar characteristics to web single-sign-on (SSO)
+            cookies used in browsers.</t>
 
             <t hangText="proof token">A 'proof token' is a token that can only
             be used by a specific client. Each use of the token, requires the
@@ -499,16 +499,16 @@
       </section>
 
       <section title="Redirect-URI">
-        <t>A Redirect-uri helps to identify clients and prevents phishing
+        <t>A redirect-uri helps to identify clients and prevents phishing
         attacks from other clients attempting to trick the user into believing
         the phisher is the client. The value of the actual redirect_uri used
         in the authorization request has to be presented and is verified when
         an authorization code is exchanged for tokens. This helps to prevent
         attacks, where the authorization code is revealed through redirectors
-        and counterfeit web app clients. Moreover, the authorization server
-        may require clients to pre-register their redirect URIs and validate
-        the redirect_uri in the authorization request in order to detect
-        malicious clients.</t>
+        and counterfeit web application clients. Moreover, the authorization
+        server may require clients to pre-register their redirect URIs and
+        validate the redirect_uri in the authorization request in order to
+        detect malicious clients.</t>
       </section>
 
       <section title="State parameter">
@@ -555,15 +555,16 @@
         be verified using the <spanx style="emph">redirect_uri</spanx> or by
         the <spanx style="emph">end-user</spanx>.</t>
 
-        <t>Clients (and the trustworthiness of its identity) can be classifed
+        <t>Clients (and the trustworthiness of its identity) can be classified
         by using the following parameters:</t>
 
         <t><list style="symbols">
             <t>Deployment-specific or -independent client_id (Note: for native
-            apps, every installation of a particular app on a certain device
-            is considered a deployment.)</t>
+            applications, every installation of a particular application on a
+            certain device is considered a deployment.)</t>
 
-            <t>Validated properties, such as app name or redirect_uri</t>
+            <t>Validated properties, such as application name or
+            redirect_uri</t>
 
             <t>Client_secret available</t>
           </list>Typical client categories are:</t>
@@ -573,11 +574,11 @@
             hangText="Deployment-independent client_id with pre-registered redirect_uri and without client_secret">Such
             an identity is used by multiple installations of the same software
             package. The identity of such a client can only be validated with
-            the help of the end-user. This is a viable option for native apps
-            in order to identify the client for the purpose of displaying meta
-            information about the client to the user and to differentiate
-            clients in log files. Revocation of such an identity will affect
-            ALL deployments of the respective software.</t>
+            the help of the end-user. This is a viable option for native
+            applications in order to identify the client for the purpose of
+            displaying meta information about the client to the user and to
+            differentiate clients in log files. Revocation of such an identity
+            will affect ALL deployments of the respective software.</t>
 
             <t
             hangText="Deployment-independent client_id with pre-registered redirect_uri and with client_secret">This
@@ -586,7 +587,7 @@
             advisable because the client secret cannot be protected
             appropriately (see <xref target="ObtainClientSecrets"></xref>).
             Due to its security weaknesses, such client identities have the
-            same trustlevel as deployment-independent clients without secret.
+            same trust level as deployment-independent clients without secret.
             Revocation will affect ALL deployments.</t>
 
             <t
@@ -597,13 +598,13 @@
             use cases cited above. This level can be achieved for web
             applications in combination with a manual or user-bound
             registration process. Achieving this level for native applications
-            is much more difficult. Either the installation of the app is
-            conducted by an administrator, who validates the clients
-            authenticity, or the process from validating the app to the
-            installation of the app on the device and the creation of the
-            client credentials is controlled end-to-end by a single entity
-            (e.g. app market provider). Revocation will affect a single
-            deployment only.</t>
+            is much more difficult. Either the installation of the application
+            is conducted by an administrator, who validates the clients
+            authenticity, or the process from validating the application to
+            the installation of the application on the device and the creation
+            of the client credentials is controlled end-to-end by a single
+            entity (e.g. application market provider). Revocation will affect
+            a single deployment only.</t>
 
             <t
             hangText="Deployment-specific client_id with client_secret without validated properties">Such
@@ -615,7 +616,8 @@
             re-authorizations could be allowed as well. Such client
             credentials can be generated automatically without any validation
             of client properties, which makes it another option especially for
-            native apps. Revocation will affect a single deployment only.</t>
+            native applications. Revocation will affect a single deployment
+            only.</t>
           </list>Use of the client secret is considered a relatively weak form
         of credential for the client. Use of stronger mechanisms such as a
         client assertion (e.g. SAML), key cryptography, are preferred.</t>
@@ -624,7 +626,7 @@
 
     <section title="Security Threat Model">
       <t>This sections gives a comprehensive threat model of OAuth 2.0.
-      Threats are grouped first by attackes directed against an OAuth
+      Threats are grouped first by attacks directed against an OAuth
       component, which are client, authorization server, and resource server.
       Subsequently, they are grouped by flow, e.g. obtain token or access
       protected resources. Every countermeasure description refers to a
@@ -674,7 +676,7 @@
               <t>Don't issue secrets to clients with inappropriate security
               policy - <xref target="dont_issue"></xref></t>
 
-              <t>Clients without secrect require user consent - <xref
+              <t>Clients without secret require user consent - <xref
               target="forced_user_consent"></xref></t>
 
               <t>Use deployment-specific client secrets - <xref
@@ -687,7 +689,7 @@
           <t><spanx style="strong" xml:space="default">Attack: Obtain a
           Deployment-Specific Secret.</spanx> An attacker may try to obtain
           the secret from a client installation, either from a web site (web
-          server) or a particular devices (native app).</t>
+          server) or a particular devices (native application).</t>
 
           <t><spanx>Countermeasures:</spanx></t>
 
@@ -696,8 +698,8 @@
               (for config files and databases) - <xref
               target="std_web"></xref></t>
 
-              <t>Native apps: Store secrets in a secure local storage - <xref
-              target="secure_storage"></xref></t>
+              <t>Native applications: Store secrets in a secure local storage
+              - <xref target="secure_storage"></xref></t>
 
               <t>Client secret revocation - <xref
               target="client_secret_revocation"></xref></t>
@@ -751,8 +753,8 @@
 
           <t><spanx style="emph">Read from local filesystem:</spanx> The
           attacker could try get file system access on the device and read the
-          refresh tokens. The attacker could utilize a malicious app for that
-          purpose.</t>
+          refresh tokens. The attacker could utilize a malicious application
+          for that purpose.</t>
 
           <t><spanx style="emph">Countermeasures:</spanx></t>
 
@@ -766,7 +768,7 @@
 
           <t><spanx style="emph">Steal device</spanx>: The host device (e.g.
           mobile phone) may be stolen. In that case, the attacker gets access
-          to all apps under the identity of the legitimate user.</t>
+          to all applications under the identity of the legitimate user.</t>
 
           <t><spanx style="emph">Countermeasures:</spanx></t>
 
@@ -817,8 +819,8 @@
         <section title="Threat: Obtain Access Tokens">
           <t>Depending on the client type, there are different ways access
           tokens may be revealed to an attacker. Access tokens could be stolen
-          from the device if the app stores them in a storage, which is
-          accessible to other applications.</t>
+          from the device if the application stores them in a storage, which
+          is accessible to other applications.</t>
 
           <t>Impact: Where the token is a bearer token and no additional
           mechanism is used to identify the client, the attacker can access
@@ -842,18 +844,20 @@
         </section>
 
         <section title="Threat: End-user credentials phished using compromised or embedded browser">
-          <t>A malicious app could attempt to phish end-user passwords by
-          misusing an embedded browser in the end-user authorization process,
-          or by presenting its own user-interface instead of allowing trusted
-          system browser to render the authorization UI. By doing so, the
-          usual visual trust mechanisms may be bypassed (e.g. TLS
-          confirmation, web site mechanisms). By using an embedded or internal
-          client app UI, the client app has access to additional information
-          it should not have access to (e.g. uid/password).</t>
+          <t>A malicious application could attempt to phish end-user passwords
+          by misusing an embedded browser in the end-user authorization
+          process, or by presenting its own user-interface instead of allowing
+          trusted system browser to render the authorization user interface.
+          By doing so, the usual visual trust mechanisms may be bypassed (e.g.
+          TLS confirmation, web site mechanisms). By using an embedded or
+          internal client application user interface, the client application
+          has access to additional information it should not have access to
+          (e.g. uid/password).</t>
 
-          <t>Impact: If the client app or the communication is compromised,
-          the user would not be aware and all information in the authorization
-          exchange could be captured such as username and password.</t>
+          <t>Impact: If the client application or the communication is
+          compromised, the user would not be aware and all information in the
+          authorization exchange could be captured such as username and
+          password.</t>
 
           <t>Countermeasures:</t>
 
@@ -861,8 +865,8 @@
               <t>Client developers and end-user can be educated to trust an
               external System-Browser only.</t>
 
-              <t>Client apps could be validated prior publication in a app
-              market.</t>
+              <t>Client applications could be validated prior publication in a
+              application market.</t>
 
               <t>Client developers should not collect authentication
               information directly from users and should instead use redirects
@@ -939,7 +943,7 @@
           the user back to the client.</t>
 
           <t>A malicious client may exploit that feature and try to obtain
-          such an authorization code instead of the legimate client.</t>
+          such an authorization code instead of the legitimate client.</t>
 
           <t>Countermeasures:</t>
 
@@ -947,9 +951,9 @@
               <t>Authorization servers should not automatically process repeat
               authorizations where the client is not authenticated through a
               client secret or some other authentication mechanism such as
-              signing with security certs (see <xref
+              signing with security certificates (see <xref
               target="strong_client_authn"></xref>) or validation of a
-              pre-registered redirect uri (<xref target="val_redirect"></xref>
+              pre-registered redirect URI (<xref target="val_redirect"></xref>
               )</t>
 
               <t>Authorization servers can mitigate the risks associated with
@@ -979,7 +983,7 @@
         <t></t>
 
         <section title="Threat: Eavesdropping access tokens">
-          <t>Attackers may attempts to eaversdrop access token on transit from
+          <t>Attackers may attempts to eavesdrop access token on transit from
           the authorization server to the client.</t>
 
           <t>Impact: The attacker is able to access all resources with the
@@ -1014,7 +1018,7 @@
               <t>Store access token hashes only - <xref
               target="noclear"></xref></t>
 
-              <t>Standard SQL inj. Countermeasures - <xref
+              <t>Standard SQL injection Countermeasures - <xref
               target="std_sql"></xref></t>
             </list></t>
         </section>
@@ -1022,9 +1026,9 @@
         <section title="Threat: Obtain client credentials over non secure transport">
           <t>An attacker could attempt to eavesdrop the transmission of client
           credentials between client and server during the client
-          authentication process or during Oauth token requests. Impact:
+          authentication process or during OAuth token requests. Impact:
           Revelation of a client credential enabling the possibility for
-          phishing or immitation of a client service.</t>
+          phishing or imitation of a client service.</t>
 
           <t>Countermeasures:</t>
 
@@ -1099,11 +1103,11 @@
             attackers by different ways:</t>
 
             <t><list style="symbols">
-                <t>Referer headers: browsers frequently pass a
+                <t>Referrer headers: browsers frequently pass a
                 &ldquo;referer&rdquo; header when a web page embeds content,
                 or when a user travels from one web page to another web page.
-                These referer headers may be sent even when the origin site
-                does not trust the destination site. The referer header is
+                These referrer headers may be sent even when the origin site
+                does not trust the destination site. The referee header is
                 commonly logged for traffic analysis purposes.</t>
 
                 <t>Request logs: web server request logs commonly include
@@ -1184,7 +1188,7 @@
                 <t>Store access token hashes only - <xref
                 target="noclear"></xref></t>
 
-                <t>Standard SQL inj. Countermeasures - <xref
+                <t>Standard SQL injection countermeasures - <xref
                 target="std_sql"></xref></t>
               </list></t>
           </section>
@@ -1347,7 +1351,7 @@
                    title="Threat: Authorization code leakage through counterfeit client">
             <t>The attack leverages the authorization code grant type in an
             attempt to get another user (victim) to log-in, authorize access
-            to his/her resources, and sub-sequently obtain the authorization
+            to his/her resources, and subsequently obtain the authorization
             code and inject it into a client application using the attacker's
             account. The goal is to associate an access authorization for
             resources of the victim with the user account of the attacker on a
@@ -1365,14 +1369,14 @@
 
             <t><list style="numbers">
                 <t>The attacker accesses the client web site (or application)
-                and initates data access to a particular resource server. The
+                and initiates data access to a particular resource server. The
                 client web site in turn initiates an authorization request to
                 the resource server's authorization server. Instead of
                 proceeding with the authorization process, the attacker
                 modifies the authorization server end-user authorization URL
                 as constructed by the client to include a redirect_uri
-                parameter refering to a web site under his control (attacker's
-                web site).</t>
+                parameter referring to a web site under his control
+                (attacker's web site).</t>
 
                 <t>The attacker tricks another user (the victim) to open that
                 modified end-user authorization URI and to authorize access
@@ -1391,7 +1395,7 @@
                 site by means out of scope of this document.</t>
 
                 <t>He then constructs a redirect_uri to the target web site
-                (or app) based on the original authorization request's
+                (or application) based on the original authorization request's
                 redirect_uri and the newly obtained authorization code and
                 directs his user agent to this URL. The authorization code is
                 injected into the original client site (or application).</t>
@@ -1404,7 +1408,7 @@
                 client site.</t>
               </list></t>
 
-            <t>Impact: The attackes gains access to the victim's resources as
+            <t>Impact: The attackers gains access to the victim's resources as
             associated with his account on the client site.</t>
 
             <t>Countermeasures:</t>
@@ -1416,15 +1420,15 @@
                 associates the authorization code with the redirect_uri of a
                 particular end-user authorization and validates this
                 redirect_uri with the redirect_uri passed to the tokens
-                endpount, such an attack is detected (see <xref
+                endpoint, such an attack is detected (see <xref
                 target="bind_code_redirect"></xref>).</t>
 
                 <t>The authorization server may also enforce the usage and
                 validation of pre-registered redirect URIs (see <xref
                 target="val_redirect"></xref>). This will allow for an early
-                recognition of sesssion fixation attempts.</t>
+                recognition of session fixation attempts.</t>
 
-                <t>For native apps, one could also consider to use
+                <t>For native applications, one could also consider to use
                 deployment-specific client ids and secrets (see <xref
                 target="depl_specific_secretes"></xref>, along with the
                 binding of authorization code to client_id (see <xref
@@ -1455,7 +1459,7 @@
             authorization server. He then aborts the redirect flow back to the
             client on his device and tricks the victim into executing the
             redirect back to the client. The client receives the redirect,
-            fetches the token(s) from the authorization server and asscociates
+            fetches the token(s) from the authorization server and associates
             the victim's client session with the resources accessible using
             the token.</t>
 
@@ -1463,9 +1467,9 @@
             The effective impact depends on the type of resource accessed. For
             example, the user may upload private items to an attacker's
             resources. Or when using OAuth in 3rd party login scenarios, the
-            user may associate his client account with the attacker's idenity
+            user may associate his client account with the attacker's identity
             at the external identity provider. This way the attacker could
-            easily accces the victim's data at the client by logging in from
+            easily access the victim's data at the client by logging in from
             another device with his credentials at the external identity
             provider.</t>
 
@@ -1481,7 +1485,7 @@
                 capable of keeping the state parameter secret.</t>
 
                 <t>Client developers and end-user can be educated not follow
-                untrusted urls.</t>
+                untrusted URLs.</t>
               </list></t>
           </section>
 
@@ -1563,7 +1567,7 @@
                 difficulty to identify the attacking machines. Although an
                 attacker could also launder its connections through an
                 anonymizing systems such as Tor, the effectiveness of that
-                approach depends on the capacity of the anonyming system. On
+                approach depends on the capacity of the annoying system. On
                 the other hand, a potentially large number of OAuth clients
                 could be utilized for this attack.</t>
 
@@ -1614,12 +1618,12 @@
         </section>
 
         <section anchor="implicite_flow" title="Implicit Grant">
-          <t>he implict grant flow, the access token is directly returned to
+          <t>he implicit grant flow, the access token is directly returned to
           the client as fragment part of the redirect_uri. It is assumed that
           the token is not send to the redirect_uri target since HTTP user
           agents do not send fragments server requests. Thus an attacker
           cannot eavesdrop the access token on this communication path and It
-          cannot leak through HTTP referer headers.</t>
+          cannot leak through HTTP referee headers.</t>
 
           <section title="Threat: Access token leak in transport/end-points">
             <t>This token might be eavesdropped by an attacker. The token is
@@ -1634,9 +1638,9 @@
             <t>Countermeasures:</t>
 
             <t><list style="symbols">
-                <t>The authorization server must ensure confidentialty of the
-                response from the authorizaton server to the client (see <xref
-                target="conf_requests"></xref>).</t>
+                <t>The authorization server must ensure confidentiality of the
+                response from the authorization server to the client (see
+                <xref target="conf_requests"></xref>).</t>
               </list></t>
           </section>
 
@@ -1655,9 +1659,9 @@
 
                 <t>Make these requests non-cachable</t>
 
-                <t>Native apps can directly embedd a browser widget and
-                therewith gain full control of the cache. So the app can
-                cleanup browser history after authorization process.</t>
+                <t>Native applications can directly embed a browser widget and
+                therewith gain full control of the cache. So the application
+                can cleanup browser history after authorization process.</t>
               </list></t>
           </section>
 
@@ -1710,9 +1714,9 @@
 
             <t>This attack works against the redirect-uri used in the implicit
             grant flow. An attacker could acquire an access token to their own
-            protected resources. He could then construct a redirect-uri and
-            embed their access token in that uri. If he can trick the user
-            into following the redirect-uri and the client does not have
+            protected resources. He could then construct a Redirect-uri and
+            embed their access token in that URI. If he can trick the user
+            into following the Redirect-uri and the client does not have
             protection against this attack, the user may have the attacker's
             access token authorized within their client.</t>
 
@@ -1720,9 +1724,9 @@
             The effective impact depends on the type of resource accessed. For
             example, the user may upload private items to an attacker's
             resources. Or when using OAuth in 3rd party login scenarios, the
-            user may associate his client account with the attacker's idenity
+            user may associate his client account with the attacker's identity
             at the external identity provider. This way the attacker could
-            easily accces the victim's data at the client by logging in from
+            easily access the victim's data at the client by logging in from
             another device with his credentials at the external identity
             provider.</t>
 
@@ -1738,7 +1742,7 @@
                 capable of keeping the state parameter secret.</t>
 
                 <t>Client developers and end-user can be educated not follow
-                untrusted urls.</t>
+                untrusted URLs.</t>
               </list></t>
           </section>
         </section>
@@ -1928,7 +1932,7 @@
 
       <section title="Refreshing an Access Token">
         <section title="Threat: Eavesdropping refresh tokens from authorization server">
-          <t>dAn attacker may eavesdrop refresh tokens when they are
+          <t>An attacker may eavesdrop refresh tokens when they are
           transmitted from the authorization server to the client.</t>
 
           <t>Countermeasures:</t>
@@ -1997,7 +2001,7 @@
           requests to the authorization server. Given the assumption that the
           authorization server URL is well-known at development time or can at
           least be obtained from a well-known resource server, the attacker
-          must utilize some kind of spoofing in order to suceed.</t>
+          must utilize some kind of spoofing in order to succeed.</t>
 
           <t>Countermeasures:</t>
 
@@ -2120,9 +2124,8 @@
 
         <section title="Threat: Abuse of token by legitimate resource server or client">
           <t>A legitimate resource server could attempt to use an access token
-          to access another resource servers. Similarily, a client could try
-          to use a token obtained for one server on another resource
-          server.</t>
+          to access another resource servers. Similarly, a client could try to
+          use a token obtained for one server on another resource server.</t>
 
           <t>Countermeasures:</t>
 
@@ -2144,7 +2147,7 @@
           be stored in (and thus retrievable from) publicly-accessible
           caches.</t>
 
-          <t>CounterMeasures:</t>
+          <t>Countermeasures:</t>
 
           <t><list style="symbols">
               <t>Resource servers not using the HTTP Authorization scheme
@@ -2196,14 +2199,18 @@
       the threats as described in Section 4.</t>
 
       <section title="General">
+        <t>The general section covers consideratios that apply generally
+        across all OAuth components (client, resource server, token server,
+        and user-agents).</t>
+
         <section anchor="conf_requests" title="Confidentiality of Requests">
           <t>This is applicable to all requests sent from client to
           authorization server or resource server. While OAuth provides a
           mechanism for verifying the integrity of requests, it provides no
           guarantee of request confidentiality. Unless further precautions are
           taken, eavesdroppers will have full access to request content and
-          may be able to mount attacks through using content of request, e.g.
-          secrets or tokens, or mount replay attacks.</t>
+          may be able to mount interception or replay attacks through using
+          content of request, e.g. secrets or tokens.</t>
 
           <t>Attacks can be mitigated by using transport-layer mechanisms such
           as TLS or SSL. VPN may considered as well.</t>
@@ -2230,11 +2237,11 @@
           during connection establishment.</t>
 
           <t>The client MUST validate the binding of the server to its domain
-          name. If the server fails to prove that binding, it is condered a
-          men-in-the-middle. The security measure depends on the certification
-          authorities the client trusts for that purpose. Clients should
-          carefully select those trusted CAs and protect the storage for
-          trusted CA certificates from modifications.</t>
+          name. If the server fails to prove that binding, it is considered a
+          man-in-the-middle attack. The security measure depends on the
+          certification authorities the client trusts for that purpose.
+          Clients should carefully select those trusted CAs and protect the
+          storage for trusted CA certificates from modifications.</t>
 
           <t>This is a countermeasure against the following threats:</t>
 
@@ -2243,7 +2250,7 @@
 
               <t>Proxying</t>
 
-              <t>Phishing by conterfeit servers</t>
+              <t>Phishing by counterfeit servers</t>
             </list></t>
         </section>
 
@@ -2266,12 +2273,12 @@
 
               <t>Activity/Event logs</t>
 
-              <t>User self-care apps or portals</t>
+              <t>User self-care applications or portals</t>
             </list></t>
         </section>
 
         <section title="Credentials">
-          <t>This sections describes countermeasures used to protect all kind
+          <t>This sections describes countermeasures used to protect all kinds
           of credentials from unauthorized access and abuse. Credentials are
           long term secrets, such as client secrets and user passwords as well
           as all kinds of tokens (refresh and access token) or authorization
@@ -2285,7 +2292,7 @@
             </section>
 
             <section anchor="std_sql"
-                     title="Standard SQL inj. Countermeasures">
+                     title="Standard SQL Injection Countermeasures">
               <t>If a client identifier or other authentication component is
               queried or compared against a SQL Database it may become
               possible for an injection attack to occur if parameters received
@@ -2322,7 +2329,7 @@
             </section>
 
             <section title="Encryption of credentials">
-              <t>For client applicatinos, insecurely persisted client
+              <t>For client applications, insecurely persisted client
               credentials are easy targets for attackers to obtain. Store
               client credentials using an encrypted persistence mechanism such
               as a keystore or database. Note that compiling client
@@ -2373,7 +2380,7 @@
               authenticate by username/password by temporarily locking the
               respective account and delaying the response for a certain
               duration. This duration may increase with the number of failed
-              attempts. The objective is to slow the attackes attempts on a
+              attempts. The objective is to slow the attackers attempts on a
               certain username down.</t>
 
               <t>Note: this may require a more complex and stateful design of
@@ -2381,7 +2388,7 @@
             </section>
 
             <section anchor="captchas" title="Usage of CAPTCHAs">
-              <t>The idea is to prevent programms from automatically checkinga
+              <t>The idea is to prevent programs from automatically checking
               huge number of passwords by requiring human interaction.</t>
 
               <t>Note: this has a negative impact on user experience.</t>
@@ -2409,7 +2416,7 @@
             dependent on the grant type. For example, end-user authorization
             via direct interaction with the end-user (authorization code)
             might be considered more reliable than direct authorization via
-            gran type username/password. This means will reduce the impact of
+            grant type username/password. This means will reduce the impact of
             the following threats:</t>
 
             <t><list style="symbols">
@@ -2438,7 +2445,7 @@
 
                 <t>reduce impact of token leak</t>
 
-                <t>reduce likelyhood of sucessful online guessing</t>
+                <t>reduce likelihood of successful online guessing</t>
               </list>Note: Short token duration requires preciser clock
             synchronisation between authorization server and resource server.
             Furthermore, shorter duration may require more token refreshments
@@ -2455,7 +2462,7 @@
             <t><list style="symbols">
                 <t>replay of tokens</t>
 
-                <t>reduce likelyhood of sucessful online guessing</t>
+                <t>reduce likelihood of successful online guessing</t>
               </list>Additionally, If an Authorization Server observes
             multiple attempts to redeem a authorization code, the
             Authorization Server may want to revoke all tokens granted based
@@ -2466,7 +2473,7 @@
                    title="Bind tokens to a particular resource server (Audience)">
             <t>Authorization servers in multi-service environments may
             consider to issue tokens with different content to different
-            resource servers and to explicitely indicate in the token the
+            resource servers and to explicitly indicate in the token the
             target server a token is intended to be sent to (see Audience in
             SAML Assertions). This countermeasure can be used in the following
             situations:</t>
@@ -2480,7 +2487,7 @@
                 rejected by other servers.</t>
 
                 <t>It reduce the impact of a leakage of a valid token to a
-                conterfeit resource server.</t>
+                counterfeit resource server.</t>
               </list></t>
           </section>
 
@@ -2495,7 +2502,7 @@
 
           <section anchor="audience_token_scope"
                    title="Audience and Token scopes">
-            <t>Deployments may consider to use only tokens with explicitely
+            <t>Deployments may consider to use only tokens with explicitly
             defined scope, where every scope is associated with a particular
             resource server. This approach can be used to mitigate attacks,
             where a resource server or client uses a token for a different
@@ -2521,7 +2528,7 @@
           </section>
 
           <section anchor="signed_tokens" title="Signed tokens">
-            <t>Self-contained tokens shall be signed in order to detect any
+            <t>Self-contained tokens SHOULD be signed in order to detect any
             attempt to modify or produce faked tokens.</t>
           </section>
 
@@ -2544,16 +2551,18 @@
           <section title="Assertion formats">
             <t>For service providers intending to implement an assertion-based
             token design it is highly recommended to adopt a standard
-            assertion format (such as SAML or JWT).</t>
+            assertion format (such as SAML or JWT) that implements
+            [draft-ietf-oauth-assertions].</t>
           </section>
         </section>
 
         <section anchor="access_tokens" title="Access tokens">
           <t><list style="symbols">
-              <t>keep them in transient memory (accessible by the client app
-              only)</t>
+              <t>keep them in transient memory (accessible by the client
+              application only)</t>
 
-              <t>exposure to 3rd parties (malicious app)</t>
+              <t>protect from exposure to 3rd parties (malicious
+              application)</t>
 
               <t>limit number of access tokens granted to a user</t>
             </list></t>
@@ -2561,12 +2570,16 @@
       </section>
 
       <section title="Authorization Server">
+        <t>This section describes considerations related to the OAuth
+        Authorization Server end-point.</t>
+
         <section title="Authorization Codes">
           <section anchor="automatic_code_revocation"
                    title="Automatic revocation of derived tokens if abuse is detected">
             <t>If an Authorization Server observes multiple attempts to redeem
-            a authorization code, the Authorization Server may want to revoke
-            all tokens granted based on the authorization code.</t>
+            an authorization grant (e.g. such as an authorization code), the
+            Authorization Server may want to revoke all tokens granted based
+            on the authorization grant.</t>
           </section>
         </section>
 
@@ -2574,7 +2587,7 @@
           <section anchor="restricted_refresh"
                    title="Restricted issuance of refresh tokens">
             <t>The authorization server may decide based on an appropriate
-            policy not to issue refresh tokens. Since refresh tokens areo long
+            policy not to issue refresh tokens. Since refresh tokens are long
             term credentials, they may be subject theft. For example, if the
             authorization server does not trust a client to securely store
             such tokens, it may refuse to issue such a client a refresh
@@ -2587,7 +2600,7 @@
             id of the client such a token was originally issued to and
             validate this binding for every request to refresh that token.
             This measure is a countermeasure against refresh token theft or
-            leakage.</t>
+            leakage. </t>
 
             <t>Note: This binding MUST be protected from unauthorized
             modifications.</t>
@@ -2609,7 +2622,7 @@
             <t>The OAuth specification supports this measure in that the
             tokens response allows the authorization server to return a new
             refresh token even for requests with grant type
-            &bdquo;refresh_token&ldquo;.</t>
+            "refresh_token&ldquo;.</t>
 
             <t>Note: this measure may cause problems in clustered environments
             since usage of the currently valid refresh token must be ensured.
@@ -2620,14 +2633,16 @@
           <section anchor="refresh_revocation"
                    title="Refresh Token Revocation">
             <t>The authorization server may allow clients or end-users to
-            explicitely request the invalidation of refresh tokens.</t>
+            explicitly request the invalidation of refresh tokens.</t>
 
-            <t>This is a countermeasure againts:</t>
+            <t>This is a countermeasure against:</t>
 
             <t><list style="symbols">
-                <t>device theft</t>
+                <t>device theft,</t>
 
-                <t>...</t>
+                <t>impersonation of resource owner, or</t>
+
+                <t>suspected compromised client applications.</t>
               </list></t>
           </section>
 
@@ -2645,8 +2660,8 @@
             credentials to a device identifier or token assigned to that
             device. As the IMEI can be spoofed, that is not suitable, For
             mobile phones, a registration process can be used to assign a
-            unique token to the device using an sms message. That token or
-            identifer can then be validated with when authenticating user
+            unique token to the device using an SMS message. That token or
+            identifier can then be validated with when authenticating user
             credentials.</t>
 
             <t>This is a countermeasure against the following threats:</t>
@@ -2661,13 +2676,13 @@
           <section anchor="clickjacking_xframe" title="X-FRAME-OPTION header">
             <t>For newer browsers, avoidance of iFrames can be enforced server
             side by using the X-FRAME-OPTION header. This header can have two
-            values, deny and sameorigin, which will block any framing or
+            values, deny and same origin, which will block any framing or
             framing by sites with a different origin, respectively.</t>
 
             <t>This is a countermeasure against the following threats:</t>
 
             <t><list style="symbols">
-                <t>clickjacking attacks</t>
+                <t>Clickjacking attacks</t>
 
                 <t>...</t>
               </list></t>
@@ -2675,7 +2690,7 @@
         </section>
 
         <section anchor="client_aa"
-                 title="Client authentication and authorization">
+                 title="Public client authentication and authorization">
           <t>As described in Section 3 (Security Features), clients are
           identified, authenticated and authorized for several purposes, such
           as a</t>
@@ -2691,53 +2706,56 @@
 
               <t>Log a client identity to log files for analysis or
               statics.</t>
-            </list>Due to the different capababilities and characterictics of
+            </list>Due to the different capabilities and characteristics of
           the different client types, there are different ways to support
           achieve objectives, which will be described in this section.
-          Generally spoken, authorization server providers should be aware of
-          the security policy and deployment of a particular clients and adapt
-          its treatment accordingly. For example, one approach could be to
-          treat all clients as less trustworthy and unsecure. On the other
-          extrem, a service provider could activate every client installation
-          by hand of an administrator and that way gain confidence in the
-          identity of the software package and the security of the environment
-          the client is installed in. And there are several approaches in
-          between.</t>
+          Authorization server providers should be aware of the security
+          policy and deployment of a particular clients and adapt its
+          treatment accordingly. For example, one approach could be to treat
+          all clients as less trustworthy and unsecure. On the other extreme,
+          a service provider could activate every client installation by hand
+          of an administrator and that way gain confidence in the identity of
+          the software package and the security of the environment the client
+          is installed in. And there are several approaches in between.</t>
 
           <section anchor="dont_issue"
-                   title="Don't issue secrets to clients with inappropriate security policy">
-            <t>Authorization servers should not issue secrets to clients, if
-            these cannot sufficiently protect it. This prevents the server
-            from overestimating the value of a sucessful authentication of the
+                   title="Don't issue secrets to public clients or clients with inappropriate security policy">
+            <t>Authorization servers should not issue secrets to "public"
+            clients that cannot protect secrets. This prevents the server from
+            overestimating the value of a successful authentication of the
             client.</t>
 
             <t>For example, it is of limited benefit to create a single client
             id and secret which is shared by all installations of a native
-            app. First of all, this secret must be somehow transmitted from
-            the developer via the respective distribution channel, e.g. an app
-            market, to all installations of the app on end-user devices. So
-            the secret is typically burned into the source code of the app or
-            a associated resource bundle, which cannot be entirely protected
-            from reverse engineering. Second, effectively such secrets cannot
-            be revoked since this would immediatly put all installations out
-            of work. Moreover, since the authorization server cannot really
-            trust on the client's identity, it would be dangerous to indicate
-            to end-users the trustworthiness of the client.</t>
+            application. Such a scenario requires that this secret must be
+            transmitted from the developer via the respective distribution
+            channel, e.g. an application market, to all installations of the
+            application on end-user devices. A secret, burned into the source
+            code of the application or a associated resource bundle, cannot be
+            entirely protected from reverse engineering. Secondly, such
+            secrets cannot be revoked since this would immediately put all
+            installations out of work. Moreover, since the authorization
+            server cannot really trust on the client's identity, it would be
+            dangerous to indicate to end-users the trustworthiness of the
+            client.</t>
 
             <t>There are other ways to achieve a reasonable security level, as
             described in the following sections.</t>
           </section>
 
           <section anchor="forced_user_consent"
-                   title="Clients without secret require user consent">
-            <t>The authorization may issue a client id, but only accept
-            authorization request, which are approved by the end-user. This
-            measure precludes automatic authorization processes. This is a
-            countermeasure for clients without secret against the following
-            threats:</t>
+                   title="Public clients without secret require user consent">
+            <t>Authorization servers should not allow automatic authorization
+            for public clients. The authorization may issue a client id, but
+            SHOULD require that all authorizations are approved by the
+            end-user. This is a countermeasure for clients without secret
+            against the following threats:</t>
 
             <t><list style="symbols">
-                <t>... [[Not sure what is meant here]]</t>
+                <t>Impersonation of client applications using only
+                client_id,</t>
+
+                <t>Phishing attacks</t>
 
                 <t>...</t>
               </list></t>
@@ -2745,27 +2763,28 @@
 
           <section anchor="client_id_redirect"
                    title="Client_id only in combination with redirect_uri">
-            <t>The authorization may issue a client id, but bind this
-            client_id to a certain pre-configured redirect_uri. So any
-            authorization request with another redirect_uri is refused
-            automatically. Alternatively, the authorization server may not
-            accept any dynamic redirect_uri for such a client_id and instead
-            always redirect to the well-known pre-configured redirect_uri.
-            This is a countermeasure for clients without secrets against the
-            following threats:</t>
+            <t>The authorization may issue a client_id and bind the client_id
+            to a certain pre-configured redirect_uri. Any authorization
+            request with another redirect_uri is refused automatically.
+            Alternatively, the authorization server MUST not accept any
+            dynamic redirect_uri for such a client_id and instead always
+            redirect to the well-known pre-configured redirect_uri. This is a
+            countermeasure for clients without secrets against the following
+            threats:</t>
 
             <t><list style="symbols">
-                <t>...[[Not sure what is meant here]]</t>
+                <t>Cross-site scripting attacks</t>
 
-                <t>...</t>
+                <t>Phishing attacks [...]</t>
               </list></t>
           </section>
 
           <section anchor="depl_specific_secretes"
                    title="Deployment-specific client secrets">
-            <t>A authorization server may issue separate client ids and
-            corresponding secrets to the different deployments of a
-            client.</t>
+            <t>A authorization server may issue separate client identifiers
+            and corresponding secrets to the different deployments of a
+            client. The effect of such an approach would be to turn otherwise
+            "public" clients back into "confidential" clients.</t>
 
             <t>For web applications, this could mean to create one client_id
             and client_secret per web site a software package is installed on.
@@ -2777,12 +2796,12 @@
             client secret on the site.</t>
 
             <t>For native applications, things are more complicated because
-            every installation of the app on any device is another deployment.
-            Deployment specific secrets will require</t>
+            every installation of the application on any device is another
+            deployment. Deployment specific secrets will require</t>
 
             <t><list style="numbers">
                 <t>Either to obtain a client_id and client_secret during
-                download process from the app market, or</t>
+                download process from the application market, or</t>
 
                 <t>During installation on the device.</t>
               </list>Either approach will require an automated mechanism for
@@ -2796,19 +2815,11 @@
             several replay attacks. Moreover, deployment-specific client_id
             and secret allow to selectively revoke all refresh tokens of a
             specific deployment at once.</t>
-
-            <t>This is a countermeasure against the following threats:</t>
-
-            <t><list style="symbols">
-                <t>...</t>
-
-                <t>...</t>
-              </list></t>
           </section>
 
           <section anchor="val_redirect"
                    title="Validation of pre-registered redirect_uri">
-            <t>An authorization server may require clients to register their
+            <t>An authorization server MUST require clients to register their
             redirect_uri or a pattern (TBD: make definition more precise)
             thereof. The way this registration is performed is out of scope of
             this document. Every actual redirect_uri sent with the respective
@@ -2819,13 +2830,13 @@
             back to the redirect_uri of such an authorization request.</t>
 
             <t><list style="symbols">
-                <t>Authorization code leakage through conterfeit web site:
+                <t>Authorization code leakage through counterfeit web site:
                 allows to detect attack attempts already after first redirect
                 to end-user authorization endpoint (<xref
                 target="authz_code_leakage"></xref>).</t>
 
                 <t>For clients with validated properties, this measure also
-                helps to detect malicious apps early in the end-user
+                helps to detect malicious applications early in the end-user
                 authorization process. This reduces the need for a interactive
                 validation by the user (<xref target="mal_client"></xref>,
                 <xref target="mal_client2"></xref>).</t>
@@ -2841,7 +2852,7 @@
             registration, it only works for clients bound to certain
             deployments at development/configuration time. As soon as dynamic
             resource server discovery gets involved, that's no longer
-            feasable.</t>
+            feasible.</t>
           </section>
 
           <section anchor="client_secret_revocation"
@@ -2866,27 +2877,34 @@
 
           <section anchor="strong_client_authn"
                    title="Use strong client authentication (e.g. client_assertion / client_token)">
-            <t>Assumption: prevents an attacker from obtaining a client secret
-            because this secret is kept in some hardware security module?</t>
+            <t>By using an alternative form of authentication such as client
+            assertion [draft-ietf-oauth-assertions], the need to distribute
+            client_secret is eliminated. This may require the use of a secure
+            private key store or other supplemental authentication system as
+            specified by the client assertion issuer in its authentication
+            process.</t>
           </section>
         </section>
 
         <section title="End-user authorization">
+          <t>This secion involves considerations for authorization flows
+          involving the end-user.</t>
+
           <section anchor="automatic_processing"
                    title="Automatic processing of repeated authorizations requires client validation">
-            <t>Authorization servers should not automatically process repeat
+            <t>Authorization servers SHOULD NOT automatically process repeat
             authorizations where the client is not authenticated through a
             client secret or some other authentication mechanism such as
-            signing with security certs (5.7.2.7. Use strong client
+            signing with security certificates (5.7.2.7. Use strong client
             authentication (e.g. client_assertion / client_token)) or
-            validation of a pre-registered redirect uri (5.7.2.5. Validation
+            validation of a pre-registered redirect URI (5.7.2.5. Validation
             of pre-registered redirect_uri ).</t>
           </section>
 
           <section anchor="informed_decisions"
                    title="Informed decisions based on transparency">
-            <t>The authorization server shall intelligible explain to the
-            end-user what happens in the authorization process and what the
+            <t>The authorization server SHOULD clearly explain to the end-user
+            what happens in the authorization process and what the
             consequences are. For example, the user shall understand what
             access he is about to grant to which client for what duration. It
             shall also be obvious to the user, whether the server is able to
@@ -2898,17 +2916,18 @@
                    title="Validation of client properties by end-user">
             <t>In the authorization process, the user is typically asked to
             approve a client's request for authorization. This is an important
-            security mechanism by itself because the end-users can be involed
+            security mechanism by itself because the end-user can be involved
             in the validation of client properties, such as whether the client
             name known to the authorization server fits the name of the web
-            site or the app the end-user is using. This measure is especially
-            helpful in all situation where the authorization server is unable
-            to authenticate the client. It is a countermeasure against:</t>
+            site or the application the end-user is using. This measure is
+            especially helpful in all situation where the authorization server
+            is unable to authenticate the client. It is a countermeasure
+            against:</t>
 
             <t><list style="symbols">
-                <t>Malicious app</t>
+                <t>Malicious application</t>
 
-                <t>...</t>
+                <t>A client application masquerading as another client</t>
               </list></t>
           </section>
 
@@ -2944,9 +2963,21 @@
       </section>
 
       <section title="Client App Security">
+        <t>This section deals with considerations for client applications.</t>
+
         <section anchor="cred_software"
                  title="Don't store credentials in code or resources bundled with software packages">
-          <t>[Anything more to say ? :-)]</t>
+          <t>Because of the numbers of copies of client software, there is
+          limited benefit to create a single client id and secret which is
+          shared by all installations of an application. Such an application
+          by itself would be considered a "public" client as it cannot be
+          presumed to be able to keep client secrets. A secret, burned into
+          the source code of the application or a associated resource bundle,
+          cannot be entirely protected from reverse engineering. Secondly,
+          such secrets cannot be revoked since this would immediately put all
+          installations out of work. Moreover, since the authorization server
+          cannot really trust on the client's identity, it would be dangerous
+          to indicate to end-users the trustworthiness of the client.</t>
         </section>
 
         <section anchor="std_web"
@@ -2957,19 +2988,20 @@
           <t>The are different way to store secrets of all kinds (tokens,
           client secrets) securely on a device or server.</t>
 
-          <t>Most multi-user operation systems seggregate the personal storage
+          <t>Most multi-user operation systems segregate the personal storage
           of the different system users. Moreover, most modern smartphone
-          operating systems even support to store app-specific data in separat
-          areas of the file systems and protect it from access by other apps.
-          Additionally, apps can implements confidential data itself using a
-          user-supplied secret, such as PIN or password.</t>
+          operating systems even support to store app-specific data in
+          separate areas of the file systems and protect it from access by
+          other applications. Additionally, applications can implements
+          confidential data itself using a user-supplied secret, such as PIN
+          or password.</t>
 
           <t>Another option is to swap refresh token storage to a trusted
           backend server. This mean in turn requires a resilient
           authentication mechanisms between client and backend server. Note:
           Applications must ensure that confidential data are kept
-          confidential even after readin from secure storage, which typically
-          means to keep this data in the local memory of the app.</t>
+          confidential even after reading from secure storage, which typically
+          means to keep this data in the local memory of the application.</t>
         </section>
 
         <section anchor="device_lock"
@@ -2987,6 +3019,9 @@
       </section>
 
       <section title="Resource Servers">
+        <t>The following section details security considerations for resource
+        servers.</t>
+
         <section anchor="authz_header" title="Authorization headers">
           <t>Authorization headers are recognized and specially treated by
           HTTP proxies and servers. Thus the usage of such headers for sending
@@ -2997,7 +3032,7 @@
 
         <section anchor="authn_requests" title="Authenticated requests">
           <t>An authorization server may bind tokens to a certain client
-          identitiy and encourage resource servers to validate that binding.
+          identity and encourage resource servers to validate that binding.
           This will require the resource server to authenticate the originator
           of a request as the legitimate owner of a particular token. There
           are a couple of options to implement this countermeasure:</t>
@@ -3028,8 +3063,8 @@
         <section anchor="signed_requests" title="Signed requests">
           <t>A resource server may decide to accept signed requests only,
           either to replace transport level security measures or to complement
-          such measures. Every signed request must be uniquly identifiable and
-          must not be processed twice by the resource server. This
+          such measures. Every signed request must be uniquely identifiable
+          and must not be processed twice by the resource server. This
           countermeasure helps to mitigate:</t>
 
           <t><list style="symbols">
@@ -3094,6 +3129,11 @@
           <t>section 4.4.1.6 - changed "client shall authenticate the server"
           to "The browser shall be utilized to authenticate the redirect_uri
           of the client"</t>
+
+          <t>section 5 - general review and alignment with public/confidential
+          client terms</t>
+
+          <t>all sections - general clean-up and typo corrections</t>
         </list></t>
 
       <t>draft-ietf-oauth-v2-threatmodel-00</t>
