@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-lodderstedt-oauth-revocation-02"
+<rfc category="std" docName="draft-lodderstedt-oauth-revocation-03"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -84,11 +84,19 @@
       </address>
     </author>
 
-    <date day="14" month="March" year="2011" />
+    <author fullname="Marius Scurtescu" initials="M." surname="Scurtescu ">
+      <organization>Google</organization>
+
+      <address>
+        <email>mscurtescu@google.com</email>
+      </address>
+    </author>
+
+    <date day="16" month="September" year="2011" />
 
     <!-- Meta-data Declarations -->
 
-    <area>Applications Area</area>
+    <area>Security Area</area>
 
     <workgroup>Open Authentication Protocol</workgroup>
 
@@ -117,7 +125,7 @@
   </front>
 
   <middle>
-    <section title="Introduction">
+    <section anchor="Introduction" title="Introduction">
       <t>The current OAuth 2.0 draft <xref target="I-D.ietf-oauth-v2"></xref>
       defines several ways for a client to obtain refresh and access tokens.
       This specification supplements the draft with a mechanism to revoke both
@@ -149,10 +157,10 @@
       token revocation MAY be supported.</t>
     </section>
 
-    <section title="Token Revocation">
+    <section anchor="Revocation" title="Token Revocation">
       <t>The client requests the revocation of a particular token by making an
-      HTTP "POST" request to the token revocation endpoint. The location of
-      the token revocation endpoint can be found in the authorization servers
+      HTTP POST request to the token revocation endpoint. The location of the
+      token revocation endpoint can be found in the authorization servers
       documentation. The token endpoint URI MAY include a query component.</t>
 
       <t>Since requests to the token revocation endpoint result in the
@@ -175,7 +183,7 @@
       in Section 3 of <xref target="I-D.ietf-oauth-v2"></xref>.</t>
 
       <t>For example, a client may request the revocation of a refresh token
-      with the following request (line breaks are for display purposes only):
+      with the following request (line breaks are for display purposes only):</t>
       <figure>
           <artwork><![CDATA[
      POST /revoke HTTP/1.1
@@ -185,7 +193,7 @@
      token=45ghiukldjahdnhzdauz&
      client_id=s6BhdRkqt3&client_secret=gX1fBat3bV
 				    ]]></artwork>
-        </figure></t>
+        </figure>
 
       <t>The authorization server first validates the client credentials (if
       present) and verifies whether the client is authorized to revoke the
@@ -202,7 +210,11 @@
 
       <t>If the processed token is a refresh token and the authorization
       server supports the revocation of access tokens, then the authorization
-      server MUST also invalidate all access tokens issued for that refresh
+      server SHOULD also invalidate all access tokens issued for that refresh
+      token.</t>
+
+      <t>If the processed token is an access token, then the authorization
+      server MAY also invalidate the refresh token used to issue this access
       token.</t>
 
       <t>The authorization server indicates a successful processing of the
@@ -220,12 +232,39 @@
 
           <t hangText="invalid_token">The presented token is invalid.</t>
         </list></t>
+
+      <section anchor="JSONP" title="JSONP Support">
+        <t>The revocation endpoint MAY support <xref format="title"
+        target="jsonp">JSONP</xref> by allowing GET requests with an
+        additional parameter: <list hangIndent="8" style="hanging">
+            <t hangText="callback">The qualified name of a JavaScript
+            function.</t>
+          </list></t>
+
+        <t>Example request:</t> <figure>
+            <artwork><![CDATA[
+https://example.com/revoke?token=XXXXX&callback=package.myCallback
+]]></artwork>
+          </figure>
+
+        <t>Successful response:</t> <figure>
+            <artwork><![CDATA[
+package.myCallback();
+]]></artwork>
+          </figure>
+
+        <t>Error response:</t> <figure>
+            <artwork><![CDATA[
+package.myCallback({"error":"invalid_token"});
+]]></artwork>
+          </figure>
+      </section>
     </section>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>We would like to thank Sebastian Ebling, Christian St&uuml;bner,
-      Brian Campbell, Igor Faynberg, Lukas Rosenstock, Marius Scurtescu, and
-      Justin P. Richer for their valuable feedback.</t>
+      Brian Campbell, Igor Faynberg, Lukas Rosenstock, and Justin P. Richer
+      for their valuable feedback.</t>
     </section>
 
     <!-- Possibly a 'Contributors' section ... -->
@@ -249,6 +288,23 @@
       <?rfc include="reference.RFC.5246"?>
 
       <?rfc include="reference.I-D.ietf-oauth-v2.xml"?>
+    </references>
+
+    <references title="Informative References">
+      <reference anchor="jsonp">
+        <front>
+          <title>Remote JSON - JSONP</title>
+
+          <author fullname="Bob Ippolito" initials="B." surname="Ippolito">
+            <organization></organization>
+          </author>
+
+          <date day="5" month="December" year="2005" />
+        </front>
+
+        <format target="http://bob.pythonmac.org/archives/2005/12/05/remote-json-jsonp"
+                type="HTML" />
+      </reference>
     </references>
   </back>
 </rfc>
