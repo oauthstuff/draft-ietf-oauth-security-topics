@@ -1,10 +1,10 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en"><head><title>Token Revocation</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="description" content="Token Revocation">
 <meta name="keywords" content="token revocation, oauth2">
 <meta name="generator" content="xml2rfc v1.36 (http://xml.resource.org/)">
-<style type='text/css'><!--
+<style type="text/css"><!--
         body {
                 font-family: verdana, charcoal, helvetica, arial, sans-serif;
                 font-size: small; color: #000; background-color: #FFF;
@@ -140,19 +140,22 @@
 --></style>
 </head>
 <body>
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
-<tr><td class="header">Open Authentication Protocol</td><td class="header">T. Lodderstedt, Ed.</td></tr>
+<table summary="layout" class="TOCbug" align="right" cellpadding="0" cellspacing="2"><tbody><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
+<table summary="layout" border="0" cellpadding="0" cellspacing="0" width="66%"><tbody><tr><td><table summary="layout" border="0" cellpadding="2" cellspacing="1" width="100%">
+<tbody><tr><td class="header">Open Authentication Protocol</td><td class="header">T. Lodderstedt, Ed.</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">Deutsche Telekom AG</td></tr>
 <tr><td class="header">Intended status: Standards Track</td><td class="header">S. Dronia</td></tr>
-<tr><td class="header">Expires: September 15, 2011</td><td class="header">SYRACOM Consulting AG</td></tr>
-<tr><td class="header">&nbsp;</td><td class="header">March 14, 2011</td></tr>
-</table></td></tr></table>
-<h1><br />Token Revocation<br />draft-lodderstedt-oauth-revocation-02</h1>
+<tr><td class="header">Expires: March 19, 2012</td><td class="header">SYRACOM Consulting AG</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">M. Scurtescu </td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">Google</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">September 16, 2011</td></tr>
+</tbody></table></td></tr></tbody></table>
+<h1><br>Token Revocation<br>draft-lodderstedt-oauth-revocation-03</h1>
 
 <h3>Abstract</h3>
 
-<p>This draft proposes an additional endpoint for OAuth authorization servers for revoking tokens.
+<p>This draft proposes an additional endpoint for OAuth authorization
+      servers for revoking tokens.
 </p>
 <h3>Status of this Memo</h3>
 <p>
@@ -167,9 +170,9 @@ Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 Internet-Drafts are draft documents valid for a maximum of six months
 and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
-them other than as &ldquo;work in progress.&rdquo;</p>
+them other than as &#8220;work in progress.&#8221;</p>
 <p>
-This Internet-Draft will expire on September 15, 2011.</p>
+This Internet-Draft will expire on March 19, 2012.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -185,124 +188,227 @@ to this document. Code Components extracted from this document must
 include Simplified BSD License text as described in Section 4.e of
 the Trust Legal Provisions and are provided without warranty as
 described in the Simplified BSD License.</p>
-<a name="toc"></a><br /><hr />
+<a name="toc"></a><br><hr>
 <h3>Table of Contents</h3>
 <p class="toc">
-<a href="#anchor1">1.</a>&nbsp;
-Introduction<br />
-<a href="#anchor2">2.</a>&nbsp;
-Token Revocation<br />
+<a href="#Introduction">1.</a>&nbsp;
+Introduction<br>
+<a href="#Revocation">2.</a>&nbsp;
+Token Revocation<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#JSONP">2.1.</a>&nbsp;
+JSONP Support<br>
 <a href="#Acknowledgements">3.</a>&nbsp;
-Acknowledgements<br />
+Acknowledgements<br>
 <a href="#IANA">4.</a>&nbsp;
-IANA Considerations<br />
+IANA Considerations<br>
 <a href="#Security">5.</a>&nbsp;
-Security Considerations<br />
+Security Considerations<br>
 <a href="#rfc.references1">6.</a>&nbsp;
-Normative References<br />
-<a href="#rfc.authors">&#167;</a>&nbsp;
-Authors' Addresses<br />
+References<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">6.1.</a>&nbsp;
+Normative References<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">6.2.</a>&nbsp;
+Informative References<br>
+<a href="#rfc.authors">§</a>&nbsp;
+Authors' Addresses<br>
 </p>
-<br clear="all" />
+<br clear="all">
 
-<a name="anchor1"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="Introduction"></a><br><hr>
+<table summary="layout" class="TOCbug" align="right" cellpadding="0" cellspacing="2"><tbody><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
 <a name="rfc.section.1"></a><h3>1.&nbsp;
 Introduction</h3>
 
-<p>The current OAuth 2.0 draft <a class='info' href='#I-D.ietf-oauth-v2'>[I&#8209;D.ietf&#8209;oauth&#8209;v2]<span> (</span><span class='info'>Hammer-Lahav, E., Recordon, D., and D. Hardt, &ldquo;The OAuth 2.0 Authorization Protocol,&rdquo; July&nbsp;2011.</span><span>)</span></a> defines several ways for a client to obtain refresh and access tokens. This specification supplements the draft with a mechanism to revoke both types of tokens and facilitates the following use cases:</p>
+<p>The current OAuth 2.0 draft <a class="info" href="#I-D.ietf-oauth-v2">[I&#8209;D.ietf&#8209;oauth&#8209;v2]<span> (</span><span class="info">Hammer-Lahav, E., Recordon, D., and D. Hardt, &#8220;The OAuth 2.0 Authorization Protocol,&#8221; September&nbsp;2011.</span><span>)</span></a>
+      defines several ways for a client to obtain refresh and access tokens.
+      This specification supplements the draft with a mechanism to revoke both
+      types of tokens and facilitates the following use cases:</p>
 <ul class="text">
-<li>The end-user triggers revocation from within the client that sends the appropriate revocation request to the autorization server. From the end-user's perspective, this looks like a &#8220;logout&#8221; or &#8220;reset&#8221; function. The request causes the removal of the client permissions associated with the particular token to access the end-user&#8217;s protected resources. This use case makes it even more comfortable to the end-user to revoke his access grant immediately via the client.
+<li>The end-user triggers revocation from within the client that
+          sends the appropriate revocation request to the autorization server.
+          From the end-user's perspective, this looks like a
+          &#8220;logout&#8221; or &#8220;reset&#8221; function. The request
+          causes the removal of the client permissions associated with the
+          particular token to access the end-user&#8217;s protected resources.
+          This use case makes it even more comfortable to the end-user to
+          revoke his access grant immediately via the client.
 </li>
-<li>In contrast to revocation by a client, the authorization server (or a related entity) may offer its end-users a self-care portal to delete access grants given to clients independent of any token storing devices. Such a portal offers the possibility to an end-user to look at and revoke all access grants he once authorized. In cases the token storing device is not available, e.g. it is lost or stolen, revocation by a self-care portal is the only possibility to limit or avoid abuse.
+<li>In contrast to revocation by a client, the authorization server
+          (or a related entity) may offer its end-users a self-care portal to
+          delete access grants given to clients independent of any token
+          storing devices. Such a portal offers the possibility to an end-user
+          to look at and revoke all access grants he once authorized. In cases
+          the token storing device is not available, e.g. it is lost or
+          stolen, revocation by a self-care portal is the only possibility to
+          limit or avoid abuse.
 </li>
-</ul><p> In the end, security, usability, and ease of use are increased by token revocation.
+</ul><p> In the end, security, usability, and ease of use are increased
+      by token revocation.
 </p>
-<p>By using an additional endpoint, the token revocation endpoint, clients can request the revocation of a particular token. Compliant implementation MUST support the revocation of refresh tokens, access token revocation MAY be supported.
+<p>By using an additional endpoint, the token revocation endpoint,
+      clients can request the revocation of a particular token. Compliant
+      implementation MUST support the revocation of refresh tokens, access
+      token revocation MAY be supported.
 </p>
-<a name="anchor2"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="Revocation"></a><br><hr>
+<table summary="layout" class="TOCbug" align="right" cellpadding="0" cellspacing="2"><tbody><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
 <a name="rfc.section.2"></a><h3>2.&nbsp;
 Token Revocation</h3>
 
-<p>The client requests the revocation of a particular token by making an HTTP "POST" request to the token revocation endpoint. The location of the token revocation endpoint can be found in the authorization servers documentation. The token endpoint URI MAY include a query component.
+<p>The client requests the revocation of a particular token by making an
+      HTTP POST request to the token revocation endpoint. The location of the
+      token revocation endpoint can be found in the authorization servers
+      documentation. The token endpoint URI MAY include a query component.
 </p>
-<p>Since requests to the token revocation endpoint result in the transmission of plain text credentials in the HTTP request, the authorization server MUST require the use of a transport-layer security mechanism when sending requests to the token revocation endpoints. Authorization servers MUST support TLS 1.2 as defined in <a class='info' href='#RFC5246'>[RFC5246]<span> (</span><span class='info'>Dierks, T. and E. Rescorla, &ldquo;The Transport Layer Security (TLS) Protocol Version 1.2,&rdquo; August&nbsp;2008.</span><span>)</span></a>, and MAY support additional transport-layer security mechanisms.
+<p>Since requests to the token revocation endpoint result in the
+      transmission of plain text credentials in the HTTP request, the
+      authorization server MUST require the use of a transport-layer security
+      mechanism when sending requests to the token revocation endpoints.
+      Authorization servers MUST support TLS 1.2 as defined in <a class="info" href="#RFC5246">[RFC5246]<span> (</span><span class="info">Dierks, T. and E. Rescorla, &#8220;The Transport Layer Security (TLS) Protocol Version 1.2,&#8221; August&nbsp;2008.</span><span>)</span></a>, and MAY support additional transport-layer
+      security mechanisms.
 </p>
-<p>The client constructs the request by including the following parameters using the "application/x-www-form-urlencoded" format in the HTTP request entity-body: </p>
+<p>The client constructs the request by including the following
+      parameters using the "application/x-www-form-urlencoded" format in the
+      HTTP request entity-body: </p>
 <blockquote class="text"><dl>
 <dt>token</dt>
-<dd>REQUIRED. The token that the client wants to get revoked. Note: the authorization server is supposed to detect the token type automatically.
+<dd>REQUIRED. The token that the client wants to get
+          revoked. Note: the authorization server is supposed to detect the
+          token type automatically.
 </dd>
 </dl></blockquote>
 
-<p>The client also includes its authentication credentials as described in Section 3 of <a class='info' href='#I-D.ietf-oauth-v2'>[I&#8209;D.ietf&#8209;oauth&#8209;v2]<span> (</span><span class='info'>Hammer-Lahav, E., Recordon, D., and D. Hardt, &ldquo;The OAuth 2.0 Authorization Protocol,&rdquo; July&nbsp;2011.</span><span>)</span></a>.
+<p>The client also includes its authentication credentials as described
+      in Section 3 of <a class="info" href="#I-D.ietf-oauth-v2">[I&#8209;D.ietf&#8209;oauth&#8209;v2]<span> (</span><span class="info">Hammer-Lahav, E., Recordon, D., and D. Hardt, &#8220;The OAuth 2.0 Authorization Protocol,&#8221; September&nbsp;2011.</span><span>)</span></a>.
 </p>
-<p>For example, a client may request the revocation of a refresh token with the following request (line breaks are for display purposes only): </p>
-<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-     POST /revoke HTTP/1.1
+<p>For example, a client may request the revocation of a refresh token
+      with the following request (line breaks are for display purposes only):
+</p><div style="display: table; width: 0; margin-left: 3em; margin-right: auto"><pre>     POST /revoke HTTP/1.1
      Host: server.example.com
      Content-Type: application/x-www-form-urlencoded
 
      token=45ghiukldjahdnhzdauz&amp;
      client_id=s6BhdRkqt3&amp;client_secret=gX1fBat3bV
-</pre></div><p>
-
+</pre></div>
+<p>The authorization server first validates the client credentials (if
+      present) and verifies whether the client is authorized to revoke the
+      particular token based on the client identity and its policy. For
+      example, only the client the token has been issued for might be allowed
+      to revoke it. It is also conceivable to allow a dedicated user self-care
+      portal to revoke all kinds of tokens.
 </p>
-<p>The authorization server first validates the client credentials (if present) and verifies whether the client is authorized to revoke the particular token based on the client identity and its policy. For example, only the client the token has been issued for might be allowed to revoke it. It is also conceivable to allow a dedicated user self-care portal to revoke all kinds of tokens.
+<p>In the next step, the authorization server invalidates the token.
+      Whether the revocation takes effect instantly or with some delay depends
+      on the architecture of the particular deployment. The client MUST NOT
+      make any assumptions about the timing and MUST NOT use the token
+      again.
 </p>
-<p>In the next step, the authorization server invalidates the token. Whether the revocation takes effect instantly or with some delay depends on the architecture of the particular deployment. The client MUST NOT make any assumptions about the timing and MUST NOT use the token again.
+<p>If the processed token is a refresh token and the authorization
+      server supports the revocation of access tokens, then the authorization
+      server SHOULD also invalidate all access tokens issued for that refresh
+      token.
 </p>
-<p>If the processed token is a refresh token and the authorization server supports the revocation of access tokens, then the authorization server MUST also invalidate all access tokens issued for that refresh token.
+<p>If the processed token is an access token, then the authorization
+      server MAY also invalidate the refresh token used to issue this access
+      token.
 </p>
-<p>The authorization server indicates a successful processing of the request by a HTTP status code 200. Status code 401 indicates a failed client authentication, whereas a status code 403 is used if the client is not authorized to revoke the particular token. For all other error conditions, a status code 400 is used along with an error response as defined in section 5.2. of <a class='info' href='#I-D.ietf-oauth-v2'>[I&#8209;D.ietf&#8209;oauth&#8209;v2]<span> (</span><span class='info'>Hammer-Lahav, E., Recordon, D., and D. Hardt, &ldquo;The OAuth 2.0 Authorization Protocol,&rdquo; July&nbsp;2011.</span><span>)</span></a>. The following error codes are defined for the token revocation endpoint: </p>
+<p>The authorization server indicates a successful processing of the
+      request by a HTTP status code 200. Status code 401 indicates a failed
+      client authentication, whereas a status code 403 is used if the client
+      is not authorized to revoke the particular token. For all other error
+      conditions, a status code 400 is used along with an error response as
+      defined in section 5.2. of <a class="info" href="#I-D.ietf-oauth-v2">[I&#8209;D.ietf&#8209;oauth&#8209;v2]<span> (</span><span class="info">Hammer-Lahav, E., Recordon, D., and D. Hardt, &#8220;The OAuth 2.0 Authorization Protocol,&#8221; September&nbsp;2011.</span><span>)</span></a>. The
+      following error codes are defined for the token revocation endpoint:
+      </p>
 <blockquote class="text"><dl>
 <dt>unsupported_token_type</dt>
-<dd>The authorization server does not support the revocation of the presented token type. I.e. the client tried to revoke an access token on a server not supporting this feature.
+<dd>The authorization server does
+          not support the revocation of the presented token type. I.e. the
+          client tried to revoke an access token on a server not supporting
+          this feature.
 </dd>
 <dt>invalid_token</dt>
 <dd>The presented token is invalid.
 </dd>
 </dl></blockquote>
 
-<a name="Acknowledgements"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="JSONP"></a><br><hr>
+<table summary="layout" class="TOCbug" align="right" cellpadding="0" cellspacing="2"><tbody><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
+<a name="rfc.section.2.1"></a><h3>2.1.&nbsp;
+JSONP Support</h3>
+
+<p>The revocation endpoint MAY support <a class="info" href="#jsonp">JSONP<span> (</span><span class="info">Ippolito, B., &#8220;Remote JSON - JSONP,&#8221; December&nbsp;2005.</span><span>)</span></a> by allowing GET requests with an
+        additional parameter: </p>
+<blockquote class="text"><dl>
+<dt>callback</dt>
+<dd>The qualified name of a JavaScript
+            function.
+</dd>
+</dl></blockquote>
+
+<p>Example request:
+</p><div style="display: table; width: 0; margin-left: 3em; margin-right: auto"><pre>https://example.com/revoke?token=XXXXX&amp;callback=package.myCallback
+</pre></div>
+<p>Successful response:
+</p><div style="display: table; width: 0; margin-left: 3em; margin-right: auto"><pre>package.myCallback();
+</pre></div>
+<p>Error response:
+</p><div style="display: table; width: 0; margin-left: 3em; margin-right: auto"><pre>package.myCallback({"error":"invalid_token"});
+</pre></div>
+<a name="Acknowledgements"></a><br><hr>
+<table summary="layout" class="TOCbug" align="right" cellpadding="0" cellspacing="2"><tbody><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
 <a name="rfc.section.3"></a><h3>3.&nbsp;
 Acknowledgements</h3>
 
-<p>We would like to thank Sebastian Ebling, Christian St&#252;bner, Brian Campbell, Igor Faynberg, Lukas Rosenstock, Marius Scurtescu, and Justin P. Richer for their valuable feedback.
+<p>We would like to thank Sebastian Ebling, Christian Stübner,
+      Brian Campbell, Igor Faynberg, Lukas Rosenstock, and Justin P. Richer
+      for their valuable feedback.
 </p>
-<a name="IANA"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="IANA"></a><br><hr>
+<table summary="layout" class="TOCbug" align="right" cellpadding="0" cellspacing="2"><tbody><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
 <a name="rfc.section.4"></a><h3>4.&nbsp;
 IANA Considerations</h3>
 
 <p>This draft includes no request to IANA.
 </p>
-<a name="Security"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="Security"></a><br><hr>
+<table summary="layout" class="TOCbug" align="right" cellpadding="0" cellspacing="2"><tbody><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
 <a name="rfc.section.5"></a><h3>5.&nbsp;
 Security Considerations</h3>
 
-<p>All relevant security considerations have been given in the functional specification.
+<p>All relevant security considerations have been given in the
+      functional specification.
 </p>
-<a name="rfc.references1"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>6.&nbsp;Normative References</h3>
-<table width="99%" border="0">
-<tr><td class="author-text" valign="top"><a name="I-D.ietf-oauth-v2">[I-D.ietf-oauth-v2]</a></td>
-<td class="author-text">Hammer-Lahav, E., Recordon, D., and D. Hardt, &ldquo;<a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-20">The OAuth 2.0 Authorization Protocol</a>,&rdquo; draft-ietf-oauth-v2-20 (work in progress), July&nbsp;2011 (<a href="http://www.ietf.org/internet-drafts/draft-ietf-oauth-v2-20.txt">TXT</a>, <a href="http://www.ietf.org/internet-drafts/draft-ietf-oauth-v2-20.pdf">PDF</a>).</td></tr>
-<tr><td class="author-text" valign="top"><a name="RFC2119">[RFC2119]</a></td>
-<td class="author-text"><a href="mailto:sob@harvard.edu">Bradner, S.</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>,&rdquo; BCP&nbsp;14, RFC&nbsp;2119, March&nbsp;1997 (<a href="http://www.rfc-editor.org/rfc/rfc2119.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc2119.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc2119.xml">XML</a>).</td></tr>
-<tr><td class="author-text" valign="top"><a name="RFC5246">[RFC5246]</a></td>
-<td class="author-text">Dierks, T. and E. Rescorla, &ldquo;<a href="http://tools.ietf.org/html/rfc5246">The Transport Layer Security (TLS) Protocol Version 1.2</a>,&rdquo; RFC&nbsp;5246, August&nbsp;2008 (<a href="http://www.rfc-editor.org/rfc/rfc5246.txt">TXT</a>).</td></tr>
-</table>
+<a name="rfc.references"></a><br><hr>
+<table summary="layout" class="TOCbug" align="right" cellpadding="0" cellspacing="2"><tbody><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
+<a name="rfc.section.6"></a><h3>6.&nbsp;
+References</h3>
 
-<a name="rfc.authors"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.references1"></a><br><hr>
+<table summary="layout" class="TOCbug" align="right" cellpadding="0" cellspacing="2"><tbody><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
+<h3>6.1.&nbsp;Normative References</h3>
+<table border="0" width="99%">
+<tbody><tr><td class="author-text" valign="top"><a name="I-D.ietf-oauth-v2">[I-D.ietf-oauth-v2]</a></td>
+<td class="author-text">Hammer-Lahav, E., Recordon, D., and D. Hardt, &#8220;<a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-21">The OAuth 2.0 Authorization Protocol</a>,&#8221; draft-ietf-oauth-v2-21 (work in progress), September&nbsp;2011 (<a href="http://www.ietf.org/internet-drafts/draft-ietf-oauth-v2-21.txt">TXT</a>, <a href="http://www.ietf.org/internet-drafts/draft-ietf-oauth-v2-21.pdf">PDF</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2119">[RFC2119]</a></td>
+<td class="author-text"><a href="mailto:sob@harvard.edu">Bradner, S.</a>, &#8220;<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>,&#8221; BCP&nbsp;14, RFC&nbsp;2119, March&nbsp;1997 (<a href="http://www.rfc-editor.org/rfc/rfc2119.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc2119.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc2119.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC5246">[RFC5246]</a></td>
+<td class="author-text">Dierks, T. and E. Rescorla, &#8220;<a href="http://tools.ietf.org/html/rfc5246">The Transport Layer Security (TLS) Protocol Version 1.2</a>,&#8221; RFC&nbsp;5246, August&nbsp;2008 (<a href="http://www.rfc-editor.org/rfc/rfc5246.txt">TXT</a>).</td></tr>
+</tbody></table>
+
+<a name="rfc.references2"></a><br><hr>
+<table summary="layout" class="TOCbug" align="right" cellpadding="0" cellspacing="2"><tbody><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
+<h3>6.2.&nbsp;Informative References</h3>
+<table border="0" width="99%">
+<tbody><tr><td class="author-text" valign="top"><a name="jsonp">[jsonp]</a></td>
+<td class="author-text">Ippolito, B., &#8220;<a href="http://bob.pythonmac.org/archives/2005/12/05/remote-json-jsonp">Remote JSON - JSONP</a>,&#8221; December&nbsp;2005.</td></tr>
+</tbody></table>
+
+<a name="rfc.authors"></a><br><hr>
+<table summary="layout" class="TOCbug" align="right" cellpadding="0" cellspacing="2"><tbody><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
 <h3>Authors' Addresses</h3>
-<table width="99%" border="0" cellpadding="0" cellspacing="0">
-<tr><td class="author-text">&nbsp;</td>
+<table border="0" cellpadding="0" cellspacing="0" width="99%">
+<tbody><tr><td class="author-text">&nbsp;</td>
 <td class="author-text">Dr.-Ing. Torsten Lodderstedt (editor)</td></tr>
 <tr><td class="author-text">&nbsp;</td>
 <td class="author-text">Deutsche Telekom AG</td></tr>
@@ -315,5 +421,13 @@ Security Considerations</h3>
 <td class="author-text">SYRACOM Consulting AG</td></tr>
 <tr><td class="author" align="right">Email:&nbsp;</td>
 <td class="author-text"><a href="mailto:sdronia@gmx.de">sdronia@gmx.de</a></td></tr>
-</table>
+<tr cellpadding="3"><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Marius Scurtescu</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Google</td></tr>
+<tr><td class="author" align="right">Email:&nbsp;</td>
+<td class="author-text"><a href="mailto:mscurtescu@google.com">mscurtescu@google.com</a></td></tr>
+</tbody></table>
+
 </body></html>
