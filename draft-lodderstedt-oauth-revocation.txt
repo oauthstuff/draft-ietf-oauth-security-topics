@@ -159,8 +159,8 @@ Internet-Draft              Token Revocation              September 2011
    transmission of plain text credentials in the HTTP request, the
    authorization server MUST require the use of a transport-layer
    security mechanism when sending requests to the token revocation
-   endpoints.  Authorization servers MUST support TLS 1.2 as defined in
-   [RFC5246], and MAY support additional transport-layer security
+   endpoints.  The authorization server MUST support TLS 1.0
+   ([RFC2246]), SHOULD support TLS 1.2 ([RFC5246]) and its future
 
 
 
@@ -169,7 +169,8 @@ Lodderstedt, et al.      Expires March 19, 2012                 [Page 3]
 Internet-Draft              Token Revocation              September 2011
 
 
-   mechanisms.
+   replacements, and MAY support additional transport-layer mechanisms
+   meeting its security requirements.
 
    The client constructs the request by including the following
    parameters using the "application/x-www-form-urlencoded" format in
@@ -180,7 +181,7 @@ Internet-Draft              Token Revocation              September 2011
            token type automatically.
 
    The client also includes its authentication credentials as described
-   in Section 3 of [I-D.ietf-oauth-v2].
+   in Section 2.3. of [I-D.ietf-oauth-v2].
 
    For example, a client may request the revocation of a refresh token
    with the following request (line breaks are for display purposes
@@ -189,9 +190,9 @@ Internet-Draft              Token Revocation              September 2011
         POST /revoke HTTP/1.1
         Host: server.example.com
         Content-Type: application/x-www-form-urlencoded
+        Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
 
         token=45ghiukldjahdnhzdauz&
-        client_id=s6BhdRkqt3&client_secret=gX1fBat3bV
 
    The authorization server first validates the client credentials (if
    present) and verifies whether the client is authorized to revoke the
@@ -211,12 +212,11 @@ Internet-Draft              Token Revocation              September 2011
    authorization server SHOULD also invalidate all access tokens issued
    for that refresh token.
 
-   If the processed token is an access token, then the authorization
-   server MAY also invalidate the refresh token used to issue this
-   access token.
-
    The authorization server indicates a successful processing of the
    request by a HTTP status code 200.  Status code 401 indicates a
+   failed client authentication, whereas a status code 403 is used if
+   the client is not authorized to revoke the particular token.  For all
+   other error conditions, a status code 400 is used along with an error
 
 
 
@@ -225,9 +225,6 @@ Lodderstedt, et al.      Expires March 19, 2012                 [Page 4]
 Internet-Draft              Token Revocation              September 2011
 
 
-   failed client authentication, whereas a status code 403 is used if
-   the client is not authorized to revoke the particular token.  For all
-   other error conditions, a status code 400 is used along with an error
    response as defined in section 5.2. of [I-D.ietf-oauth-v2].  The
    following error codes are defined for the token revocation endpoint:
 
@@ -247,7 +244,8 @@ Internet-Draft              Token Revocation              September 2011
 
    Example request:
 
-   https://example.com/revoke?token=XXXXX&callback=package.myCallback
+   https://example.com/revoke?token=45ghiukldjahdnhzdauz&
+   callback=package.myCallback
 
    Successful response:
 
@@ -273,15 +271,14 @@ Internet-Draft              Token Revocation              September 2011
 5.  Security Considerations
 
    All relevant security considerations have been given in the
+   functional specification.
+
 
 
 
 Lodderstedt, et al.      Expires March 19, 2012                 [Page 5]
 
 Internet-Draft              Token Revocation              September 2011
-
-
-   functional specification.
 
 
 6.  References
@@ -295,6 +292,9 @@ Internet-Draft              Token Revocation              September 2011
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+   [RFC2246]  Dierks, T. and C. Allen, "The TLS Protocol Version 1.0",
+              RFC 2246, January 1999.
 
    [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
               (TLS) Protocol Version 1.2", RFC 5246, August 2008.
