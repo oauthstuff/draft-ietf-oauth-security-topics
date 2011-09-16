@@ -306,7 +306,7 @@ Internet-Draft              Token Revocation              September 2011
 
 Authors' Addresses
 
-   Dr.-Ing. Torsten Lodderstedt (editor)
+   Torsten Lodderstedt (editor)
    Deutsche Telekom AG
 
    Email: torsten@lodderstedt.net

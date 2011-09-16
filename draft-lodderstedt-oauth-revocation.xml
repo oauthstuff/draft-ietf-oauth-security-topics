@@ -63,8 +63,8 @@
 
     <title abbrev="Token Revocation">Token Revocation</title>
 
-    <author fullname="Dr.-Ing. Torsten Lodderstedt" initials="T."
-            role="editor" surname="Lodderstedt">
+    <author fullname="Torsten Lodderstedt" initials="T." role="editor"
+            surname="Lodderstedt">
       <organization>Deutsche Telekom AG</organization>
 
       <address>
