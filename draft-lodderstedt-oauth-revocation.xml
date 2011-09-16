@@ -166,10 +166,12 @@
       <t>Since requests to the token revocation endpoint result in the
       transmission of plain text credentials in the HTTP request, the
       authorization server MUST require the use of a transport-layer security
-      mechanism when sending requests to the token revocation endpoints.
-      Authorization servers MUST support TLS 1.2 as defined in <xref
-      target="RFC5246"></xref>, and MAY support additional transport-layer
-      security mechanisms.</t>
+      mechanism when sending requests to the token revocation endpoints. The
+      authorization server MUST support TLS 1.0 (<xref
+      target="RFC2246"></xref>), SHOULD support TLS 1.2 (<xref
+      target="RFC5246"></xref>) and its future replacements, and MAY support
+      additional transport-layer mechanisms meeting its security
+      requirements.</t>
 
       <t>The client constructs the request by including the following
       parameters using the "application/x-www-form-urlencoded" format in the
@@ -180,20 +182,21 @@
         </list></t>
 
       <t>The client also includes its authentication credentials as described
-      in Section 3 of <xref target="I-D.ietf-oauth-v2"></xref>.</t>
+      in Section 2.3. of <xref target="I-D.ietf-oauth-v2"></xref>.</t>
 
       <t>For example, a client may request the revocation of a refresh token
-      with the following request (line breaks are for display purposes only):</t>
+      with the following request (line breaks are for display purposes
+      only):</t>
+
       <figure>
-          <artwork><![CDATA[
+        <artwork><![CDATA[
      POST /revoke HTTP/1.1
      Host: server.example.com
      Content-Type: application/x-www-form-urlencoded
-
-     token=45ghiukldjahdnhzdauz&
-     client_id=s6BhdRkqt3&client_secret=gX1fBat3bV
-				    ]]></artwork>
-        </figure>
+     Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
+     
+     token=45ghiukldjahdnhzdauz&  ]]></artwork>
+      </figure>
 
       <t>The authorization server first validates the client credentials (if
       present) and verifies whether the client is authorized to revoke the
@@ -211,10 +214,6 @@
       <t>If the processed token is a refresh token and the authorization
       server supports the revocation of access tokens, then the authorization
       server SHOULD also invalidate all access tokens issued for that refresh
-      token.</t>
-
-      <t>If the processed token is an access token, then the authorization
-      server MAY also invalidate the refresh token used to issue this access
       token.</t>
 
       <t>The authorization server indicates a successful processing of the
@@ -241,23 +240,29 @@
             function.</t>
           </list></t>
 
-        <t>Example request:</t> <figure>
-            <artwork><![CDATA[
-https://example.com/revoke?token=XXXXX&callback=package.myCallback
-]]></artwork>
-          </figure>
+        <t>Example request:</t>
 
-        <t>Successful response:</t> <figure>
-            <artwork><![CDATA[
+        <figure>
+          <artwork><![CDATA[
+https://example.com/revoke?token=45ghiukldjahdnhzdauz&callback=package.myCallback
+]]></artwork>
+        </figure>
+
+        <t>Successful response:</t>
+
+        <figure>
+          <artwork><![CDATA[
 package.myCallback();
 ]]></artwork>
-          </figure>
+        </figure>
 
-        <t>Error response:</t> <figure>
-            <artwork><![CDATA[
+        <t>Error response:</t>
+
+        <figure>
+          <artwork><![CDATA[
 package.myCallback({"error":"invalid_token"});
 ]]></artwork>
-          </figure>
+        </figure>
       </section>
     </section>
 
@@ -284,6 +289,8 @@ package.myCallback({"error":"invalid_token"});
   <back>
     <references title="Normative References">
       <?rfc include="reference.RFC.2119"?>
+
+      <?rfc include="reference.RFC.2246"?>
 
       <?rfc include="reference.RFC.5246"?>
 
