@@ -216,6 +216,9 @@
         </section>
 
         <section title="Client">
+          <t>A full definition of different client types and profiles is given
+          in <xref target="I-D.ietf-oauth-v2"></xref>.</t>
+
           <t>The following data elements are stored or accessible on the
           client:</t>
 
@@ -232,117 +235,6 @@
               <t>per authorization process: redirect_uri, authorization
               code</t>
             </list></t>
-
-          <section title="Web Application">
-            <t>A web application is a client running on a web server,
-            typically with its own user management. End-users access the
-            client via an HTML user interface rendered in a user- agent on the
-            end-user's device. The client credentials as well as any token
-            issued to the client are stored on the web server and are not
-            exposed to or accessible by the end-user. Tokens are bound to a
-            single user identity at the site. The potential number of tokens
-            affected by a security breach depends on number of site users.</t>
-
-            <t>Such clients are implemented using the authorization code grant
-            type (see <xref target="code_flow"></xref>).</t>
-          </section>
-
-          <section title="Native Applications">
-            <t>A native application is a client which is installed and
-            executes on the end-user's device, such as a notebook, PC, Tablet,
-            Smartphone, or Gaming Console. The OAuth protocol data and
-            credentials are accessible to the end-user. It is assumed that
-            such an application can protect dynamically issued credentials,
-            such as refresh tokens, from eavesdropping by other applications
-            residing on the same device.</t>
-
-            <t>Massively distributed applications such as these cannot
-            reliably keep secrets confidential, which are issued per software
-            package. This is because such secrets would need to be transferred
-            to the user device as part of the installation process. An
-            attacker could reverse engineer any secret from the binary or
-            accompanying resources. Native Applications are able to protect
-            per installation/instance secrets (e.g. refresh tokens) to some
-            extent.</t>
-
-            <t>Device platforms typically allow users to lock the device with
-            a PIN code and to segregate different applications or users
-            (multi-user operation systems).</t>
-
-            <t>Some devices can be identified/authenticated (to varying
-            degrees of assurance):</t>
-
-            <t><list style="symbols">
-                <t>Handsets and smart phones by its International Mobile
-                Equipment Identity (IMEI)</t>
-
-                <t>Set top boxes, gaming consoles, others by using
-                certificates and TPM module - Note: This does not help to
-                identify client applications but may be used to bound tokens
-                to devices and to detect token theft</t>
-              </list>Mobile devices, such as handsets or smart phones have the
-            following special characteristics:</t>
-
-            <t><list style="symbols">
-                <t>Limited input capabilities, therefore such clients
-                typically obtain a refresh token in order to provide automatic
-                login for sub-sequent application sessions</t>
-
-                <t>As mobile and small devices, they can get cloned, stolen or
-                lost easier than other devices.</t>
-
-                <t>Security breach will affect single user (or a few users)
-                only.</t>
-              </list>For the purposes of this document, the scenario of
-            attackers who control a smartphone device entirely is out of
-            scope.</t>
-
-            <t>There are several implementation options for native
-            applications:</t>
-
-            <t><list style="symbols">
-                <t>The authorization code grant type in combination with an
-                embedded or external browser (<xref
-                target="code_flow"></xref>)</t>
-
-                <t>The implicit grant type in combination with an embedded or
-                external browser (<xref target="implicite_flow"></xref>)</t>
-
-                <t>The resource owner password credentials grant type can be
-                used as well (<xref target="pwd_flow"></xref>)</t>
-              </list>Different threats exists for those implementation
-            options, which are discussed in the respective sections of the
-            threat model.</t>
-          </section>
-
-          <section title="User-agent-based Applications">
-            <t>A user-agent-based application is a client in which the client
-            code is downloaded from a web server and executes within a
-            user-agent on the end-user's device. The OAuth protocol data and
-            credentials are accessible to the end-user. Since such
-            applications directly reside within the user-agent, they can make
-            seamless use of the user-agent capabilities in the end-user
-            authorization process.</t>
-
-            <t>Such client are implemented using the implicit grant type
-            (<xref target="implicite_flow"></xref>).</t>
-          </section>
-
-          <section title="Autonomous">
-            <t>Autonomous clients access resource services using rights grants
-            by client credentials only. Thus the autonomous client becomes the
-            &bdquo;user&ldquo;. Authenticating autonomous clients is
-            conceptually similar to end-user authentication since the issued
-            tokens refer to the client's identity. Autonomous clients shall
-            always be required to use a secret or some other form of
-            authentication (e.g. client assertion in the form of a SAML
-            assertion or STS token) acceptable to the authorization/token
-            services. The client must ensure the confidentiality of
-            client_secret or other credential.</t>
-
-            <t>Such client are implemented using the client credentials grant
-            type.</t>
-          </section>
         </section>
       </section>
     </section>
@@ -483,7 +375,7 @@
         <t>An Authorization Code represents the intermediary result of a
         successful end-user authorization process and is used by the client to
         obtain access and refresh token. Authorization codes are sent to the
-        client's redirect_uri instead of tokens for two purposes.</t>
+        client's redirection URI instead of tokens for two purposes.</t>
 
         <t><list style="numbers">
             <t>Instead of (longer-lasting) tokens, the short-living
@@ -498,24 +390,28 @@
           </list></t>
       </section>
 
-      <section title="Redirect-URI">
-        <t>A redirect-uri helps to identify clients and prevents phishing
-        attacks from other clients attempting to trick the user into believing
-        the phisher is the client. The value of the actual redirect_uri used
-        in the authorization request has to be presented and is verified when
-        an authorization code is exchanged for tokens. This helps to prevent
-        attacks, where the authorization code is revealed through redirectors
-        and counterfeit web application clients. Moreover, the authorization
-        server may require clients to pre-register their redirect URIs and
-        validate the redirect_uri in the authorization request in order to
-        detect malicious clients.</t>
+      <section title="Redirection URI">
+        <t>A redirection URI helps to detect malicious client and prevents
+        phishing attacks from clients attempting to trick the user into
+        believing the phisher is the client. The value of the actual
+        redirection URI used in the authorization request has to be presented
+        and is verified when an authorization code is exchanged for tokens.
+        This helps to prevent attacks, where the authorization code is
+        revealed through redirectors and counterfeit web application clients.
+        The authorization server requires public clients and confidential
+        clients using implicit grant type to pre-register their redirect URIs
+        and validate agains the registered redirection URI in the
+        authorization request.</t>
       </section>
 
       <section title="State parameter">
         <t>The state parameter is used to link requests and callbacks to
         prevent CSRF attacks where an attacker authorizes access to his own
         resources and then tricks a users into following a redirect with the
-        attacker's token.</t>
+        attacker's token. It should bind to the authenticated state in a user
+        agent and the user agent must be capable of keeping it in a location
+        accessible only by the client and user agent, i.e. protected by
+        same-origin policy</t>
       </section>
 
       <section title="Client Identity">
@@ -523,8 +419,7 @@
         identity of the software component acting on behalf of the end-user.
         OAuth does this in order to increase the security level in delegated
         authorization scenarios and because the client will be able to act
-        without the user's presence. Depending on the client type, the client
-        identity can and should be authenticated (see below).</t>
+        without the user being present.</t>
 
         <t>OAuth uses the <spanx style="emph">client_id</spanx> (client
         identity) to collate associated request to the same originator, such
@@ -547,27 +442,26 @@
         may furthermore be useful to differentiate access by different
         clients, e.g. in server log files.</t>
 
-        <t>The <spanx style="emph">client_secret</spanx> is used to verify the
-        client identifier. The authorization server should only rely on this
-        form of client authentication where these secrets can be deployed to
-        the clients in a secure manner and the client is capable of keeping
-        its secret confidential. Alternatively, the client identity can also
-        be verified using the <spanx style="emph">redirect_uri</spanx> or by
-        the <spanx style="emph">end-user</spanx>.</t>
+        <t>OAuth defines two client types, confidential and public, based on
+        their ability to authenticate securely with the authorization server
+        (i.e. ability to maintain the confidentiality of their client
+        credentials). Confidential clients are capable of maintaining the
+        confidentiality of client credentials (i.e. a client secret associated
+        with the client identifier) or capable of secure client authentication
+        using other means, such as a client assertion (e.g. SAML) or key
+        cryptography. The latter is considered more secure.</t>
 
-        <t>Clients (and the trustworthiness of its identity) can be classified
-        by using the following parameters:</t>
+        <t>The authorization server should determine whether the client is
+        capable of keeping its secret confidential or using secure
+        authentication. Alternatively, the <spanx style="emph">end-user</spanx>
+        can verify the identity of the client, e.g. by only installing trusted
+        applications.The <spanx style="emph">redirection URI</spanx> can be
+        used to prevent delivering credentials to a counterfeit client after
+        obtaining end-user authorization, but can't be used to verify the
+        client identity.</t>
 
-        <t><list style="symbols">
-            <t>Deployment-specific or -independent client_id (Note: for native
-            applications, every installation of a particular application on a
-            certain device is considered a deployment.)</t>
-
-            <t>Validated properties, such as application name or
-            redirect_uri</t>
-
-            <t>Client_secret available</t>
-          </list>Typical client categories are:</t>
+        <t>Clients can be categorized as follows based on the client type,
+        profile (e.g. native vs web application) and deployment model:</t>
 
         <t><list style="hanging">
             <t
@@ -593,9 +487,9 @@
             <t
             hangText="Deployment-specific client_id with pre-registered redirect_uri and with client_secret">The
             client registration process insures the validation of the client's
-            properties, such as redirect_uri, website address, web site name,
-            contacts. Such a client identity can be utilized for all relevant
-            use cases cited above. This level can be achieved for web
+            properties, such as redirection URI, website address, web site
+            name, contacts. Such a client identity can be utilized for all
+            relevant use cases cited above. This level can be achieved for web
             applications in combination with a manual or user-bound
             registration process. Achieving this level for native applications
             is much more difficult. Either the installation of the application
@@ -618,9 +512,7 @@
             of client properties, which makes it another option especially for
             native applications. Revocation will affect a single deployment
             only.</t>
-          </list>Use of the client secret is considered a relatively weak form
-        of credential for the client. Use of stronger mechanisms such as a
-        client assertion (e.g. SAML), key cryptography, are preferred.</t>
+          </list></t>
       </section>
     </section>
 
@@ -655,9 +547,8 @@
 
               <t>Stolen refresh tokens or authorization codes can be
               replayed</t>
-            </list>Depending on the client category, there are the following
-          approaches an attacker could utilize to obtain the client
-          secret.</t>
+            </list>Depending on the client category, the following attacks
+          could be utilized to obtain the client secret.</t>
 
           <t><spanx style="strong">Attack: Obtain Secret From Source Code or Binary.</spanx>
           This applies for all client profiles. For open source projects,
@@ -673,10 +564,11 @@
           <t><spanx>Countermeasures:</spanx></t>
 
           <t><list style="symbols">
-              <t>Don't issue secrets to clients with inappropriate security
-              policy - <xref target="dont_issue"></xref></t>
+              <t>Don't issue secrets to public clients or clients with
+              inappropriate security policy - <xref
+              target="dont_issue"></xref></t>
 
-              <t>Clients without secret require user consent - <xref
+              <t>Public clients require user consent - <xref
               target="forced_user_consent"></xref></t>
 
               <t>Use deployment-specific client secrets - <xref
@@ -873,6 +765,28 @@
               to and back from a trusted external system-browser.</t>
             </list></t>
         </section>
+
+        <section anchor="open_redirector_client"
+                 title="Threat: Open Redirectors on client">
+          <t>An open redirector is an endpoint using a parameter to
+          automatically redirect a user-agent to the location specified by the
+          parameter value without any validation. If the authorization server
+          allows the client to register only part of the redirection URI, an
+          attacker can use an open redirector operated by the client to
+          construct a redirection URI that will pass the authorization server
+          validation but will send the authorization code or access token to
+          an endpoint under the control of the attacker.</t>
+
+          <t>Impact: An attacker could gain access to authorization codes or
+          access tokens</t>
+
+          <t>Countermeasure</t>
+
+          <t><list style="symbols">
+              <t>require clients to register full redirection URI <xref
+              target="val_redirect"></xref></t>
+            </list></t>
+        </section>
       </section>
 
       <section title="Authorization Endpoint">
@@ -919,15 +833,15 @@
               about to grant in a understandable way - <xref
               target="informed_decisions"></xref></t>
 
-              <t>Narrow scope based on client-specific policy - When obtaining
-              end user authorization and where the client requests scope, the
+              <t>Narrow scope based on client - When obtaining end user
+              authorization and where the client requests scope, the
               authorization server may want to consider whether to honour that
               scope based on who the client is. That decision is between the
               client and authorization server and is outside the scope of this
               spec. The authorization server may also want to consider what
-              scope to grant based on the profile used, e.g. providing lower
-              scope where no client secret is provided from a native
-              application. - <xref target="limit_scope"></xref></t>
+              scope to grant based on the client type, e.g. providing lower
+              scope to public clients. - <xref
+              target="limit_scope"></xref></t>
             </list></t>
         </section>
 
@@ -949,12 +863,9 @@
 
           <t><list style="symbols">
               <t>Authorization servers should not automatically process repeat
-              authorizations where the client is not authenticated through a
-              client secret or some other authentication mechanism such as
-              signing with security certificates (see <xref
-              target="strong_client_authn"></xref>) or validation of a
-              pre-registered redirect URI (<xref target="val_redirect"></xref>
-              )</t>
+              authorizations to public clients or unless the client is
+              validated using a pre-registered redirect URI (<xref
+              target="val_redirect"></xref> )</t>
 
               <t>Authorization servers can mitigate the risks associated with
               automatic processing by limiting the scope of Access Tokens
@@ -963,18 +874,25 @@
             </list></t>
         </section>
 
-        <section title="Threat: Open redirector">
+        <section anchor="open_redirector" title="Threat: Open redirector">
           <t>An attacker could use the end-user authorization endpoint and the
-          redirect_uri parameter to abuse the authorization server as
-          redirector.</t>
+          redirection URI parameter to abuse the authorization server as an
+          open redirector. An open redirector is an endpoint using a parameter
+          to automatically redirect a user-agent to the location specified by
+          the parameter value without any validation.</t>
 
-          <t>Impact?</t>
+          <t>Impact: An attacker could utilize a user's trust in your
+          authorization server to launch a phishing attack.</t>
 
           <t>Countermeasure</t>
 
           <t><list style="symbols">
-              <t>don't redirect to redirect_uri, if client identity or
-              redirect_uri could not be verified</t>
+              <t>require clients to register full redirection URI <xref
+              target="val_redirect"></xref></t>
+
+              <t>don't redirect to redirection URI, if client identity or
+              redirection URI could not be verified <xref
+              target="val_redirect"></xref></t>
             </list></t>
         </section>
       </section>
@@ -1068,6 +986,9 @@
               target="high_entropy"></xref></t>
 
               <t>Lock accounts - <xref target="lock_accounts"></xref></t>
+
+              <t>Use Strong Client Authentication - <xref
+              target="strong_client_authn"></xref></t>
             </list></t>
         </section>
 
@@ -1162,7 +1083,7 @@
                 to reduce the damage in case of leaks.</t>
 
                 <t>The client server may reload the target page of the
-                redirect_uri in order to automatically cleanup the browser
+                redirection URI in order to automatically cleanup the browser
                 cache.</t>
               </list></t>
           </section>
@@ -1212,8 +1133,8 @@
                 has to guess - <xref
                 target="depl_specific_secretes"></xref></t>
 
-                <t>Binding of authorization code to redirect_uri, adds another
-                value the attacker has to guess - <xref
+                <t>Binding of authorization code to redirection URI, adds
+                another value the attacker has to guess - <xref
                 target="bind_code_redirect"></xref></t>
 
                 <t>Short expiration time - <xref
@@ -1249,15 +1170,15 @@
                 the access.</t>
 
                 <t>The authorization server should validate the client's
-                redirect_uri against the pre-registered redirect_uri, if one
-                exists (see <xref target="val_redirect"></xref>). Note: The
-                validation of the redirect_uri is the only technical mean to
-                recognize a malicious client id in advance of the
+                redirection URI against the pre-registered redirection URI, if
+                one exists (see <xref target="val_redirect"></xref>). Note:
+                The validation of the redirection URI is the only technical
+                mean to recognize a malicious client id in advance of the
                 authorization process. Further note this does not work for
                 native applications because in contrast to web applications
                 this URI is not bound to a single communication endpoint. The
-                valid client's redirect_uri (typically with custom scheme) can
-                be used by a malicious on any device.</t>
+                valid client's redirection URI (typically with custom scheme)
+                can be used by a malicious client on any device.</t>
 
                 <t>After authenticating the end-user, the authorization server
                 should ask him/her for consent. In this context, the user
@@ -1299,15 +1220,15 @@
             <t>Countermeasures:</t>
 
             <t><list style="symbols">
-                <t>The authorization server MUST require the client to
-                authenticate with a secret, so the binding of the
+                <t>The authorization server MUST require the client to be
+                authenticated, i.e. confidential client, so the binding of the
                 authorization code to a certain client can be validated in a
                 reliable way (see <xref
                 target="bind_code_client_id"></xref>).</t>
 
-                <t>The redirect_uri of the client SHOULD point to a HTTPS
+                <t>The redirection URI of the client SHOULD point to a HTTPS
                 protected endpoint and the browser shall be utilized to
-                authenticate this redirect_uri using server authentication
+                authenticate this redirection URI using server authentication
                 (see <xref target="server_authn"></xref>).</t>
               </list></t>
           </section>
@@ -1340,9 +1261,9 @@
 
             <t><list style="symbols">
                 <t>In order to prevent an attacker from impersonating the
-                end-users session, the redirect_uri of the client MUST point
-                to a HTTPS protected endpoint and the browser shall be
-                utilized to authenticate this redirect_uri using server
+                end-users session, the redirection URI of the client MUST
+                point to a HTTPS protected endpoint and the browser shall be
+                utilized to authenticate this redirection URI using server
                 authentication (see <xref target="server_authn"></xref>)</t>
               </list></t>
           </section>
@@ -1374,7 +1295,7 @@
                 the resource server's authorization server. Instead of
                 proceeding with the authorization process, the attacker
                 modifies the authorization server end-user authorization URL
-                as constructed by the client to include a redirect_uri
+                as constructed by the client to include a redirection URI
                 parameter referring to a web site under his control
                 (attacker's web site).</t>
 
@@ -1394,9 +1315,9 @@
                 <t>The attacker obtains the authorization code from his web
                 site by means out of scope of this document.</t>
 
-                <t>He then constructs a redirect_uri to the target web site
+                <t>He then constructs a redirection URI to the target web site
                 (or application) based on the original authorization request's
-                redirect_uri and the newly obtained authorization code and
+                redirection URI and the newly obtained authorization code and
                 directs his user agent to this URL. The authorization code is
                 injected into the original client site (or application).</t>
 
@@ -1414,12 +1335,12 @@
             <t>Countermeasures:</t>
 
             <t><list style="symbols">
-                <t>The attacker must use another redirect_uri for its
+                <t>The attacker must use another redirection URI for its
                 authorization process than the target web site because it
                 needs to intercept the flow. So if the authorization server
-                associates the authorization code with the redirect_uri of a
-                particular end-user authorization and validates this
-                redirect_uri with the redirect_uri passed to the tokens
+                associates the authorization code with the redirection URI of
+                a particular end-user authorization and validates this
+                redirection URI with the redirection URI passed to the tokens
                 endpoint, such an attack is detected (see <xref
                 target="bind_code_redirect"></xref>).</t>
 
@@ -1453,7 +1374,7 @@
             authorization to OAuth protected resources without the consent of
             the User.</t>
 
-            <t>This attack works against the redirect-uri used in the
+            <t>This attack works against the redirection URI used in the
             authorization code flow. An attacker could authorize an
             authorization code to their own protected resources on an
             authorization server. He then aborts the redirect flow back to the
@@ -1477,12 +1398,9 @@
 
             <t><list style="symbols">
                 <t>The state parameter should be used to link the
-                authorization request with the redirect-uri used deliver the
-                access token. This will ensure the client is not tricked into
-                completing any redirect callback unless it is linked to an
-                authorization request the client initiated. The state
-                parameter should be unguessable and the client should be
-                capable of keeping the state parameter secret.</t>
+                authorization request with the redirection URI used to deliver
+                the access token. <xref
+                target="link_state_uasession"></xref></t>
 
                 <t>Client developers and end-user can be educated not follow
                 untrusted URLs.</t>
@@ -1618,17 +1536,17 @@
         </section>
 
         <section anchor="implicite_flow" title="Implicit Grant">
-          <t>he implicit grant flow, the access token is directly returned to
-          the client as fragment part of the redirect_uri. It is assumed that
-          the token is not send to the redirect_uri target since HTTP user
-          agents do not send fragments server requests. Thus an attacker
-          cannot eavesdrop the access token on this communication path and It
-          cannot leak through HTTP referee headers.</t>
+          <t>In the implicit grant type flow, the access token is directly
+          returned to the client as a fragment part of the redirection URI. It
+          is assumed that the token is not sent to the redirection URI target
+          since HTTP user agents do not send fragments server requests. Thus
+          an attacker cannot eavesdrop the access token on this communication
+          path and It cannot leak through HTTP referee headers.</t>
 
           <section title="Threat: Access token leak in transport/end-points">
             <t>This token might be eavesdropped by an attacker. The token is
-            sent from server to client via a URI fragment of the redirect_uri.
-            If the communication is not secured or the end-point is not
+            sent from server to client via a URI fragment of the redirection
+            URI. If the communication is not secured or the end-point is not
             secured, the token could be leaked by parsing the returned
             URI.</t>
 
@@ -1712,13 +1630,14 @@
             authorization to OAuth protected resources without the consent of
             the User.</t>
 
-            <t>This attack works against the redirect-uri used in the implicit
-            grant flow. An attacker could acquire an access token to their own
-            protected resources. He could then construct a Redirect-uri and
-            embed their access token in that URI. If he can trick the user
-            into following the Redirect-uri and the client does not have
-            protection against this attack, the user may have the attacker's
-            access token authorized within their client.</t>
+            <t>This attack works against the redirection URI used in the
+            implicit grant flow. An attacker could acquire an access token to
+            their own protected resources. He could then construct a
+            redirection URI and embed their access token in that URI. If he
+            can trick the user into following the redirection URI and the
+            client does not have protection against this attack, the user may
+            have the attacker's access token authorized within their
+            client.</t>
 
             <t>Impact: The user accesses resources on behalf of the attacker.
             The effective impact depends on the type of resource accessed. For
@@ -1734,10 +1653,10 @@
 
             <t><list style="symbols">
                 <t>The state parameter should be used to link the
-                authorization request with the redirect-uri used deliver the
-                access token. This will ensure the client is not tricked into
-                completing any redirect callback unless it is linked to an
-                authorization request the client initiated. The state
+                authorization request with the redirection URI used deliver
+                the access token. This will ensure the client is not tricked
+                into completing any redirect callback unless it is linked to
+                an authorization request the client initiated. The state
                 parameter should be unguessable and the client should be
                 capable of keeping the state parameter secret.</t>
 
@@ -2404,7 +2323,7 @@
 
             <t><list style="symbols">
                 <t>a client-specific policy, e.g. issue only less powerful
-                tokens to unauthenticated clients,</t>
+                tokens to public clients,</t>
 
                 <t>a service-specific policy, e.g. it a very sensible
                 service,</t>
@@ -2600,7 +2519,7 @@
             id of the client such a token was originally issued to and
             validate this binding for every request to refresh that token.
             This measure is a countermeasure against refresh token theft or
-            leakage. </t>
+            leakage.</t>
 
             <t>Note: This binding MUST be protected from unauthorized
             modifications.</t>
@@ -2765,11 +2684,11 @@
                    title="Client_id only in combination with redirect_uri">
             <t>The authorization may issue a client_id and bind the client_id
             to a certain pre-configured redirect_uri. Any authorization
-            request with another redirect_uri is refused automatically.
+            request with another redirection URI is refused automatically.
             Alternatively, the authorization server MUST not accept any
-            dynamic redirect_uri for such a client_id and instead always
-            redirect to the well-known pre-configured redirect_uri. This is a
-            countermeasure for clients without secrets against the following
+            dynamic redirection URI for such a client_id and instead always
+            redirect to the well-known pre-configured redirection URI. This is
+            a countermeasure for clients without secrets against the following
             threats:</t>
 
             <t><list style="symbols">
@@ -2791,9 +2710,9 @@
             So the provider of that particular site could request client id
             and secret from the authorization server during setup of the web
             site. This would also allow to validate some of the properties of
-            that web site, such as redirect_uri, address, and whatever proofs
-            useful. The web site provider has to ensure the security of the
-            client secret on the site.</t>
+            that web site, such as redirection URI, address, and whatever
+            proofs useful. The web site provider has to ensure the security of
+            the client secret on the site.</t>
 
             <t>For native applications, things are more complicated because
             every installation of the application on any device is another
@@ -2819,15 +2738,17 @@
 
           <section anchor="val_redirect"
                    title="Validation of pre-registered redirect_uri">
-            <t>An authorization server MUST require clients to register their
-            redirect_uri or a pattern (TBD: make definition more precise)
-            thereof. The way this registration is performed is out of scope of
-            this document. Every actual redirect_uri sent with the respective
-            client_id to the end-user authorization endpoint must comply with
-            that pattern. Otherwise the authorization server must assume the
-            inbound GET request has been sent by an attacker and refuse it.
-            Note: the authorization server MUST NOT redirect the user agent
-            back to the redirect_uri of such an authorization request.</t>
+            <t>An authorization server SHOULD require all clients to register
+            their redirect_uri and the redirect_uri should be the full URI as
+            defined in <xref target="I-D.ietf-oauth-v2"></xref>. The way this
+            registration is performed is out of scope of this document. Every
+            actual redirection URI sent with the respective client_id to the
+            end-user authorization endpoint must match the registered
+            redirection URI. Where it does not match, the authorization server
+            must assume the inbound GET request has been sent by an attacker
+            and refuse it. Note: the authorization server MUST NOT redirect
+            the user agent back to the redirection URI of such an
+            authorization request.</t>
 
             <t><list style="symbols">
                 <t>Authorization code leakage through counterfeit web site:
@@ -2840,11 +2761,18 @@
                 authorization process. This reduces the need for a interactive
                 validation by the user (<xref target="mal_client"></xref>,
                 <xref target="mal_client2"></xref>).</t>
-              </list>The underlying assumption of this measure is that an
-            attacker must use another redirect_uri in order to get access to
-            the authorization code. Deployments might consider the possibility
-            of an attacker using spoofing attacks to a victims device to
-            circumvent this security measure.</t>
+
+                <t>Open Redirector attack via client redirection endpoint. (
+                <xref target="open_redirector_client"></xref>. )</t>
+
+                <t>Open Redirector phishing attack via authorization server
+                redirection endpoint ( <xref target="open_redirector"></xref>
+                )</t>
+              </list> The underlying assumption of this measure is that an
+            attacker must use another redirection URI in order to get access
+            to the authorization code. Deployments might consider the
+            possibility of an attacker using spoofing attacks to a victims
+            device to circumvent this security measure.</t>
 
             <t>Note: Pre-registering clients might not scale in some
             deployments (manual process) or require dynamic client
@@ -2898,7 +2826,7 @@
             signing with security certificates (5.7.2.7. Use strong client
             authentication (e.g. client_assertion / client_token)) or
             validation of a pre-registered redirect URI (5.7.2.5. Validation
-            of pre-registered redirect_uri ).</t>
+            of pre-registered redirection URI ).</t>
           </section>
 
           <section anchor="informed_decisions"
@@ -2951,13 +2879,14 @@
           <section anchor="bind_code_redirect"
                    title="Binding of authorization code to redirect_uri">
             <t>The authorization server MUST bind every authorization code to
-            the actual redirect_uri used as redirect target of the client in
-            the end-user authorization process. This binding MUST be validated
-            when the client attempts to exchange the respective authorization
-            code for an access token. This measure is a countermeasure against
-            authorization code leakage through counterfeit web sites since an
-            attacker cannot use another redirect_uri to exchange an
-            authorization code into a token.</t>
+            the actual redirection URI used as redirect target of the client
+            in the end-user authorization process. This binding MUST be
+            validated when the client attempts to exchange the respective
+            authorization code for an access token. This measure is a
+            countermeasure against authorization code leakage through
+            counterfeit web sites since an attacker cannot use another
+            redirection URI to exchange an authorization code into a
+            token.</t>
           </section>
         </section>
       </section>
@@ -3015,6 +2944,30 @@
 
               <t>Remote removal</t>
             </list></t>
+        </section>
+
+        <section anchor="link_state_uasession"
+                 title="Link state parameter to user agent session">
+          <t>The state parameter is used to link client requests and prevent
+          CSRF attacks, for example against the redirection URI. An attacker
+          could inject their own authorization code or access token, which can
+          result in the client using an access token associated with the
+          attacker's protected resources rather than the victim's (e.g. save
+          the victim's bank account information to a protected resource
+          controlled by the attacker).</t>
+
+          <t>The client SHOULD utilize the "state" request parameter to send
+          the authorization server a value that binds the request to the
+          user-agent's authenticated state (e.g. a hash of the session cookie
+          used to authenticate the user-agent) when making an authorization
+          request. Once authorization has been obtained from the end-user, the
+          authorization server redirects the end-user's user-agent back to the
+          client with the required binding value contained in the "state"
+          parameter.</t>
+
+          <t>The binding value enables the client to verify the validity of
+          the request by matching the binding value to the user- agent's
+          authenticated state.</t>
         </section>
       </section>
 
@@ -3127,8 +3080,8 @@
           countermeasures description.</t>
 
           <t>section 4.4.1.6 - changed "client shall authenticate the server"
-          to "The browser shall be utilized to authenticate the redirect_uri
-          of the client"</t>
+          to "The browser shall be utilized to authenticate the redirection
+          URI of the client"</t>
 
           <t>section 5 - general review and alignment with public/confidential
           client terms</t>
