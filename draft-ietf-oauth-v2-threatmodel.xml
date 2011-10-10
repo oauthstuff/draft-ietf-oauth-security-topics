@@ -11,7 +11,7 @@
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
 <?rfc strict="no"?>
-<rfc category="std" docName="draft-ietf-oauth-v2-threatmodel-00"
+<rfc category="std" docName="draft-ietf-oauth-v2-threatmodel-01"
      ipr="trust200902">
   <front>
     <title abbrev="OAuth 2.0 Security">OAuth 2.0 Threat Model and Security
@@ -42,7 +42,7 @@
       </address>
     </author>
 
-    <date day="05" month="August" year="2011" />
+    <date day="10" month="October" year="2011" />
 
     <area>Security Area</area>
 
@@ -217,7 +217,7 @@
 
         <section title="Client">
           <t>A full definition of different client types and profiles is given
-          in <xref target="I-D.ietf-oauth-v2"></xref>.</t>
+          in <xref target="I-D.ietf-oauth-v2"></xref>, Section 2.1.</t>
 
           <t>The following data elements are stored or accessible on the
           client:</t>
@@ -621,7 +621,7 @@
 
               <t>Refresh tokens can automatically be replaced in order to
               detect unauthorized token usage by another party (Refresh Token
-              Replacement) - <xref target="refresh_replace"></xref></t>
+              Rotation) - <xref target="refresh_replace"></xref></t>
             </list> <spanx style="strong"></spanx></t>
 
           <t><spanx style="strong">Attack: Obtain Refresh Token from Web application.</spanx>
@@ -668,9 +668,6 @@
               <t>Utilize device lock to prevent unauthorized device access -
               <xref format="default" target="device_lock"></xref></t>
 
-              <t>Combine refresh token requests with user-provided secret -
-              <xref target="user_secret"></xref></t>
-
               <t>Where a user knows the device has been stolen, they can
               revoke the affected tokens - <xref
               target="refresh_revocation"></xref></t>
@@ -686,26 +683,13 @@
               <t>Combine refresh token request with device identification -
               <xref target="device_id"></xref></t>
 
-              <t>Combine refresh token requests with user-provided secret -
-              <xref target="user_secret"></xref></t>
-
-              <t>Refresh Token Replacement - <xref
+              <t>Refresh Token Rotation - <xref
               target="refresh_replace"></xref></t>
 
               <t>Where a user knows the device has been cloned, they can use
               this countermeasure - Refresh Token Revocation - <xref
               target="refresh_revocation"></xref></t>
             </list> <spanx style="emph"></spanx></t>
-
-          <t><spanx style="emph">Obtain refresh tokens from backup:</spanx> A
-          refresh token could be obtained from the backup of a client
-          application, or device.</t>
-
-          <t><spanx style="emph">Countermeasures:</spanx></t>
-
-          <t><list style="symbols">
-              <t>tbd</t>
-            </list></t>
         </section>
 
         <section title="Threat: Obtain Access Tokens">
@@ -1117,8 +1101,10 @@
           <section title="Threat: Online guessing of authorization codes">
             <t>An attacker may try to guess valid authorization code values
             and send it using the grant type &bdquo;code&ldquo; in order to
-            obtain a valid access token. Impact: disclosure of single access
-            token (+probably refresh token)</t>
+            obtain a valid access token. </t>
+
+            <t>Impact: disclosure of single access token, probably also
+            associated refresh token.</t>
 
             <t>Countermeasures:</t>
 
@@ -1219,17 +1205,20 @@
 
             <t>Countermeasures:</t>
 
-            <t><list style="symbols">
-                <t>The authorization server MUST require the client to be
-                authenticated, i.e. confidential client, so the binding of the
-                authorization code to a certain client can be validated in a
-                reliable way (see <xref
-                target="bind_code_client_id"></xref>).</t>
+            <t>It is strongly recommended that one of the following
+            countermeasures is utilized in order to prevent this attack:</t>
 
+            <t><list style="symbols">
                 <t>The redirection URI of the client SHOULD point to a HTTPS
                 protected endpoint and the browser shall be utilized to
                 authenticate this redirection URI using server authentication
                 (see <xref target="server_authn"></xref>).</t>
+
+                <t>The authorization server SHOULD require the client to be
+                authenticated, i.e. confidential client, so the binding of the
+                authorization code to a certain client can be validated in a
+                reliable way (see <xref
+                target="bind_code_client_id"></xref>).</t>
               </list></t>
           </section>
 
@@ -1432,6 +1421,75 @@
                 <t>For older browsers, javascript framebusting techniques can
                 be used but may not be effective in all browsers.</t>
               </list></t>
+          </section>
+
+          <section title="Threat: Resource Owner Impersonation">
+            <t>When a client requests access to protected resources, the
+            authorization flow normally involves the resource owner's explicit
+            response to the access request, either granting or denying access
+            to the protected resources. A malicious client can exploit
+            knowledge of the structure of this flow in order to gain
+            authorization without the resource owner's consent, by
+            transmitting the necessary requests programmatically, and
+            simulating the flow against the authorization server. That way,
+            the client may gain access to the victims resources without her
+            approval. An authorization server will be vulnerable to this
+            threat, if it uses non-interactive authentication mechanisms or
+            split the authorization flow across multiple pages.</t>
+
+            <t>The malicious client might embbed a hidden HTML user agent,
+            interpret the HTML forms sent by the authorization server, and
+            automatically answer with the corresponding form post requests. As
+            a pre-requisiete, the attacker must be able to execute the
+            authorization process in the context of an already authenticated
+            session of the resource owner with the authorization server. There
+            are different ways to achieve this:</t>
+
+            <t><list style="symbols">
+                <t>The malicious client could abuse an existing session in an
+                external browser or cross-browser cookies on the particular
+                device.</t>
+
+                <t>It could also request authorization for a particular scope
+                and silently abuse the resulting session in his browser
+                instance to "silently" request another scope.</t>
+
+                <t>Alternatively, the attacker might exploit an authorization
+                server's aibility to authenticate the resource owner
+                automatically and without user interactions, e.g. based on
+                certificates.</t>
+              </list> In all cases, such an attack is limited to clients
+            running on the victim's device, within the user agent or as native
+            app.</t>
+
+            <t>Please note: Such attacks cannot be prevented using CSRF
+            countermeasures, since the attacker just "executes" the URLs as
+            prepared by the authorization server including any nonce
+            e.t.c.</t>
+
+            <t>Countermeasures:</t>
+
+            <t>Authorization servers should decide, based on an analysis of
+            the risk associated with this threat, whether to assume, detect,
+            or to prevent this threat.</t>
+
+            <t>In order to prevent such an attack, the authorization server
+            may force an user interaction based on non-predictable input
+            values as part of the user consent approval. The authorization
+            server could</t>
+
+            <t><list style="symbols">
+                <t>combine password authentication and user consent in a
+                single form,</t>
+
+                <t>make use of CAPTCHAs, or</t>
+
+                <t>or use one-time secrets send out of bound to the resource
+                owner (e.g. via text or instance message).</t>
+              </list> Alternatively in order to allow the resource owner to
+            detect abuse, the authorization server could notify the resource
+            owner of any approval by appropriate means, e.g. text or instant
+            message or e-Mail.</t>
           </section>
 
           <section title="Threat: DoS, Exhaustion of resources attacks">
@@ -1842,10 +1900,8 @@
           <t>Client credentials (see <xref target="I-D.ietf-oauth-v2"></xref>,
           Section 3) consist of an identifier (not secret) combined with an
           additional means (such as a matching client secret) of
-          authenticating a client.</t>
-
-          <t>[[Threats seem to be covered elsewhere such as <xref
-          target="eavesdropping"></xref>]]</t>
+          authenticating a client. The threats to this grant type are similar
+          to <xref target="pwd_flow"></xref>.</t>
         </section>
       </section>
 
@@ -2204,8 +2260,12 @@
           codes.</t>
 
           <section anchor="cred_storage_prot"
-                   title="Credential storage protection">
-            <section anchor="std_sys" title="Standard system security means">
+                   title="Credential Storage Protection">
+            <t>Administrators should undertake industry best practices to
+            protect the storage of credentials. Such practices may include but
+            are not limited to the following sub-sections.</t>
+
+            <section anchor="std_sys" title="Standard System Security Means">
               <t>A server system may be locked down so that no attacker may
               get access to sensible configuration files and databases.</t>
             </section>
@@ -2374,18 +2434,24 @@
 
           <section anchor="one_time_usage"
                    title="Limit number of usages/ One time usage">
-            <t>The authorization server may restrict the number of request,
-            which can be performed with a certain token. This mechanism can be
-            used to mitigate the following threats:</t>
+            <t>The authorization server may restrict the number of requests or
+            operations which can be performed with a certain token. This
+            mechanism can be used to mitigate the following threats:</t>
 
             <t><list style="symbols">
                 <t>replay of tokens</t>
 
                 <t>reduce likelihood of successful online guessing</t>
-              </list>Additionally, If an Authorization Server observes
-            multiple attempts to redeem a authorization code, the
-            Authorization Server may want to revoke all tokens granted based
-            on the authorization code.</t>
+              </list>For example, if an Authorization Server observes more
+            than one attempt to redeem a authorization code, the Authorization
+            Server MAY want to revoke all access tokens granted based on the
+            authorization code as well as reject the current request.</t>
+
+            <t>As with the authorization code, access tokens MAY also have a
+            limited number of operations. This forces client applications to
+            either re-authenticate and use a refresh token to obtain a fresh
+            access token, or it forces the client to re-authorize the access
+            token by involving the user.</t>
           </section>
 
           <section anchor="bind_token_rs"
@@ -2525,11 +2591,11 @@
             modifications.</t>
           </section>
 
-          <section anchor="refresh_replace" title="Refresh Token Replacement">
-            <t>Refresh token replacement is intended to automatically detect
-            and prevent attempts to use the same refresh token in parallel
-            from different apps/devices. This happens if a token gets stolen
-            from the client and is subsequently used by the attacker and the
+          <section anchor="refresh_replace" title="Refresh Token Rotation">
+            <t>Refresh token rotation is intended to automatically detect and
+            prevent attempts to use the same refresh token in parallel from
+            different apps/devices. This happens if a token gets stolen from
+            the client and is subsequently used by the attacker and the
             legitimate client. The basic idea is to change the refresh token
             value with every refresh request in order to detect attempts to
             obtain access tokens using old refresh tokens. Since the
@@ -2565,15 +2631,6 @@
               </list></t>
           </section>
 
-          <section anchor="user_secret"
-                   title="Combine refresh token requests with user-provided secret">
-            <t>The exchange of a refresh token can be bound to the presence of
-            a certain user-provided secret, such as a PIN, a password or a SIM
-            card. This is a kind of multi-factor authentication on the tokens
-            endpoint, since an attacker must possess both factors in order to
-            be able to obtain an access token.</t>
-          </section>
-
           <section anchor="device_id" title="Device identification">
             <t>The authorization server may require to bind authentication
             credentials to a device identifier or token assigned to that
@@ -2586,9 +2643,7 @@
             <t>This is a countermeasure against the following threats:</t>
 
             <t><list style="symbols">
-                <t>phishing attacks</t>
-
-                <t>...</t>
+                <t>token theft from a particular device</t>
               </list></t>
           </section>
 
@@ -2602,8 +2657,6 @@
 
             <t><list style="symbols">
                 <t>Clickjacking attacks</t>
-
-                <t>...</t>
               </list></t>
           </section>
         </section>
@@ -2671,12 +2724,7 @@
             against the following threats:</t>
 
             <t><list style="symbols">
-                <t>Impersonation of client applications using only
-                client_id,</t>
-
-                <t>Phishing attacks</t>
-
-                <t>...</t>
+                <t>Impersonation of public client applications</t>
               </list></t>
           </section>
 
@@ -2694,7 +2742,7 @@
             <t><list style="symbols">
                 <t>Cross-site scripting attacks</t>
 
-                <t>Phishing attacks [...]</t>
+                <t>Impersonation of public client applications</t>
               </list></t>
           </section>
 
@@ -2797,9 +2845,7 @@
             <t>This a countermeasure against:</t>
 
             <t><list style="symbols">
-                <t>...</t>
-
-                <t>...</t>
+                <t>Abuse of revealed client secrets for private clients</t>
               </list></t>
           </section>
 
@@ -3037,9 +3083,9 @@
     </section>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
-      <t>We would like to thank Hui-Lan Lu, Francisco Corella, Eric Pflam,
-      Shane B Weeden, Skylar Woodward and James H. Manger for their comments
-      and contributions.</t>
+      <t>We would like to thank Hui-Lan Lu, Francisco Corella, Peifung E Lam,
+      Shane B Weeden, Skylar Woodward, Niv Steingarten and James H. Manger for
+      their comments and contributions.</t>
     </section>
   </middle>
 
@@ -3110,7 +3156,7 @@
           5.1.4.1.4, 5.2.3.5</t>
 
           <t>added new threat "DoS using manufactured authorization codes" as
-          proposed by Eric Pflam</t>
+          proposed by Peifung E Lam</t>
 
           <t>added XSRF and clickjacking (incl. state parameter
           explanation)</t>
@@ -3124,6 +3170,23 @@
           definition</t>
 
           <t>converted I-D into WG document</t>
+        </list></t>
+
+      <t>draft-ietf-oauth-v2-threatmodel-01</t>
+
+      <t><list style="symbols">
+          <t>Alignment of terminology with core draft 22 (private/public
+          client, redirect URI validation policy, replaced definition of the
+          client categories by reference to respective core section)</t>
+
+          <t>Synchronisation with the core's security consideration section
+          (UPDATE 10.12 CSRF, NEW 10.14/15)</t>
+
+          <t>Added Resource Owner Impersonation</t>
+
+          <t>Improved section 5</t>
+
+          <t>Renamed Refresh Token Replacement to Refresh Token Rotation</t>
         </list></t>
     </section>
   </back>
