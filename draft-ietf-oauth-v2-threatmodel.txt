@@ -3,11 +3,11 @@
 
 Web Authorization Protocol (oauth)                   T. Lodderstedt, Ed.
 Internet-Draft                                       Deutsche Telekom AG
-Intended status: Standards Track                              M. McGloin
-Expires: April 12, 2012                                              IBM
+Intended status: Informational                                M. McGloin
+Expires: April 28, 2012                                              IBM
                                                                  P. Hunt
                                                       Oracle Corporation
-                                                        October 10, 2011
+                                                        October 26, 2011
 
 
            OAuth 2.0 Threat Model and Security Considerations
@@ -39,7 +39,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 12, 2012.
+   This Internet-Draft will expire on April 28, 2012.
 
 Copyright Notice
 
@@ -52,7 +52,7 @@ Copyright Notice
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                 [Page 1]
+Lodderstedt, et al.      Expires April 28, 2012                 [Page 1]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -108,7 +108,7 @@ Table of Contents
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                 [Page 2]
+Lodderstedt, et al.      Expires April 28, 2012                 [Page 2]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -164,7 +164,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                 [Page 3]
+Lodderstedt, et al.      Expires April 28, 2012                 [Page 3]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -220,7 +220,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                 [Page 4]
+Lodderstedt, et al.      Expires April 28, 2012                 [Page 4]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -276,7 +276,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                 [Page 5]
+Lodderstedt, et al.      Expires April 28, 2012                 [Page 5]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -332,7 +332,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                 [Page 6]
+Lodderstedt, et al.      Expires April 28, 2012                 [Page 6]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -388,7 +388,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                 [Page 7]
+Lodderstedt, et al.      Expires April 28, 2012                 [Page 7]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -444,7 +444,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                 [Page 8]
+Lodderstedt, et al.      Expires April 28, 2012                 [Page 8]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -500,7 +500,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                 [Page 9]
+Lodderstedt, et al.      Expires April 28, 2012                 [Page 9]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -556,7 +556,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 10]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 10]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -612,7 +612,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 11]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 11]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -668,7 +668,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 12]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 12]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -724,7 +724,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 13]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 13]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -780,7 +780,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 14]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 14]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -836,7 +836,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 15]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 15]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -892,7 +892,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 16]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 16]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -948,7 +948,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 17]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 17]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -1004,7 +1004,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 18]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 18]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -1060,7 +1060,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 19]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 19]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -1116,7 +1116,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 20]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 20]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -1172,7 +1172,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 21]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 21]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -1228,7 +1228,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 22]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 22]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -1284,7 +1284,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 23]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 23]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -1340,7 +1340,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 24]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 24]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -1396,7 +1396,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 25]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 25]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -1452,7 +1452,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 26]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 26]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -1508,7 +1508,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 27]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 27]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -1564,7 +1564,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 28]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 28]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -1620,7 +1620,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 29]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 29]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -1676,7 +1676,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 30]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 30]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -1732,7 +1732,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 31]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 31]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -1788,7 +1788,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 32]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 32]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -1844,7 +1844,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 33]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 33]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -1900,7 +1900,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 34]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 34]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -1956,7 +1956,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 35]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 35]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -2012,7 +2012,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 36]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 36]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -2068,7 +2068,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 37]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 37]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -2124,7 +2124,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 38]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 38]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -2180,7 +2180,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 39]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 39]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -2236,7 +2236,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 40]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 40]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -2292,7 +2292,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 41]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 41]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -2348,7 +2348,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 42]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 42]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -2404,7 +2404,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 43]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 43]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -2460,7 +2460,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 44]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 44]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -2516,7 +2516,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 45]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 45]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -2572,7 +2572,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 46]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 46]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -2628,7 +2628,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 47]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 47]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -2684,7 +2684,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 48]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 48]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -2740,7 +2740,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 49]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 49]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -2796,7 +2796,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 50]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 50]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -2852,7 +2852,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 51]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 51]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -2908,7 +2908,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 52]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 52]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -2964,7 +2964,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 53]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 53]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -3020,7 +3020,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 54]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 54]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -3076,7 +3076,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 55]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 55]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -3132,7 +3132,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 56]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 56]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -3188,7 +3188,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 57]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 57]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -3244,7 +3244,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 58]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 58]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -3300,7 +3300,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 59]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 59]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -3356,7 +3356,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 60]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 60]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -3412,7 +3412,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 61]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 61]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -3422,8 +3422,8 @@ Internet-Draft             OAuth 2.0 Security               October 2011
    [I-D.ietf-oauth-v2-bearer]
               Jones, M., Hardt, D., and D. Recordon, "The OAuth 2.0
               Authorization Protocol: Bearer Tokens",
-              draft-ietf-oauth-v2-bearer-09 (work in progress),
-              September 2011.
+              draft-ietf-oauth-v2-bearer-11 (work in progress),
+              October 2011.
 
    [I-D.ietf-oauth-v2-http-mac]
               Hammer-Lahav, E., Barth, A., and B. Adida, "HTTP
@@ -3468,7 +3468,7 @@ Appendix A.  Document History
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 62]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 62]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -3524,7 +3524,7 @@ Internet-Draft             OAuth 2.0 Security               October 2011
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 63]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 63]
 
 Internet-Draft             OAuth 2.0 Security               October 2011
 
@@ -3580,5 +3580,5 @@ Authors' Addresses
 
 
 
-Lodderstedt, et al.      Expires April 12, 2012                [Page 64]
+Lodderstedt, et al.      Expires April 28, 2012                [Page 64]
 

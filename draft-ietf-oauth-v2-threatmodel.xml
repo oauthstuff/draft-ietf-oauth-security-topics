@@ -11,7 +11,7 @@
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
 <?rfc strict="no"?>
-<rfc category="std" docName="draft-ietf-oauth-v2-threatmodel-01"
+<rfc category="info" docName="draft-ietf-oauth-v2-threatmodel-01"
      ipr="trust200902">
   <front>
     <title abbrev="OAuth 2.0 Security">OAuth 2.0 Threat Model and Security
@@ -42,7 +42,7 @@
       </address>
     </author>
 
-    <date day="10" month="October" year="2011" />
+    <date day="26" month="October" year="2011" />
 
     <area>Security Area</area>
 
@@ -1101,7 +1101,7 @@
           <section title="Threat: Online guessing of authorization codes">
             <t>An attacker may try to guess valid authorization code values
             and send it using the grant type &bdquo;code&ldquo; in order to
-            obtain a valid access token. </t>
+            obtain a valid access token.</t>
 
             <t>Impact: disclosure of single access token, probably also
             associated refresh token.</t>

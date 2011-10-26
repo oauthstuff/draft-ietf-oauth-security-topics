@@ -144,11 +144,11 @@
 <table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
 <tr><td class="header">Web Authorization Protocol (oauth)</td><td class="header">T. Lodderstedt, Ed.</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">Deutsche Telekom AG</td></tr>
-<tr><td class="header">Intended status: Standards Track</td><td class="header">M. McGloin</td></tr>
-<tr><td class="header">Expires: April 12, 2012</td><td class="header">IBM</td></tr>
+<tr><td class="header">Intended status: Informational</td><td class="header">M. McGloin</td></tr>
+<tr><td class="header">Expires: April 28, 2012</td><td class="header">IBM</td></tr>
 <tr><td class="header">&nbsp;</td><td class="header">P. Hunt</td></tr>
 <tr><td class="header">&nbsp;</td><td class="header">Oracle Corporation</td></tr>
-<tr><td class="header">&nbsp;</td><td class="header">October 10, 2011</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">October 26, 2011</td></tr>
 </table></td></tr></table>
 <h1><br />OAuth 2.0 Threat Model and Security Considerations<br />draft-ietf-oauth-v2-threatmodel-01</h1>
 
@@ -175,7 +175,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on April 12, 2012.</p>
+This Internet-Draft will expire on April 28, 2012.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -652,7 +652,7 @@ Tokens</h3>
 <p></p>
 <blockquote class="text"><dl>
 <dt>bearer token</dt>
-<dd>A 'bearer token' is a token that can be used by any client who has received the token (e.g. <a class='info' href='#I-D.ietf-oauth-v2-bearer'>[I&#8209;D.ietf&#8209;oauth&#8209;v2&#8209;bearer]<span> (</span><span class='info'>Jones, M., Hardt, D., and D. Recordon, &ldquo;The OAuth 2.0 Authorization Protocol: Bearer Tokens,&rdquo; September&nbsp;2011.</span><span>)</span></a>). Because mere possession is enough to use the token it is important that communication between end-points be secured to ensure that only authorized end-points may capture the token. The bearer token is convenient to client applications as it does not require them to do anything to use them (such as a proof of identity). Bearer tokens have similar characteristics to web single-sign-on (SSO) cookies used in browsers.
+<dd>A 'bearer token' is a token that can be used by any client who has received the token (e.g. <a class='info' href='#I-D.ietf-oauth-v2-bearer'>[I&#8209;D.ietf&#8209;oauth&#8209;v2&#8209;bearer]<span> (</span><span class='info'>Jones, M., Hardt, D., and D. Recordon, &ldquo;The OAuth 2.0 Authorization Protocol: Bearer Tokens,&rdquo; October&nbsp;2011.</span><span>)</span></a>). Because mere possession is enough to use the token it is important that communication between end-points be secured to ensure that only authorized end-points may capture the token. The bearer token is convenient to client applications as it does not require them to do anything to use them (such as a proof of identity). Bearer tokens have similar characteristics to web single-sign-on (SSO) cookies used in browsers.
 </dd>
 <dt>proof token</dt>
 <dd>A 'proof token' is a token that can only be used by a specific client. Each use of the token, requires the client to perform some action that proves that it is the authorized user of the token. Examples of this are MAC tokens, which require the client to digitally sign the resource request with a secret corresponding to the particular token send with the request (e.g.<a class='info' href='#I-D.ietf-oauth-v2-http-mac'>[I&#8209;D.ietf&#8209;oauth&#8209;v2&#8209;http&#8209;mac]<span> (</span><span class='info'>Hammer-Lahav, E., Barth, A., and B. Adida, &ldquo;HTTP Authentication: MAC Access Authentication,&rdquo; May&nbsp;2011.</span><span>)</span></a>).
@@ -2730,7 +2730,7 @@ References</h3>
 <h3>8.2.&nbsp;Informative References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="I-D.ietf-oauth-v2-bearer">[I-D.ietf-oauth-v2-bearer]</a></td>
-<td class="author-text">Jones, M., Hardt, D., and D. Recordon, &ldquo;<a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-bearer-09">The OAuth 2.0 Authorization Protocol: Bearer Tokens</a>,&rdquo; draft-ietf-oauth-v2-bearer-09 (work in progress), September&nbsp;2011 (<a href="http://www.ietf.org/internet-drafts/draft-ietf-oauth-v2-bearer-09.txt">TXT</a>, <a href="http://www.ietf.org/internet-drafts/draft-ietf-oauth-v2-bearer-09.pdf">PDF</a>).</td></tr>
+<td class="author-text">Jones, M., Hardt, D., and D. Recordon, &ldquo;<a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-bearer-11">The OAuth 2.0 Authorization Protocol: Bearer Tokens</a>,&rdquo; draft-ietf-oauth-v2-bearer-11 (work in progress), October&nbsp;2011 (<a href="http://www.ietf.org/internet-drafts/draft-ietf-oauth-v2-bearer-11.txt">TXT</a>, <a href="http://www.ietf.org/internet-drafts/draft-ietf-oauth-v2-bearer-11.pdf">PDF</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="I-D.ietf-oauth-v2-http-mac">[I-D.ietf-oauth-v2-http-mac]</a></td>
 <td class="author-text">Hammer-Lahav, E., Barth, A., and B. Adida, &ldquo;<a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-http-mac-00">HTTP Authentication: MAC Access Authentication</a>,&rdquo; draft-ietf-oauth-v2-http-mac-00 (work in progress), May&nbsp;2011 (<a href="http://www.ietf.org/internet-drafts/draft-ietf-oauth-v2-http-mac-00.txt">TXT</a>, <a href="http://www.ietf.org/internet-drafts/draft-ietf-oauth-v2-http-mac-00.pdf">PDF</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="I-D.lodderstedt-oauth-revocation">[I-D.lodderstedt-oauth-revocation]</a></td>
