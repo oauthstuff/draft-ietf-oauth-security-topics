@@ -2464,14 +2464,14 @@
             situations:</t>
 
             <t><list style="symbols">
-                <t>It reduce the impact of a successful replay attempt, since
+                <t>It reduces the impact of a successful replay attempt, since
                 the token is applicable to a single resource server, only.</t>
 
                 <t>It prevents abuse of a token by a rough resource server or
                 client, since the token can only be used on that server. It is
                 rejected by other servers.</t>
 
-                <t>It reduce the impact of a leakage of a valid token to a
+                <t>It reduces the impact of a leakage of a valid token to a
                 counterfeit resource server.</t>
               </list></t>
           </section>
