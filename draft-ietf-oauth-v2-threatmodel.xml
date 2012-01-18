@@ -738,15 +738,23 @@
           <t>Countermeasures:</t>
 
           <t><list style="symbols">
-              <t>Client developers and end-user can be educated to trust an
-              external System-Browser only.</t>
+              <t>The OAuth flow is designed so that client applications never 
+              eed to know user passwords. Client applications SHOULD avoid 
+              directly asking users for the their credentials. In addition, 
+              end users could be educated about phishing attacks and best 
+              practices, such as only accessing trusted clients, as OAuth does 
+              not provide any protection against malicious applications and 
+              the end user is solely responsible for the trustworthiness of 
+              any native application installed</t>
 
-              <t>Client applications could be validated prior publication in a
-              application market.</t>
+              <t>Client applications could be validated prior to publication in 
+              an application market for users to access. That validation is out 
+              of scope for OAuth but could include validating that the client 
+              application handles user authentication in an appropriate way</t>
 
-              <t>Client developers should not collect authentication
-              information directly from users and should instead use redirects
-              to and back from a trusted external system-browser.</t>
+              <t>Client developers should not write client applications that collect
+              authentication information directly from users and should instead
+              delegate this task to a trusted system component, e.g. the system-browser.</t>
             </list></t>
         </section>
 
