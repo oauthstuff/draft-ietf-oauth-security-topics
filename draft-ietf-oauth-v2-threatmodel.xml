@@ -11,7 +11,7 @@
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
 <?rfc strict="no"?>
-<rfc category="info" docName="draft-ietf-oauth-v2-threatmodel-01"
+<rfc category="info" docName="draft-ietf-oauth-v2-threatmodel-02"
      ipr="trust200902">
   <front>
     <title abbrev="OAuth 2.0 Security">OAuth 2.0 Threat Model and Security
@@ -42,7 +42,7 @@
       </address>
     </author>
 
-    <date day="26" month="October" year="2011" />
+    <date day="12" month="February" year="2012" />
 
     <area>Security Area</area>
 
@@ -628,8 +628,11 @@
           <t><vspace blankLines="1" />Attack: Obtain Refresh Token from Web
           application:</t>
 
-          <t>An attacker may obtain the refresh tokens issued to a web server
-          client. Impact: Exposure of all refresh tokens on that side.</t>
+          <t>An attacker may obtain the refresh tokens issued to a web
+          application by way of overcoming the web server's security controls.
+          Impact: Since a web application manages the user accounts of a
+          certain site, such an attack would result in an exposure of all
+          refresh tokens on that side to the attacker.</t>
 
           <t>Countermeasures:</t>
 
@@ -661,7 +664,7 @@
 
               <t>Utilize device lock to prevent unauthorized device access -
               <xref target="device_lock"></xref></t>
-            </list> </t>
+            </list></t>
 
           <t><vspace blankLines="1" />Attack: Steal device:</t>
 
@@ -678,7 +681,7 @@
               <t>Where a user knows the device has been stolen, they can
               revoke the affected tokens - <xref
               target="refresh_revocation"></xref></t>
-            </list> </t>
+            </list></t>
 
           <t><vspace blankLines="1" />Attack: Clone Device:</t>
 
@@ -688,6 +691,9 @@
           <t>Countermeasures:</t>
 
           <t><list style="symbols">
+              <t>Utilize device lock to prevent unauthorized device access -
+              <xref format="default" target="device_lock"></xref></t>
+
               <t>Combine refresh token request with device identification -
               <xref target="device_id"></xref></t>
 
@@ -697,7 +703,7 @@
               <t>Where a user knows the device has been cloned, they can use
               this countermeasure - Refresh Token Revocation - <xref
               target="refresh_revocation"></xref></t>
-            </list> </t>
+            </list></t>
         </section>
 
         <section title="Threat: Obtain Access Tokens">
@@ -912,9 +918,9 @@
           <t>Countermeasures:</t>
 
           <t><list style="symbols">
-              <t>As per the core OAuth spec, the authorization servers must ensure
-              that these transmissions are protected using transport-layer
-              mechanisms such as TLS or SSL (see <xref
+              <t>As per the core OAuth spec, the authorization servers must
+              ensure that these transmissions are protected using
+              transport-layer mechanisms such as TLS or SSL (see <xref
               target="conf_requests"></xref>).</t>
 
               <t>If end-to-end confidentiality cannot be guaranteed, reducing
@@ -1058,10 +1064,10 @@
             <t>Countermeasures:</t>
 
             <t><list style="symbols">
-                <t>As per the core OAuth spec, the authorization server as well as
-                the client must ensure that these transmissions are protected
-                using transport-layer mechanisms such as TLS or SSL (see <xref
-                target="conf_requests"></xref>).</t>
+                <t>As per the core OAuth spec, the authorization server as
+                well as the client must ensure that these transmissions are
+                protected using transport-layer mechanisms such as TLS or SSL
+                (see <xref target="conf_requests"></xref>).</t>
 
                 <t>The authorization server will require the client to
                 authenticate wherever possible, so the binding of the
@@ -1175,14 +1181,18 @@
 
                 <t>The authorization server should validate the client's
                 redirection URI against the pre-registered redirection URI, if
-                one exists (see <xref target="val_redirect"></xref>). Note:
-                The validation of the redirection URI is the only technical
-                means to recognize a malicious client id in advance of the
-                authorization process. Further note this does not work for
-                native applications because in contrast to web applications
-                this URI is not bound to a single communication endpoint. The
-                valid client's redirection URI (typically with custom scheme)
-                can be used by a malicious client on any device.</t>
+                one exists (see <xref target="val_redirect"></xref>). Note: An
+                invalid redirect URI indicates an invalid client whereas a
+                valid redirect URI not neccesserily indicates a valid client.
+                The level of confidence depends on the client type. For web
+                applications, the confidence is high since the redirect URI
+                refers to the globally unique network endpoint of this
+                application whose address is also validated using HTTPS server
+                authentication. In contrast for native clients, the redirect
+                URI typically refers to device local resources, e.g. a custom
+                scheme. So a malicious client on a particular device can use
+                the valid redirect URI the legitimate client uses on all other
+                devices.</t>
 
                 <t>After authenticating the end-user, the authorization server
                 should ask him/her for consent. In this context, the user
@@ -1429,7 +1439,7 @@
 
             <t><list style="symbols">
                 <t>Native applications should use external browsers instead of
-                embedding browsers in an iFrame when requesting end-user
+                embedding browsers in a web view when requesting end-user
                 authorization</t>
 
                 <t>For newer browsers, avoidance of iFrames can be enforced
@@ -2030,8 +2040,9 @@
               compromised (see <xref target="short_exp_time"></xref>).</t>
 
               <t>The access token can be bound to a client's identity and
-              require the client to authenticate with the resource server (see
-              <xref target="authn_requests"></xref>). </t>
+              require the client to prove legitimate ownership of the token to
+              the resource server (see <xref
+              target="authn_requests"></xref>).</t>
             </list></t>
         </section>
 
@@ -2149,8 +2160,8 @@
               <t>Resource servers not using the HTTP Authorization scheme
               (OAuth HTTP Authorization Scheme - see <xref
               target="authz_header"></xref>) should take care to use other
-              mechanisms, such as the Cache-Control header, to ensure that
-              authenticated content is protected.</t>
+              mechanisms, such as the Cache-Control header, to minimize the
+              risk that authenticated content is not protected.</t>
 
               <t>Reducing scope (see <xref target="limit_scope"></xref>) and
               expiry time (<xref target="short_exp_time"></xref>) for access
@@ -2607,8 +2618,11 @@
                    title="Binding of refresh token to client_id">
             <t>The authorization server should bind every refresh token to the
             id of the client such a token was originally issued to and
-            validate this binding for every request to refresh that token.
-            This measure is a countermeasure against refresh token theft or
+            validate this binding for every request to refresh that token. If
+            possible (e.g. confidential clients), the authorization server
+            should authenticate the respective client.</t>
+
+            <t>This is a countermeasure against refresh token theft or
             leakage.</t>
 
             <t>Note: This binding should be protected from unauthorized
@@ -2657,18 +2671,11 @@
 
           <section anchor="device_id" title="Device identification">
             <t>The authorization server may require to bind authentication
-            credentials to a device identifier or token assigned to that
-            device. As the IMEI can be spoofed, that is not suitable, For
-            mobile phones, a registration process can be used to assign a
-            unique token to the device using an SMS message. That token or
-            identifier can then be validated with when authenticating user
-            credentials.</t>
-
-            <t>This is a countermeasure against the following threats:</t>
-
-            <t><list style="symbols">
-                <t>token theft from a particular device</t>
-              </list></t>
+            credentials to a device identifier. The IMEI is one example of
+            such an identifier, there are also operating system specific
+            identifiers. The authorization server could include such an
+            identifier when authenticating user credentials in order to detect
+            token theft from a particular device.</t>
           </section>
 
           <section anchor="clickjacking_xframe" title="X-FRAME-OPTION header">
@@ -2686,7 +2693,7 @@
         </section>
 
         <section anchor="client_aa"
-                 title="Public client authentication and authorization">
+                 title="Client authentication and authorization">
           <t>As described in Section 3 (Security Features), clients are
           identified, authenticated and authorized for several purposes, such
           as a</t>
@@ -3008,7 +3015,7 @@
 
         <section anchor="device_lock"
                  title="Utilize device lock to prevent unauthorized device access">
-          <t> On a typical modern phone, there are many "device lock" options
+          <t>On a typical modern phone, there are many "device lock" options
           which can be utilized to provide additional protection where a
           device is stolen or misplaced. These include PINs, passwords and
           other biomtric featres such as "face recognition". These are not
@@ -3220,6 +3227,14 @@
           <t>Improved section 5</t>
 
           <t>Renamed Refresh Token Replacement to Refresh Token Rotation</t>
+        </list></t>
+
+      <t>draft-ietf-oauth-v2-threatmodel-02</t>
+
+      <t><list style="symbols">
+          <t>Removed all normative language</t>
+
+          <t>Incoporated Tim Bray's review comments</t>
         </list></t>
     </section>
   </back>
