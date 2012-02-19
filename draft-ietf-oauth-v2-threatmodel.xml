@@ -42,7 +42,7 @@
       </address>
     </author>
 
-    <date day="12" month="February" year="2012" />
+    <date day="19" month="February" year="2012" />
 
     <area>Security Area</area>
 
@@ -86,8 +86,8 @@
       if the proper security measures are not put in place. Threats are
       structured along the lines of the protocol structure to aid development
       teams implement each part of the protocol securely. For example all
-      threats for granting access or all threats for a particular client
-      profile or all threats for protecting the resource server.</t>
+      threats for granting access or all threats for a particular grant type
+      or all threats for protecting the resource server.</t>
     </section>
 
     <section title="Overview">
@@ -127,9 +127,9 @@
             resulting attacks mounted as a result of the assertion being
             false.</t>
 
-            <t>Clients are not bound to a specific deployment: An example
-            could be a mail client with support for contact list access via
-            the portable contacts API (see <xref
+            <t>Clients not bound to a specific deployment: An example could be
+            a mail client with support for contact list access via the
+            portable contacts API (see <xref
             target="portable-contacts"></xref>). Such clients cannot be
             registered upfront with a particular deployment and should
             dynamically discover the URLs relevant for the OAuth protocol.</t>
@@ -161,7 +161,7 @@
 
       <section title="Architectural assumptions">
         <t>This section documents the assumptions about the features,
-        limitations and design options of the different entities of a OAuth
+        limitations, and design options of the different entities of a OAuth
         deployment along with the security-sensitive data-elements managed by
         those entity. These assumptions are the foundation of the threat
         analysis.</t>
@@ -205,10 +205,11 @@
 
               <t>HTTPS certificate/key</t>
 
-              <t>authz server credentials (handle-based design), or</t>
+              <t>authorization server credentials (handle-based design),
+              or</t>
 
-              <t>authz server shared secret/public key (assertion-based
-              design)</t>
+              <t>authorization server shared secret/public key
+              (assertion-based design)</t>
 
               <t>access tokens (per request)</t>
             </list> It is assumed that a resource server has no knowledge of
@@ -380,7 +381,7 @@
         <t><list style="numbers">
             <t>Instead of (longer-lasting) tokens, the short-lived
             authorization code is exposed to potential attackers via URI query
-            parameters (HTTP referrer), browser cacher or log file
+            parameters (HTTP referrer), browser cache, or log file
             entries.</t>
 
             <t>It is much simpler to authenticate clients during the direct
@@ -398,20 +399,20 @@
         and is verified when an authorization code is exchanged for tokens.
         This helps to prevent attacks, where the authorization code is
         revealed through redirectors and counterfeit web application clients.
-        The authorization server requires public clients and confidential
-        clients using implicit grant type to pre-register their redirect URIs
-        and validate agains the registered redirection URI in the
-        authorization request.</t>
+        The authorization server should require public clients and
+        confidential clients using implicit grant type to pre-register their
+        redirect URIs and validate against the registered redirection URI in
+        the authorization request.</t>
       </section>
 
       <section title="State parameter">
         <t>The state parameter is used to link requests and callbacks to
         prevent CSRF attacks where an attacker authorizes access to his own
         resources and then tricks a users into following a redirect with the
-        attacker's token. It should bind to the authenticated state in a user
-        agent and, as per the core OAuth spec, the user agent must be capable
-        of keeping it in a location accessible only by the client and user
-        agent, i.e. protected by same-origin policy</t>
+        attacker's token. This parameter should bind to the authenticated
+        state in a user agent and, as per the core OAuth spec, the user agent
+        must be capable of keeping it in a location accessible only by the
+        client and user agent, i.e. protected by same-origin policy</t>
       </section>
 
       <section title="Client Identity">
@@ -442,21 +443,21 @@
         clients, e.g. in server log files.</t>
 
         <t>OAuth defines two client types, confidential and public, based on
-        their ability to authenticate securely with the authorization server
-        (i.e. ability to maintain the confidentiality of their client
-        credentials). Confidential clients are capable of maintaining the
-        confidentiality of client credentials (i.e. a client secret associated
-        with the client identifier) or capable of secure client authentication
-        using other means, such as a client assertion (e.g. SAML) or key
-        cryptography. The latter is considered more secure.</t>
+        their ability to authenticate with the authorization server (i.e.
+        ability to maintain the confidentiality of their client credentials).
+        Confidential clients are capable of maintaining the confidentiality of
+        client credentials (i.e. a client secret associated with the client
+        identifier) or capable of secure client authentication using other
+        means, such as a client assertion (e.g. SAML) or key cryptography. The
+        latter is considered more secure.</t>
 
         <t>The authorization server should determine whether the client is
         capable of keeping its secret confidential or using secure
         authentication. Alternatively, the end-user can verify the identity of
         the client, e.g. by only installing trusted applications.The
         redicrection URI can be used to prevent delivering credentials to a
-        counterfeit client after obtaining end-user authorization, but can't
-        be used to verify the client identity.</t>
+        counterfeit client after obtaining end-user authorization in some
+        cases, but can't be used to verify the client identity.</t>
 
         <t>Clients can be categorized as follows based on the client type,
         profile (e.g. native vs web application) and deployment model:</t>
@@ -550,7 +551,7 @@
           <t><vspace blankLines="1" />Attack: Obtain Secret From Source Code
           or Binary:</t>
 
-          <t>This applies for all client profiles. For open source projects,
+          <t>This applies for all client types. For open source projects,
           secrets can be extracted directly from source code in their public
           repositories. Secrets can be extracted from application binaries
           just as easily when published source is not available to the
@@ -759,7 +760,7 @@
               practices, such as only accessing trusted clients, as OAuth does
               not provide any protection against malicious applications and
               the end user is solely responsible for the trustworthiness of
-              any native application installed</t>
+              any native application installed.</t>
 
               <t>Client applications could be validated prior to publication
               in an application market for users to access. That validation is
@@ -1188,11 +1189,11 @@
                 applications, the confidence is high since the redirect URI
                 refers to the globally unique network endpoint of this
                 application whose address is also validated using HTTPS server
-                authentication. In contrast for native clients, the redirect
-                URI typically refers to device local resources, e.g. a custom
-                scheme. So a malicious client on a particular device can use
-                the valid redirect URI the legitimate client uses on all other
-                devices.</t>
+                authentication by the user agent. In contrast for native
+                clients, the redirect URI typically refers to device local
+                resources, e.g. a custom scheme. So a malicious client on a
+                particular device can use the valid redirect URI the
+                legitimate client uses on all other devices.</t>
 
                 <t>After authenticating the end-user, the authorization server
                 should ask him/her for consent. In this context, the user
@@ -1212,7 +1213,7 @@
                 <t>If the authorization server automatically authenticates the
                 end-user, it may nevertheless require some user input in order
                 to prevent screen scraping. Examples are CAPTCHAs or
-                user-specific secret like PIN codes.</t>
+                user-specific secrets like PIN codes.</t>
 
                 <t>The authorization server may also limit the scope of tokens
                 it issues to clients it cannot reliably authenticate (see
@@ -1706,7 +1707,7 @@
                 values that can only be used by scripts in a small time window
                 once loaded from a server. The intention would be to reduce
                 the effectiveness of copying client-side scripts for re-use in
-                an attackers modified code. [[pending discussion]]</t>
+                an attackers modified code.</t>
               </list></t>
           </section>
 
@@ -3124,8 +3125,8 @@
 
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>We would like to thank Hui-Lan Lu, Francisco Corella, Peifung E Lam,
-      Shane B Weeden, Skylar Woodward, Niv Steingarten and James H. Manger for
-      their comments and contributions.</t>
+      Shane B Weeden, Skylar Woodward, Niv Steingarten, Tim Bray, and James H.
+      Manger for their comments and contributions.</t>
     </section>
   </middle>
 
@@ -3232,9 +3233,8 @@
       <t>draft-ietf-oauth-v2-threatmodel-02</t>
 
       <t><list style="symbols">
-          <t>Removed all normative language</t>
-
-          <t>Incoporated Tim Bray's review comments</t>
+          <t>Incoporated Tim Bray's review comments (e.g. removed all
+          normative language)</t>
         </list></t>
     </section>
   </back>
