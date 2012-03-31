@@ -4,14 +4,14 @@
 Open Authentication Protocol                         T. Lodderstedt, Ed.
 Internet-Draft                                       Deutsche Telekom AG
 Intended status: Standards Track                               S. Dronia
-Expires: March 19, 2012                            SYRACOM Consulting AG
+Expires: October 2, 2012                           SYRACOM Consulting AG
                                                            M. Scurtescu
                                                                   Google
-                                                      September 16, 2011
+                                                          March 31, 2012
 
 
                             Token Revocation
-                 draft-lodderstedt-oauth-revocation-03
+                 draft-lodderstedt-oauth-revocation-04
 
 Abstract
 
@@ -33,11 +33,11 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 19, 2012.
+   This Internet-Draft will expire on October 2, 2012.
 
 Copyright Notice
 
-   Copyright (c) 2011 IETF Trust and the persons identified as the
+   Copyright (c) 2012 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -52,9 +52,9 @@ Copyright Notice
 
 
 
-Lodderstedt, et al.      Expires March 19, 2012                 [Page 1]
+Lodderstedt, et al.      Expires October 2, 2012                [Page 1]
 
-Internet-Draft              Token Revocation              September 2011
+Internet-Draft              Token Revocation                  March 2012
 
 
 Table of Contents
@@ -108,17 +108,17 @@ Table of Contents
 
 
 
-Lodderstedt, et al.      Expires March 19, 2012                 [Page 2]
+Lodderstedt, et al.      Expires October 2, 2012                [Page 2]
 
-Internet-Draft              Token Revocation              September 2011
+Internet-Draft              Token Revocation                  March 2012
 
 
 1.  Introduction
 
-   The current OAuth 2.0 draft [I-D.ietf-oauth-v2] defines several ways
-   for a client to obtain refresh and access tokens.  This specification
-   supplements the draft with a mechanism to revoke both types of tokens
-   and facilitates the following use cases:
+   The OAuth 2.0 core specification [I-D.ietf-oauth-v2] defines several
+   ways for a client to obtain refresh and access tokens.  This
+   specification supplements the core specification with a mechanism to
+   revoke both types of tokens and facilitates the following use cases:
 
    o  The end-user triggers revocation from within the client that sends
       the appropriate revocation request to the autorization server.
@@ -164,9 +164,9 @@ Internet-Draft              Token Revocation              September 2011
 
 
 
-Lodderstedt, et al.      Expires March 19, 2012                 [Page 3]
+Lodderstedt, et al.      Expires October 2, 2012                [Page 3]
 
-Internet-Draft              Token Revocation              September 2011
+Internet-Draft              Token Revocation                  March 2012
 
 
    replacements, and MAY support additional transport-layer mechanisms
@@ -220,9 +220,9 @@ Internet-Draft              Token Revocation              September 2011
 
 
 
-Lodderstedt, et al.      Expires March 19, 2012                 [Page 4]
+Lodderstedt, et al.      Expires October 2, 2012                [Page 4]
 
-Internet-Draft              Token Revocation              September 2011
+Internet-Draft              Token Revocation                  March 2012
 
 
    response as defined in section 5.2. of [I-D.ietf-oauth-v2].  The
@@ -276,9 +276,9 @@ Internet-Draft              Token Revocation              September 2011
 
 
 
-Lodderstedt, et al.      Expires March 19, 2012                 [Page 5]
+Lodderstedt, et al.      Expires October 2, 2012                [Page 5]
 
-Internet-Draft              Token Revocation              September 2011
+Internet-Draft              Token Revocation                  March 2012
 
 
 6.  References
@@ -287,8 +287,8 @@ Internet-Draft              Token Revocation              September 2011
 
    [I-D.ietf-oauth-v2]
               Hammer-Lahav, E., Recordon, D., and D. Hardt, "The OAuth
-              2.0 Authorization Protocol", draft-ietf-oauth-v2-21 (work
-              in progress), September 2011.
+              2.0 Authorization Protocol", draft-ietf-oauth-v2-25 (work
+              in progress), March 2012.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
@@ -332,5 +332,5 @@ Authors' Addresses
 
 
 
-Lodderstedt, et al.      Expires March 19, 2012                 [Page 6]
+Lodderstedt, et al.      Expires October 2, 2012                [Page 6]
 

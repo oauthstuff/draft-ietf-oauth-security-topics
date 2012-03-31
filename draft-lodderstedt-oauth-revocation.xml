@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-lodderstedt-oauth-revocation-03"
+<rfc category="std" docName="draft-lodderstedt-oauth-revocation-04"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -92,7 +92,7 @@
       </address>
     </author>
 
-    <date day="16" month="September" year="2011" />
+    <date day="31" month="March" year="2012" />
 
     <!-- Meta-data Declarations -->
 
@@ -126,11 +126,11 @@
 
   <middle>
     <section anchor="Introduction" title="Introduction">
-      <t>The current OAuth 2.0 draft <xref target="I-D.ietf-oauth-v2"></xref>
-      defines several ways for a client to obtain refresh and access tokens.
-      This specification supplements the draft with a mechanism to revoke both
-      types of tokens and facilitates the following use cases:<list
-          style="symbols">
+      <t>The OAuth 2.0 core specification <xref
+      target="I-D.ietf-oauth-v2"></xref> defines several ways for a client to
+      obtain refresh and access tokens. This specification supplements the
+      core specification with a mechanism to revoke both types of tokens and
+      facilitates the following use cases:<list style="symbols">
           <t>The end-user triggers revocation from within the client that
           sends the appropriate revocation request to the autorization server.
           From the end-user's perspective, this looks like a
