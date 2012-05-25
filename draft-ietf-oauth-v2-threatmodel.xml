@@ -11,7 +11,7 @@
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
 <?rfc strict="no"?>
-<rfc category="info" docName="draft-ietf-oauth-v2-threatmodel-02"
+<rfc category="info" docName="draft-ietf-oauth-v2-threatmodel-03"
      ipr="trust200902">
   <front>
     <title abbrev="OAuth 2.0 Security">OAuth 2.0 Threat Model and Security
@@ -58,20 +58,15 @@
       <t>This document gives security considerations based on a comprehensive
       threat model for the OAuth 2.0 Protocol.</t>
     </abstract>
-
-    <note title="Requirements Language">
-      <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-      "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-      document are to be interpreted as described in <xref
-      target="RFC2119">RFC 2119</xref>.</t>
-    </note>
   </front>
 
   <middle>
     <section title="Introduction">
-      <t>This document gives security considerations based on a comprehensive
-      threat model for the OAuth 2.0 Protocol <xref
-      target="I-D.ietf-oauth-v2"></xref>. It contains the following
+      <t>This document gives additional security considerations for OAuth,
+      beyond those in the OAuth specification, based on a comprehensive threat
+      model for the OAuth 2.0 Protocol</t>
+
+      <t><xref target="I-D.ietf-oauth-v2"></xref>. It contains the following
       content:<list style="symbols">
           <t>Documents any assumptions and scope considered when creating the
           threat model.</t>
@@ -267,9 +262,9 @@
             token.</t>
 
             <t hangText="Assertions (aka self-contained token)">a parseable
-            token. An assertion typically has a duration, an audience, and is
-            digitally signed containing information about the user and the
-            client. Examples of assertion formats are SAML assertions and
+            token. An assertion typically has a duration, has an audience, and
+            is digitally signed. It contains information about the user and
+            the client. Examples of assertion formats are SAML assertions and
             Kerberos tickets. Assertions can typically directly be validated
             and used by a resource server without interactions with the
             authorization server. This results in better performance and
@@ -368,8 +363,8 @@
             transport-level communications to the authorization server to get
             an access token (and optionally rollover the refresh token).</t>
           </list>So as long as the confidentiality of the particular token can
-        be ensured by the client, a refresh tokens can also be used as an
-        alternative mean to authenticate the client instance itself.</t>
+        be ensured by the client, a refresh token can also be used as an
+        alternative means to authenticate the client instance itself..</t>
       </section>
 
       <section title="Authorization Code">
@@ -3114,6 +3109,58 @@
             </list></t>
         </section>
       </section>
+
+      <section anchor="installed_apps"
+               title="A Word on User Interaction and User-Installed Apps">
+        <t>OAuth, as a security protocol, is distinctive in that its flow
+        usually involves significant user interaction, making the end user a
+        part of the security model. This creates some important difficulties
+        in defending against some of the threats discussed above. Some of
+        these points have already been made, but it's worth repeating and
+        highlighting them here.</t>
+
+        <t><list style="symbols">
+            <t>End users must understand what they are being asked to approve
+            (see Section <xref target="automatic_processing"></xref>). Users
+            often do not have the expertise to understand the ramifications of
+            saying "yes" to an authorization request. and are likely not to be
+            able to see subtle differences in wording of requests. Malicious
+            software can confuse the user, tricking the user into approving
+            almost anything.</t>
+
+            <t>End-user devices are prone to software compromise. This has
+            been a long-standing problem, with frequent attacks on web
+            browsers and other parts of the user's system. But with increasing
+            popularity of user-installed "apps", the threat posed by
+            compromised or malicious end-user software is very strong, and is
+            one that is very difficult to mitigate.</t>
+
+            <t>Be aware that users will demand to install and run such apps,
+            and that compromised or malicious ones can steal credentials at
+            many points in the data flow. They can intercept the very user
+            login credentials that OAuth is designed to protect. They can
+            request authorization far beyond what they have led the user to
+            understand and approve. They can automate a response on behalf of
+            the user, hiding the whole process. No solution is offered here,
+            because none is known; this remains in the space between better
+            security and better usability.</t>
+
+            <t>Addressing these issues by restricting the use of
+            user-installed software may be practical in some limited
+            environments, and can be used as a countermeasure in those cases.
+            Such restrictions are not practical in the general case, and
+            mechanisms for after-the-fact recovery should be in place.</t>
+
+            <t>While end users are mostly incapable of properly vetting
+            applications they load onto their devices, those who deploy
+            Authorization Servers might have tools at their disposal to
+            mitigate malicious Clients. For example, a well run Authorization
+            Server MUST only assert client properties to the end-user it is
+            effectively capable to validate, explicitely point out which
+            properties it cannot validate and indicate to the end-user the
+            risk associated with granting access to the particular client.</t>
+          </list></t>
+      </section>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
@@ -3124,16 +3171,14 @@
     </section>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
-      <t>We would like to thank Hui-Lan Lu, Francisco Corella, Peifung E Lam,
-      Shane B Weeden, Skylar Woodward, Niv Steingarten, Tim Bray, and James H.
-      Manger for their comments and contributions.</t>
+      <t>We would like to thank Barry Leiba, Hui-Lan Lu, Francisco Corella,
+      Peifung E Lam, Shane B Weeden, Skylar Woodward, Niv Steingarten, Tim
+      Bray, and James H. Manger for their comments and contributions.</t>
     </section>
   </middle>
 
   <back>
     <references title="Normative References">
-      <?rfc include="reference.RFC.2119"?>
-
       <?rfc include="reference.I-D.ietf-oauth-v2.xml"?>
     </references>
 
@@ -3144,16 +3189,19 @@
 
       <?rfc include="reference.I-D.ietf-oauth-v2-http-mac.xml"?>
 
-      <reference anchor="portable-contacts">
+      <reference anchor="portable-contacts"
+                 target="http://portablecontacts.net/">
         <front>
           <title>Portable Contacts 1.0 Draft C</title>
 
-          <author fullname="Joseph Smarr" initials="J." surname="Smarr">
+          <author fullname="J. Smarr" initials="J" surname="Smarr">
             <organization></organization>
           </author>
 
-          <date day="5" month="August" year="2008" />
+          <date month="August" year="2008" />
         </front>
+
+        <format target="http://portablecontacts.net/" type="html" />
       </reference>
     </references>
 
@@ -3235,6 +3283,14 @@
       <t><list style="symbols">
           <t>Incoporated Tim Bray's review comments (e.g. removed all
           normative language)</t>
+        </list></t>
+
+      <t>draft-ietf-oauth-v2-threatmodel-03</t>
+
+      <t><list style="symbols">
+          <t>removed 2119 boilerplate and normative reference</t>
+
+          <t>incorporated shepherd review feedback</t>
         </list></t>
     </section>
   </back>

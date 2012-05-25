@@ -11,18 +11,12 @@ Expires: August 22, 2012                                             IBM
 
 
            OAuth 2.0 Threat Model and Security Considerations
-                   draft-ietf-oauth-v2-threatmodel-02
+                   draft-ietf-oauth-v2-threatmodel-03
 
 Abstract
 
    This document gives security considerations based on a comprehensive
    threat model for the OAuth 2.0 Protocol.
-
-Requirements Language
-
-   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-   document are to be interpreted as described in RFC 2119 [RFC2119].
 
 Status of this Memo
 
@@ -49,20 +43,18 @@ Copyright Notice
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents
    (http://trustee.ietf.org/license-info) in effect on the date of
-
-
-
-Lodderstedt, et al.      Expires August 22, 2012                [Page 1]
-
-Internet-Draft             OAuth 2.0 Security              February 2012
-
-
    publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
    include Simplified BSD License text as described in Section 4.e of
    the Trust Legal Provisions and are provided without warranty as
    described in the Simplified BSD License.
+
+
+
+Lodderstedt, et al.      Expires August 22, 2012                [Page 1]
+
+Internet-Draft             OAuth 2.0 Security              February 2012
 
 
 Table of Contents
@@ -105,14 +97,6 @@ Table of Contents
        4.3.1.  Threat: Eavesdropping access tokens  . . . . . . . . . 22
        4.3.2.  Threat: Obtain access tokens from authorization
                server database  . . . . . . . . . . . . . . . . . . . 22
-
-
-
-Lodderstedt, et al.      Expires August 22, 2012                [Page 2]
-
-Internet-Draft             OAuth 2.0 Security              February 2012
-
-
        4.3.3.  Threat: Obtain client credentials over non secure
                transport  . . . . . . . . . . . . . . . . . . . . . . 22
        4.3.4.  Threat: Obtain client secret from authorization
@@ -121,6 +105,14 @@ Internet-Draft             OAuth 2.0 Security              February 2012
        4.3.6.  Threat: DoS on dynamic client secret creation  . . . . 23
      4.4.  Obtaining Authorization  . . . . . . . . . . . . . . . . . 23
        4.4.1.  Authorization Code . . . . . . . . . . . . . . . . . . 24
+
+
+
+Lodderstedt, et al.      Expires August 22, 2012                [Page 2]
+
+Internet-Draft             OAuth 2.0 Security              February 2012
+
+
          4.4.1.1.  Threat: Eavesdropping or leaking authorization
                    codes  . . . . . . . . . . . . . . . . . . . . . . 24
          4.4.1.2.  Threat: Obtain authorization codes from
@@ -161,14 +153,6 @@ Internet-Draft             OAuth 2.0 Security              February 2012
        4.5.1.  Threat: Eavesdropping refresh tokens from
                authorization server . . . . . . . . . . . . . . . . . 40
        4.5.2.  Threat: Obtaining refresh token from authorization
-
-
-
-Lodderstedt, et al.      Expires August 22, 2012                [Page 3]
-
-Internet-Draft             OAuth 2.0 Security              February 2012
-
-
                server database  . . . . . . . . . . . . . . . . . . . 41
        4.5.3.  Threat: Obtain refresh token by online guessing  . . . 41
        4.5.4.  Threat: Obtain refresh token phishing by
@@ -177,6 +161,14 @@ Internet-Draft             OAuth 2.0 Security              February 2012
        4.6.1.  Threat: Eavesdropping access tokens on transport . . . 42
        4.6.2.  Threat: Replay authorized resource server requests . . 42
        4.6.3.  Threat: Guessing access tokens . . . . . . . . . . . . 42
+
+
+
+Lodderstedt, et al.      Expires August 22, 2012                [Page 3]
+
+Internet-Draft             OAuth 2.0 Security              February 2012
+
+
        4.6.4.  Threat: Access token phishing by counterfeit
                resource server  . . . . . . . . . . . . . . . . . . . 43
        4.6.5.  Threat: Abuse of token by legitimate resource
@@ -217,14 +209,6 @@ Internet-Draft             OAuth 2.0 Security              February 2012
          5.2.2.3.  Refresh Token Rotation . . . . . . . . . . . . . . 53
          5.2.2.4.  Refresh Token Revocation . . . . . . . . . . . . . 53
          5.2.2.5.  Device identification  . . . . . . . . . . . . . . 54
-
-
-
-Lodderstedt, et al.      Expires August 22, 2012                [Page 4]
-
-Internet-Draft             OAuth 2.0 Security              February 2012
-
-
          5.2.2.6.  X-FRAME-OPTION header  . . . . . . . . . . . . . . 54
        5.2.3.  Client authentication and authorization  . . . . . . . 54
          5.2.3.1.  Don't issue secrets to public clients or
@@ -233,6 +217,14 @@ Internet-Draft             OAuth 2.0 Security              February 2012
                    consent  . . . . . . . . . . . . . . . . . . . . . 55
          5.2.3.3.  Client_id only in combination with redirect_uri  . 55
          5.2.3.4.  Deployment-specific client secrets . . . . . . . . 56
+
+
+
+Lodderstedt, et al.      Expires August 22, 2012                [Page 4]
+
+Internet-Draft             OAuth 2.0 Security              February 2012
+
+
          5.2.3.5.  Validation of pre-registered redirect_uri  . . . . 56
          5.2.3.6.  Client secret revocation . . . . . . . . . . . . . 57
          5.2.3.7.  Use strong client authentication (e.g.
@@ -258,13 +250,21 @@ Internet-Draft             OAuth 2.0 Security              February 2012
        5.4.1.  Authorization headers  . . . . . . . . . . . . . . . . 61
        5.4.2.  Authenticated requests . . . . . . . . . . . . . . . . 61
        5.4.3.  Signed requests  . . . . . . . . . . . . . . . . . . . 62
-   6.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 62
-   7.  Acknowledgements . . . . . . . . . . . . . . . . . . . . . . . 62
-   8.  References . . . . . . . . . . . . . . . . . . . . . . . . . . 62
-     8.1.  Normative References . . . . . . . . . . . . . . . . . . . 62
-     8.2.  Informative References . . . . . . . . . . . . . . . . . . 63
-   Appendix A.  Document History  . . . . . . . . . . . . . . . . . . 63
-   Authors' Addresses . . . . . . . . . . . . . . . . . . . . . . . . 65
+     5.5.  A Word on User Interaction and User-Installed Apps . . . . 62
+   6.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 63
+   7.  Acknowledgements . . . . . . . . . . . . . . . . . . . . . . . 63
+   8.  References . . . . . . . . . . . . . . . . . . . . . . . . . . 63
+     8.1.  Normative References . . . . . . . . . . . . . . . . . . . 63
+     8.2.  Informative References . . . . . . . . . . . . . . . . . . 64
+   Appendix A.  Document History  . . . . . . . . . . . . . . . . . . 64
+   Authors' Addresses . . . . . . . . . . . . . . . . . . . . . . . . 66
+
+
+
+
+
+
+
 
 
 
@@ -283,9 +283,11 @@ Internet-Draft             OAuth 2.0 Security              February 2012
 
 1.  Introduction
 
-   This document gives security considerations based on a comprehensive
-   threat model for the OAuth 2.0 Protocol [I-D.ietf-oauth-v2].  It
-   contains the following content:
+   This document gives additional security considerations for OAuth,
+   beyond those in the OAuth specification, based on a comprehensive
+   threat model for the OAuth 2.0 Protocol
+
+   [I-D.ietf-oauth-v2].  It contains the following content:
 
    o  Documents any assumptions and scope considered when creating the
       threat model.
@@ -326,8 +328,6 @@ Internet-Draft             OAuth 2.0 Security              February 2012
       dynamic registration at runtime.
 
    The following are considered out of scope :
-
-
 
 
 
@@ -489,14 +489,14 @@ Internet-Draft             OAuth 2.0 Security              February 2012
       able to interpret the token directly, it simply uses the token.
 
    Assertions (aka self-contained token)  a parseable token.  An
-      assertion typically has a duration, an audience, and is digitally
-      signed containing information about the user and the client.
-      Examples of assertion formats are SAML assertions and Kerberos
-      tickets.  Assertions can typically directly be validated and used
-      by a resource server without interactions with the authorization
-      server.  This results in better performance and scalability in
-      deployment where issuing and consuming entity reside on different
-      systems.  Implementing token revocation is more difficult with
+      assertion typically has a duration, has an audience, and is
+      digitally signed.  It contains information about the user and the
+      client.  Examples of assertion formats are SAML assertions and
+      Kerberos tickets.  Assertions can typically directly be validated
+      and used by a resource server without interactions with the
+      authorization server.  This results in better performance and
+      scalability in deployment where issuing and consuming entity
+      reside on different systems.  Implementing token revocation is
 
 
 
@@ -505,7 +505,7 @@ Lodderstedt, et al.      Expires August 22, 2012                [Page 9]
 Internet-Draft             OAuth 2.0 Security              February 2012
 
 
-      assertions than with handles.
+      more difficult with assertions than with handles.
 
    Tokens can be used in two ways to invoke requests on resource servers
    as follows:
@@ -607,8 +607,8 @@ Internet-Draft             OAuth 2.0 Security              February 2012
        token (and optionally rollover the refresh token).
 
    So as long as the confidentiality of the particular token can be
-   ensured by the client, a refresh tokens can also be used as an
-   alternative mean to authenticate the client instance itself.
+   ensured by the client, a refresh token can also be used as an
+   alternative means to authenticate the client instance itself..
 
 
 
@@ -3440,6 +3440,64 @@ Internet-Draft             OAuth 2.0 Security              February 2012
 
    o  replay attempts
 
+5.5.  A Word on User Interaction and User-Installed Apps
+
+   OAuth, as a security protocol, is distinctive in that its flow
+   usually involves significant user interaction, making the end user a
+   part of the security model.  This creates some important difficulties
+   in defending against some of the threats discussed above.  Some of
+   these points have already been made, but it's worth repeating and
+   highlighting them here.
+
+   o  End users must understand what they are being asked to approve
+      (see Section Section 5.2.4.1).  Users often do not have the
+      expertise to understand the ramifications of saying "yes" to an
+      authorization request. and are likely not to be able to see subtle
+      differences in wording of requests.  Malicious software can
+      confuse the user, tricking the user into approving almost
+      anything.
+
+   o  End-user devices are prone to software compromise.  This has been
+      a long-standing problem, with frequent attacks on web browsers and
+      other parts of the user's system.  But with increasing popularity
+      of user-installed "apps", the threat posed by compromised or
+      malicious end-user software is very strong, and is one that is
+      very difficult to mitigate.
+
+
+
+
+
+Lodderstedt, et al.      Expires August 22, 2012               [Page 62]
+
+Internet-Draft             OAuth 2.0 Security              February 2012
+
+
+   o  Be aware that users will demand to install and run such apps, and
+      that compromised or malicious ones can steal credentials at many
+      points in the data flow.  They can intercept the very user login
+      credentials that OAuth is designed to protect.  They can request
+      authorization far beyond what they have led the user to understand
+      and approve.  They can automate a response on behalf of the user,
+      hiding the whole process.  No solution is offered here, because
+      none is known; this remains in the space between better security
+      and better usability.
+
+   o  Addressing these issues by restricting the use of user-installed
+      software may be practical in some limited environments, and can be
+      used as a countermeasure in those cases.  Such restrictions are
+      not practical in the general case, and mechanisms for after-the-
+      fact recovery should be in place.
+
+   o  While end users are mostly incapable of properly vetting
+      applications they load onto their devices, those who deploy
+      Authorization Servers might have tools at their disposal to
+      mitigate malicious Clients.  For example, a well run Authorization
+      Server MUST only assert client properties to the end-user it is
+      effectively capable to validate, explicitely point out which
+      properties it cannot validate and indicate to the end-user the
+      risk associated with granting access to the particular client.
+
 
 6.  IANA Considerations
 
@@ -3451,9 +3509,9 @@ Internet-Draft             OAuth 2.0 Security              February 2012
 
 7.  Acknowledgements
 
-   We would like to thank Hui-Lan Lu, Francisco Corella, Peifung E Lam,
-   Shane B Weeden, Skylar Woodward, Niv Steingarten, Tim Bray, and James
-   H. Manger for their comments and contributions.
+   We would like to thank Barry Leiba, Hui-Lan Lu, Francisco Corella,
+   Peifung E Lam, Shane B Weeden, Skylar Woodward, Niv Steingarten, Tim
+   Bray, and James H. Manger for their comments and contributions.
 
 
 8.  References
@@ -3461,28 +3519,25 @@ Internet-Draft             OAuth 2.0 Security              February 2012
 8.1.  Normative References
 
    [I-D.ietf-oauth-v2]
-              Hammer, E., Recordon, D., and D. Hardt, "The OAuth 2.0
-              Authorization Protocol", draft-ietf-oauth-v2-23 (work in
-              progress), January 2012.
+              Hammer-Lahav, E., Recordon, D., and D. Hardt, "The OAuth
+              2.0 Authorization Framework", draft-ietf-oauth-v2-26 (work
 
 
 
-
-Lodderstedt, et al.      Expires August 22, 2012               [Page 62]
+Lodderstedt, et al.      Expires August 22, 2012               [Page 63]
 
 Internet-Draft             OAuth 2.0 Security              February 2012
 
 
-   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119, March 1997.
+              in progress), May 2012.
 
 8.2.  Informative References
 
    [I-D.ietf-oauth-v2-bearer]
               Jones, M., Hardt, D., and D. Recordon, "The OAuth 2.0
               Authorization Protocol: Bearer Tokens",
-              draft-ietf-oauth-v2-bearer-17 (work in progress),
-              February 2012.
+              draft-ietf-oauth-v2-bearer-19 (work in progress),
+              April 2012.
 
    [I-D.ietf-oauth-v2-http-mac]
               Hammer-Lahav, E., "HTTP Authentication: MAC Access
@@ -3491,11 +3546,12 @@ Internet-Draft             OAuth 2.0 Security              February 2012
 
    [I-D.lodderstedt-oauth-revocation]
               Lodderstedt, T., Dronia, S., and M. Scurtescu, "Token
-              Revocation", draft-lodderstedt-oauth-revocation-03 (work
-              in progress), September 2011.
+              Revocation", draft-lodderstedt-oauth-revocation-04 (work
+              in progress), March 2012.
 
    [portable-contacts]
-              Smarr, J., "Portable Contacts 1.0 Draft C", August 2008.
+              Smarr, J., "Portable Contacts 1.0 Draft C", August 2008,
+              <http://portablecontacts.net/>.
 
 
 Appendix A.  Document History
@@ -3524,7 +3580,7 @@ Appendix A.  Document History
 
 
 
-Lodderstedt, et al.      Expires August 22, 2012               [Page 63]
+Lodderstedt, et al.      Expires August 22, 2012               [Page 64]
 
 Internet-Draft             OAuth 2.0 Security              February 2012
 
@@ -3580,9 +3636,16 @@ Internet-Draft             OAuth 2.0 Security              February 2012
 
 
 
-Lodderstedt, et al.      Expires August 22, 2012               [Page 64]
+Lodderstedt, et al.      Expires August 22, 2012               [Page 65]
 
 Internet-Draft             OAuth 2.0 Security              February 2012
+
+
+   draft-ietf-oauth-v2-threatmodel-03
+
+   o  removed 2119 boilerplate and normative reference
+
+   o  incorporated shepherd review feedback
 
 
 Authors' Addresses
@@ -3629,12 +3692,5 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-Lodderstedt, et al.      Expires August 22, 2012               [Page 65]
+Lodderstedt, et al.      Expires August 22, 2012               [Page 66]
 
