@@ -11,7 +11,7 @@
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
 <?rfc strict="no"?>
-<rfc category="info" docName="draft-ietf-oauth-v2-threatmodel-03"
+<rfc category="info" docName="draft-ietf-oauth-v2-threatmodel-04"
      ipr="trust200902">
   <front>
     <title abbrev="OAuth 2.0 Security">OAuth 2.0 Threat Model and Security
@@ -55,8 +55,9 @@
     <keyword>threat model</keyword>
 
     <abstract>
-      <t>This document gives security considerations based on a comprehensive
-      threat model for the OAuth 2.0 Protocol.</t>
+      <t>This document gives additional security considerations for OAuth,
+      beyond those in the OAuth specification, based on a comprehensive threat
+      model for the OAuth 2.0 Protocol.</t>
     </abstract>
   </front>
 
@@ -64,9 +65,8 @@
     <section title="Introduction">
       <t>This document gives additional security considerations for OAuth,
       beyond those in the OAuth specification, based on a comprehensive threat
-      model for the OAuth 2.0 Protocol</t>
-
-      <t><xref target="I-D.ietf-oauth-v2"></xref>. It contains the following
+      model for the OAuth 2.0 Protocol <xref
+      target="I-D.ietf-oauth-v2"></xref>. It contains the following
       content:<list style="symbols">
           <t>Documents any assumptions and scope considered when creating the
           threat model.</t>

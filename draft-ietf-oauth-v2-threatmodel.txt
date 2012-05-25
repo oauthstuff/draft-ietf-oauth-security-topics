@@ -11,11 +11,12 @@ Expires: November 26, 2012                                           IBM
 
 
            OAuth 2.0 Threat Model and Security Considerations
-                   draft-ietf-oauth-v2-threatmodel-03
+                   draft-ietf-oauth-v2-threatmodel-04
 
 Abstract
 
-   This document gives security considerations based on a comprehensive
+   This document gives additional security considerations for OAuth,
+   beyond those in the OAuth specification, based on a comprehensive
    threat model for the OAuth 2.0 Protocol.
 
 Status of this Memo
@@ -48,13 +49,15 @@ Copyright Notice
    to this document.  Code Components extracted from this document must
    include Simplified BSD License text as described in Section 4.e of
    the Trust Legal Provisions and are provided without warranty as
-   described in the Simplified BSD License.
 
 
 
 Lodderstedt, et al.     Expires November 26, 2012               [Page 1]
 
 Internet-Draft             OAuth 2.0 Security                   May 2012
+
+
+   described in the Simplified BSD License.
 
 
 Table of Contents
@@ -102,9 +105,6 @@ Table of Contents
        4.3.4.  Threat: Obtain client secret from authorization
                server database  . . . . . . . . . . . . . . . . . . . 23
        4.3.5.  Threat: Obtain client secret by online guessing  . . . 23
-       4.3.6.  Threat: DoS on dynamic client secret creation  . . . . 23
-     4.4.  Obtaining Authorization  . . . . . . . . . . . . . . . . . 23
-       4.4.1.  Authorization Code . . . . . . . . . . . . . . . . . . 24
 
 
 
@@ -113,6 +113,9 @@ Lodderstedt, et al.     Expires November 26, 2012               [Page 2]
 Internet-Draft             OAuth 2.0 Security                   May 2012
 
 
+       4.3.6.  Threat: DoS on dynamic client secret creation  . . . . 23
+     4.4.  Obtaining Authorization  . . . . . . . . . . . . . . . . . 23
+       4.4.1.  Authorization Code . . . . . . . . . . . . . . . . . . 24
          4.4.1.1.  Threat: Eavesdropping or leaking authorization
                    codes  . . . . . . . . . . . . . . . . . . . . . . 24
          4.4.1.2.  Threat: Obtain authorization codes from
@@ -158,9 +161,6 @@ Internet-Draft             OAuth 2.0 Security                   May 2012
        4.5.4.  Threat: Obtain refresh token phishing by
                counterfeit authorization server . . . . . . . . . . . 41
      4.6.  Accessing Protected Resources  . . . . . . . . . . . . . . 42
-       4.6.1.  Threat: Eavesdropping access tokens on transport . . . 42
-       4.6.2.  Threat: Replay authorized resource server requests . . 42
-       4.6.3.  Threat: Guessing access tokens . . . . . . . . . . . . 42
 
 
 
@@ -169,6 +169,9 @@ Lodderstedt, et al.     Expires November 26, 2012               [Page 3]
 Internet-Draft             OAuth 2.0 Security                   May 2012
 
 
+       4.6.1.  Threat: Eavesdropping access tokens on transport . . . 42
+       4.6.2.  Threat: Replay authorized resource server requests . . 42
+       4.6.3.  Threat: Guessing access tokens . . . . . . . . . . . . 42
        4.6.4.  Threat: Access token phishing by counterfeit
                resource server  . . . . . . . . . . . . . . . . . . . 43
        4.6.5.  Threat: Abuse of token by legitimate resource
@@ -214,9 +217,6 @@ Internet-Draft             OAuth 2.0 Security                   May 2012
          5.2.3.1.  Don't issue secrets to public clients or
                    clients with inappropriate security policy . . . . 55
          5.2.3.2.  Public clients without secret require user
-                   consent  . . . . . . . . . . . . . . . . . . . . . 55
-         5.2.3.3.  Client_id only in combination with redirect_uri  . 55
-         5.2.3.4.  Deployment-specific client secrets . . . . . . . . 56
 
 
 
@@ -225,6 +225,9 @@ Lodderstedt, et al.     Expires November 26, 2012               [Page 4]
 Internet-Draft             OAuth 2.0 Security                   May 2012
 
 
+                   consent  . . . . . . . . . . . . . . . . . . . . . 55
+         5.2.3.3.  Client_id only in combination with redirect_uri  . 55
+         5.2.3.4.  Deployment-specific client secrets . . . . . . . . 56
          5.2.3.5.  Validation of pre-registered redirect_uri  . . . . 56
          5.2.3.6.  Client secret revocation . . . . . . . . . . . . . 57
          5.2.3.7.  Use strong client authentication (e.g.
@@ -273,9 +276,6 @@ Internet-Draft             OAuth 2.0 Security                   May 2012
 
 
 
-
-
-
 Lodderstedt, et al.     Expires November 26, 2012               [Page 5]
 
 Internet-Draft             OAuth 2.0 Security                   May 2012
@@ -285,9 +285,8 @@ Internet-Draft             OAuth 2.0 Security                   May 2012
 
    This document gives additional security considerations for OAuth,
    beyond those in the OAuth specification, based on a comprehensive
-   threat model for the OAuth 2.0 Protocol
-
-   [I-D.ietf-oauth-v2].  It contains the following content:
+   threat model for the OAuth 2.0 Protocol [I-D.ietf-oauth-v2].  It
+   contains the following content:
 
    o  Documents any assumptions and scope considered when creating the
       threat model.
@@ -328,6 +327,7 @@ Internet-Draft             OAuth 2.0 Security                   May 2012
       dynamic registration at runtime.
 
    The following are considered out of scope :
+
 
 
 
