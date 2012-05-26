@@ -65,33 +65,25 @@
     <author fullname="Torsten Lodderstedt" initials="T." role="editor"
             surname="Lodderstedt">
       <organization>Deutsche Telekom AG</organization>
-
       <address>
         <email>torsten@lodderstedt.net</email>
-
-        <!-- uri and facsimile elements may also be added -->
       </address>
     </author>
 
     <author fullname="Stefanie Dronia" initials="S." surname="Dronia">
-      <organization></organization>
-
       <address>
         <email>sdronia@gmx.de</email>
-
-        <!-- uri and facsimile elements may also be added -->
       </address>
     </author>
 
     <author fullname="Marius Scurtescu" initials="M." surname="Scurtescu ">
       <organization>Google</organization>
-
       <address>
         <email>mscurtescu@google.com</email>
       </address>
     </author>
 
-    <date day="31" month="March" year="2012" />
+    <date day="26" month="May" year="2012" />
 
     <!-- Meta-data Declarations -->
 
@@ -121,8 +113,8 @@
       <t>This draft proposes an additional endpoint for OAuth authorization
       servers for revoking tokens.</t>
     </abstract>
-	
-	  <note title="Requirements Language">
+
+    <note title="Requirements Language">
       <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
       "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
       document are to be interpreted as described in <xref

@@ -4,10 +4,10 @@
 Web Authentication Protocol                          T. Lodderstedt, Ed.
 Internet-Draft                                       Deutsche Telekom AG
 Intended status: Standards Track                               S. Dronia
-Expires: October 2, 2012
+Expires: November 27, 2012
                                                            M. Scurtescu
                                                                   Google
-                                                          March 31, 2012
+                                                            May 26, 2012
 
 
                             Token Revocation
@@ -39,7 +39,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on October 2, 2012.
+   This Internet-Draft will expire on November 27, 2012.
 
 Copyright Notice
 
@@ -52,9 +52,9 @@ Copyright Notice
 
 
 
-Lodderstedt, et al.      Expires October 2, 2012                [Page 1]
+Lodderstedt, et al.     Expires November 27, 2012               [Page 1]
 
-Internet-Draft              Token Revocation                  March 2012
+Internet-Draft              Token Revocation                    May 2012
 
 
    publication of this document.  Please review these documents
@@ -108,9 +108,9 @@ Table of Contents
 
 
 
-Lodderstedt, et al.      Expires October 2, 2012                [Page 2]
+Lodderstedt, et al.     Expires November 27, 2012               [Page 2]
 
-Internet-Draft              Token Revocation                  March 2012
+Internet-Draft              Token Revocation                    May 2012
 
 
 1.  Introduction
@@ -164,9 +164,9 @@ Internet-Draft              Token Revocation                  March 2012
 
 
 
-Lodderstedt, et al.      Expires October 2, 2012                [Page 3]
+Lodderstedt, et al.     Expires November 27, 2012               [Page 3]
 
-Internet-Draft              Token Revocation                  March 2012
+Internet-Draft              Token Revocation                    May 2012
 
 
    replacements, and MAY support additional transport-layer mechanisms
@@ -220,9 +220,9 @@ Internet-Draft              Token Revocation                  March 2012
 
 
 
-Lodderstedt, et al.      Expires October 2, 2012                [Page 4]
+Lodderstedt, et al.     Expires November 27, 2012               [Page 4]
 
-Internet-Draft              Token Revocation                  March 2012
+Internet-Draft              Token Revocation                    May 2012
 
 
    response as defined in section 5.2. of [I-D.ietf-oauth-v2].  The
@@ -276,9 +276,9 @@ Internet-Draft              Token Revocation                  March 2012
 
 
 
-Lodderstedt, et al.      Expires October 2, 2012                [Page 5]
+Lodderstedt, et al.     Expires November 27, 2012               [Page 5]
 
-Internet-Draft              Token Revocation                  March 2012
+Internet-Draft              Token Revocation                    May 2012
 
 
 6.  References
@@ -332,5 +332,5 @@ Authors' Addresses
 
 
 
-Lodderstedt, et al.      Expires October 2, 2012                [Page 6]
+Lodderstedt, et al.     Expires November 27, 2012               [Page 6]
 
