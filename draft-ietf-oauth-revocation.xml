@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-oauth-revocation-00" ipr="trust200902">
+<rfc category="std" docName="draft-ietf-oauth-revocation-01" ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
 		full3667, noModification3667, noDerivatives3667 you can add the
@@ -65,6 +65,7 @@
     <author fullname="Torsten Lodderstedt" initials="T." role="editor"
             surname="Lodderstedt">
       <organization>Deutsche Telekom AG</organization>
+
       <address>
         <email>torsten@lodderstedt.net</email>
       </address>
@@ -78,18 +79,19 @@
 
     <author fullname="Marius Scurtescu" initials="M." surname="Scurtescu ">
       <organization>Google</organization>
+
       <address>
         <email>mscurtescu@google.com</email>
       </address>
     </author>
 
-    <date day="26" month="May" year="2012" />
+    <date day="10" month="June" year="2012" />
 
     <!-- Meta-data Declarations -->
 
     <area>Security Area</area>
 
-    <workgroup>Web Authentication Protocol</workgroup>
+    <workgroup>OAuth Working Group</workgroup>
 
     <!--
 			WG name at the upperleft corner of the doc, IETF is fine for
@@ -287,13 +289,13 @@ package.myCallback({"error":"invalid_token"});
 
   <back>
     <references title="Normative References">
-      <?rfc include="reference.RFC.2119"?>
+      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml' ?>
 
-      <?rfc include="reference.RFC.2246"?>
+      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.2246.xml' ?>
 
-      <?rfc include="reference.RFC.5246"?>
+      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.5246.xml' ?>
 
-      <?rfc include="reference.I-D.ietf-oauth-v2.xml"?>
+      <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-v2-26.xml' ?>
     </references>
 
     <references title="Informative References">
