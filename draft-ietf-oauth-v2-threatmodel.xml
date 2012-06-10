@@ -11,7 +11,7 @@
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
 <?rfc strict="no"?>
-<rfc category="info" docName="draft-ietf-oauth-v2-threatmodel-05"
+<rfc category="info" docName="draft-ietf-oauth-v2-threatmodel-06"
      ipr="trust200902">
   <front>
     <title abbrev="OAuth 2.0 Security">OAuth 2.0 Threat Model and Security
@@ -42,11 +42,11 @@
       </address>
     </author>
 
-    <date day="27" month="May" year="2012" />
+    <date day="07" month="June" year="2012" />
 
     <area>Security Area</area>
 
-    <workgroup>Web Authorization Protocol (oauth)</workgroup>
+    <workgroup>OAuth Working Group</workgroup>
 
     <keyword>security</keyword>
 
@@ -83,6 +83,15 @@
       teams implement each part of the protocol securely. For example all
       threats for granting access or all threats for a particular grant type
       or all threats for protecting the resource server.</t>
+
+      <t>Note: This document cannot assess the probability nor the risk
+      associated with a particular threat because those aspects strongly
+      depend on the particular application and deployment OAuth is used to
+      protect. Similar, impacts are given on a rather abstract level. But the
+      information given here may serve as a foundation for deployment-specific
+      threat models. Implementors may refine and detail the abstract threat
+      model in order to account for the specific properties of their
+      deployment and to come up with a risk analysis.</t>
     </section>
 
     <section title="Overview">
@@ -264,13 +273,15 @@
             <t hangText="Assertions (aka self-contained token)">a parseable
             token. An assertion typically has a duration, has an audience, and
             is digitally signed. It contains information about the user and
-            the client. Examples of assertion formats are SAML assertions and
-            Kerberos tickets. Assertions can typically directly be validated
-            and used by a resource server without interactions with the
-            authorization server. This results in better performance and
-            scalability in deployment where issuing and consuming entity
-            reside on different systems. Implementing token revocation is more
-            difficult with assertions than with handles.</t>
+            the client. Examples of assertion formats are SAML assertions
+            <xref target="OASIS.saml-core-2.0-os"> </xref> and Kerberos
+            tickets <xref target="RFC4120"></xref>. Assertions can typically
+            directly be validated and used by a resource server without
+            interactions with the authorization server. This results in better
+            performance and scalability in deployment where issuing and
+            consuming entity reside on different systems. Implementing token
+            revocation is more difficult with assertions than with
+            handles.</t>
           </list>Tokens can be used in two ways to invoke requests on resource
         servers as follows:</t>
 
@@ -410,7 +421,7 @@
         client and user agent, i.e. protected by same-origin policy</t>
       </section>
 
-      <section title="Client Identity">
+      <section title="Client Identitifier">
         <t>Authentication protocols have typically not taken into account the
         identity of the software component acting on behalf of the end-user.
         OAuth does this in order to increase the security level in delegated
@@ -429,13 +440,13 @@
             end-user to a particular client, and subsequent requests by this
             client to obtain tokens without user consent (automatic processing
             of repeated authorization)</t>
-          </list>The client identity may also be used by the authorization
-        server to display relevant registration information to a user when
-        requesting consent for scope requested by a particular client. The
-        client identity may be used to limit the number of request for a
-        particular client or to charge the client per request. Client Identity
-        may furthermore be useful to differentiate access by different
-        clients, e.g. in server log files.</t>
+          </list>This identifier may also be used by the authorization server
+        to display relevant registration information to a user when requesting
+        consent for scope requested by a particular client. The client
+        identifier may be used to limit the number of request for a particular
+        client or to charge the client per request. It may furthermore be
+        useful to differentiate access by different clients, e.g. in server
+        log files.</t>
 
         <t>OAuth defines two client types, confidential and public, based on
         their ability to authenticate with the authorization server (i.e.
@@ -452,7 +463,7 @@
         the client, e.g. by only installing trusted applications.The
         redicrection URI can be used to prevent delivering credentials to a
         counterfeit client after obtaining end-user authorization in some
-        cases, but can't be used to verify the client identity.</t>
+        cases, but can't be used to verify the client identifier.</t>
 
         <t>Clients can be categorized as follows based on the client type,
         profile (e.g. native vs web application) and deployment model:</t>
@@ -460,13 +471,14 @@
         <t><list style="hanging">
             <t
             hangText="Deployment-independent client_id with pre-registered redirect_uri and without client_secret">Such
-            an identity is used by multiple installations of the same software
-            package. The identity of such a client can only be validated with
-            the help of the end-user. This is a viable option for native
-            applications in order to identify the client for the purpose of
-            displaying meta information about the client to the user and to
-            differentiate clients in log files. Revocation of such an identity
-            will affect ALL deployments of the respective software.</t>
+            an identifier is used by multiple installations of the same
+            software package. The identifier of such a client can only be
+            validated with the help of the end-user. This is a viable option
+            for native applications in order to identify the client for the
+            purpose of displaying meta information about the client to the
+            user and to differentiate clients in log files. Revocation of the
+            rights associated with such a client identifier will affect ALL
+            deployments of the respective software.</t>
 
             <t
             hangText="Deployment-independent client_id with pre-registered redirect_uri and with client_secret">This
@@ -481,8 +493,8 @@
             <t
             hangText="Deployment-specific client_id with pre-registered redirect_uri and with client_secret">The
             client registration process ensures the validation of the client's
-            properties, such as redirection URI, website address, web site
-            name, contacts. Such a client identity can be utilized for all
+            properties, such as redirection URI, website URL, web site name,
+            contacts. Such a client identifier can be utilized for all
             relevant use cases cited above. This level can be achieved for web
             applications in combination with a manual or user-bound
             registration process. Achieving this level for native applications
@@ -894,7 +906,7 @@
               <t>require clients to register full redirection URI <xref
               target="val_redirect"></xref></t>
 
-              <t>don't redirect to redirection URI, if client identity or
+              <t>don't redirect to redirection URI, if client identifier or
               redirection URI can't be verified <xref
               target="val_redirect"></xref></t>
             </list></t>
@@ -1131,7 +1143,7 @@
 
             <t><list style="symbols">
                 <t>Handle-based tokens must use high entropy: <xref
-                target="random_entropy"></xref></t>
+                target="high_entropy"></xref></t>
 
                 <t>Assertion-based tokens should be signed: <xref
                 target="signed_tokens"></xref></t>
@@ -1183,12 +1195,13 @@
                 The level of confidence depends on the client type. For web
                 applications, the confidence is high since the redirect URI
                 refers to the globally unique network endpoint of this
-                application whose address is also validated using HTTPS server
-                authentication by the user agent. In contrast for native
-                clients, the redirect URI typically refers to device local
-                resources, e.g. a custom scheme. So a malicious client on a
-                particular device can use the valid redirect URI the
-                legitimate client uses on all other devices.</t>
+                application whose fully qualified domain name (FQDN) is also
+                validated using HTTPS server authentication by the user agent.
+                In contrast for native clients, the redirect URI typically
+                refers to device local resources, e.g. a custom scheme. So a
+                malicious client on a particular device can use the valid
+                redirect URI the legitimate client uses on all other
+                devices.</t>
 
                 <t>After authenticating the end-user, the authorization server
                 should ask him/her for consent. In this context, the user
@@ -1984,7 +1997,7 @@
 
           <t><list style="symbols">
               <t>For handle-based designs - <xref
-              target="random_entropy"></xref></t>
+              target="high_entropy"></xref></t>
 
               <t>For assertion-based designs - <xref
               target="signed_tokens"></xref></t>
@@ -2035,7 +2048,7 @@
               <t>A short lifetime reduces impact in case tokens are
               compromised (see <xref target="short_exp_time"></xref>).</t>
 
-              <t>The access token can be bound to a client's identity and
+              <t>The access token can be bound to a client's identifier and
               require the client to prove legitimate ownership of the token to
               the resource server (see <xref
               target="authn_requests"></xref>).</t>
@@ -2073,8 +2086,8 @@
 
           <t><list style="symbols">
               <t>Handle Tokens should have a reasonable entropy (see <xref
-              target="random_entropy"></xref>) in order to make guessing a
-              valid token value difficult.</t>
+              target="high_entropy"></xref>) in order to make guessing a valid
+              token value difficult.</t>
 
               <t>Assertion (or self-contained token ) tokens contents should
               be protected by a digital signature (see <xref
@@ -2098,17 +2111,17 @@
           <t><list style="symbols">
               <t>Clients should not make authenticated requests with an access
               token to unfamiliar resource servers, regardless of the presence
-              of a secure channel. If the resource server address is
-              well-known to the client, it may authenticate the resource
-              servers (see <xref target="server_authn"></xref>).</t>
+              of a secure channel. If the resource server URL is well-known to
+              the client, it may authenticate the resource servers (see <xref
+              target="server_authn"></xref>).</t>
 
-              <t>Associate the endpoint address of the resource server the
-              client talked to with the access token (e.g. in an audience
-              field) and validate association at legitimate resource server.
-              The endpoint address validation policy may be strict (exact
-              match) or more relaxed (e.g. same host). This would require to
-              tell the authorization server the resource server endpoint
-              address in the authorization process.</t>
+              <t>Associate the endpoint URL of the resource server the client
+              talked to with the access token (e.g. in an audience field) and
+              validate association at legitimate resource server. The endpoint
+              URL validation policy may be strict (exact match) or more
+              relaxed (e.g. same host). This would require to tell the
+              authorization server the resource server endpoint URL in the
+              authorization process.</t>
 
               <t>Associate an access token with a client and authenticate the
               client with resource server requests (typically via signature in
@@ -2140,10 +2153,8 @@
 
         <section title="Threat: Leak of confidential data in HTTP-Proxies">
           <t>The HTTP Authorization scheme (OAuth HTTP Authorization Scheme)
-          is optional. However, [RFC2616](Fielding, R., Gettys, J., Mogul, J.,
-          Frystyk, H., Masinter, L., Leach, P., and T. Berners-Lee,
-          &ldquo;Hypertext Transfer Protocol -- HTTP/1.1,&rdquo; .) relies on
-          the Authorization and WWW-Authenticate headers to distinguish
+          is optional. However, <xref target="RFC2616"></xref> relies on the
+          Authorization and WWW-Authenticate headers to distinguish
           authenticated content so that it can be protected. Proxies and
           caches, in particular, may fail to adequately protect requests not
           using these headers. For example, private authenticated content may
@@ -2155,9 +2166,14 @@
           <t><list style="symbols">
               <t>Resource servers not using the HTTP Authorization scheme
               (OAuth HTTP Authorization Scheme - see <xref
-              target="authz_header"></xref>) should take care to use other
-              mechanisms, such as the Cache-Control header, to minimize the
-              risk that authenticated content is not protected.</t>
+              target="authz_header"></xref>) should take care to use the
+              Cache-Control header to minimize the risk that authenticated
+              content is not protected. The authorization server should
+              include the HTTP "Cache-Control" response header field <xref
+              target="RFC2616"></xref> with a value of "no-store" in any
+              response containing sensitive information, as well as the
+              "Pragma" response header field <xref target="RFC2616"></xref>
+              with a value of "no-cache".</t>
 
               <t>Reducing scope (see <xref target="limit_scope"></xref>) and
               expiry time (<xref target="short_exp_time"></xref>) for access
@@ -2216,7 +2232,15 @@
           content of request, e.g. secrets or tokens.</t>
 
           <t>Attacks can be mitigated by using transport-layer mechanisms such
-          as TLS or SSL. VPN may considered as well.</t>
+          as TLS <xref target="RFC5246"></xref>. A virtual private network
+          (VPN), e.g. based on IPsec VPN <xref target="RFC4301"></xref>, may
+          considered as well.</t>
+
+          <t>Note: this document assumes end-to-end TLS protected connections
+          between the respective protocol entities. Deployments deviating from
+          this assumption by offloading TLS in between (e.g. on the data
+          center edge) must refine this threat model in order to account for
+          the additional (mainly insider) threat this may cause.</t>
 
           <t>This is a countermeasure against the following threats:</t>
 
@@ -2236,8 +2260,9 @@
         <section anchor="server_authn" title="Server authentication">
           <t>HTTPS server authentication or similar means can be used to
           authenticate the identity of a server. The goal is to reliably bind
-          the DNS name of the server to the public key presented by the server
-          during connection establishment.</t>
+          the fully qualified domain name of the server to the public key
+          presented by the server during connection establishment (see <xref
+          target="RFC2818"></xref>).</t>
 
           <t>The client should validate the binding of the server to its
           domain name. If the server fails to prove that binding, it is
@@ -2290,8 +2315,9 @@
           <section anchor="cred_storage_prot"
                    title="Credential Storage Protection">
             <t>Administrators should undertake industry best practices to
-            protect the storage of credentials. Such practices may include but
-            are not limited to the following sub-sections.</t>
+            protect the storage of credentials (see for example <xref
+            target="owasp"></xref>). Such practices may include but are not
+            limited to the following sub-sections.</t>
 
             <section anchor="std_sys" title="Standard System Security Means">
               <t>A server system may be locked down so that no attacker may
@@ -2326,13 +2352,17 @@
             <section anchor="noclear"
                      title="No cleartext storage of credentials">
               <t>The authorization server should not store credential in clear
-              text. Typical approaches are to store hashes instead. If the
-              credential lacks a reasonable entropy level (because it is a
-              user password) an additional salt will harden the storage to
-              prevent offline dictionary attacks. Note: Some authentication
-              protocols require the authorization server to have access to the
-              secret in the clear. Those protocols cannot be implemented if
-              the server only has access to hashes.</t>
+              text. Typical approaches are to store hashes instead or to
+              encrypt credentials. If the credential lacks a reasonable
+              entropy level (because it is a user password) an additional salt
+              will harden the storage to prevent offline dictionary attacks.
+              </t>
+
+              <t>Note: Some authentication protocols require the authorization
+              server to have access to the secret in the clear. Those
+              protocols cannot be implemented if the server only has access to
+              hashes. Credentials should strongly encrypted in those
+              cases.</t>
             </section>
 
             <section title="Encryption of credentials">
@@ -2359,17 +2389,14 @@
             </section>
 
             <section anchor="high_entropy" title="High entropy of secrets">
-              <t>When creating token handles or other secrets not intended for
-              usage by human users, the authorization server should include a
-              reasonable level of entropy in order to mitigate the risk of
-              guessing attacks.</t>
-
-              <t>The token value should be constructed from a
-              cryptographically strong random or pseudo-random number sequence
-              [RFC1750] generated by the Authorization Server. The probability
-              of any two Authorization Code values being identical should be
-              less than or equal to 2^(-128) and should be less than or equal
-              to 2^(-160).</t>
+              <t>When creating secrets not intended for usage by human users
+              (e.g. client secrets or token handles), the authorization server
+              should include a reasonable level of entropy in order to
+              mitigate the risk of guessing attacks. The token value should be
+              &gt;=128 bits long and constructed from a cryptographically
+              strong random or pseudo-random number sequence (see <xref
+              target="RFC4086"></xref> for best current practice) generated by
+              the Authorization Server.</t>
             </section>
 
             <section anchor="lock_accounts" title="Lock accounts">
@@ -2438,8 +2465,25 @@
           <section anchor="exp_time" title="Expiration time">
             <t>Tokens should generally expire after a reasonable duration.
             This complements and strengthens other security measures (such as
-            signatures) and reduces the impact of all kinds of token
-            leaks.</t>
+            signatures) and reduces the impact of all kinds of token leaks.
+            Depending on the risk associated with a token leakage, tokens may
+            expire after a few minutes (e.g. for payment transactions) or stay
+            valid for hours (e.g. read access to contacts).</t>
+
+            <t>The expiration time is determined by a couple of factors,
+            including:</t>
+
+            <t><list style="symbols">
+                <t>risk associated to a token leakage</t>
+
+                <t>duration of the underlying access grant,</t>
+
+                <t>duration until the modification of an access grant should
+                take effect, and</t>
+
+                <t>time required for an attacker to guess or produce valid
+                token.</t>
+              </list></t>
           </section>
 
           <section anchor="short_exp_time" title="Short expiration time">
@@ -2486,9 +2530,10 @@
             <t>Authorization servers in multi-service environments may
             consider issuing tokens with different content to different
             resource servers and to explicitly indicate in the token the
-            target server a token is intended to be sent to (see Audience in
-            SAML Assertions). This countermeasure can be used in the following
-            situations:</t>
+            target server a token is intended to be sent to. SAML Assertions
+            (see <xref target="OASIS.saml-core-2.0-os"></xref>) use the
+            Audience element for this purpose. This countermeasure can be used
+            in the following situations:</t>
 
             <t><list style="symbols">
                 <t>It reduces the impact of a successful replay attempt, since
@@ -2506,10 +2551,9 @@
           <section anchor="endpoint_audience"
                    title="Use endpoint address as token audience">
             <t>This may be used to indicate to a resource server, which
-            endpoint address has been used to obtain the token. This measure
-            will allow to detect requests from a counterfeit resource server,
-            since such token will contain the endpoint address of that
-            server.</t>
+            endpoint URL has been used to obtain the token. This measure will
+            allow to detect requests from a counterfeit resource server, since
+            such token will contain the endpoint URL of that server.</t>
           </section>
 
           <section anchor="audience_token_scope"
@@ -2524,15 +2568,15 @@
           <section anchor="bind_token_client_id"
                    title="Bind token to client id">
             <t>An authorization server may bind a token to a certain client
-            identity. This identity should be validated for every request with
-            that token. This means can be used, to</t>
+            identifier. This identifier should be validated for every request
+            with that token. This means can be used, to</t>
 
             <t><list style="symbols">
                 <t>detect token leakage and</t>
 
                 <t>prevent token abuse.</t>
-              </list>Note: Validating the client identity may require the
-            target server to authenticate the client's identity. This
+              </list>Note: Validating the client identifier may require the
+            target server to authenticate the client's identifier. This
             authentication can be based on secrets managed independent of the
             token (e.g. pre-registered client id/secret on authorization
             server) or sent with the token itself (e.g. as part of the
@@ -2547,18 +2591,6 @@
           <section anchor="enc_token" title="Encryption of token content">
             <t>Self-contained may be encrypted for privacy reasons or to
             protect system internal data.</t>
-          </section>
-
-          <section anchor="random_entropy"
-                   title="Random token value with high entropy">
-            <t>When creating token handles, the authorization server should
-            include a reasonable level of entropy in order to mitigate the
-            risk of guessing attacks. The token value should be constructed
-            from a cryptographically strong random or pseudo-random number
-            sequence <xref target="RFC4086"></xref> generated by the
-            Authorization Server. The probability of any two token values
-            being identical should be less than or equal to 2^(-128) and
-            should be less than or equal to 2^(-160).</t>
           </section>
 
           <section title="Assertion formats">
@@ -2669,18 +2701,24 @@
 
           <section anchor="device_id" title="Device identification">
             <t>The authorization server may require to bind authentication
-            credentials to a device identifier. The IMEI is one example of
-            such an identifier, there are also operating system specific
-            identifiers. The authorization server could include such an
-            identifier when authenticating user credentials in order to detect
-            token theft from a particular device.</t>
+            credentials to a device identifier. The <spanx style="emph">International Mobile Station Equipment Identity</spanx>
+            <xref target="IMEI"></xref> is one example of such an identifier,
+            there are also operating system specific identifiers. The
+            authorization server could include such an identifier when
+            authenticating user credentials in order to detect token theft
+            from a particular device.</t>
+
+            <t>Note: Any implementation should consider potential privacy
+            implications of using device identifiers.</t>
           </section>
 
           <section anchor="clickjacking_xframe" title="X-FRAME-OPTION header">
             <t>For newer browsers, avoidance of iFrames can be enforced server
-            side by using the X-FRAME-OPTION header. This header can have two
-            values, deny and same origin, which will block any framing or
-            framing by sites with a different origin, respectively.</t>
+            side by using the X-FRAME-OPTION header (see <xref
+            target="I-D.gondrom-x-frame-options"></xref>). This header can
+            have two values, deny and same origin, which will block any
+            framing or framing by sites with a different origin,
+            respectively.</t>
 
             <t>This is a countermeasure against the following threats:</t>
 
@@ -2705,7 +2743,7 @@
               <t>Authorize access of clients to certain features on the
               authorization or resource server, and</t>
 
-              <t>Log a client identity to log files for analysis or
+              <t>Log a client identifier to log files for analysis or
               statics.</t>
             </list>Due to the different capabilities and characteristics of
           the different client types, there are different ways to support
@@ -2736,7 +2774,7 @@
             entirely protected from reverse engineering. Secondly, such
             secrets cannot be revoked since this would immediately put all
             installations out of work. Moreover, since the authorization
-            server cannot really trust on the client's identity, it would be
+            server cannot really trust on the client's identifier, it would be
             dangerous to indicate to end-users the trustworthiness of the
             client.</t>
 
@@ -2776,24 +2814,26 @@
           </section>
 
           <section anchor="depl_specific_secretes"
-                   title="Deployment-specific client secrets">
-            <t>A authorization server may issue separate client identifiers
-            and corresponding secrets to the different deployments of a
-            client. The effect of such an approach would be to turn otherwise
-            "public" clients back into "confidential" clients.</t>
+                   title="Installation-specific client secrets">
+            <t>An authorization server may issue separate client identifiers
+            and corresponding secrets to the different installations of a
+            particular client (i.e. software package). The effect of such an
+            approach would be to turn otherwise "public" clients back into
+            "confidential" clients.</t>
 
             <t>For web applications, this could mean to create one client_id
             and client_secret per web site a software package is installed on.
             So the provider of that particular site could request client id
             and secret from the authorization server during setup of the web
             site. This would also allow to validate some of the properties of
-            that web site, such as redirection URI, address, and whatever
+            that web site, such as redirection URI, website URL, and whatever
             proofs useful. The web site provider has to ensure the security of
             the client secret on the site.</t>
 
             <t>For native applications, things are more complicated because
-            every installation of the application on any device is another
-            deployment. Deployment specific secrets will require</t>
+            every copy of a particular application on any device is a
+            different installation. Installation-specific secrets in this
+            scenario will require</t>
 
             <t><list style="numbers">
                 <t>Either to obtain a client_id and client_secret during
@@ -2804,13 +2844,13 @@
             issuing client ids and secrets, which is currently not defined by
             OAuth.</t>
 
-            <t>The first approach would allow to achieve a level where the
-            client is authenticated and identified, whereas the second option
-            only allows to authenticate the client but not to validate
-            properties of the client. But this would at least help to prevent
-            several replay attacks. Moreover, deployment-specific client_id
-            and secret allow to selectively revoke all refresh tokens of a
-            specific deployment at once.</t>
+            <t>The first approach would allow to achieve a certain level of
+            trust in the authenticity of the application, whereas the second
+            option only allows to authenticate the installation but not to
+            validate properties of the client. But this would at least help to
+            prevent several replay attacks. Moreover, installation-specific
+            client_id and secret allow to selectively revoke all refresh
+            tokens of a specific installation at once.</t>
           </section>
 
           <section anchor="val_redirect"
@@ -2911,8 +2951,8 @@
             consequences are. For example, the user should understand what
             access he is about to grant to which client for what duration. It
             should also be obvious to the user, whether the server is able to
-            reliably certify certain client properties (web site address,
-            security policy).</t>
+            reliably certify certain client properties (web site URL, security
+            policy).</t>
           </section>
 
           <section anchor="validation_end_user"
@@ -2980,8 +3020,9 @@
           cannot be entirely protected from reverse engineering. Secondly,
           such secrets cannot be revoked since this would immediately put all
           installations out of work. Moreover, since the authorization server
-          cannot really trust on the client's identity, it would be dangerous
-          to indicate to end-users the trustworthiness of the client.</t>
+          cannot really trust on the client's identifier, it would be
+          dangerous to indicate to end-users the trustworthiness of the
+          client.</t>
         </section>
 
         <section anchor="std_web"
@@ -3069,7 +3110,7 @@
 
         <section anchor="authn_requests" title="Authenticated requests">
           <t>An authorization server may bind tokens to a certain client
-          identity and encourage resource servers to validate that binding.
+          identifier and encourage resource servers to validate that binding.
           This will require the resource server to authenticate the originator
           of a request as the legitimate owner of a particular token. There
           are a couple of options to implement this countermeasure:</t>
@@ -3181,17 +3222,59 @@
 
   <back>
     <references title="Normative References">
-      <?rfc include="reference.I-D.ietf-oauth-v2.xml"?>
+      <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-v2-26.xml' ?>
     </references>
 
     <references title="Informative References">
-      <?rfc include="reference.I-D.ietf-oauth-revocation.xml"?>
+      <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-revocation.xml'?>
 
-      <?rfc include="reference.I-D.ietf-oauth-v2-bearer.xml"?>
+      <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-v2-bearer-19.xml' ?>
 
-      <?rfc include="reference.I-D.ietf-oauth-v2-http-mac.xml"?>
+      <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-v2-http-mac-01.xml' ?>
 
-      <?rfc include="reference.RFC.4086"?>
+      <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-gondrom-x-frame-options-00.xml' ?>
+
+      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.4086.xml' ?>
+
+      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.2616.xml' ?>
+
+      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.5246.xml' ?>
+
+      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.4301.xml' ?>
+
+      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.2818.xml' ?>
+
+      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml' ?>
+
+      <?rfc include='http://xml.resource.org/public/rfc/bibxml2/reference.OASIS.saml-core-2.0-os.xml' ?>
+
+      <reference anchor="IMEI">
+        <front>
+          <title>International Mobile station Equipment Identities
+          (IMEI)</title>
+
+          <author>
+            <organization>3GPP</organization>
+          </author>
+
+          <date day="04" month="July" year="2002" />
+        </front>
+
+        <seriesInfo name="3GPP TS" value="22.016 3.3.0" />
+
+        <format target="http://www.3gpp.org/ftp/Specs/html-info/22016.htm"
+                type="HTML" />
+      </reference>
+
+      <reference anchor="owasp" target="https://www.owasp.org/">
+        <front>
+          <title>Open Web Application Security Project Home Page</title>
+
+          <author></author>
+
+          <date />
+        </front>
+      </reference>
 
       <reference anchor="portable-contacts"
                  target="http://portablecontacts.net/">
