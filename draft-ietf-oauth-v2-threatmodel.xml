@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="US-ASCII"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
 <?rfc toc="yes"?>
 <?rfc tocompact="yes"?>
@@ -190,8 +190,8 @@
 
               <t>client-specific refresh tokens</t>
 
-              <t>client-specific access tokens (in case of handle-based
-              design)</t>
+              <t>client-specific access tokens (in case of handle-based design
+              - see <xref target="section_tokens"></xref>)</t>
 
               <t>HTTPS certificate/key</t>
 
@@ -209,11 +209,12 @@
 
               <t>HTTPS certificate/key</t>
 
-              <t>authorization server credentials (handle-based design),
-              or</t>
+              <t>authorization server credentials (handle-based design - see
+              <xref target="section_tokens"></xref>), or</t>
 
               <t>authorization server shared secret/public key
-              (assertion-based design)</t>
+              (assertion-based design - see <xref
+              target="section_tokens"></xref>)</t>
 
               <t>access tokens (per request)</t>
             </list> It is assumed that a resource server has no knowledge of
@@ -221,8 +222,13 @@
         </section>
 
         <section title="Client">
-          <t>A full definition of different client types and profiles is given
-          in <xref target="I-D.ietf-oauth-v2"></xref>, Section 2.1.</t>
+          <t>In OAuth a client is an application making protected resource
+          requests on behalf of the resource owner and with its authorization.
+          There are different types of clients with different implementation
+          and security characteristics, such as web, user-agent-based, and
+          native applications. A full definition of the different client types
+          and profiles is given in <xref target="I-D.ietf-oauth-v2"></xref>,
+          Section 2.1.</t>
 
           <t>The following data elements are stored or accessible on the
           client:</t>
@@ -248,7 +254,7 @@
       <t>These are some of the security features which have been built into
       the OAuth 2.0 protocol to mitigate attacks and security issues.</t>
 
-      <section title="Tokens">
+      <section anchor="section_tokens" title="Tokens">
         <t>OAuth makes extensive use many kinds of tokens (access tokens,
         refresh tokens, authorization codes). The information content of a
         token can be represented in two ways as follows:</t>
@@ -272,16 +278,16 @@
 
             <t hangText="Assertions (aka self-contained token)">a parseable
             token. An assertion typically has a duration, has an audience, and
-            is digitally signed. It contains information about the user and
-            the client. Examples of assertion formats are SAML assertions
-            <xref target="OASIS.saml-core-2.0-os"> </xref> and Kerberos
-            tickets <xref target="RFC4120"></xref>. Assertions can typically
-            directly be validated and used by a resource server without
-            interactions with the authorization server. This results in better
-            performance and scalability in deployment where issuing and
-            consuming entity reside on different systems. Implementing token
-            revocation is more difficult with assertions than with
-            handles.</t>
+            is digitally signed in order to ensure data integrity and origin
+            authentication. It contains information about the user and the
+            client. Examples of assertion formats are SAML assertions <xref
+            target="OASIS.saml-core-2.0-os"> </xref> and Kerberos tickets
+            <xref target="RFC4120"></xref>. Assertions can typically directly
+            be validated and used by a resource server without interactions
+            with the authorization server. This results in better performance
+            and scalability in deployment where issuing and consuming entity
+            reside on different systems. Implementing token revocation is more
+            difficult with assertions than with handles.</t>
           </list>Tokens can be used in two ways to invoke requests on resource
         servers as follows:</t>
 
@@ -321,10 +327,11 @@
           complemented by a restriction on a token's lifetime.</t>
         </section>
 
-        <section title="Expires_In">
-          <t>Expires_In allows an authorization server (based on its policies
-          or on behalf of the end-user) to limit the lifetime of the access
-          token. This mechanisms can be used to issue short-living tokens to
+        <section title="Limited access token limetime">
+          <t>The protocol parameter expires_in allows an authorization server
+          (based on its policies or on behalf of the end-user) to limit the
+          lifetime of an access token and to pass this information to the
+          client. This mechanism can be used to issue short-living tokens to
           OAuth clients the authorization server deems less secure or where
           sending tokens over non secure channels.</t>
         </section>
@@ -379,20 +386,22 @@
       </section>
 
       <section title="Authorization Code">
-        <t>An Authorization Code represents the intermediate result of a
+        <t>An authorization code represents the intermediate result of a
         successful end-user authorization process and is used by the client to
         obtain access and refresh token. Authorization codes are sent to the
         client's redirection URI instead of tokens for two purposes.</t>
 
         <t><list style="numbers">
-            <t>Instead of (longer-lasting) tokens, the short-lived
-            authorization code is exposed to potential attackers via URI query
-            parameters (HTTP referrer), browser cache, or log file
-            entries.</t>
+            <t>Browser-based flows expose protocol parameters to potential
+            attackers via URI query parameters (HTTP referrer), the browser
+            cache, or log file entries and could be replayed. In order to
+            reduce this threat, short-lived authorization codes are passed
+            instead of tokens and exchanged for tokens over a more secure
+            direct connection between client and authorization server.</t>
 
             <t>It is much simpler to authenticate clients during the direct
             request between client and authorization server than in the
-            context of the indirect authorization request. The later would
+            context of the indirect authorization request. The latter would
             require digital signatures.</t>
           </list></t>
       </section>
@@ -413,12 +422,14 @@
 
       <section title="State parameter">
         <t>The state parameter is used to link requests and callbacks to
-        prevent CSRF attacks where an attacker authorizes access to his own
-        resources and then tricks a users into following a redirect with the
-        attacker's token. This parameter should bind to the authenticated
-        state in a user agent and, as per the core OAuth spec, the user agent
-        must be capable of keeping it in a location accessible only by the
-        client and user agent, i.e. protected by same-origin policy</t>
+        prevent Cross-Site Request Forgery attacks (see <xref
+        target="section_csrf"></xref>) where an attacker authorizes access to
+        his own resources and then tricks a users into following a redirect
+        with the attacker's token. This parameter should bind to the
+        authenticated state in a user agent and, as per the core OAuth spec,
+        the user agent must be capable of keeping it in a location accessible
+        only by the client and user agent, i.e. protected by same-origin
+        policy.</t>
       </section>
 
       <section title="Client Identitifier">
@@ -466,7 +477,9 @@
         cases, but can't be used to verify the client identifier.</t>
 
         <t>Clients can be categorized as follows based on the client type,
-        profile (e.g. native vs web application) and deployment model:</t>
+        profile (e.g. native vs. web application - see <xref
+        target="I-D.ietf-oauth-v2"></xref>, Section 9) and deployment
+        model:</t>
 
         <t><list style="hanging">
             <t
@@ -522,7 +535,7 @@
       </section>
     </section>
 
-    <section title="Security Threat Model">
+    <section title="Threat Model">
       <t>This section gives a comprehensive threat model of OAuth 2.0. Threats
       are grouped first by attacks directed against an OAuth component, which
       are client, authorization server, and resource server. Subsequently,
@@ -814,7 +827,7 @@
           by intercepting the Client's requests and returning misleading or
           otherwise incorrect responses. This could be achieved using DNS or
           ARP spoofing. Wide deployment of OAuth and similar protocols may
-          cause Users to become inured to the practice of being redirected to
+          cause users to become inured to the practice of being redirected to
           websites where they are asked to enter their passwords. If Users are
           not careful to verify the authenticity of these websites before
           entering their credentials, it will be possible for attackers to
@@ -846,17 +859,17 @@
 
           <t><list style="symbols">
               <t>Explain the scope (resources and the permissions) the user is
-              about to grant in a understandable way - <xref
+              about to grant in an understandable way - <xref
               target="informed_decisions"></xref></t>
 
               <t>Narrow scope based on client - When obtaining end user
               authorization and where the client requests scope, the
               authorization server may want to consider whether to honour that
-              scope based on who the client is. That decision is between the
-              client and authorization server and is outside the scope of this
-              spec. The authorization server may also want to consider what
-              scope to grant based on the client type, e.g. providing lower
-              scope to public clients. - <xref
+              scope based on the client identifier. That decision is between
+              the client and authorization server and is outside the scope of
+              this spec. The authorization server may also want to consider
+              what scope to grant based on the client type, e.g. providing
+              lower scope to public clients. - <xref
               target="limit_scope"></xref></t>
             </list></t>
         </section>
@@ -917,7 +930,7 @@
         <t></t>
 
         <section title="Threat: Eavesdropping access tokens">
-          <t>Attackers may attempts to eavesdrop access token on transit from
+          <t>Attackers may attempts to eavesdrop access token in transit from
           the authorization server to the client.</t>
 
           <t>Impact: The attacker is able to access all resources with the
@@ -958,18 +971,20 @@
             </list></t>
         </section>
 
-        <section title="Threat: Obtain client credentials over non secure transport">
+        <section title="Threat: Revelation of client credentials during transmission">
           <t>An attacker could attempt to eavesdrop the transmission of client
           credentials between client and server during the client
-          authentication process or during OAuth token requests. Impact:
-          Revelation of a client credential enabling the possibility for
-          phishing or imitation of a client service.</t>
+          authentication process or during OAuth token requests.</t>
+
+          <t>Impact: Revelation of a client credential enabling phishing or
+          impersonation of a client service.</t>
 
           <t>Countermeasures:</t>
 
           <t><list style="symbols">
-              <t>Implement transport security through - <xref
-              target="conf_requests"></xref></t>
+              <t>The transmission of client credentials must be protected
+              using transport-layer mechanisms such as TLS (see <xref
+              target="conf_requests"></xref>).</t>
 
               <t>Alternative authentication means, which do not require to
               send plaintext credentials over the wire (Examples: Digest
@@ -1010,17 +1025,16 @@
         </section>
 
         <section title="Threat: DoS on dynamic client secret creation">
-          <t>If an authorization servers includes a nontrivial amount of
-          entropy in client secrets and if the authorization server
-          automatically grants them, an attacker could exhaust the pool by
-          repeatedly applying for them.</t>
+          <t>Assuming every authorization server includes a nontrivial amount
+          of entropy in client secrets and if an authorization server
+          automatically creates client secrets on request, an attacker could
+          exhaust the pool by repeatedly applying for them.</t>
 
           <t>Countermeasures:</t>
 
           <t><list style="symbols">
               <t>The authorization server should consider some verification
-              step for new clients. The authorization server should include a
-              nontrivial amount of entropy in client secrets.</t>
+              step for new clients.</t>
             </list></t>
         </section>
       </section>
@@ -1029,7 +1043,7 @@
         <t>This section covers threats which are specific to certain flows
         utilized to obtain access tokens. Each flow is characterized by
         response types and/or grant types on the end-user authorization and
-        tokens endpoint, respectively.</t>
+        token endpoint, respectively.</t>
 
         <section anchor="code_flow" title="Authorization Code">
           <section anchor="eavesdropping"
@@ -1038,11 +1052,11 @@
             authorization code between authorization server and client.
             Furthermore, authorization codes are passed via the browser which
             may unintentionally leak those codes to untrusted web sites and
-            attackers by different ways:</t>
+            attackers in different ways:</t>
 
             <t><list style="symbols">
                 <t>Referrer headers: browsers frequently pass a
-                &ldquo;referrer&rdquo; header when a web page embeds content,
+                &ldquo;referer&rdquo; header when a web page embeds content,
                 or when a user travels from one web page to another web page.
                 These referrer headers may be sent even when the origin site
                 does not trust the destination site. The referrer header is
@@ -1062,12 +1076,10 @@
                 may be able to view URLs that were visited by previous
                 users.</t>
               </list>Note: A description of a similar attacks on the SAML
-            protocol can be found at
-            http://www.oasis-open.org/committees/download.php/3405/oasis-sstc-saml-bindings-1.1.pdf
-            (&sect;4.1.1.9.1),
-            http://www.thomasgross.net/publications/papers/GroPfi2006-SAML2_Analysis_Janus.WSSS_06.pdf
-            and
-            http://www.oasis-open.org/committees/download.php/11191/sstc-gross-sec-analysis-response-01.pdf.</t>
+            protocol can be found at <xref
+            target="OASIS.sstc-saml-bindings-1.1"></xref>, Section 4.1.1.9.1,
+            <xref target="gross-sec-analysis"></xref>, and <xref
+            target="OASIS.sstc-gross-sec-analysis-response-01"></xref>.</t>
 
             <t>Countermeasures:</t>
 
@@ -1392,7 +1404,8 @@
               </list></t>
           </section>
 
-          <section title="Threat: CSRF attack against redirect-uri">
+          <section anchor="section_csrf"
+                   title="Threat: CSRF attack against redirect-uri">
             <t>Cross-Site Request Forgery (CSRF) is a web-based attack whereby
             HTTP requests are transmitted from a user that the website trusts
             or has authenticated (e.g., via HTTP redirects or HTML forms).
@@ -1447,10 +1460,6 @@
             <t>Countermeasure</t>
 
             <t><list style="symbols">
-                <t>Native applications should use external browsers instead of
-                embedding browsers in a web view when requesting end-user
-                authorization</t>
-
                 <t>For newer browsers, avoidance of iFrames can be enforced
                 server side by using the X-FRAME-OPTION header - <xref
                 target="clickjacking_xframe"></xref></t>
@@ -1673,10 +1682,6 @@
                 target="limit_scope"></xref>).</t>
 
                 <t>Make these requests non-cachable</t>
-
-                <t>Native applications can directly embed a browser widget and
-                therewith gain full control of the cache. So the application
-                can cleanup browser history after authorization process.</t>
               </list></t>
           </section>
 
@@ -1720,21 +1725,14 @@
           </section>
 
           <section title="Threat: CSRF attack against redirect-uri">
-            <t>Cross-Site Request Forgery (CSRF) is a web-based attack whereby
-            HTTP requests are transmitted from a user that the website trusts
-            or has authenticated (e.g., via HTTP redirects or HTML forms).
-            CSRF attacks on OAuth approvals can allow an attacker to obtain
-            authorization to OAuth protected resources without the consent of
-            the User.</t>
-
-            <t>This attack works against the redirection URI used in the
-            implicit grant flow. An attacker could acquire an access token to
-            their own protected resources. He could then construct a
-            redirection URI and embed their access token in that URI. If he
-            can trick the user into following the redirection URI and the
-            client does not have protection against this attack, the user may
-            have the attacker's access token authorized within their
-            client.</t>
+            <t>CSRF attacks (see <xref target="section_csrf"></xref>) also
+            work against the redirection URI used in the implicit grant flow.
+            An attacker could acquire an access token to their own protected
+            resources. He could then construct a redirection URI and embed
+            their access token in that URI. If he can trick the user into
+            following the redirection URI and the client does not have
+            protection against this attack, the user may have the attacker's
+            access token authorized within their client.</t>
 
             <t>Impact: The user accesses resources on behalf of the attacker.
             The effective impact depends on the type of resource accessed. For
@@ -2164,16 +2162,16 @@
           <t>Countermeasures:</t>
 
           <t><list style="symbols">
-              <t>Resource servers not using the HTTP Authorization scheme
-              (OAuth HTTP Authorization Scheme - see <xref
-              target="authz_header"></xref>) should take care to use the
-              Cache-Control header to minimize the risk that authenticated
-              content is not protected. The authorization server should
-              include the HTTP "Cache-Control" response header field <xref
-              target="RFC2616"></xref> with a value of "no-store" in any
-              response containing sensitive information, as well as the
-              "Pragma" response header field <xref target="RFC2616"></xref>
-              with a value of "no-cache".</t>
+              <t>Clients and resource servers not using the HTTP Authorization
+              scheme (OAuth HTTP Authorization Scheme - see <xref
+              target="authz_header"></xref>) should take care to use
+              Cache-Control headers to minimize the risk that authenticated
+              content is not protected. Such Clients should send a
+              Cache-Control header containing the "no-store" option <xref
+              target="RFC2616"></xref>. Resource server success (2XX status)
+              responses to these requests should contain a Cache-Control
+              header with the "private" option <xref
+              target="RFC2616"></xref>.</t>
 
               <t>Reducing scope (see <xref target="limit_scope"></xref>) and
               expiry time (<xref target="short_exp_time"></xref>) for access
@@ -2355,8 +2353,8 @@
               text. Typical approaches are to store hashes instead or to
               encrypt credentials. If the credential lacks a reasonable
               entropy level (because it is a user password) an additional salt
-              will harden the storage to prevent offline dictionary attacks.
-              </t>
+              will harden the storage to prevent offline dictionary
+              attacks.</t>
 
               <t>Note: Some authentication protocols require the authorization
               server to have access to the secret in the clear. Those
@@ -3289,6 +3287,58 @@
         </front>
 
         <format target="http://portablecontacts.net/" type="html" />
+      </reference>
+
+      <reference anchor="gross-sec-analysis">
+        <front>
+          <title>Security Analysis of the SAML Single Sign-on Browser/Artifact
+          Profile, 19th Annual Computer Security Applications Conference, Las
+          Vegas</title>
+
+          <author fullname="T. Gro&szlig;" initials="T" surname="Gro&szlig;">
+            <organization></organization>
+          </author>
+
+          <date month="December" year="2003" />
+        </front>
+      </reference>
+
+      <reference anchor="OASIS.sstc-saml-bindings-1.1">
+        <front>
+          <title>Bindings and Profiles for the OASIS
+          Security Assertion Markup Language (SAML) V1.1</title>
+
+          <author fullname="E. Maler" initials="E." role="editor"
+                  surname="Maler"></author>
+
+          <author fullname="P. Mishra" initials="P." role="editor"
+                  surname="Mishra"></author>
+
+          <author fullname="R. Philpott" initials="R." role="editor"
+                  surname="Philpott"></author>
+
+          <date month="September " year="2003" />
+        </front>
+
+        <format target="http://www.oasis-open.org/committees/download.php/3405/oasis-sstc-saml-bindings-1.1.pdf"
+                type="pdf" />
+      </reference>
+
+      <reference anchor="OASIS.sstc-gross-sec-analysis-response-01">
+        <front>
+          <title>SSTC Response to “Security Analysis of the SAML Single Sign-on Browser/Artifact Profile”</title>
+
+          <author fullname="J. Linn" initials="J." role="editor"
+                  surname="Linn"></author>
+
+          <author fullname="P. Mishra" initials="P." role="editor"
+                  surname="Mishra"></author>
+
+          <date month="January" year="2005" />
+        </front>
+
+        <format target="http://www.oasis-open.org/committees/download.php/11191/sstc-gross-sec-analysis-response-01.pdf"
+                type="pdf" />
       </reference>
     </references>
 
