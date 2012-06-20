@@ -943,7 +943,7 @@
               <t>As per the core OAuth spec, the authorization servers must
               ensure that these transmissions are protected using
               transport-layer mechanisms such as TLS (see <xref
-              target="conf_requests"></xref>).</t>
+              target="conf_requests"/>).</t>
 
               <t>If end-to-end confidentiality cannot be guaranteed, reducing
               scope (see <xref target="limit_scope"></xref>) and expiry time
@@ -1079,7 +1079,7 @@
                 <t>As per the core OAuth spec, the authorization server as
                 well as the client must ensure that these transmissions are
                 protected using transport-layer mechanisms such as TLS (see
-                <xref target="conf_requests"></xref>).</t>
+                <xref target="conf_requests"/>).</t>
 
                 <t>The authorization server will require the client to
                 authenticate wherever possible, so the binding of the
@@ -1217,7 +1217,7 @@
                 to the user to validate the binding of this data to the
                 particular application (e.g. Name) and to approve the
                 authorization request. (see <xref
-                target="validation_end_user"></xref>).</t>
+                target="validation_end_user"/>).</t>
 
                 <t>The authorization server should not perform automatic
                 re-authorizations for clients it is unable to reliably
@@ -1999,7 +1999,7 @@
               <t>As per the core OAuth spec, the Authorization servers must
               ensure that these transmissions are protected using
               transport-layer mechanisms such as TLS (see <xref
-              target="conf_requests"></xref>).</t>
+              target="conf_requests"/>).</t>
 
               <t>If end-to-end confidentiality cannot be guaranteed, reducing
               scope (see <xref target="limit_scope"></xref>) and expiry time
@@ -2086,7 +2086,7 @@
               the clear over an insecure channel. As per the core OAuth spec,
               transmission of access tokens must be protected using
               transport-layer mechanisms such as TLS (see <xref
-              target="conf_requests"></xref>).</t>
+              target="conf_requests"/>).</t>
 
               <t>A short lifetime reduces impact in case tokens are
               compromised (see <xref target="short_exp_time"></xref>).</t>
@@ -2632,7 +2632,11 @@
           <section anchor="signed_tokens" title="Signed tokens">
             <t>Self-contained tokens should be signed in order to detect any
             attempt to modify or produce faked tokens (e.g. Hash-based Message
+<<<<<<< HEAD
             Authentication Code or digital signatures)</t>
+=======
+            Authentication Code or HMAC token)</t>
+>>>>>>> Added final nits from 5.1.4.3 on
           </section>
 
           <section anchor="enc_token" title="Encryption of token content">
@@ -2647,8 +2651,13 @@
             <t>For service providers intending to implement an assertion-based
             token design it is highly recommended to adopt a standard
             assertion format (such as SAML <xref
+<<<<<<< HEAD
             target="OASIS.saml-core-2.0-os"></xref> or JWT <xref
             target="I-D.ietf-oauth-json-web-token"></xref>.</t>
+=======
+            target="OASIS.sstc-saml-bindings"/> or JWT) that implements
+            [draft-ietf-oauth-assertions].</t>
+>>>>>>> Added final nits from 5.1.4.3 on
           </section>
         </section>
 
@@ -2660,7 +2669,15 @@
               <t>keep them in transient memory (accessible by the client
               application only)</t>
 
+<<<<<<< HEAD
               <t>Pass tokens securely using secure transport (TLS)</t>
+=======
+              <t>pass tokens securely using secure transport (TLS) where
+              possible</t>
+
+              <t>ensure client applications do not share tokens with 3rd
+              parties in most cases</t>
+>>>>>>> Added final nits from 5.1.4.3 on
 
               <t>Ensure client applications do not share tokens with 3rd
               parties</t>
@@ -2696,10 +2713,17 @@
           <section anchor="binding_refresh_client_id"
                    title="Binding of refresh token to client_id">
             <t>The authorization server should match every refresh token to
+<<<<<<< HEAD
             the identifier of the client to whom it was issued. The
             authorization server should check that the same client_id is
             present for every request to refresh the access token. If possible
             (e.g. confidential clients), the authorization server should
+=======
+            the id of the client to whom it was issued. The authorization
+            server should check that the same client_id is present for every
+            request to refresh the access token. If possible (e.g.
+            confidential clients), the authorization server should
+>>>>>>> Added final nits from 5.1.4.3 on
             authenticate the respective client.</t>
 
             <t>This is a countermeasure against refresh token theft or
@@ -2812,11 +2836,18 @@
           between.</t>
 
           <section anchor="dont_issue"
+<<<<<<< HEAD
                    title="Don't issue secrets to client with inappropriate security policy">
             <t>Authorization servers should not issue secrets to clients that
             cannot protect secrets ("public" clients). This reduces
             probability of the server treating the client as strongly
             authenticated.</t>
+=======
+                   title="Don't issue secrets to public clients or clients with inappropriate security policy">
+            <t>Authorization servers should not issue secrets to "public"
+            clients that cannot protect secrets. This reduces probability of
+            the server treating the client as strongly authenticated. </t>
+>>>>>>> Added final nits from 5.1.4.3 on
 
             <t>For example, it is of limited benefit to create a single client
             id and secret which is shared by all installations of a native
@@ -2926,7 +2957,18 @@
                 <t>Authorization code leakage through counterfeit web site:
                 allows to detect attack attempts already after first redirect
                 to end-user authorization endpoint (<xref
+<<<<<<< HEAD
                 target="authz_code_leakage"></xref>).</t>
+=======
+                target="authz_code_leakage"/>).</t>
+
+                <t>For clients with validated multi-factor authentication
+                properties, this measure also helps to detect malicious
+                applications early in the end-user authorization process. This
+                reduces the need for a interactive validation by the user
+                (<xref target="mal_client"/>, <xref
+                target="mal_client2"/>).</t>
+>>>>>>> Added final nits from 5.1.4.3 on
 
                 <t>Open Redirector attack via client redirection endpoint. (
                 <xref target="open_redirector_client"></xref>. )</t>
@@ -2970,11 +3012,19 @@
           <section anchor="strong_client_authn"
                    title="Use strong client authentication (e.g. client_assertion / client_token)">
             <t>By using an alternative form of authentication such as client
+<<<<<<< HEAD
             assertion <xref target="I-D.ietf-oauth-assertions"></xref>, the
             need to distribute a client_secret is eliminated. This may require
             the use of a secure private key store or other supplemental
             authentication system as specified by the client assertion issuer
             in its authentication process.</t>
+=======
+            assertion [draft-ietf-oauth-assertions], the need to distribute a
+            client_secret is eliminated. This may require the use of a secure
+            private key store or other supplemental authentication system as
+            specified by the client assertion issuer in its authentication
+            process.</t>
+>>>>>>> Added final nits from 5.1.4.3 on
           </section>
         </section>
 
@@ -2988,11 +3038,18 @@
             authorizations where the client is not authenticated through a
             client secret or some other authentication mechanism such as a
             signed authentication assertion certificate (<xref
+<<<<<<< HEAD
             target="strong_client_authn"></xref> Use strong client
             authentication (e.g. client_assertion / client_token)) or
             validation of a pre-registered redirect URI (<xref
             target="val_redirect"></xref> Validation of pre-registered
             redirection URI ).</t>
+=======
+            target="strong_client_authn"/> Use strong client authentication
+            (e.g. client_assertion / client_token)) or validation of a
+            pre-registered redirect URI (<xref target="val_redirect"/>
+            Validation of pre-registered redirection URI ).</t>
+>>>>>>> Added final nits from 5.1.4.3 on
           </section>
 
           <section anchor="informed_decisions"
@@ -3171,6 +3228,7 @@
 
               <t>Alternatively, the authorization server may issue a
               token-bound secret, which the client uses to MAC (message
+<<<<<<< HEAD
               authentication code) the request (see <xref
               target="I-D.ietf-oauth-v2-http-mac"></xref>). The resource
               server obtains the secret either directly from the authorization
@@ -3178,6 +3236,14 @@
               That way the resource server does not "know" the client but is
               able to validate whether the authorization server issued the
               token to that client</t>
+=======
+              authentication code) the request. The resource server obtains
+              the secret either directly from the authorization server or it
+              is contained in an encrypted section of the token. That way the
+              resource server does not "know" the client but is able to
+              validate whether the authorization server issued the token to
+              that client</t>
+>>>>>>> Added final nits from 5.1.4.3 on
             </list>Authenticated requests are a countermeasure against abuse
           of tokens by counterfeit resource servers.</t>
         </section>
@@ -3266,8 +3332,15 @@
   </middle>
 
   <back>
+<<<<<<< HEAD
     <references title="Informative References">
       <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-v2.xml' ?>
+=======
+    <references title="Normative References"/>
+
+    <references title="Informative References">
+      <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-v2-26.xml' ?>
+>>>>>>> Added final nits from 5.1.4.3 on
 
       <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-revocation.xml'?>
 
@@ -3433,8 +3506,8 @@
 
       <reference anchor="OASIS.sstc-gross-sec-analysis-response-01">
         <front>
-          <title>SSTC Response to &ldquo;Security Analysis of the SAML Single
-          Sign-on Browser/Artifact Profile&rdquo;</title>
+          <title>SSTC Response to “Security Analysis of the SAML Single
+          Sign-on Browser/Artifact Profile”</title>
 
           <author fullname="J. Linn" initials="J." role="editor"
                   surname="Linn"></author>
