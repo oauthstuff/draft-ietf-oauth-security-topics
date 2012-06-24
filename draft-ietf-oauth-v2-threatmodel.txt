@@ -1838,9 +1838,9 @@ Internet-Draft             OAuth 2.0 Security                  June 2012
    request to obtain a valid CSRF code/ state parameter.  This
    apparently cuts down the effectiveness of the attack by a factor of
    2.  However, if the HTTPS/HTTP cost ratio is higher than 2 (the cost
-   factor is estimated to be around 3.5x at
-   <http://www.semicomplete.com/blog/geekery/ssl-latency.html>) the
-   attacker still achieves a magnification of resource utilization at
+   factor is estimated to be around 3.5x at [ssl-latency]) the attacker
+   still achieves a magnification of resource utilization at the expense
+   of the authorization server.
 
 
 
@@ -1848,8 +1848,6 @@ Lodderstedt, et al.     Expires December 26, 2012              [Page 33]
 
 Internet-Draft             OAuth 2.0 Security                  June 2012
 
-
-   the expense of the authorization server.
 
    Impact: There are a few effects that the attacker can accomplish with
    this OAuth flow that they cannot easily achieve otherwise.
@@ -1895,6 +1893,8 @@ Internet-Draft             OAuth 2.0 Security                  June 2012
       client reporting an invalid authorization code and rate limit or
       disallow connections from clients whose number of invalid requests
       exceeds a threshold.
+
+
 
 
 
@@ -2209,7 +2209,7 @@ Internet-Draft             OAuth 2.0 Security                  June 2012
 
    o  CAPTCHA - Section 5.1.4.2.5
 
-   o  Abandon on grant type "password"
+   o  Consider not to use grant type "password"
 
    o  Client authentication (see Section 5.2.3) will provide another
       authentication factor and thus hinder the attack.
@@ -3656,6 +3656,10 @@ Internet-Draft             OAuth 2.0 Security                  June 2012
               Smarr, J., "Portable Contacts 1.0 Draft C", August 2008,
               <http://portablecontacts.net/>.
 
+   [ssl-latency]
+              Sissel, J., Ed., "SSL handshake latency and HTTPS
+              optimizations", June 2010.
+
 
 Appendix A.  Document History
 
@@ -3685,10 +3689,6 @@ Appendix A.  Document History
 
    o  corrected some typos
 
-   o  reformulated "session fixation", renamed respective sections into
-      "authorization code disclosure through counterfeit client"
-
-
 
 
 
@@ -3696,6 +3696,9 @@ Lodderstedt, et al.     Expires December 26, 2012              [Page 66]
 
 Internet-Draft             OAuth 2.0 Security                  June 2012
 
+
+   o  reformulated "session fixation", renamed respective sections into
+      "authorization code disclosure through counterfeit client"
 
    o  added new section "User session impersonation"
 
@@ -3742,9 +3745,6 @@ Internet-Draft             OAuth 2.0 Security                  June 2012
 
    o  incorporated shepherd review feedback
 
-   draft-ietf-oauth-v2-threatmodel-06
-
-
 
 
 
@@ -3752,6 +3752,8 @@ Lodderstedt, et al.     Expires December 26, 2012              [Page 67]
 
 Internet-Draft             OAuth 2.0 Security                  June 2012
 
+
+   draft-ietf-oauth-v2-threatmodel-06
 
    o  incorporated AD review feedback
 
@@ -3774,8 +3776,6 @@ Authors' Addresses
    Oracle Corporation
 
    Email: phil.hunt@yahoo.com
-
-
 
 
 
