@@ -1572,8 +1572,8 @@
             CSRF code/ state parameter. This apparently cuts down the
             effectiveness of the attack by a factor of 2. However, if the
             HTTPS/HTTP cost ratio is higher than 2 (the cost factor is
-            estimated to be around 3.5x at <eref
-            target="http://www.semicomplete.com/blog/geekery/ssl-latency.html"></eref>)
+            estimated to be around 3.5x at <xref
+            target="ssl-latency"></xref>)
             the attacker still achieves a magnification of resource
             utilization at the expense of the authorization server.</t>
 
@@ -1929,7 +1929,7 @@
 
                 <t>CAPTCHA - <xref target="captchas"></xref></t>
 
-                <t>Abandon on grant type "password&ldquo;</t>
+                <t>Consider not to use grant type "password&ldquo;</t>
 
                 <t>Client authentication (see <xref
                 target="client_aa"></xref>) will provide another
@@ -3397,6 +3397,22 @@
         <format target="http://www.oasis-open.org/committees/download.php/11191/sstc-gross-sec-analysis-response-01.pdf"
                 type="pdf" />
       </reference>
+	  
+      <reference anchor="ssl-latency">
+        <front>
+          <title>SSL handshake latency and HTTPS optimizations</title>
+
+          <author fullname="Jordan Sissel" initials="J." role="editor"
+                  surname="Sissel"></author>
+
+          <date month="June" year="2010" />
+        </front>
+
+        <format target="http://www.semicomplete.com/blog/geekery/ssl-latency.html"
+                type="HTML" />
+      </reference>	  
+	  
+	  
     </references>
 
     <section title="Document History">
