@@ -42,7 +42,7 @@
       </address>
     </author>
 
-    <date day="24" month="June" year="2012" />
+    <date day="26" month="June" year="2012" />
 
     <area>Security Area</area>
 
@@ -1572,8 +1572,7 @@
             CSRF code/ state parameter. This apparently cuts down the
             effectiveness of the attack by a factor of 2. However, if the
             HTTPS/HTTP cost ratio is higher than 2 (the cost factor is
-            estimated to be around 3.5x at <xref
-            target="ssl-latency"></xref>)
+            estimated to be around 3.5x at <xref target="ssl-latency"></xref>)
             the attacker still achieves a magnification of resource
             utilization at the expense of the authorization server.</t>
 
@@ -1747,6 +1746,48 @@
 
                 <t>Client developers and end-user can be educated not follow
                 untrusted URLs.</t>
+              </list></t>
+          </section>
+
+          <section title="Threat: Token substitution (OAuth Login)">
+            <t>The goal of this threat is to login to an app or site using a
+            victim's identity. Applications relying on identity data provided
+            by an OAuth protected API to login users are vulnerable to this
+            threat. This pattern can be found in so-called "social login"
+            scenarios.</t>
+
+            <t>As a pre-requisite, a resource server offers an API to obtain
+            an user identifier, which in turn is used by a client to login its
+            users. The client utilizes OAuth to obtain an access token for the
+            identity API. It then queries the identity API for an identifier
+            and uses it to look up its internat user account data (login).</t>
+
+            <t>An attacker, first of all, needs to gather a valid access token
+            of the respective victim. The attacker therefore tricks the victim
+            into login into a malicious app using the same identity provider
+            as the target application. This effectively results into the
+            authorization server issuing an access token for the respective
+            identity API. The app then sends this access token to the
+            attacker, which in turn triggers a login process within the target
+            application. The attacker now manipulates the authorization
+            response and substitutes the access token (bound to his identity)
+            by the victim's access token. This token is accepted by the
+            identity API since the audience, with respect to the resource
+            server, is correct. But since the identifier returned by the
+            identity API is determined by the identity in the access token,
+            the attacker is logged into the target application under the
+            victim's identity.</t>
+
+            <t>Impact: the attacker gains access to an application and
+            user-specific data within the application.</t>
+
+            <t>Countermeasures:</t>
+
+            <t><list style="symbols">
+                <t>Clients should use appropriate protocol, such as OpenID
+                (cf. <xref target="openid"></xref>) or SAML (cf. <xref
+                target="OASIS.sstc-saml-bindings-1.1"></xref>) to implement
+                user login. Both support audience restrictions on clients.</t>
               </list></t>
           </section>
         </section>
@@ -3330,6 +3371,16 @@
         </front>
       </reference>
 
+      <reference anchor="openid" target="http://openid.net/">
+        <front>
+          <title>OpenID Foundation Home Page</title>
+
+          <author></author>
+
+          <date />
+        </front>
+      </reference>
+
       <reference anchor="portable-contacts"
                  target="http://portablecontacts.net/">
         <front>
@@ -3397,7 +3448,7 @@
         <format target="http://www.oasis-open.org/committees/download.php/11191/sstc-gross-sec-analysis-response-01.pdf"
                 type="pdf" />
       </reference>
-	  
+
       <reference anchor="ssl-latency">
         <front>
           <title>SSL handshake latency and HTTPS optimizations</title>
@@ -3410,9 +3461,7 @@
 
         <format target="http://www.semicomplete.com/blog/geekery/ssl-latency.html"
                 type="HTML" />
-      </reference>	  
-	  
-	  
+      </reference>
     </references>
 
     <section title="Document History">
@@ -3502,12 +3551,12 @@
 
           <t>incorporated shepherd review feedback</t>
         </list></t>
-		
+
       <t>draft-ietf-oauth-v2-threatmodel-06</t>
 
       <t><list style="symbols">
           <t>incorporated AD review feedback</t>
-        </list></t>		
+        </list></t>
     </section>
   </back>
 </rfc>
