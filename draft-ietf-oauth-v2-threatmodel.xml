@@ -11,7 +11,7 @@
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
 <?rfc strict="no"?>
-<rfc category="info" docName="draft-ietf-oauth-v2-threatmodel-06"
+<rfc category="info" docName="draft-ietf-oauth-v2-threatmodel-07"
      ipr="trust200902">
   <front>
     <title abbrev="OAuth 2.0 Security">OAuth 2.0 Threat Model and Security
@@ -3557,6 +3557,12 @@
       <t><list style="symbols">
           <t>incorporated AD review feedback</t>
         </list></t>
+		
+      <t>draft-ietf-oauth-v2-threatmodel-07</t>
+
+      <t><list style="symbols">
+          <t>added new section on Resource owner Impersonation</t>
+        </list></t>		
     </section>
   </back>
 </rfc>
