@@ -42,7 +42,7 @@
       </address>
     </author>
 
-    <date day="8" month="August" year="2012" />
+    <date day="12" month="August" year="2012" />
 
     <area>Security Area</area>
 
@@ -3272,7 +3272,7 @@
   </middle>
 
   <back>
-    <references title="Normative References">
+    <references title="Informative References">
       <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-v2.xml' ?>
 
       <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-v2-bearer.xml' ?>
