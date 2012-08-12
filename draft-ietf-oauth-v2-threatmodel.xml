@@ -42,7 +42,7 @@
       </address>
     </author>
 
-    <date day="26" month="June" year="2012" />
+    <date day="8" month="August" year="2012" />
 
     <area>Security Area</area>
 
@@ -1750,26 +1750,32 @@
           </section>
 
           <section title="Threat: Token substitution (OAuth Login)">
-            <t>The goal of this threat is to login to an app or site using a
-            victim's identity. Applications relying on identity data provided
-            by an OAuth protected API to login users are vulnerable to this
-            threat. This pattern can be found in so-called "social login"
-            scenarios.</t>
+            <t>An attacker could attempt to login to an application or web
+            site using a victim's identity. Applications relying on identity
+            data provided by an OAuth protected service API to login users are
+            vulnerable to this threat. This pattern can be found in so-called
+            "social login" scenarios.</t>
 
             <t>As a pre-requisite, a resource server offers an API to obtain
-            an user identifier, which in turn is used by a client to login its
-            users. The client utilizes OAuth to obtain an access token for the
-            identity API. It then queries the identity API for an identifier
-            and uses it to look up its internat user account data (login).</t>
+            personal information about a user which could be interpreted as
+            having obtained a user identity. In this sense the client is
+            treating the resource server API as an "identity" API. A client
+            utilizes OAuth to obtain an access token for the identity API. It
+            then queries the identity API for an identifier and uses it to
+            look up its internal user account data (login). The client
+            asssumes that because it was able to obtain information about the
+            user, that the user has been authenticated.</t>
 
-            <t>An attacker, first of all, needs to gather a valid access token
-            of the respective victim. The attacker therefore tricks the victim
-            into login into a malicious app using the same identity provider
-            as the target application. This effectively results into the
+            <t>To succeed, the attacker needs to gather a valid access token
+            of the respective victim from the same identity provider used by
+            the target client application. The attacker tricks the victim into
+            login into a malicious app (which may appear to be legitimate to
+            the Identity Provider) using the same identity provider as the
+            target application. This results in the Identity Provider's
             authorization server issuing an access token for the respective
-            identity API. The app then sends this access token to the
-            attacker, which in turn triggers a login process within the target
-            application. The attacker now manipulates the authorization
+            identity API. The malicious app then sends this access token to
+            the attacker, which in turn triggers a login process within the
+            target application. The attacker now manipulates the authorization
             response and substitutes the access token (bound to his identity)
             by the victim's access token. This token is accepted by the
             identity API since the audience, with respect to the resource
@@ -3266,12 +3272,14 @@
   </middle>
 
   <back>
-    <references title="Informative References">
+    <references title="Normative References">
       <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-v2.xml' ?>
 
-      <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-revocation.xml'?>
-
       <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-v2-bearer.xml' ?>
+    </references>
+
+    <references title="Informative References">
+      <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-revocation.xml'?>
 
       <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-v2-http-mac.xml' ?>
 
@@ -3557,12 +3565,14 @@
       <t><list style="symbols">
           <t>incorporated AD review feedback</t>
         </list></t>
-		
+
       <t>draft-ietf-oauth-v2-threatmodel-07</t>
 
       <t><list style="symbols">
-          <t>added new section on Resource owner Impersonation</t>
-        </list></t>		
+          <t>added new section on token substituation</t>
+
+          <t>made references to core and bearer normative</t>
+        </list></t>
     </section>
   </back>
 </rfc>
