@@ -42,7 +42,7 @@
       </address>
     </author>
 
-    <date day="12" month="August" year="2012" />
+    <date day="14" month="August" year="2012" />
 
     <area>Security Area</area>
 
@@ -1627,6 +1627,62 @@
                 invalid requests exceeds a threshold.</t>
               </list></t>
           </section>
+
+          <section title="Threat: Code substitution (OAuth Login)">
+            <t>An attacker could attempt to login to an application or web
+            site using a victim's identity. Applications relying on identity
+            data provided by an OAuth protected service API to login users are
+            vulnerable to this threat. This pattern can be found in so-called
+            "social login" scenarios.</t>
+
+            <t>As a pre-requisite, a resource server offers an API to obtain
+            personal information about a user which could be interpreted as
+            having obtained a user identity. In this sense the client is
+            treating the resource server API as an "identity" API. A client
+            utilizes OAuth to obtain an access token for the identity API. It
+            then queries the identity API for an identifier and uses it to
+            look up its internal user account data (login). The client
+            asssumes that because it was able to obtain information about the
+            user, that the user has been authenticated.</t>
+
+            <t>If the client uses the grant type "code", the attacker needs to
+            gather a valid authorization code of the respective victim from
+            the same identity provider used by the target client application.
+            The attacker tricks the victim into login into a malicious app
+            (which may appear to be legitimate to the Identity Provider) using
+            the same identity provider as the target application. This results
+            in the Identity Provider's authorization server issuing an
+            authorization code for the respective identity API. The malicious
+            app then sends this code to the attacker, which in turn triggers a
+            login process within the target application. The attacker now
+            manipulates the authorization response and substitutes their code
+            (bound to their identity) for the victim's code. This code is then
+            exchanged by the client for an access token, which in turn is
+            accepted by the identity API since the audience, with respect to
+            the resource server, is correct. But since the identifier returned
+            by the identity API is determined by the identity in the access
+            token (issued based on the victim's code), the attacker is logged
+            into the target application under the victim's identity.</t>
+
+            <t>Impact: the attacker gains access to an application and
+            user-specific data within the application.</t>
+
+            <t>Countermeasures:</t>
+
+            <t><list style="symbols">
+                <t>All clients must indicate their client id with every
+                request to exchange an authorization code for an access token.
+                The authorization server must validate whether the particular
+                authorization code has been issued to the particular client.
+                If possible, the client shall be authenticated beforehand.
+                </t>
+
+                <t>Clients should use appropriate protocol, such as OpenID
+                (cf. <xref target="openid"></xref>) or SAML (cf. <xref
+                target="OASIS.sstc-saml-bindings-1.1"></xref>) to implement
+                user login. Both support audience restrictions on clients.</t>
+              </list></t>
+          </section>
         </section>
 
         <section anchor="implicite_flow" title="Implicit Grant">
@@ -1776,9 +1832,9 @@
             identity API. The malicious app then sends this access token to
             the attacker, which in turn triggers a login process within the
             target application. The attacker now manipulates the authorization
-            response and substitutes the access token (bound to his identity)
-            by the victim's access token. This token is accepted by the
-            identity API since the audience, with respect to the resource
+            response and substitutes their access token (bound to their
+            identity) for the victim's access token. This token is accepted by
+            the identity API since the audience, with respect to the resource
             server, is correct. But since the identifier returned by the
             identity API is determined by the identity in the access token,
             the attacker is logged into the target application under the
