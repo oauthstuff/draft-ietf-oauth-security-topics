@@ -42,7 +42,7 @@
       </address>
     </author>
 
-    <date day="14" month="August" year="2012" />
+    <date day="14" month="August" year="2012"/>
 
     <area>Security Area</area>
 
@@ -56,8 +56,8 @@
 
     <abstract>
       <t>This document gives additional security considerations for OAuth,
-      beyond those in the OAuth specification, based on a comprehensive threat
-      model for the OAuth 2.0 Protocol.</t>
+      beyond those in the OAuth 2.0 specification, based on a comprehensive
+      threat model for the OAuth 2.0 Protocol.</t>
     </abstract>
   </front>
 
@@ -65,9 +65,8 @@
     <section title="Introduction">
       <t>This document gives additional security considerations for OAuth,
       beyond those in the OAuth specification, based on a comprehensive threat
-      model for the OAuth 2.0 Protocol <xref
-      target="I-D.ietf-oauth-v2"></xref>. It contains the following
-      content:<list style="symbols">
+      model for the OAuth 2.0 Protocol <xref target="I-D.ietf-oauth-v2"/>. It
+      contains the following content:<list style="symbols">
           <t>Documents any assumptions and scope considered when creating the
           threat model.</t>
 
@@ -91,17 +90,20 @@
       information given here may serve as a foundation for deployment-specific
       threat models. Implementors may refine and detail the abstract threat
       model in order to account for the specific properties of their
-      deployment and to come up with a risk analysis.</t>
+      deployment and to come up with a risk analysis. As this document is
+      based on the base OAuth 2.0 specification, itdoes not consider proposed
+      extensions, such as client registration or discovery, many of which are
+      still under discussion.</t>
     </section>
 
     <section title="Overview">
-      <t></t>
+      <t/>
 
       <section title="Scope">
         <t>The security considerations document only considers clients bound
         to a particular deployment as supported by <xref
-        target="I-D.ietf-oauth-v2"></xref>. Such deployments have the
-        following characteristics:</t>
+        target="I-D.ietf-oauth-v2"/>. Such deployments have the following
+        characteristics:</t>
 
         <t><list style="symbols">
             <t>Resource server URLs are static and well-known at development
@@ -123,7 +125,7 @@
             <t>Token formats</t>
 
             <t>Except for &bdquo;Resource Owner Password Credentials&ldquo;
-            (see <xref target="I-D.ietf-oauth-v2"></xref>, section 4.3), the
+            (see <xref target="I-D.ietf-oauth-v2"/>, section 4.3), the
             mechanism used by authorization servers to authenticate the
             user</t>
 
@@ -133,10 +135,10 @@
 
             <t>Clients not bound to a specific deployment: An example could be
             a mail client with support for contact list access via the
-            portable contacts API (see <xref
-            target="portable-contacts"></xref>). Such clients cannot be
-            registered upfront with a particular deployment and should
-            dynamically discover the URLs relevant for the OAuth protocol.</t>
+            portable contacts API (see <xref target="portable-contacts"/>).
+            Such clients cannot be registered upfront with a particular
+            deployment and should dynamically discover the URLs relevant for
+            the OAuth protocol.</t>
           </list></t>
       </section>
 
@@ -191,12 +193,12 @@
               <t>client-specific refresh tokens</t>
 
               <t>client-specific access tokens (in case of handle-based design
-              - see <xref target="section_tokens"></xref>)</t>
+              - see <xref target="section_tokens"/>)</t>
 
               <t>HTTPS certificate/key</t>
 
               <t>per-authorization process (in case of handle-based design -
-              <xref target="section_tokens"></xref>): redirect_uri, client_id,
+              <xref target="section_tokens"/>): redirect_uri, client_id,
               authorization code</t>
             </list></t>
         </section>
@@ -211,11 +213,11 @@
               <t>HTTPS certificate/key</t>
 
               <t>authorization server credentials (handle-based design - see
-              <xref target="section_tokens"></xref>), or</t>
+              <xref target="section_tokens"/>), or</t>
 
               <t>authorization server shared secret/public key
               (assertion-based design - see <xref
-              target="section_tokens"></xref>)</t>
+              target="section_tokens"/>)</t>
 
               <t>access tokens (per request)</t>
             </list> It is assumed that a resource server has no knowledge of
@@ -228,8 +230,8 @@
           There are different types of clients with different implementation
           and security characteristics, such as web, user-agent-based, and
           native applications. A full definition of the different client types
-          and profiles is given in <xref target="I-D.ietf-oauth-v2"></xref>,
-          Section 2.1.</t>
+          and profiles is given in <xref target="I-D.ietf-oauth-v2"/>, Section
+          2.1.</t>
 
           <t>The following data elements are stored or accessible on the
           client:</t>
@@ -283,10 +285,10 @@
             authentication. It contains information about the user and the
             client. Examples of assertion formats are SAML assertions <xref
             target="OASIS.saml-core-2.0-os"> </xref> and Kerberos tickets
-            <xref target="RFC4120"></xref>. Assertions can typically directly
-            be validated and used by a resource server without interactions
-            with the authorization server. This results in better performance
-            and scalability in deployment where issuing and consuming entity
+            <xref target="RFC4120"/>. Assertions can typically directly be
+            validated and used by a resource server without interactions with
+            the authorization server. This results in better performance and
+            scalability in deployment where issuing and consuming entity
             reside on different systems. Implementing token revocation is more
             difficult with assertions than with handles.</t>
           </list>Tokens can be used in two ways to invoke requests on resource
@@ -295,14 +297,14 @@
         <t><list style="hanging">
             <t hangText="bearer token">A 'bearer token' is a token that can be
             used by any client who has received the token (e.g. <xref
-            target="I-D.ietf-oauth-v2-bearer"></xref>). Because mere
-            possession is enough to use the token it is important that
-            communication between end-points be secured to ensure that only
-            authorized end-points may capture the token. The bearer token is
-            convenient to client applications as it does not require them to
-            do anything to use them (such as a proof of identity). Bearer
-            tokens have similar characteristics to web single-sign-on (SSO)
-            cookies used in browsers.</t>
+            target="I-D.ietf-oauth-v2-bearer"/>). Because mere possession is
+            enough to use the token it is important that communication between
+            end-points be secured to ensure that only authorized end-points
+            may capture the token. The bearer token is convenient to client
+            applications as it does not require them to do anything to use
+            them (such as a proof of identity). Bearer tokens have similar
+            characteristics to web single-sign-on (SSO) cookies used in
+            browsers.</t>
 
             <t hangText="proof token">A 'proof token' is a token that can only
             be used by a specific client. Each use of the token, requires the
@@ -310,8 +312,7 @@
             authorized user of the token. Examples of this are MAC tokens,
             which require the client to digitally sign the resource request
             with a secret corresponding to the particular token send with the
-            request (e.g.<xref
-            target="I-D.ietf-oauth-v2-http-mac"></xref>).</t>
+            request (e.g.<xref target="I-D.ietf-oauth-v2-http-mac"/>).</t>
           </list></t>
 
         <section title="Scope">
@@ -424,13 +425,12 @@
       <section title="State parameter">
         <t>The state parameter is used to link requests and callbacks to
         prevent Cross-Site Request Forgery attacks (see <xref
-        target="section_csrf"></xref>) where an attacker authorizes access to
-        his own resources and then tricks a users into following a redirect
-        with the attacker's token. This parameter should bind to the
-        authenticated state in a user agent and, as per the core OAuth spec,
-        the user agent must be capable of keeping it in a location accessible
-        only by the client and user agent, i.e. protected by same-origin
-        policy.</t>
+        target="section_csrf"/>) where an attacker authorizes access to his
+        own resources and then tricks a users into following a redirect with
+        the attacker's token. This parameter should bind to the authenticated
+        state in a user agent and, as per the core OAuth spec, the user agent
+        must be capable of keeping it in a location accessible only by the
+        client and user agent, i.e. protected by same-origin policy.</t>
       </section>
 
       <section title="Client Identitifier">
@@ -479,8 +479,7 @@
 
         <t>Clients can be categorized as follows based on the client type,
         profile (e.g. native vs. web application - see <xref
-        target="I-D.ietf-oauth-v2"></xref>, Section 9) and deployment
-        model:</t>
+        target="I-D.ietf-oauth-v2"/>, Section 9) and deployment model:</t>
 
         <t><list style="hanging">
             <t
@@ -499,9 +498,9 @@
             is an option for native applications only, since web application
             would require different redirect URIs. This category is not
             advisable because the client secret cannot be protected
-            appropriately (see <xref target="ObtainClientSecrets"></xref>).
-            Due to its security weaknesses, such client identities have the
-            same trust level as deployment-independent clients without secret.
+            appropriately (see <xref target="ObtainClientSecrets"/>). Due to
+            its security weaknesses, such client identities have the same
+            trust level as deployment-independent clients without secret.
             Revocation will affect ALL deployments.</t>
 
             <t
@@ -542,7 +541,7 @@
       are client, authorization server, and resource server. Subsequently,
       they are grouped by flow, e.g. obtain token or access protected
       resources. Every countermeasure description refers to a detailed
-      description in <xref target="security_considerations"></xref>.</t>
+      description in <xref target="security_considerations"/>.</t>
 
       <section title="Clients">
         <t>This section describes possible threats directed to OAuth
@@ -557,7 +556,8 @@
               <t>replay its refresh tokens and authorization codes, or</t>
 
               <t>obtain tokens on behalf of the attacked client with the
-              privileges of that client.</t>
+              privileges of that client_id acting as an instance of the
+              client.</t>
             </list>The resulting impact would be:</t>
 
           <t><list style="symbols">
@@ -569,8 +569,8 @@
             </list>Depending on the client category, the following attacks
           could be utilized to obtain the client secret.</t>
 
-          <t><vspace blankLines="1" />Attack: Obtain Secret From Source Code
-          or Binary:</t>
+          <t><vspace blankLines="1"/>Attack: Obtain Secret From Source Code or
+          Binary:</t>
 
           <t>This applies for all client types. For open source projects,
           secrets can be extracted directly from source code in their public
@@ -586,20 +586,19 @@
 
           <t><list style="symbols">
               <t>Don't issue secrets to public clients or clients with
-              inappropriate security policy - <xref
-              target="dont_issue"></xref></t>
+              inappropriate security policy - <xref target="dont_issue"/></t>
 
               <t>Public clients require user consent - <xref
-              target="forced_user_consent"></xref></t>
+              target="forced_user_consent"/></t>
 
               <t>Use deployment-specific client secrets - <xref
-              target="depl_specific_secretes"></xref></t>
+              target="depl_specific_secretes"/></t>
 
               <t>Client secret revocation - <xref
-              target="client_secret_revocation"></xref></t>
+              target="client_secret_revocation"/></t>
             </list></t>
 
-          <t><vspace blankLines="1" />Attack: Obtain a Deployment-Specific
+          <t><vspace blankLines="1"/>Attack: Obtain a Deployment-Specific
           Secret:</t>
 
           <t>An attacker may try to obtain the secret from a client
@@ -610,14 +609,13 @@
 
           <t><list style="symbols">
               <t>Web server: apply standard web server protection measures
-              (for config files and databases) - <xref
-              target="std_web"></xref></t>
+              (for config files and databases) - <xref target="std_web"/></t>
 
               <t>Native applications: Store secrets in a secure local storage
-              - <xref target="secure_storage"></xref></t>
+              - <xref target="secure_storage"/></t>
 
               <t>Client secret revocation - <xref
-              target="client_secret_revocation"></xref></t>
+              target="client_secret_revocation"/></t>
             </list></t>
         </section>
 
@@ -632,43 +630,43 @@
           <t><list style="symbols">
               <t>The authorization server should validate the client id
               associated with the particular refresh token with every refresh
-              request- <xref target="binding_refresh_client_id"></xref></t>
+              request- <xref target="binding_refresh_client_id"/></t>
 
-              <t>Limited scope tokens - <xref target="limit_scope"></xref></t>
+              <t>Limited scope tokens - <xref target="limit_scope"/></t>
 
               <t>Refresh token revocation - <xref
-              target="refresh_revocation"></xref></t>
+              target="refresh_revocation"/></t>
 
               <t>Client secret revocation - <xref
-              target="client_secret_revocation"></xref></t>
+              target="client_secret_revocation"/></t>
 
               <t>Refresh tokens can automatically be replaced in order to
               detect unauthorized token usage by another party (Refresh Token
-              Rotation) - <xref target="refresh_replace"></xref></t>
+              Rotation) - <xref target="refresh_replace"/></t>
             </list></t>
 
-          <t><vspace blankLines="1" />Attack: Obtain Refresh Token from Web
+          <t><vspace blankLines="1"/>Attack: Obtain Refresh Token from Web
           application:</t>
 
           <t>An attacker may obtain the refresh tokens issued to a web
           application by way of overcoming the web server's security controls.
           Impact: Since a web application manages the user accounts of a
           certain site, such an attack would result in an exposure of all
-          refresh tokens on that side to the attacker.</t>
+          refresh tokens on that site to the attacker.</t>
 
           <t>Countermeasures:</t>
 
           <t><list style="symbols">
               <t>Standard web server protection measures - <xref
-              target="std_web"></xref></t>
+              target="std_web"/></t>
 
               <t>Use strong client authentication (e.g. client_assertion /
               client_token), so the attacker cannot obtain the client secret
               required to exchange the tokens - <xref
-              target="strong_client_authn"></xref></t>
+              target="strong_client_authn"/></t>
             </list></t>
 
-          <t><vspace blankLines="1" />Attack: Obtain Refresh Token from Native
+          <t><vspace blankLines="1"/>Attack: Obtain Refresh Token from Native
           clients:</t>
 
           <t>On native clients, leakage of a refresh token typically affects a
@@ -682,13 +680,13 @@
 
           <t><list style="symbols">
               <t>Store secrets in a secure storage - <xref
-              target="secure_storage"></xref></t>
+              target="secure_storage"/></t>
 
               <t>Utilize device lock to prevent unauthorized device access -
-              <xref target="device_lock"></xref></t>
+              <xref target="device_lock"/></t>
             </list></t>
 
-          <t><vspace blankLines="1" />Attack: Steal device:</t>
+          <t><vspace blankLines="1"/>Attack: Steal device:</t>
 
           <t>The host device (e.g. mobile phone) may be stolen. In that case,
           the attacker gets access to all applications under the identity of
@@ -698,14 +696,14 @@
 
           <t><list style="symbols">
               <t>Utilize device lock to prevent unauthorized device access -
-              <xref format="default" target="device_lock"></xref></t>
+              <xref format="default" target="device_lock"/></t>
 
               <t>Where a user knows the device has been stolen, they can
               revoke the affected tokens - <xref
-              target="refresh_revocation"></xref></t>
+              target="refresh_revocation"/></t>
             </list></t>
 
-          <t><vspace blankLines="1" />Attack: Clone Device:</t>
+          <t><vspace blankLines="1"/>Attack: Clone Device:</t>
 
           <t>All device data and applications are copied to another device.
           Applications are used as-is on the target device.</t>
@@ -714,17 +712,16 @@
 
           <t><list style="symbols">
               <t>Utilize device lock to prevent unauthorized device access -
-              <xref format="default" target="device_lock"></xref></t>
+              <xref format="default" target="device_lock"/></t>
 
               <t>Combine refresh token request with device identification -
-              <xref target="device_id"></xref></t>
+              <xref target="device_id"/></t>
 
-              <t>Refresh Token Rotation - <xref
-              target="refresh_replace"></xref></t>
+              <t>Refresh Token Rotation - <xref target="refresh_replace"/></t>
 
               <t>Where a user knows the device has been cloned, they can use
               this countermeasure - Refresh Token Revocation - <xref
-              target="refresh_revocation"></xref></t>
+              target="refresh_revocation"/></t>
             </list></t>
         </section>
 
@@ -742,16 +739,16 @@
 
           <t><list style="symbols">
               <t>Keep access tokens in transient memory and limit grants:
-              <xref target="access_tokens"></xref></t>
+              <xref target="access_tokens"/></t>
 
-              <t>Limited scope tokens - <xref target="limit_scope"></xref></t>
+              <t>Limited scope tokens - <xref target="limit_scope"/></t>
 
               <t>Keep access tokens in private memory or apply same protection
               means as for refresh tokens - <xref
-              target="refresh_tokens"></xref></t>
+              target="refresh_tokens"/></t>
 
               <t>Keep access token lifetime short - <xref
-              target="short_exp_time"></xref></t>
+              target="short_exp_time"/></t>
             </list></t>
         </section>
 
@@ -814,13 +811,13 @@
 
           <t><list style="symbols">
               <t>require clients to register full redirection URI <xref
-              target="val_redirect"></xref></t>
+              target="val_redirect"/></t>
             </list></t>
         </section>
       </section>
 
       <section title="Authorization Endpoint">
-        <t></t>
+        <t/>
 
         <section title="Threat: Password phishing by counterfeit authorization server">
           <t>OAuth makes no attempt to verify the authenticity of the
@@ -838,10 +835,10 @@
 
           <t><list style="symbols">
               <t>Authorization servers should consider such attacks when
-              developing services based on OAuth, and should require
-              transport-layer security for any requests where the authenticity
-              of the authorization server or of request responses is an issue
-              (see <xref target="server_authn"></xref>).</t>
+              developing services based on OAuth, and should require the use
+              of transport-layer security for any requests where the
+              authenticity of the authorization server or of request responses
+              is an issue (see <xref target="server_authn"/>).</t>
 
               <t>Authorization servers should attempt to educate Users about
               the risks phishing attacks pose, and should provide mechanisms
@@ -861,7 +858,7 @@
           <t><list style="symbols">
               <t>Explain the scope (resources and the permissions) the user is
               about to grant in an understandable way - <xref
-              target="informed_decisions"></xref></t>
+              target="informed_decisions"/></t>
 
               <t>Narrow scope based on client - When obtaining end user
               authorization and where the client requests scope, the
@@ -871,7 +868,7 @@
               this spec. The authorization server may also want to consider
               what scope to grant based on the client type, e.g. providing
               lower scope to public clients. - <xref
-              target="limit_scope"></xref></t>
+              target="limit_scope"/></t>
             </list></t>
         </section>
 
@@ -893,14 +890,14 @@
 
           <t><list style="symbols">
               <t>Authorization servers should not automatically process repeat
-              authorizations to public clients or unless the client is
-              validated using a pre-registered redirect URI (<xref
-              target="val_redirect"></xref> )</t>
+              authorizations to public clients unless the client is validated
+              using a pre-registered redirect URI (<xref
+              target="val_redirect"/> )</t>
 
               <t>Authorization servers can mitigate the risks associated with
               automatic processing by limiting the scope of Access Tokens
               obtained through automated approvals - <xref
-              target="limit_scope"></xref></t>
+              target="limit_scope"/></t>
             </list></t>
         </section>
 
@@ -918,17 +915,17 @@
 
           <t><list style="symbols">
               <t>require clients to register full redirection URI <xref
-              target="val_redirect"></xref></t>
+              target="val_redirect"/></t>
 
               <t>don't redirect to redirection URI, if client identifier or
               redirection URI can't be verified <xref
-              target="val_redirect"></xref></t>
+              target="val_redirect"/></t>
             </list></t>
         </section>
       </section>
 
       <section title="Token endpoint">
-        <t></t>
+        <t/>
 
         <section title="Threat: Eavesdropping access tokens">
           <t>Attackers may attempt to eavesdrop access token in transit from
@@ -943,12 +940,12 @@
               <t>As per the core OAuth spec, the authorization servers must
               ensure that these transmissions are protected using
               transport-layer mechanisms such as TLS (see <xref
-              target="conf_requests"></xref>).</t>
+              target="conf_requests"/>).</t>
 
               <t>If end-to-end confidentiality cannot be guaranteed, reducing
-              scope (see <xref target="limit_scope"></xref>) and expiry time
-              (<xref target="short_exp_time"></xref>) for access tokens can be
-              used to reduce the damage in case of leaks.</t>
+              scope (see <xref target="limit_scope"/>) and expiry time (<xref
+              target="short_exp_time"/>) for access tokens can be used to
+              reduce the damage in case of leaks.</t>
             </list></t>
         </section>
 
@@ -962,13 +959,12 @@
           <t>Countermeasures:</t>
 
           <t><list style="symbols">
-              <t>System security measures - <xref target="std_sys"></xref></t>
+              <t>System security measures - <xref target="std_sys"/></t>
 
-              <t>Store access token hashes only - <xref
-              target="noclear"></xref></t>
+              <t>Store access token hashes only - <xref target="noclear"/></t>
 
               <t>Standard SQL injection Countermeasures - <xref
-              target="std_sql"></xref></t>
+              target="std_sql"/></t>
             </list></t>
         </section>
 
@@ -985,7 +981,7 @@
           <t><list style="symbols">
               <t>The transmission of client credentials must be protected
               using transport-layer mechanisms such as TLS (see <xref
-              target="conf_requests"></xref>).</t>
+              target="conf_requests"/>).</t>
 
               <t>Alternative authentication means, which do not require to
               send plaintext credentials over the wire (e.g. Hash-based
@@ -1003,13 +999,13 @@
           <t>Countermeasures:</t>
 
           <t><list style="symbols">
-              <t>System security measures - <xref target="std_sys"></xref></t>
+              <t>System security measures - <xref target="std_sys"/></t>
 
               <t>Standard SQL injection Countermeasures - <xref
-              target="std_sql"></xref></t>
+              target="std_sql"/></t>
 
               <t>Ensure proper handling of credentials as per <xref
-              format="title" target="cred_storage_prot"></xref>.</t>
+              format="title" target="cred_storage_prot"/>.</t>
             </list></t>
         </section>
 
@@ -1020,13 +1016,12 @@
           <t>Countermeasures:</t>
 
           <t><list style="symbols">
-              <t>High entropy of secrets - <xref
-              target="high_entropy"></xref></t>
+              <t>High entropy of secrets - <xref target="high_entropy"/></t>
 
-              <t>Lock accounts - <xref target="lock_accounts"></xref></t>
+              <t>Lock accounts - <xref target="lock_accounts"/></t>
 
               <t>Use Strong Client Authentication - <xref
-              target="strong_client_authn"></xref></t>
+              target="strong_client_authn"/></t>
             </list></t>
         </section>
       </section>
@@ -1069,9 +1064,9 @@
                 users.</t>
               </list>Note: A description of a similar attacks on the SAML
             protocol can be found at <xref
-            target="OASIS.sstc-saml-bindings-1.1"></xref>, Section 4.1.1.9.1,
-            <xref target="gross-sec-analysis"></xref>, and <xref
-            target="OASIS.sstc-gross-sec-analysis-response-01"></xref>.</t>
+            target="OASIS.sstc-saml-bindings-1.1"/>, Section 4.1.1.9.1, <xref
+            target="gross-sec-analysis"/>, and <xref
+            target="OASIS.sstc-gross-sec-analysis-response-01"/>.</t>
 
             <t>Countermeasures:</t>
 
@@ -1079,30 +1074,28 @@
                 <t>As per the core OAuth spec, the authorization server as
                 well as the client must ensure that these transmissions are
                 protected using transport-layer mechanisms such as TLS (see
-                <xref target="conf_requests"></xref>).</t>
+                <xref target="conf_requests"/>).</t>
 
                 <t>The authorization server will require the client to
                 authenticate wherever possible, so the binding of the
                 authorization code to a certain client can be validated in a
-                reliable way (see <xref
-                target="bind_code_client_id"></xref>).</t>
+                reliable way (see <xref target="bind_code_client_id"/>).</t>
 
                 <t>Limited duration of authorization codes - <xref
-                target="short_exp_time"></xref></t>
+                target="short_exp_time"/></t>
 
                 <t>The authorization server should enforce a one time usage
-                restriction (see <xref target="one_time_usage"></xref>).</t>
+                restriction (see <xref target="one_time_usage"/>).</t>
 
                 <t>If an Authorization Server observes multiple attempts to
                 redeem an authorization code, the Authorization Server may
                 want to revoke all tokens granted based on the authorization
-                code (see <xref
-                target="automatic_code_revocation"></xref>).</t>
+                code (see <xref target="automatic_code_revocation"/>).</t>
 
                 <t>In the absence of these countermeasures, reducing scope
-                (<xref target="limit_scope"></xref>) and expiry time (<xref
-                target="short_exp_time"></xref>) for access tokens can be used
-                to reduce the damage in case of leaks.</t>
+                (<xref target="limit_scope"/>) and expiry time (<xref
+                target="short_exp_time"/>) for access tokens can be used to
+                reduce the damage in case of leaks.</t>
 
                 <t>The client server may reload the target page of the
                 redirection URI in order to automatically cleanup the browser
@@ -1123,16 +1116,15 @@
 
             <t><list style="symbols">
                 <t>Best practices for credential storage protection should be
-                employed - <xref target="cred_storage_prot"></xref></t>
+                employed - <xref target="cred_storage_prot"/></t>
 
-                <t>System security measures - <xref
-                target="std_sys"></xref></t>
+                <t>System security measures - <xref target="std_sys"/></t>
 
                 <t>Store access token hashes only - <xref
-                target="noclear"></xref></t>
+                target="noclear"/></t>
 
                 <t>Standard SQL injection countermeasures - <xref
-                target="std_sql"></xref></t>
+                target="std_sql"/></t>
               </list></t>
           </section>
 
@@ -1148,21 +1140,19 @@
 
             <t><list style="symbols">
                 <t>Handle-based tokens must use high entropy: <xref
-                target="high_entropy"></xref></t>
+                target="high_entropy"/></t>
 
                 <t>Assertion-based tokens should be signed: <xref
-                target="signed_tokens"></xref></t>
+                target="signed_tokens"/></t>
 
                 <t>Authenticate the client, adds another value the attacker
-                has to guess - <xref
-                target="depl_specific_secretes"></xref></t>
+                has to guess - <xref target="depl_specific_secretes"/></t>
 
                 <t>Binding of authorization code to redirection URI, adds
                 another value the attacker has to guess - <xref
-                target="bind_code_redirect"></xref></t>
+                target="bind_code_redirect"/></t>
 
-                <t>Short expiration time - <xref
-                target="short_exp_time"></xref></t>
+                <t>Short expiration time - <xref target="short_exp_time"/></t>
               </list></t>
           </section>
 
@@ -1188,13 +1178,13 @@
 
             <t><list style="symbols">
                 <t>The authorization server should authenticate the client, if
-                possible (see <xref target="depl_specific_secretes"></xref>).
-                Note: the authentication takes place after the end-user has
+                possible (see <xref target="depl_specific_secretes"/>). Note:
+                the authentication takes place after the end-user has
                 authorized the access.</t>
 
                 <t>The authorization server should validate the client's
                 redirection URI against the pre-registered redirection URI, if
-                one exists (see <xref target="val_redirect"></xref>). Note: An
+                one exists (see <xref target="val_redirect"/>). Note: An
                 invalid redirect URI indicates an invalid client whereas a
                 valid redirect URI does not neccesserily indicate a valid
                 client. The level of confidence depends on the client type.
@@ -1217,12 +1207,12 @@
                 to the user to validate the binding of this data to the
                 particular application (e.g. Name) and to approve the
                 authorization request. (see <xref
-                target="validation_end_user"></xref>).</t>
+                target="validation_end_user"/>).</t>
 
                 <t>The authorization server should not perform automatic
                 re-authorizations for clients it is unable to reliably
                 authenticate or validate (see <xref
-                target="automatic_processing"></xref>).</t>
+                target="automatic_processing"/>).</t>
 
                 <t>If the authorization server automatically authenticates the
                 end-user, it may nevertheless require some user input in order
@@ -1233,7 +1223,7 @@
 
                 <t>The authorization server may also limit the scope of tokens
                 it issues to clients it cannot reliably authenticate (see
-                <xref target="limit_scope"></xref>).</t>
+                <xref target="limit_scope"/>).</t>
               </list></t>
           </section>
 
@@ -1257,13 +1247,12 @@
                 <t>The redirection URI of the client should point to a HTTPS
                 protected endpoint and the browser should be utilized to
                 authenticate this redirection URI using server authentication
-                (see <xref target="server_authn"></xref>).</t>
+                (see <xref target="server_authn"/>).</t>
 
                 <t>The authorization server should require the client to be
                 authenticated, i.e. confidential client, so the binding of the
                 authorization code to a certain client can be validated in a
-                reliable way (see <xref
-                target="bind_code_client_id"></xref>).</t>
+                reliable way (see <xref target="bind_code_client_id"/>).</t>
               </list></t>
           </section>
 
@@ -1298,7 +1287,7 @@
                 end-users session, the redirection URI of the client should
                 point to a HTTPS protected endpoint and the browser should be
                 utilized to authenticate this redirection URI using server
-                authentication (see <xref target="server_authn"></xref>)</t>
+                authentication (see <xref target="server_authn"/>)</t>
               </list></t>
           </section>
 
@@ -1376,28 +1365,27 @@
                 the redirection URI of a particular end-user authorization and
                 validates this redirection URI with the redirection URI passed
                 to the token's endpoint, such an attack is detected (see <xref
-                target="bind_code_redirect"></xref>).</t>
+                target="bind_code_redirect"/>).</t>
 
                 <t>The authorization server may also enforce the usage and
                 validation of pre-registered redirect URIs (see <xref
-                target="val_redirect"></xref>). This will allow for an early
+                target="val_redirect"/>). This will allow for an early
                 recognition of authorization code disclosure to counterfeit
                 clients.</t>
 
                 <t>For native applications, one could also consider to use
                 deployment-specific client ids and secrets (see <xref
-                target="depl_specific_secretes"></xref>, along with the
-                binding of authorization code to client_id (see <xref
-                target="bind_code_client_id"></xref>), to detect such an
-                attack because the attacker does not have access the
+                target="depl_specific_secretes"/>, along with the binding of
+                authorization code to client_id (see <xref
+                target="bind_code_client_id"/>), to detect such an attack
+                because the attacker does not have access the
                 deployment-specific secret. Thus he will not be able to
                 exchange the authorization code.</t>
 
                 <t>The client may consider using other flows, which are not
                 vulnerable to this kind of attack such as "Implicit Grant" or
                 "Resource Owner Password Credentials" (see <xref
-                target="implicite_flow"></xref> or <xref
-                target="pwd_flow"></xref>).</t>
+                target="implicite_flow"/> or <xref target="pwd_flow"/>).</t>
               </list></t>
           </section>
 
@@ -1435,8 +1423,7 @@
             <t><list style="symbols">
                 <t>The state parameter should be used to link the
                 authorization request with the redirection URI used to deliver
-                the access token. <xref
-                target="link_state_uasession"></xref></t>
+                the access token. <xref target="link_state_uasession"/></t>
 
                 <t>Client developers and end-user can be educated to not
                 follow untrusted URLs.</t>
@@ -1445,11 +1432,11 @@
 
           <section title="Threat: Clickjacking attack against authorization">
             <t>With Clickjacking, a malicious site loads the target site in a
-            transparent iFrame (see <xref target="iFrame"></xref>) overlaid on
-            top of a set of dummy buttons which are carefully constructed to
-            be placed directly under important buttons on the target site.
-            When a user clicks a visible button, they are actually clicking a
-            button (such as an "Authorize" button) on the hidden page.</t>
+            transparent iFrame (see <xref target="iFrame"/>) overlaid on top
+            of a set of dummy buttons which are carefully constructed to be
+            placed directly under important buttons on the target site. When a
+            user clicks a visible button, they are actually clicking a button
+            (such as an "Authorize" button) on the hidden page.</t>
 
             <t>Impact: An attacker can steal a user's authentication
             credentials and access their resources</t>
@@ -1460,11 +1447,11 @@
                 <t>For newer browsers, avoidance of iFrames during
                 authorization can be enforced server side by using the
                 X-FRAME-OPTION header - <xref
-                target="clickjacking_xframe"></xref></t>
+                target="clickjacking_xframe"/></t>
 
                 <t>For older browsers, javascript frame-busting (see <xref
-                target="framebusting"></xref>) techniques can be used but may
-                not be effective in all browsers.</t>
+                target="framebusting"/>) techniques can be used but may not be
+                effective in all browsers.</t>
               </list></t>
           </section>
 
@@ -1566,15 +1553,15 @@
             DoS attack on the authorization server.</t>
 
             <t>This attack can still be effective even when CSRF defense/the
-            'state' parameter (see <xref target="section_csrf"></xref>) is
-            deployed on the client side. With such a defense, the attacker
-            might need to incur an additional HTTP request to obtain a valid
-            CSRF code/ state parameter. This apparently cuts down the
-            effectiveness of the attack by a factor of 2. However, if the
-            HTTPS/HTTP cost ratio is higher than 2 (the cost factor is
-            estimated to be around 3.5x at <xref target="ssl-latency"></xref>)
-            the attacker still achieves a magnification of resource
-            utilization at the expense of the authorization server.</t>
+            'state' parameter (see <xref target="section_csrf"/>) is deployed
+            on the client side. With such a defense, the attacker might need
+            to incur an additional HTTP request to obtain a valid CSRF code/
+            state parameter. This apparently cuts down the effectiveness of
+            the attack by a factor of 2. However, if the HTTPS/HTTP cost ratio
+            is higher than 2 (the cost factor is estimated to be around 3.5x
+            at <xref target="ssl-latency"/>) the attacker still achieves a
+            magnification of resource utilization at the expense of the
+            authorization server.</t>
 
             <t>Impact: There are a few effects that the attacker can
             accomplish with this OAuth flow that they cannot easily achieve
@@ -1674,13 +1661,12 @@
                 request to exchange an authorization code for an access token.
                 The authorization server must validate whether the particular
                 authorization code has been issued to the particular client.
-                If possible, the client shall be authenticated beforehand.
-                </t>
+                If possible, the client shall be authenticated beforehand.</t>
 
                 <t>Clients should use appropriate protocol, such as OpenID
-                (cf. <xref target="openid"></xref>) or SAML (cf. <xref
-                target="OASIS.sstc-saml-bindings-1.1"></xref>) to implement
-                user login. Both support audience restrictions on clients.</t>
+                (cf. <xref target="openid"/>) or SAML (cf. <xref
+                target="OASIS.sstc-saml-bindings-1.1"/>) to implement user
+                login. Both support audience restrictions on clients.</t>
               </list></t>
           </section>
         </section>
@@ -1709,7 +1695,7 @@
             <t><list style="symbols">
                 <t>The authorization server should ensure confidentiality
                 (e.g. using TLS) of the response from the authorization server
-                to the client (see <xref target="conf_requests"></xref>).</t>
+                to the client (see <xref target="conf_requests"/>).</t>
               </list></t>
           </section>
 
@@ -1722,9 +1708,9 @@
 
             <t><list style="symbols">
                 <t>Shorten token duration (see <xref
-                target="short_exp_time"></xref>) and reduced scope of the
-                token may reduce the impact of that attack (see <xref
-                target="limit_scope"></xref>).</t>
+                target="short_exp_time"/>) and reduced scope of the token may
+                reduce the impact of that attack (see <xref
+                target="limit_scope"/>).</t>
 
                 <t>Make responses non-cachable</t>
               </list></t>
@@ -1735,9 +1721,8 @@
             <t>A malicious client could attempt to obtain a token by
             fraud.</t>
 
-            <t>The same countermeasures as for <xref
-            target="mal_client"></xref> are applicable, except client
-            authentication.</t>
+            <t>The same countermeasures as for <xref target="mal_client"/> are
+            applicable, except client authentication.</t>
           </section>
 
           <section title="Threat: Manipulation of scripts">
@@ -1755,11 +1740,11 @@
             <t><list style="symbols">
                 <t>The authorization server should authenticate the server
                 from which scripts are obtained (see <xref
-                target="server_authn"></xref>).</t>
+                target="server_authn"/>).</t>
 
                 <t>The client should ensure that scripts obtained have not
                 been altered in transport (see <xref
-                target="conf_requests"></xref>).</t>
+                target="conf_requests"/>).</t>
 
                 <t>Introduce one time per-use secrets (e.g. client_secret)
                 values that can only be used by scripts in a small time window
@@ -1770,9 +1755,9 @@
           </section>
 
           <section title="Threat: CSRF attack against redirect-uri">
-            <t>CSRF attacks (see <xref target="section_csrf"></xref>) also
-            work against the redirection URI used in the implicit grant flow.
-            An attacker could acquire an access token to their own protected
+            <t>CSRF attacks (see <xref target="section_csrf"/>) also work
+            against the redirection URI used in the implicit grant flow. An
+            attacker could acquire an access token to their own protected
             resources. He could then construct a redirection URI and embed
             their access token in that URI. If he can trick the user into
             following the redirection URI and the client does not have
@@ -1847,21 +1832,21 @@
 
             <t><list style="symbols">
                 <t>Clients should use appropriate protocol, such as OpenID
-                (cf. <xref target="openid"></xref>) or SAML (cf. <xref
-                target="OASIS.sstc-saml-bindings-1.1"></xref>) to implement
-                user login. Both support audience restrictions on clients.</t>
+                (cf. <xref target="openid"/>) or SAML (cf. <xref
+                target="OASIS.sstc-saml-bindings-1.1"/>) to implement user
+                login. Both support audience restrictions on clients.</t>
               </list></t>
           </section>
         </section>
 
         <section anchor="pwd_flow" title="Resource Owner Password Credentials">
           <t>The &ldquo;Resource Owner Password Credentials&rdquo; grant type
-          (see <xref target="I-D.ietf-oauth-v2"></xref>, Section 4.3), often
-          used for legacy/migration reasons, allows a client to request an
-          access token using an end-users user-id and password along with its
-          own credential. This grant type has higher risk because it maintains
-          the uid/password anti-pattern. Additionally, because the user does
-          not have control over the authorization process, clients using this
+          (see <xref target="I-D.ietf-oauth-v2"/>, Section 4.3), often used
+          for legacy/migration reasons, allows a client to request an access
+          token using an end-users user-id and password along with its own
+          credential. This grant type has higher risk because it maintains the
+          uid/password anti-pattern. Additionally, because the user does not
+          have control over the authorization process, clients using this
           grant type are not limited by scope, but instead have potentially
           the same capabilities as the user themselves. As there is no
           authorization step, the ability to offer token revocation is
@@ -1887,12 +1872,12 @@
 
               <t>The authorization server should validate the client id
               associated with the particular refresh token with every refresh
-              request - <xref target="binding_refresh_client_id"></xref></t>
+              request - <xref target="binding_refresh_client_id"/></t>
 
               <t>As per the core Oauth spec, the authorization server must
               ensure that these transmissions are protected using
               transport-layer mechanisms such as TLS (see <xref
-              target="conf_requests"></xref>).</t>
+              target="conf_requests"/>).</t>
 
               <t>Rather than encouraging users to use a uid and password,
               service providers should instead encourage users not to use the
@@ -1937,16 +1922,16 @@
                 cooperation for resource owner interaction</t>
 
                 <t>The authorization server may generally restrict the scope
-                of access tokens (<xref target="limit_scope"></xref>) issued
-                by this flow. If the particular client is trustworthy and can
-                be authenticated in a reliable way, the authorization server
+                of access tokens (<xref target="limit_scope"/>) issued by this
+                flow. If the particular client is trustworthy and can be
+                authenticated in a reliable way, the authorization server
                 could relax that restriction. Resource owners may prescribe
                 (e.g. in their preferences) what the maximum scope is for
                 clients using this flow.</t>
 
                 <t>The authorization server could notify the resource owner by
                 an appropriate media, e.g. e-Mail, of the grant issued (see
-                <xref target="informed"></xref>).</t>
+                <xref target="informed"/>).</t>
               </list></t>
           </section>
 
@@ -1964,8 +1949,8 @@
 
                 <t>The authorization server may generally refuse to issue
                 refresh tokens in this flow (see <xref
-                target="restricted_refresh"></xref>). If the particular client
-                is trustworthy and can be authenticated in a reliable way (see
+                target="restricted_refresh"/>). If the particular client is
+                trustworthy and can be authenticated in a reliable way (see
                 client authentication), the authorization server could relax
                 that restriction. Resource owners may allow or deny (e.g. in
                 their preferences) to issue refresh tokens using this flow as
@@ -1973,7 +1958,7 @@
 
                 <t>The authorization server could notify the resource owner by
                 an appropriate media, e.g. e-Mail, of the refresh token issued
-                (see <xref target="informed"></xref>).</t>
+                (see <xref target="informed"/>).</t>
               </list></t>
           </section>
 
@@ -1988,7 +1973,7 @@
 
             <t><list style="symbols">
                 <t>Confidentiality of Requests - <xref
-                target="conf_requests"></xref></t>
+                target="conf_requests"/></t>
 
                 <t>alternative authentication means, which do not require to
                 send plaintext credentials over the wire (e.g. Hash-based
@@ -2010,7 +1995,7 @@
 
             <t><list style="symbols">
                 <t>Credential storage protection can be employed - <xref
-                target="cred_storage_prot"></xref></t>
+                target="cred_storage_prot"/></t>
               </list></t>
           </section>
 
@@ -2024,29 +2009,29 @@
             <t>Countermeasures:</t>
 
             <t><list style="symbols">
-                <t>Password policy - <xref target="pwd_policy"></xref></t>
+                <t>Password policy - <xref target="pwd_policy"/></t>
 
-                <t>Lock accounts - <xref target="lock_accounts"></xref></t>
+                <t>Lock accounts - <xref target="lock_accounts"/></t>
 
-                <t>Tar pit - <xref target="tar_pit"></xref></t>
+                <t>Tar pit - <xref target="tar_pit"/></t>
 
-                <t>CAPTCHA - <xref target="captchas"></xref></t>
+                <t>CAPTCHA - <xref target="captchas"/></t>
 
                 <t>Consider not to use grant type "password&ldquo;</t>
 
-                <t>Client authentication (see <xref
-                target="client_aa"></xref>) will provide another
-                authentication factor and thus hinder the attack.</t>
+                <t>Client authentication (see <xref target="client_aa"/>) will
+                provide another authentication factor and thus hinder the
+                attack.</t>
               </list></t>
           </section>
         </section>
 
         <section title="Client Credentials">
-          <t>Client credentials (see <xref target="I-D.ietf-oauth-v2"></xref>,
+          <t>Client credentials (see <xref target="I-D.ietf-oauth-v2"/>,
           Section 3) consist of an identifier (not secret) combined with an
           additional means (such as a matching client secret) of
           authenticating a client. The threats to this grant type are similar
-          to <xref target="pwd_flow"></xref>.</t>
+          to <xref target="pwd_flow"/>.</t>
         </section>
       </section>
 
@@ -2061,12 +2046,12 @@
               <t>As per the core OAuth spec, the Authorization servers must
               ensure that these transmissions are protected using
               transport-layer mechanisms such as TLS (see <xref
-              target="conf_requests"></xref>).</t>
+              target="conf_requests"/>).</t>
 
               <t>If end-to-end confidentiality cannot be guaranteed, reducing
-              scope (see <xref target="limit_scope"></xref>) and expiry time
-              (see <xref target="short_exp_time"></xref>) for issued access
-              tokens can be used to reduce the damage in case of leaks.</t>
+              scope (see <xref target="limit_scope"/>) and expiry time (see
+              <xref target="short_exp_time"/>) for issued access tokens can be
+              used to reduce the damage in case of leaks.</t>
             </list></t>
         </section>
 
@@ -2082,11 +2067,11 @@
 
           <t><list style="symbols">
               <t>Credential storage protection - <xref
-              target="cred_storage_prot"></xref></t>
+              target="cred_storage_prot"/></t>
 
               <t>Bind token to client id, if the attacker cannot obtain the
               required id and secret - <xref
-              target="bind_token_client_id"></xref></t>
+              target="bind_token_client_id"/></t>
             </list></t>
         </section>
 
@@ -2101,19 +2086,17 @@
           <t>Countermeasures:</t>
 
           <t><list style="symbols">
-              <t>For handle-based designs - <xref
-              target="high_entropy"></xref></t>
+              <t>For handle-based designs - <xref target="high_entropy"/></t>
 
               <t>For assertion-based designs - <xref
-              target="signed_tokens"></xref></t>
+              target="signed_tokens"/></t>
 
               <t>Bind token to client id, because the attacker would guess the
               matching client id, too (see <xref
-              target="bind_token_client_id"></xref>)</t>
+              target="bind_token_client_id"/>)</t>
 
               <t>Authenticate the client, adds another element the attacker
-              has to guess (see <xref
-              target="depl_specific_secretes"></xref>)</t>
+              has to guess (see <xref target="depl_specific_secretes"/>)</t>
             </list></t>
         </section>
 
@@ -2128,7 +2111,7 @@
 
           <t><list style="symbols">
               <t>Server authentication (as described in <xref
-              target="server_authn"></xref>)</t>
+              target="server_authn"/>)</t>
             </list></t>
         </section>
       </section>
@@ -2148,15 +2131,14 @@
               the clear over an insecure channel. As per the core OAuth spec,
               transmission of access tokens must be protected using
               transport-layer mechanisms such as TLS (see <xref
-              target="conf_requests"></xref>).</t>
+              target="conf_requests"/>).</t>
 
               <t>A short lifetime reduces impact in case tokens are
-              compromised (see <xref target="short_exp_time"></xref>).</t>
+              compromised (see <xref target="short_exp_time"/>).</t>
 
               <t>The access token can be bound to a client's identifier and
               require the client to prove legitimate ownership of the token to
-              the resource server (see <xref
-              target="authn_requests"></xref>).</t>
+              the resource server (see <xref target="authn_requests"/>).</t>
             </list></t>
         </section>
 
@@ -2169,11 +2151,11 @@
           <t><list style="symbols">
               <t>The resource server should utilize transport security
               measures (e.g. TLS) in order to prevent such attacks (see <xref
-              target="conf_requests"></xref>). This would prevent the attacker
-              from capturing valid requests.</t>
+              target="conf_requests"/>). This would prevent the attacker from
+              capturing valid requests.</t>
 
               <t>Alternatively, the resource server could employ signed
-              requests (see <xref target="signed_requests"></xref>) along with
+              requests (see <xref target="signed_requests"/>) along with
               nonces and timestamps in order to uniquely identify requests.
               The resource server should detect and refuse every replayed
               request.</t>
@@ -2191,16 +2173,16 @@
 
           <t><list style="symbols">
               <t>Handle Tokens should have a reasonable entropy (see <xref
-              target="high_entropy"></xref>) in order to make guessing a valid
-              token value infeasible.</t>
+              target="high_entropy"/>) in order to make guessing a valid token
+              value infeasible.</t>
 
               <t>Assertion (or self-contained token ) tokens contents should
               be protected by a digital signature (see <xref
-              target="signed_tokens"></xref>).</t>
+              target="signed_tokens"/>).</t>
 
               <t>Security can be further strengthened by using a short access
-              token duration (see <xref target="exp_time"></xref> and <xref
-              target="short_exp_time"></xref>).</t>
+              token duration (see <xref target="exp_time"/> and <xref
+              target="short_exp_time"/>).</t>
             </list></t>
         </section>
 
@@ -2218,7 +2200,7 @@
               token to unfamiliar resource servers, regardless of the presence
               of a secure channel. If the resource server URL is well-known to
               the client, it may authenticate the resource servers (see <xref
-              target="server_authn"></xref>).</t>
+              target="server_authn"/>).</t>
 
               <t>Associate the endpoint URL of the resource server the client
               talked to with the access token (e.g. in an audience field) and
@@ -2234,12 +2216,11 @@
               prevents the attack because the counterfeit server is assumed to
               lack the capability to correctly authenticate on behalf of the
               legitimate client to the resource server (<xref
-              target="authn_requests"></xref>).</t>
+              target="authn_requests"/>).</t>
 
-              <t>Restrict the token scope (see <xref
-              target="limit_scope"></xref>) and or limit the token to a
-              certain resource server (<xref
-              target="bind_token_rs"></xref>).</t>
+              <t>Restrict the token scope (see <xref target="limit_scope"/>)
+              and or limit the token to a certain resource server (<xref
+              target="bind_token_rs"/>).</t>
             </list></t>
         </section>
 
@@ -2252,13 +2233,13 @@
 
           <t><list style="symbols">
               <t>Tokens should be restricted to particular resource servers
-              (see <xref target="bind_token_rs"></xref>).</t>
+              (see <xref target="bind_token_rs"/>).</t>
             </list></t>
         </section>
 
         <section title="Threat: Leak of confidential data in HTTP-Proxies">
           <t>The HTTP Authorization scheme (OAuth HTTP Authorization Scheme)
-          is optional. However, <xref target="RFC2616"></xref> relies on the
+          is optional. However, <xref target="RFC2616"/> relies on the
           Authorization and WWW-Authenticate headers to distinguish
           authenticated content so that it can be protected. Proxies and
           caches, in particular, may fail to adequately protect requests not
@@ -2271,18 +2252,17 @@
           <t><list style="symbols">
               <t>Clients and resource servers not using the HTTP Authorization
               scheme (OAuth HTTP Authorization Scheme - see <xref
-              target="authz_header"></xref>) should take care to use
-              Cache-Control headers to minimize the risk that authenticated
-              content is not protected. Such Clients should send a
-              Cache-Control header containing the "no-store" option <xref
-              target="RFC2616"></xref>. Resource server success (2XX status)
-              responses to these requests should contain a Cache-Control
-              header with the "private" option <xref
-              target="RFC2616"></xref>.</t>
+              target="authz_header"/>) should take care to use Cache-Control
+              headers to minimize the risk that authenticated content is not
+              protected. Such Clients should send a Cache-Control header
+              containing the "no-store" option <xref target="RFC2616"/>.
+              Resource server success (2XX status) responses to these requests
+              should contain a Cache-Control header with the "private" option
+              <xref target="RFC2616"/>.</t>
 
-              <t>Reducing scope (see <xref target="limit_scope"></xref>) and
-              expiry time (<xref target="short_exp_time"></xref>) for access
-              tokens can be used to reduce the damage in case of leaks.</t>
+              <t>Reducing scope (see <xref target="limit_scope"/>) and expiry
+              time (<xref target="short_exp_time"/>) for access tokens can be
+              used to reduce the damage in case of leaks.</t>
             </list></t>
         </section>
 
@@ -2294,22 +2274,21 @@
 
           <t><list style="symbols">
               <t>Use authorization headers or POST parameters instead of URI
-              request parameters (see <xref
-              target="authz_header"></xref>).</t>
+              request parameters (see <xref target="authz_header"/>).</t>
 
               <t>Set logging configuration appropriately</t>
 
               <t>Prevent unauthorized persons from access to system log files
-              (see <xref target="std_sys"></xref>)</t>
+              (see <xref target="std_sys"/>)</t>
 
               <t>Abuse of leaked access tokens can be prevented by enforcing
               authenticated requests (see <xref
-              target="authn_requests"></xref>).</t>
+              target="authn_requests"/>).</t>
 
               <t>The impact of token leakage may be reduced by limiting scope
-              (see <xref target="limit_scope"></xref>) and duration (see <xref
-              target="short_exp_time"></xref>) and enforcing one time token
-              usage (see <xref target="one_time_usage"></xref>).</t>
+              (see <xref target="limit_scope"/>) and duration (see <xref
+              target="short_exp_time"/>) and enforcing one time token usage
+              (see <xref target="one_time_usage"/>).</t>
             </list></t>
         </section>
       </section>
@@ -2334,9 +2313,9 @@
           content of request, e.g. secrets or tokens.</t>
 
           <t>Attacks can be mitigated by using transport-layer mechanisms such
-          as TLS <xref target="RFC5246"></xref>. A virtual private network
-          (VPN), e.g. based on IPsec VPN <xref target="RFC4301"></xref>, may
-          considered as well.</t>
+          as TLS <xref target="RFC5246"/>. A virtual private network (VPN),
+          e.g. based on IPsec VPN <xref target="RFC4301"/>, may considered as
+          well.</t>
 
           <t>Note: this document assumes end-to-end TLS protected connections
           between the respective protocol entities. Deployments deviating from
@@ -2364,7 +2343,7 @@
           authenticate the identity of a server. The goal is to reliably bind
           the fully qualified domain name of the server to the public key
           presented by the server during connection establishment (see <xref
-          target="RFC2818"></xref>).</t>
+          target="RFC2818"/>).</t>
 
           <t>The client should validate the binding of the server to its
           domain name. If the server fails to prove that binding, it is
@@ -2421,8 +2400,8 @@
                    title="Credential Storage Protection">
             <t>Administrators should undertake industry best practices to
             protect the storage of credentials (see for example <xref
-            target="owasp"></xref>). Such practices may include but are not
-            limited to the following sub-sections.</t>
+            target="owasp"/>). Such practices may include but are not limited
+            to the following sub-sections.</t>
 
             <section anchor="std_sys" title="Standard System Security Means">
               <t>A server system may be locked down so that no attacker may
@@ -2502,8 +2481,8 @@
               mitigate the risk of guessing attacks. The token value should be
               &gt;=128 bits long and constructed from a cryptographically
               strong random or pseudo-random number sequence (see <xref
-              target="RFC4086"></xref> for best current practice) generated by
-              the Authorization Server.</t>
+              target="RFC4086"/> for best current practice) generated by the
+              Authorization Server.</t>
             </section>
 
             <section anchor="lock_accounts" title="Lock accounts">
@@ -2639,9 +2618,9 @@
             consider issuing tokens with different content to different
             resource servers and to explicitly indicate in the token the
             target server a token is intended to be sent to. SAML Assertions
-            (see <xref target="OASIS.saml-core-2.0-os"></xref>) use the
-            Audience element for this purpose. This countermeasure can be used
-            in the following situations:</t>
+            (see <xref target="OASIS.saml-core-2.0-os"/>) use the Audience
+            element for this purpose. This countermeasure can be used in the
+            following situations:</t>
 
             <t><list style="symbols">
                 <t>It reduces the impact of a successful replay attempt, since
@@ -2709,8 +2688,8 @@
             <t>For service providers intending to implement an assertion-based
             token design it is highly recommended to adopt a standard
             assertion format (such as SAML <xref
-            target="OASIS.saml-core-2.0-os"></xref> or JWT <xref
-            target="I-D.ietf-oauth-json-web-token"></xref>.</t>
+            target="OASIS.saml-core-2.0-os"/> or JWT <xref
+            target="I-D.ietf-oauth-json-web-token"/>.</t>
           </section>
         </section>
 
@@ -2800,7 +2779,7 @@
             <t>The authorization server may allow clients or end-users to
             explicitly request the invalidation of refresh tokens. A mechanism
             to revoke tokens is specified in <xref
-            target="I-D.ietf-oauth-revocation"></xref>.</t>
+            target="I-D.ietf-oauth-revocation"/>.</t>
 
             <t>This is a countermeasure against:</t>
 
@@ -2816,11 +2795,11 @@
           <section anchor="device_id" title="Device identification">
             <t>The authorization server may require to bind authentication
             credentials to a device identifier. The <spanx style="emph">International Mobile Station Equipment Identity</spanx>
-            <xref target="IMEI"></xref> is one example of such an identifier,
-            there are also operating system specific identifiers. The
-            authorization server could include such an identifier when
-            authenticating user credentials in order to detect token theft
-            from a particular device.</t>
+            <xref target="IMEI"/> is one example of such an identifier, there
+            are also operating system specific identifiers. The authorization
+            server could include such an identifier when authenticating user
+            credentials in order to detect token theft from a particular
+            device.</t>
 
             <t>Note: Any implementation should consider potential privacy
             implications of using device identifiers.</t>
@@ -2829,11 +2808,10 @@
           <section anchor="clickjacking_xframe" title="X-FRAME-OPTION header">
             <t>For newer browsers, avoidance of iFrames can be enforced server
             side by using the X-FRAME-OPTION header (see <xref
-            target="I-D.gondrom-x-frame-options"></xref>). This header can
-            have two values, "DENY" and "SAMEORIGIN", which will block any
-            framing or framing by sites with a different origin, respectively.
-            The value "ALLOW-FROM" allows iFrames for a list of trusted
-            origins.</t>
+            target="I-D.gondrom-x-frame-options"/>). This header can have two
+            values, "DENY" and "SAMEORIGIN", which will block any framing or
+            framing by sites with a different origin, respectively. The value
+            "ALLOW-FROM" allows iFrames for a list of trusted origins.</t>
 
             <t>This is a countermeasure against the following threats:</t>
 
@@ -2972,7 +2950,7 @@
                    title="Validation of pre-registered redirect_uri">
             <t>An authorization server should require all clients to register
             their redirect_uri and the redirect_uri should be the full URI as
-            defined in <xref target="I-D.ietf-oauth-v2"></xref>. The way this
+            defined in <xref target="I-D.ietf-oauth-v2"/>. The way this
             registration is performed is out of scope of this document. As per
             the core spec, every actual redirection URI sent with the
             respective client_id to the end-user authorization endpoint must
@@ -2988,14 +2966,13 @@
                 <t>Authorization code leakage through counterfeit web site:
                 allows to detect attack attempts already after first redirect
                 to end-user authorization endpoint (<xref
-                target="authz_code_leakage"></xref>).</t>
+                target="authz_code_leakage"/>).</t>
 
                 <t>Open Redirector attack via client redirection endpoint. (
-                <xref target="open_redirector_client"></xref>. )</t>
+                <xref target="open_redirector_client"/>. )</t>
 
                 <t>Open Redirector phishing attack via authorization server
-                redirection endpoint ( <xref target="open_redirector"></xref>
-                )</t>
+                redirection endpoint ( <xref target="open_redirector"/> )</t>
               </list> The underlying assumption of this measure is that an
             attacker will need to use another redirection URI in order to get
             access to the authorization code. Deployments might consider the
@@ -3032,11 +3009,11 @@
           <section anchor="strong_client_authn"
                    title="Use strong client authentication (e.g. client_assertion / client_token)">
             <t>By using an alternative form of authentication such as client
-            assertion <xref target="I-D.ietf-oauth-assertions"></xref>, the
-            need to distribute a client_secret is eliminated. This may require
-            the use of a secure private key store or other supplemental
-            authentication system as specified by the client assertion issuer
-            in its authentication process.</t>
+            assertion <xref target="I-D.ietf-oauth-assertions"/>, the need to
+            distribute a client_secret is eliminated. This may require the use
+            of a secure private key store or other supplemental authentication
+            system as specified by the client assertion issuer in its
+            authentication process.</t>
           </section>
         </section>
 
@@ -3050,11 +3027,10 @@
             authorizations where the client is not authenticated through a
             client secret or some other authentication mechanism such as a
             signed authentication assertion certificate (<xref
-            target="strong_client_authn"></xref> Use strong client
-            authentication (e.g. client_assertion / client_token)) or
-            validation of a pre-registered redirect URI (<xref
-            target="val_redirect"></xref> Validation of pre-registered
-            redirection URI ).</t>
+            target="strong_client_authn"/> Use strong client authentication
+            (e.g. client_assertion / client_token)) or validation of a
+            pre-registered redirect URI (<xref target="val_redirect"/>
+            Validation of pre-registered redirection URI ).</t>
           </section>
 
           <section anchor="informed_decisions"
@@ -3141,7 +3117,7 @@
         <section anchor="std_web"
                  title="Standard web server protection measures (for config files and databases)">
           <t>Use standard web server protection measures - <xref
-          target="std_web"></xref></t>
+          target="std_web"/></t>
         </section>
 
         <section anchor="secure_storage"
@@ -3234,12 +3210,12 @@
               <t>Alternatively, the authorization server may issue a
               token-bound secret, which the client uses to MAC (message
               authentication code) the request (see <xref
-              target="I-D.ietf-oauth-v2-http-mac"></xref>). The resource
-              server obtains the secret either directly from the authorization
-              server or it is contained in an encrypted section of the token.
-              That way the resource server does not "know" the client but is
-              able to validate whether the authorization server issued the
-              token to that client</t>
+              target="I-D.ietf-oauth-v2-http-mac"/>). The resource server
+              obtains the secret either directly from the authorization server
+              or it is contained in an encrypted section of the token. That
+              way the resource server does not "know" the client but is able
+              to validate whether the authorization server issued the token to
+              that client</t>
             </list>Authenticated requests are a countermeasure against abuse
           of tokens by counterfeit resource servers.</t>
         </section>
@@ -3270,8 +3246,8 @@
 
         <t><list style="symbols">
             <t>End users must understand what they are being asked to approve
-            (see Section <xref target="automatic_processing"></xref>). Users
-            often do not have the expertise to understand the ramifications of
+            (see Section <xref target="automatic_processing"/>). Users often
+            do not have the expertise to understand the ramifications of
             saying "yes" to an authorization request. and are likely not to be
             able to see subtle differences in wording of requests. Malicious
             software can confuse the user, tricking the user into approving
@@ -3365,29 +3341,29 @@
           Vulnerabilities on Popular Sites</title>
 
           <author fullname="G. Rydstedt" initials="G" surname="Rydstedt">
-            <organization></organization>
+            <organization/>
           </author>
 
           <author fullname="E. Bursztein" surname="Bursztein">
-            <organization></organization>
+            <organization/>
           </author>
 
           <author fullname="D. Boneh" initials="D" surname="Boneh">
-            <organization></organization>
+            <organization/>
           </author>
 
           <author fullname="C. Jackson" initials="C" surname="Jackson">
-            <organization></organization>
+            <organization/>
           </author>
 
-          <date year="2010" />
+          <date year="2010"/>
         </front>
 
         <seriesInfo name="IEEE"
-                    value="3rd Web 2.0 Security and Privacy Workshop" />
+                    value="3rd Web 2.0 Security and Privacy Workshop"/>
 
         <format target="http://elie.im/publication/busting-frame-busting-a-study-of-clickjacking-vulnerabilities-on-popular-sites"
-                type="HTML" />
+                type="HTML"/>
       </reference>
 
       <reference anchor="iFrame">
@@ -3398,13 +3374,13 @@
             <organization>World Wide Web Consortium</organization>
           </author>
 
-          <date day="24" month="Dec" year="1999" />
+          <date day="24" month="Dec" year="1999"/>
         </front>
 
-        <seriesInfo name="W3C" value="HTML 4.01" />
+        <seriesInfo name="W3C" value="HTML 4.01"/>
 
         <format target="http://www.w3.org/TR/html4/present/frames.html#h-16.5"
-                type="HTML" />
+                type="HTML"/>
       </reference>
 
       <reference anchor="IMEI">
@@ -3416,22 +3392,22 @@
             <organization>3GPP</organization>
           </author>
 
-          <date day="04" month="July" year="2002" />
+          <date day="04" month="July" year="2002"/>
         </front>
 
-        <seriesInfo name="3GPP TS" value="22.016 3.3.0" />
+        <seriesInfo name="3GPP TS" value="22.016 3.3.0"/>
 
         <format target="http://www.3gpp.org/ftp/Specs/html-info/22016.htm"
-                type="HTML" />
+                type="HTML"/>
       </reference>
 
       <reference anchor="owasp" target="https://www.owasp.org/">
         <front>
           <title>Open Web Application Security Project Home Page</title>
 
-          <author></author>
+          <author/>
 
-          <date />
+          <date/>
         </front>
       </reference>
 
@@ -3439,9 +3415,9 @@
         <front>
           <title>OpenID Foundation Home Page</title>
 
-          <author></author>
+          <author/>
 
-          <date />
+          <date/>
         </front>
       </reference>
 
@@ -3451,13 +3427,13 @@
           <title>Portable Contacts 1.0 Draft C</title>
 
           <author fullname="J. Smarr" initials="J" surname="Smarr">
-            <organization></organization>
+            <organization/>
           </author>
 
-          <date month="August" year="2008" />
+          <date month="August" year="2008"/>
         </front>
 
-        <format target="http://portablecontacts.net/" type="html" />
+        <format target="http://portablecontacts.net/" type="html"/>
       </reference>
 
       <reference anchor="gross-sec-analysis">
@@ -3467,10 +3443,10 @@
           Vegas</title>
 
           <author fullname="T. Gro&szlig;" initials="T" surname="Gro&szlig;">
-            <organization></organization>
+            <organization/>
           </author>
 
-          <date month="December" year="2003" />
+          <date month="December" year="2003"/>
         </front>
       </reference>
 
@@ -3480,19 +3456,19 @@
           Language (SAML) V1.1</title>
 
           <author fullname="E. Maler" initials="E." role="editor"
-                  surname="Maler"></author>
+                  surname="Maler"/>
 
           <author fullname="P. Mishra" initials="P." role="editor"
-                  surname="Mishra"></author>
+                  surname="Mishra"/>
 
           <author fullname="R. Philpott" initials="R." role="editor"
-                  surname="Philpott"></author>
+                  surname="Philpott"/>
 
-          <date month="September " year="2003" />
+          <date month="September " year="2003"/>
         </front>
 
         <format target="http://www.oasis-open.org/committees/download.php/3405/oasis-sstc-saml-bindings-1.1.pdf"
-                type="pdf" />
+                type="pdf"/>
       </reference>
 
       <reference anchor="OASIS.sstc-gross-sec-analysis-response-01">
@@ -3501,16 +3477,16 @@
           Sign-on Browser/Artifact Profile&rdquo;</title>
 
           <author fullname="J. Linn" initials="J." role="editor"
-                  surname="Linn"></author>
+                  surname="Linn"/>
 
           <author fullname="P. Mishra" initials="P." role="editor"
-                  surname="Mishra"></author>
+                  surname="Mishra"/>
 
-          <date month="January" year="2005" />
+          <date month="January" year="2005"/>
         </front>
 
         <format target="http://www.oasis-open.org/committees/download.php/11191/sstc-gross-sec-analysis-response-01.pdf"
-                type="pdf" />
+                type="pdf"/>
       </reference>
 
       <reference anchor="ssl-latency">
@@ -3518,13 +3494,13 @@
           <title>SSL handshake latency and HTTPS optimizations</title>
 
           <author fullname="Jordan Sissel" initials="J." role="editor"
-                  surname="Sissel"></author>
+                  surname="Sissel"/>
 
-          <date month="June" year="2010" />
+          <date month="June" year="2010"/>
         </front>
 
         <format target="http://www.semicomplete.com/blog/geekery/ssl-latency.html"
-                type="HTML" />
+                type="HTML"/>
       </reference>
     </references>
 
