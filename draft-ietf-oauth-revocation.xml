@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-oauth-revocation-01" ipr="trust200902">
+<rfc category="std" docName="draft-ietf-oauth-revocation-02" ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
 		full3667, noModification3667, noDerivatives3667 you can add the
@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="10" month="June" year="2012" />
+    <date day="1" month="October" year="2012" />
 
     <!-- Meta-data Declarations -->
 
@@ -129,14 +129,19 @@
       <t>The OAuth 2.0 core specification <xref
       target="I-D.ietf-oauth-v2"></xref> defines several ways for a client to
       obtain refresh and access tokens. This specification supplements the
-      core specification with a mechanism to revoke both types of tokens and
-      facilitates the following use cases:<list style="symbols">
+      core specification with a mechanism to revoke both types of tokens. A
+      token is the external representation of an access grant issued by a
+      resource owner to a particular client. A revocation request may discard
+      the actual token as well as other tokens based on the same access grant
+      and the access grant itself.</t>
+
+      <t>This mechanism facilitates the following use cases:<list
+          style="symbols">
           <t>The end-user triggers revocation from within the client that
           sends the appropriate revocation request to the autorization server.
-          From the end-user's perspective, this looks like a
-          &ldquo;logout&rdquo; or &ldquo;reset&rdquo; function. The request
-          causes the removal of the client permissions associated with the
-          particular token to access the end-user&rsquo;s protected resources.
+          The request causes the removal of the client's access grant the
+          particular token refers to. From the end-user's perspective, this
+          looks like a &ldquo;logout&rdquo; or &ldquo;reset&rdquo; function.
           This use case makes it even more comfortable to the end-user to
           revoke his access grant immediately via the client.</t>
 
@@ -205,16 +210,16 @@
       to revoke it. It is also conceivable to allow a dedicated user self-care
       portal to revoke all kinds of tokens.</t>
 
-      <t>In the next step, the authorization server invalidates the token.
-      Whether the revocation takes effect instantly or with some delay depends
-      on the architecture of the particular deployment. The client MUST NOT
-      make any assumptions about the timing and MUST NOT use the token
-      again.</t>
+      <t>In the next step, the authorization server invalidates the token and
+      the respective access grant. If the respective token is a refresh token
+      and the authorization server supports the revocation of access tokens,
+      then the authorization server SHOULD also invalidate all access tokens
+      based on the same access grant.</t>
 
-      <t>If the processed token is a refresh token and the authorization
-      server supports the revocation of access tokens, then the authorization
-      server SHOULD also invalidate all access tokens issued for that refresh
-      token.</t>
+      <t>Whether the revocation takes effect instantly or with some delay
+      depends on the architecture of the particular deployment. The client
+      MUST NOT make any assumptions about the timing and MUST NOT use the
+      token again.</t>
 
       <t>The authorization server indicates a successful processing of the
       request by a HTTP status code 200. Status code 401 indicates a failed
@@ -232,10 +237,13 @@
           <t hangText="invalid_token">The presented token is invalid.</t>
         </list></t>
 
-      <section anchor="JSONP" title="JSONP Support">
-        <t>The revocation endpoint MAY support <xref format="title"
-        target="jsonp">JSONP</xref> by allowing GET requests with an
-        additional parameter: <list hangIndent="8" style="hanging">
+      <section anchor="cross-orgin" title="Cross-Origin Support">
+        <t>The revokation end-point SHOULD support <xref format="title"
+        target="W3C.WD-cors-20120403">CORS</xref> if it is aimed at use in
+        combination with user-agent-based applications. In addition, for
+        interoperability with legacy user-agents, it MAY offer <xref
+        format="title" target="jsonp">JSONP</xref> by allowing GET requests
+        with an additional parameter: <list hangIndent="8" style="hanging">
             <t hangText="callback">The qualified name of a JavaScript
             function.</t>
           </list></t>
@@ -264,13 +272,18 @@ package.myCallback();
 package.myCallback({"error":"invalid_token"});
 ]]></artwork>
         </figure>
+
+        <t>Clients should be aware that when relying on JSONP, a malicious
+        revokation end-point may attempt to inject malicious code into the
+        client.</t>
       </section>
     </section>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
-      <t>We would like to thank Sebastian Ebling, Christian St&uuml;bner,
-      Brian Campbell, Igor Faynberg, Lukas Rosenstock, and Justin P. Richer
-      for their valuable feedback.</t>
+      <t>We would like to thank Michiel de Jong, Doug Foiles, Paul Madsen,
+      George Fletcher, Sebastian Ebling, Christian St&uuml;bner, Brian
+      Campbell, Igor Faynberg, Lukas Rosenstock, and Justin P. Richer for
+      their valuable feedback.</t>
     </section>
 
     <!-- Possibly a 'Contributors' section ... -->
@@ -295,10 +308,12 @@ package.myCallback({"error":"invalid_token"});
 
       <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.5246.xml' ?>
 
-      <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-v2-26.xml' ?>
+      <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-v2.xml' ?>
     </references>
 
     <references title="Informative References">
+      <?rfc include='http://xml.resource.org/public/rfc/bibxml4/reference.W3C.WD-cors-20120403.xml' ?>
+
       <reference anchor="jsonp">
         <front>
           <title>Remote JSON - JSONP</title>
