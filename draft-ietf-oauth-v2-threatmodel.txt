@@ -4,19 +4,19 @@
 OAuth Working Group                                  T. Lodderstedt, Ed.
 Internet-Draft                                       Deutsche Telekom AG
 Intended status: Informational                                M. McGloin
-Expires: February 15, 2013                                           IBM
+Expires: April 9, 2013                                               IBM
                                                                  P. Hunt
                                                       Oracle Corporation
-                                                         August 14, 2012
+                                                         October 6, 2012
 
 
            OAuth 2.0 Threat Model and Security Considerations
-                   draft-ietf-oauth-v2-threatmodel-07
+                   draft-ietf-oauth-v2-threatmodel-08
 
 Abstract
 
    This document gives additional security considerations for OAuth,
-   beyond those in the OAuth specification, based on a comprehensive
+   beyond those in the OAuth 2.0 specification, based on a comprehensive
    threat model for the OAuth 2.0 Protocol.
 
 Status of this Memo
@@ -34,7 +34,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 15, 2013.
+   This Internet-Draft will expire on April 9, 2013.
 
 Copyright Notice
 
@@ -52,9 +52,9 @@ Copyright Notice
 
 
 
-Lodderstedt, et al.     Expires February 15, 2013               [Page 1]
+Lodderstedt, et al.       Expires April 9, 2013                 [Page 1]
 
-Internet-Draft             OAuth 2.0 Security                August 2012
+Internet-Draft             OAuth 2.0 Security               October 2012
 
 
    described in the Simplified BSD License.
@@ -72,19 +72,19 @@ Table of Contents
        2.3.3.  Client . . . . . . . . . . . . . . . . . . . . . . . .  9
    3.  Security Features  . . . . . . . . . . . . . . . . . . . . . .  9
      3.1.  Tokens . . . . . . . . . . . . . . . . . . . . . . . . . .  9
-       3.1.1.  Scope  . . . . . . . . . . . . . . . . . . . . . . . . 10
+       3.1.1.  Scope  . . . . . . . . . . . . . . . . . . . . . . . . 11
        3.1.2.  Limited Access Token Lifetime  . . . . . . . . . . . . 11
      3.2.  Access Token . . . . . . . . . . . . . . . . . . . . . . . 11
      3.3.  Refresh Token  . . . . . . . . . . . . . . . . . . . . . . 11
      3.4.  Authorization Code . . . . . . . . . . . . . . . . . . . . 12
-     3.5.  Redirection URI  . . . . . . . . . . . . . . . . . . . . . 12
+     3.5.  Redirection URI  . . . . . . . . . . . . . . . . . . . . . 13
      3.6.  State parameter  . . . . . . . . . . . . . . . . . . . . . 13
      3.7.  Client Identitifier  . . . . . . . . . . . . . . . . . . . 13
    4.  Threat Model . . . . . . . . . . . . . . . . . . . . . . . . . 15
      4.1.  Clients  . . . . . . . . . . . . . . . . . . . . . . . . . 15
        4.1.1.  Threat: Obtain Client Secrets  . . . . . . . . . . . . 15
-       4.1.2.  Threat: Obtain Refresh Tokens  . . . . . . . . . . . . 16
-       4.1.3.  Threat: Obtain Access Tokens . . . . . . . . . . . . . 18
+       4.1.2.  Threat: Obtain Refresh Tokens  . . . . . . . . . . . . 17
+       4.1.3.  Threat: Obtain Access Tokens . . . . . . . . . . . . . 19
        4.1.4.  Threat: End-user credentials phished using
                compromised or embedded browser  . . . . . . . . . . . 19
        4.1.5.  Threat: Open Redirectors on client . . . . . . . . . . 20
@@ -99,18 +99,18 @@ Table of Contents
      4.3.  Token endpoint . . . . . . . . . . . . . . . . . . . . . . 22
        4.3.1.  Threat: Eavesdropping access tokens  . . . . . . . . . 22
        4.3.2.  Threat: Obtain access tokens from authorization
-               server database  . . . . . . . . . . . . . . . . . . . 22
+               server database  . . . . . . . . . . . . . . . . . . . 23
        4.3.3.  Threat: Disclosure of client credentials during
                transmission . . . . . . . . . . . . . . . . . . . . . 23
        4.3.4.  Threat: Obtain client secret from authorization
                server database  . . . . . . . . . . . . . . . . . . . 23
-       4.3.5.  Threat: Obtain client secret by online guessing  . . . 23
+       4.3.5.  Threat: Obtain client secret by online guessing  . . . 24
 
 
 
-Lodderstedt, et al.     Expires February 15, 2013               [Page 2]
+Lodderstedt, et al.       Expires April 9, 2013                 [Page 2]
 
-Internet-Draft             OAuth 2.0 Security                August 2012
+Internet-Draft             OAuth 2.0 Security               October 2012
 
 
      4.4.  Obtaining Authorization  . . . . . . . . . . . . . . . . . 24
@@ -121,25 +121,25 @@ Internet-Draft             OAuth 2.0 Security                August 2012
                    authorization server database  . . . . . . . . . . 25
          4.4.1.3.  Threat: Online guessing of authorization codes . . 26
          4.4.1.4.  Threat: Malicious client obtains authorization . . 26
-         4.4.1.5.  Threat: Authorization code phishing  . . . . . . . 27
+         4.4.1.5.  Threat: Authorization code phishing  . . . . . . . 28
          4.4.1.6.  Threat: User session impersonation . . . . . . . . 28
          4.4.1.7.  Threat: Authorization code leakage through
                    counterfeit client . . . . . . . . . . . . . . . . 29
-         4.4.1.8.  Threat: CSRF attack against redirect-uri . . . . . 30
+         4.4.1.8.  Threat: CSRF attack against redirect-uri . . . . . 31
          4.4.1.9.  Threat: Clickjacking attack against
                    authorization  . . . . . . . . . . . . . . . . . . 31
          4.4.1.10. Threat: Resource Owner Impersonation . . . . . . . 32
          4.4.1.11. Threat: DoS, Exhaustion of resources attacks . . . 33
          4.4.1.12. Threat: DoS using manufactured authorization
-                   codes  . . . . . . . . . . . . . . . . . . . . . . 33
+                   codes  . . . . . . . . . . . . . . . . . . . . . . 34
          4.4.1.13. Threat: Code substitution (OAuth Login)  . . . . . 35
        4.4.2.  Implicit Grant . . . . . . . . . . . . . . . . . . . . 36
          4.4.2.1.  Threat: Access token leak in
                    transport/end-points . . . . . . . . . . . . . . . 36
-         4.4.2.2.  Threat: Access token leak in browser history . . . 36
-         4.4.2.3.  Threat: Malicious client obtains authorization . . 36
+         4.4.2.2.  Threat: Access token leak in browser history . . . 37
+         4.4.2.3.  Threat: Malicious client obtains authorization . . 37
          4.4.2.4.  Threat: Manipulation of scripts  . . . . . . . . . 37
-         4.4.2.5.  Threat: CSRF attack against redirect-uri . . . . . 37
+         4.4.2.5.  Threat: CSRF attack against redirect-uri . . . . . 38
          4.4.2.6.  Threat: Token substitution (OAuth Login) . . . . . 38
        4.4.3.  Resource Owner Password Credentials  . . . . . . . . . 39
          4.4.3.1.  Threat: Accidental exposure of passwords at
@@ -148,118 +148,119 @@ Internet-Draft             OAuth 2.0 Security                August 2012
                    authorization  . . . . . . . . . . . . . . . . . . 40
          4.4.3.3.  Threat: Client obtains refresh token through
                    automatic authorization  . . . . . . . . . . . . . 41
-         4.4.3.4.  Threat: Obtain user passwords on transport . . . . 41
+         4.4.3.4.  Threat: Obtain user passwords on transport . . . . 42
          4.4.3.5.  Threat: Obtain user passwords from
-                   authorization server database  . . . . . . . . . . 41
+                   authorization server database  . . . . . . . . . . 42
          4.4.3.6.  Threat: Online guessing  . . . . . . . . . . . . . 42
-       4.4.4.  Client Credentials . . . . . . . . . . . . . . . . . . 42
-     4.5.  Refreshing an Access Token . . . . . . . . . . . . . . . . 42
+       4.4.4.  Client Credentials . . . . . . . . . . . . . . . . . . 43
+     4.5.  Refreshing an Access Token . . . . . . . . . . . . . . . . 43
        4.5.1.  Threat: Eavesdropping refresh tokens from
-               authorization server . . . . . . . . . . . . . . . . . 42
+               authorization server . . . . . . . . . . . . . . . . . 43
        4.5.2.  Threat: Obtaining refresh token from authorization
                server database  . . . . . . . . . . . . . . . . . . . 43
-       4.5.3.  Threat: Obtain refresh token by online guessing  . . . 43
+       4.5.3.  Threat: Obtain refresh token by online guessing  . . . 44
        4.5.4.  Threat: Obtain refresh token phishing by
-               counterfeit authorization server . . . . . . . . . . . 43
+               counterfeit authorization server . . . . . . . . . . . 44
 
 
 
-Lodderstedt, et al.     Expires February 15, 2013               [Page 3]
+Lodderstedt, et al.       Expires April 9, 2013                 [Page 3]
 
-Internet-Draft             OAuth 2.0 Security                August 2012
+Internet-Draft             OAuth 2.0 Security               October 2012
 
 
      4.6.  Accessing Protected Resources  . . . . . . . . . . . . . . 44
        4.6.1.  Threat: Eavesdropping access tokens on transport . . . 44
-       4.6.2.  Threat: Replay authorized resource server requests . . 44
+       4.6.2.  Threat: Replay authorized resource server requests . . 45
        4.6.3.  Threat: Guessing access tokens . . . . . . . . . . . . 45
        4.6.4.  Threat: Access token phishing by counterfeit
-               resource server  . . . . . . . . . . . . . . . . . . . 45
+               resource server  . . . . . . . . . . . . . . . . . . . 46
        4.6.5.  Threat: Abuse of token by legitimate resource
                server or client . . . . . . . . . . . . . . . . . . . 46
-       4.6.6.  Threat: Leak of confidential data in HTTP-Proxies  . . 46
+       4.6.6.  Threat: Leak of confidential data in HTTP-Proxies  . . 47
        4.6.7.  Threat: Token leakage via logfiles and HTTP
-               referrers  . . . . . . . . . . . . . . . . . . . . . . 46
-   5.  Security Considerations  . . . . . . . . . . . . . . . . . . . 47
-     5.1.  General  . . . . . . . . . . . . . . . . . . . . . . . . . 47
-       5.1.1.  Confidentiality of Requests  . . . . . . . . . . . . . 47
-       5.1.2.  Server authentication  . . . . . . . . . . . . . . . . 48
-       5.1.3.  Always keep the resource owner informed  . . . . . . . 48
+               referrers  . . . . . . . . . . . . . . . . . . . . . . 47
+   5.  Security Considerations  . . . . . . . . . . . . . . . . . . . 48
+     5.1.  General  . . . . . . . . . . . . . . . . . . . . . . . . . 48
+       5.1.1.  Ensure confidentiality of requests . . . . . . . . . . 48
+       5.1.2.  Utiliize server authentication . . . . . . . . . . . . 48
+       5.1.3.  Always keep the resource owner informed  . . . . . . . 49
        5.1.4.  Credentials  . . . . . . . . . . . . . . . . . . . . . 49
-         5.1.4.1.  Credential Storage Protection  . . . . . . . . . . 49
-         5.1.4.2.  Online attacks on secrets  . . . . . . . . . . . . 50
-       5.1.5.  Tokens (access, refresh, code) . . . . . . . . . . . . 51
-         5.1.5.1.  Limit token scope  . . . . . . . . . . . . . . . . 51
+         5.1.4.1.  Enforce credential storage protection best
+                   practices  . . . . . . . . . . . . . . . . . . . . 50
+         5.1.4.2.  Online attacks on secrets  . . . . . . . . . . . . 51
+       5.1.5.  Tokens (access, refresh, code) . . . . . . . . . . . . 52
+         5.1.5.1.  Limit token scope  . . . . . . . . . . . . . . . . 52
          5.1.5.2.  Expiration time  . . . . . . . . . . . . . . . . . 52
-         5.1.5.3.  Short expiration time  . . . . . . . . . . . . . . 52
+         5.1.5.3.  Use short expiration time  . . . . . . . . . . . . 53
          5.1.5.4.  Limit number of usages/ One time usage . . . . . . 53
          5.1.5.5.  Bind tokens to a particular resource server
-                   (Audience) . . . . . . . . . . . . . . . . . . . . 53
-         5.1.5.6.  Use endpoint address as token audience . . . . . . 53
+                   (Audience) . . . . . . . . . . . . . . . . . . . . 54
+         5.1.5.6.  Use endpoint address as token audience . . . . . . 54
          5.1.5.7.  Audience and Token scopes  . . . . . . . . . . . . 54
          5.1.5.8.  Bind token to client id  . . . . . . . . . . . . . 54
-         5.1.5.9.  Signed tokens  . . . . . . . . . . . . . . . . . . 54
-         5.1.5.10. Encryption of token content  . . . . . . . . . . . 54
-         5.1.5.11. Assertion formats  . . . . . . . . . . . . . . . . 54
+         5.1.5.9.  Signed tokens  . . . . . . . . . . . . . . . . . . 55
+         5.1.5.10. Encryption of token content  . . . . . . . . . . . 55
+         5.1.5.11. Assertion formats  . . . . . . . . . . . . . . . . 55
        5.1.6.  Access tokens  . . . . . . . . . . . . . . . . . . . . 55
      5.2.  Authorization Server . . . . . . . . . . . . . . . . . . . 55
        5.2.1.  Authorization Codes  . . . . . . . . . . . . . . . . . 55
          5.2.1.1.  Automatic revocation of derived tokens if
                    abuse is detected  . . . . . . . . . . . . . . . . 55
-       5.2.2.  Refresh tokens . . . . . . . . . . . . . . . . . . . . 55
-         5.2.2.1.  Restricted issuance of refresh tokens  . . . . . . 55
-         5.2.2.2.  Binding of refresh token to client_id  . . . . . . 55
+       5.2.2.  Refresh tokens . . . . . . . . . . . . . . . . . . . . 56
+         5.2.2.1.  Restricted issuance of refresh tokens  . . . . . . 56
+         5.2.2.2.  Binding of refresh token to client_id  . . . . . . 56
          5.2.2.3.  Refresh Token Rotation . . . . . . . . . . . . . . 56
-         5.2.2.4.  Refresh Token Revocation . . . . . . . . . . . . . 56
-         5.2.2.5.  Device identification  . . . . . . . . . . . . . . 56
+         5.2.2.4.  Revoke refresh tokens  . . . . . . . . . . . . . . 57
+         5.2.2.5.  Device identification  . . . . . . . . . . . . . . 57
          5.2.2.6.  X-FRAME-OPTION header  . . . . . . . . . . . . . . 57
        5.2.3.  Client authentication and authorization  . . . . . . . 57
          5.2.3.1.  Don't issue secrets to client with
-                   inappropriate security policy  . . . . . . . . . . 57
-         5.2.3.2.  Public clients without secret require user
+                   inappropriate security policy  . . . . . . . . . . 58
 
 
 
-Lodderstedt, et al.     Expires February 15, 2013               [Page 4]
+Lodderstedt, et al.       Expires April 9, 2013                 [Page 4]
 
-Internet-Draft             OAuth 2.0 Security                August 2012
+Internet-Draft             OAuth 2.0 Security               October 2012
 
 
-                   consent  . . . . . . . . . . . . . . . . . . . . . 58
-         5.2.3.3.  Client_id only in combination with redirect_uri  . 58
-         5.2.3.4.  Installation-specific client secrets . . . . . . . 58
-         5.2.3.5.  Validation of pre-registered redirect_uri  . . . . 59
-         5.2.3.6.  Client secret revocation . . . . . . . . . . . . . 60
+         5.2.3.2.  Require user consent for public clients
+                   without secret . . . . . . . . . . . . . . . . . . 59
+         5.2.3.3.  Client_id only in combination with redirect_uri  . 59
+         5.2.3.4.  Installation-specific client secrets . . . . . . . 59
+         5.2.3.5.  Validation of pre-registered redirect_uri  . . . . 60
+         5.2.3.6.  Revoke client secrets  . . . . . . . . . . . . . . 61
          5.2.3.7.  Use strong client authentication (e.g.
-                   client_assertion / client_token) . . . . . . . . . 60
-       5.2.4.  End-user authorization . . . . . . . . . . . . . . . . 60
+                   client_assertion / client_token) . . . . . . . . . 61
+       5.2.4.  End-user authorization . . . . . . . . . . . . . . . . 61
          5.2.4.1.  Automatic processing of repeated
                    authorizations requires client validation  . . . . 61
-         5.2.4.2.  Informed decisions based on transparency . . . . . 61
-         5.2.4.3.  Validation of client properties by end-user  . . . 61
-         5.2.4.4.  Binding of authorization code to client_id . . . . 61
+         5.2.4.2.  Informed decisions based on transparency . . . . . 62
+         5.2.4.3.  Validation of client properties by end-user  . . . 62
+         5.2.4.4.  Binding of authorization code to client_id . . . . 62
          5.2.4.5.  Binding of authorization code to redirect_uri  . . 62
-     5.3.  Client App Security  . . . . . . . . . . . . . . . . . . . 62
+     5.3.  Client App Security  . . . . . . . . . . . . . . . . . . . 63
        5.3.1.  Don't store credentials in code or resources
-               bundled with software packages . . . . . . . . . . . . 62
+               bundled with software packages . . . . . . . . . . . . 63
        5.3.2.  Standard web server protection measures (for
-               config files and databases)  . . . . . . . . . . . . . 62
-       5.3.3.  Store secrets in a secure storage  . . . . . . . . . . 62
+               config files and databases)  . . . . . . . . . . . . . 63
+       5.3.3.  Store secrets in a secure storage  . . . . . . . . . . 63
        5.3.4.  Utilize device lock to prevent unauthorized device
-               access . . . . . . . . . . . . . . . . . . . . . . . . 63
-       5.3.5.  Link state parameter to user agent session . . . . . . 63
-     5.4.  Resource Servers . . . . . . . . . . . . . . . . . . . . . 63
-       5.4.1.  Authorization headers  . . . . . . . . . . . . . . . . 63
+               access . . . . . . . . . . . . . . . . . . . . . . . . 64
+       5.3.5.  Link state parameter to user agent session . . . . . . 64
+     5.4.  Resource Servers . . . . . . . . . . . . . . . . . . . . . 64
+       5.4.1.  Authorization headers  . . . . . . . . . . . . . . . . 64
        5.4.2.  Authenticated requests . . . . . . . . . . . . . . . . 64
-       5.4.3.  Signed requests  . . . . . . . . . . . . . . . . . . . 64
+       5.4.3.  Signed requests  . . . . . . . . . . . . . . . . . . . 65
      5.5.  A Word on User Interaction and User-Installed Apps . . . . 65
    6.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 66
-   7.  Acknowledgements . . . . . . . . . . . . . . . . . . . . . . . 66
-   8.  References . . . . . . . . . . . . . . . . . . . . . . . . . . 66
-     8.1.  Informative References . . . . . . . . . . . . . . . . . . 66
-     8.2.  Informative References . . . . . . . . . . . . . . . . . . 66
-   Appendix A.  Document History  . . . . . . . . . . . . . . . . . . 68
-   Authors' Addresses . . . . . . . . . . . . . . . . . . . . . . . . 70
+   7.  Acknowledgements . . . . . . . . . . . . . . . . . . . . . . . 67
+   8.  References . . . . . . . . . . . . . . . . . . . . . . . . . . 67
+     8.1.  Informative References . . . . . . . . . . . . . . . . . . 67
+     8.2.  Informative References . . . . . . . . . . . . . . . . . . 67
+   Appendix A.  Document History  . . . . . . . . . . . . . . . . . . 69
+   Authors' Addresses . . . . . . . . . . . . . . . . . . . . . . . . 71
 
 
 
@@ -275,10 +276,9 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
 
 
-
-Lodderstedt, et al.     Expires February 15, 2013               [Page 5]
+Lodderstedt, et al.       Expires April 9, 2013                 [Page 5]
 
-Internet-Draft             OAuth 2.0 Security                August 2012
+Internet-Draft             OAuth 2.0 Security               October 2012
 
 
 1.  Introduction
@@ -313,7 +313,10 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    the information given here may serve as a foundation for deployment-
    specific threat models.  Implementors may refine and detail the
    abstract threat model in order to account for the specific properties
-   of their deployment and to come up with a risk analysis.
+   of their deployment and to come up with a risk analysis.  As this
+   document is based on the base OAuth 2.0 specification, itdoes not
+   consider proposed extensions, such as client registration or
+   discovery, many of which are still under discussion.
 
 
 2.  Overview
@@ -324,18 +327,21 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    a particular deployment as supported by [I-D.ietf-oauth-v2].  Such
    deployments have the following characteristics:
 
+
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                 [Page 6]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    o  Resource server URLs are static and well-known at development
       time, authorization server URLs can be static or discovered.
 
    o  Token scope values (e.g. applicable URLs and methods) are well-
       known at development time.
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013               [Page 6]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
 
    o  Client registration: Since registration of clients is out of scope
       of the current core spec, this document assumes a broad variety of
@@ -379,19 +385,15 @@ Internet-Draft             OAuth 2.0 Security                August 2012
       protocol may collude to mount an attack against the 3rd party.
       For example, the client and authorization server may be under
       control of an attacker and collude to trick a user to gain access
-      to resources.
 
 
 
-
-
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013               [Page 7]
+Lodderstedt, et al.       Expires April 9, 2013                 [Page 7]
 
-Internet-Draft             OAuth 2.0 Security                August 2012
+Internet-Draft             OAuth 2.0 Security               October 2012
 
+
+      to resources.
 
 2.3.  Architectural assumptions
 
@@ -438,16 +440,17 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    o  HTTPS certificate/key
 
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                 [Page 8]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    o  authorization server credentials (handle-based design - see
       Section 3.1), or
-
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013               [Page 8]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
 
    o  authorization server shared secret/public key (assertion-based
       design - see Section 3.1)
@@ -490,6 +493,18 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    refresh tokens, authorization codes).  The information content of a
    token can be represented in two ways as follows:
 
+
+
+
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                 [Page 9]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    Handle (or artifact)  a reference to some internal data structure
       within the authorization server; the internal data structure
       contains the attributes of the token, such as user id, scope, etc.
@@ -497,14 +512,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
       mechanisms to protect token content from being modified.  On the
       other hand, handles require communication between issuing and
       consuming entity (e.g. authorization and resource server) in order
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013               [Page 9]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
       to validate the token and obtain token-bound data.  This
       communication might have an negative impact on performance and
       scalability if both entities reside on different systems.  Handles
@@ -546,6 +553,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
       the token.  Examples of this are MAC tokens, which require the
       client to digitally sign the resource request with a secret
       corresponding to the particular token send with the request
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 10]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
       (e.g.[I-D.ietf-oauth-v2-http-mac]).
 
 3.1.1.  Scope
@@ -553,14 +568,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    A Scope represents the access authorization associated with a
    particular token with respect to resource servers, resources and
    methods on those resources.  Scopes are the OAuth way to explicitly
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 10]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    manage the power associated with an access token.  A scope can be
    controlled by the authorization server and/or the end-user in order
    to limit access to resources for OAuth clients these parties deem
@@ -602,6 +609,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    authorization.  This offers an advantage where resource servers and
    authorization servers are not the same entity, e.g. in a distributed
    environment, as the refresh token is always exchanged at the
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 11]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    authorization server.  The authorization server can revoke the
    refresh token at any time causing the granted access to be revoked
    once the current access token expires.  Because of this, a short
@@ -609,14 +624,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    priority.
 
    The refresh token is also a secret bound to the client identifier and
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 11]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    client instance which originally requested the authorization and
    representing the original resource owner grant.  This is ensured by
    the authorization process as follows:
@@ -655,6 +662,17 @@ Internet-Draft             OAuth 2.0 Security                August 2012
        context of the indirect authorization request.  The latter would
        require digital signatures.
 
+
+
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 12]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
 3.5.  Redirection URI
 
    A redirection URI helps to detect malicious clients and prevents
@@ -665,14 +683,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    This helps to prevent attacks, where the authorization code is
    revealed through redirectors and counterfeit web application clients.
    The authorization server should require public clients and
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 12]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    confidential clients using implicit grant type to pre-register their
    redirect URIs and validate against the registered redirection URI in
    the authorization request.
@@ -711,6 +721,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    This identifier may also be used by the authorization server to
    display relevant registration information to a user when requesting
    consent for scope requested by a particular client.  The client
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 13]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    identifier may be used to limit the number of request for a
    particular client or to charge the client per request.  It may
    furthermore be useful to differentiate access by different clients,
@@ -721,14 +739,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    ability to maintain the confidentiality of their client credentials).
    Confidential clients are capable of maintaining the confidentiality
    of client credentials (i.e. a client secret associated with the
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 13]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    client identifier) or capable of secure client authentication using
    other means, such as a client assertion (e.g.  SAML) or key
    cryptography.  The latter is considered more secure.
@@ -764,6 +774,17 @@ Internet-Draft             OAuth 2.0 Security                August 2012
       deployment-independent clients without secret.  Revocation will
       affect ALL deployments.
 
+
+
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 14]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    Deployment-specific client_id with pre-registered redirect_uri and
    with client_secret  The client registration process ensures the
       validation of the client's properties, such as redirection URI,
@@ -777,14 +798,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
       validating the application to the installation of the application
       on the device and the creation of the client credentials is
       controlled end-to-end by a single entity (e.g. application market
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 14]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
       provider).  Revocation will affect a single deployment only.
 
    Deployment-specific client_id with client_secret without validated
@@ -818,10 +831,20 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    The attacker could try to get access to the secret of a particular
    client in order to:
 
+
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 15]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    o  replay its refresh tokens and authorization codes, or
 
    o  obtain tokens on behalf of the attacked client with the privileges
-      of that client.
+      of that client_id acting as an instance of the client.
 
    The resulting impact would be:
 
@@ -832,13 +855,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    Depending on the client category, the following attacks could be
    utilized to obtain the client secret.
-
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 15]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
 
 
    Attack: Obtain Secret From Source Code or Binary:
@@ -857,11 +873,11 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    o  Don't issue secrets to public clients or clients with
       inappropriate security policy - Section 5.2.3.1
 
-   o  Public clients require user consent - Section 5.2.3.2
+   o  Require user consent for public clients- Section 5.2.3.2
 
    o  Use deployment-specific client secrets - Section 5.2.3.4
 
-   o  Client secret revocation - Section 5.2.3.6
+   o  Revoke client secrets - Section 5.2.3.6
 
 
    Attack: Obtain a Deployment-Specific Secret:
@@ -872,13 +888,22 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    Countermeasures:
 
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 16]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    o  Web server: apply standard web server protection measures (for
       config files and databases) - Section 5.3.2
 
    o  Native applications: Store secrets in a secure local storage -
       Section 5.3.3
 
-   o  Client secret revocation - Section 5.2.3.6
+   o  Revoke client secrets - Section 5.2.3.6
 
 4.1.2.  Threat: Obtain Refresh Tokens
 
@@ -889,23 +914,15 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    Before detailing those threats, here are some generally applicable
    countermeasures:
 
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 16]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    o  The authorization server should validate the client id associated
       with the particular refresh token with every refresh request-
       Section 5.2.2.2
 
-   o  Limited scope tokens - Section 5.1.5.1
+   o  Limit token scope - Section 5.1.5.1
 
-   o  Refresh token revocation - Section 5.2.2.4
+   o  Revoke refresh tokens - Section 5.2.2.4
 
-   o  Client secret revocation - Section 5.2.3.6
+   o  Revoke client secrets - Section 5.2.3.6
 
    o  Refresh tokens can automatically be replaced in order to detect
       unauthorized token usage by another party (Refresh Token Rotation)
@@ -918,7 +935,7 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    by way of overcoming the web server's security controls.  Impact:
    Since a web application manages the user accounts of a certain site,
    such an attack would result in an exposure of all refresh tokens on
-   that side to the attacker.
+   that site to the attacker.
 
    Countermeasures:
 
@@ -927,6 +944,13 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    o  Use strong client authentication (e.g. client_assertion /
       client_token), so the attacker cannot obtain the client secret
       required to exchange the tokens - Section 5.2.3.7
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 17]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
 
 
    Attack: Obtain Refresh Token from Native clients:
@@ -944,13 +968,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    o  Utilize device lock to prevent unauthorized device access -
       Section 5.3.4
-
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 17]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
 
 
    Attack: Steal device:
@@ -983,6 +1000,15 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    o  Refresh Token Rotation - Section 5.2.2.3
 
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 18]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    o  Where a user knows the device has been cloned, they can use this
       countermeasure - Refresh Token Revocation - Section 5.2.2.4
 
@@ -999,20 +1025,10 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    Countermeasures:
 
-
-
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 18]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    o  Keep access tokens in transient memory and limit grants:
       Section 5.1.6
 
-   o  Limited scope tokens - Section 5.1.5.1
+   o  Limit token scope - Section 5.1.5.1
 
    o  Keep access tokens in private memory or apply same protection
       means as for refresh tokens - Section 5.2.2
@@ -1039,6 +1055,16 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    Countermeasures:
 
+
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 19]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    o  The OAuth flow is designed so that client applications never need
       to know user passwords.  Client applications should avoid directly
       asking users for the their credentials.  In addition, end users
@@ -1057,13 +1083,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
       collect authentication information directly from users and should
       instead delegate this task to a trusted system component, e.g. the
       system-browser.
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 19]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
 
 4.1.5.  Threat: Open Redirectors on client
 
@@ -1094,6 +1113,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    ARP spoofing.  Wide deployment of OAuth and similar protocols may
    cause users to become inured to the practice of being redirected to
    websites where they are asked to enter their passwords.  If users are
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 20]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    not careful to verify the authenticity of these websites before
    entering their credentials, it will be possible for attackers to
    exploit this practice to steal Users' passwords.
@@ -1101,25 +1128,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    Countermeasures:
 
    o  Authorization servers should consider such attacks when developing
-      services based on OAuth, and should require transport-layer
-      security for any requests where the authenticity of the
+      services based on OAuth, and should require the use of transport-
+      layer security for any requests where the authenticity of the
       authorization server or of request responses is an issue (see
       Section 5.1.2).
 
    o  Authorization servers should attempt to educate Users about the
       risks phishing attacks pose, and should provide mechanisms that
       make it easy for users to confirm the authenticity of their sites.
-
-
-
-
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 20]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
 
 4.2.2.  Threat: User unintentionally grants too much access scope
 
@@ -1153,29 +1169,26 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    authorization server automatically redirects the user back to the
    client.
 
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 21]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    A malicious client may exploit that feature and try to obtain such an
    authorization code instead of the legitimate client.
 
    Countermeasures:
 
    o  Authorization servers should not automatically process repeat
-      authorizations to public clients or unless the client is validated
+      authorizations to public clients unless the client is validated
       using a pre-registered redirect URI (Section 5.2.3.5 )
 
    o  Authorization servers can mitigate the risks associated with
       automatic processing by limiting the scope of Access Tokens
       obtained through automated approvals - Section 5.1.5.1
-
-
-
-
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 21]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
 
 4.2.4.  Threat: Open redirector
 
@@ -1211,6 +1224,15 @@ Internet-Draft             OAuth 2.0 Security                August 2012
       that these transmissions are protected using transport-layer
       mechanisms such as TLS (see Section 5.1.1).
 
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 22]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    o  If end-to-end confidentiality cannot be guaranteed, reducing scope
       (see Section 5.1.5.1) and expiry time (Section 5.1.5.3) for access
       tokens can be used to reduce the damage in case of leaks.
@@ -1225,19 +1247,11 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    Countermeasures:
 
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 22]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
-   o  System security measures - Section 5.1.4.1.1
+   o  Enforce system security measures - Section 5.1.4.1.1
 
    o  Store access token hashes only - Section 5.1.4.1.3
 
-   o  Standard SQL injection Countermeasures - Section 5.1.4.1.2
+   o  Enforce standard SQL injection Countermeasures - Section 5.1.4.1.2
 
 4.3.3.  Threat: Disclosure of client credentials during transmission
 
@@ -1267,12 +1281,20 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    Countermeasures:
 
-   o  System security measures - Section 5.1.4.1.1
 
-   o  Standard SQL injection Countermeasures - Section 5.1.4.1.2
 
-   o  Ensure proper handling of credentials as per Credential Storage
-      Protection.
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 23]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
+   o  Enforce system security measures - Section 5.1.4.1.1
+
+   o  Enforce standard SQL injection Countermeasures - Section 5.1.4.1.2
+
+   o  Ensure proper handling of credentials as per Enforce credential
+      storage protection best practices.
 
 4.3.5.  Threat: Obtain client secret by online guessing
 
@@ -1281,15 +1303,7 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    Countermeasures:
 
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 23]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
-   o  High entropy of secrets - Section 5.1.4.2.2
+   o  Use high entropy for secrets - Section 5.1.4.2.2
 
    o  Lock accounts - Section 5.1.4.2.3
 
@@ -1323,6 +1337,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    o  Open redirectors: web sites sometimes need to send users to
       another destination via a redirector.  Open redirectors pose a
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 24]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
       particular risk to web-based delegation protocols because the
       redirector can leak verification codes to untrusted destination
       sites.
@@ -1338,13 +1360,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    Countermeasures:
 
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 24]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    o  As per the core OAuth spec, the authorization server as well as
       the client must ensure that these transmissions are protected
       using transport-layer mechanisms such as TLS (see Section 5.1.1).
@@ -1354,7 +1369,7 @@ Internet-Draft             OAuth 2.0 Security                August 2012
       certain client can be validated in a reliable way (see
       Section 5.2.4.4).
 
-   o  Limited duration of authorization codes - Section 5.1.5.3
+   o  Use short expiry time for authorization codes - Section 5.1.5.3
 
    o  The authorization server should enforce a one time usage
       restriction (see Section 5.1.5.4).
@@ -1378,6 +1393,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    authorization codes as handles in a database.  An attacker may obtain
    authorization codes from the authorization server's database by
    gaining access to the database or launching a SQL injection attack.
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 25]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    Impact: disclosure of all authorization codes, most likely along with
    the respective redirect_uri and client_id values.
 
@@ -1386,20 +1409,11 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    o  Best practices for credential storage protection should be
       employed - Section 5.1.4.1
 
-   o  System security measures - Section 5.1.4.1.1
+   o  Enforce system security measures - Section 5.1.4.1.1
 
    o  Store access token hashes only - Section 5.1.4.1.3
 
    o  Standard SQL injection countermeasures - Section 5.1.4.1.2
-
-
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 25]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
 
 4.4.1.3.  Threat: Online guessing of authorization codes
 
@@ -1422,7 +1436,7 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    o  Binding of authorization code to redirection URI, adds another
       value the attacker has to guess - Section 5.2.4.5
 
-   o  Short expiration time - Section 5.1.5.3
+   o  Use short expiry time for tokens - Section 5.1.5.3
 
 4.4.1.4.  Threat: Malicious client obtains authorization
 
@@ -1435,6 +1449,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    the end-user's device from malicious software.  This is the
    responsibility of the platform running on the particular device
    probably in cooperation with other components of the respective
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 26]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    ecosystem (e.g. an application management infrastructure).  The sole
    responsibility of the authorization server is to control access to
    the end-user's resources living in resource servers and to prevent
@@ -1447,15 +1469,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    o  The authorization server should authenticate the client, if
       possible (see Section 5.2.3.4).  Note: the authentication takes
       place after the end-user has authorized the access.
-
-
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 26]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
 
    o  The authorization server should validate the client's redirection
       URI against the pre-registered redirection URI, if one exists (see
@@ -1491,6 +1504,15 @@ Internet-Draft             OAuth 2.0 Security                August 2012
       or other multi-factor authentication techniques such as random
       questions, token code generators, etc.
 
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 27]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    o  The authorization server may also limit the scope of tokens it
       issues to clients it cannot reliably authenticate (see
       Section 5.1.5.1).
@@ -1505,14 +1527,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    Impact: This affects web applications and may lead to a disclosure of
    authorization codes and, potentially, the corresponding access and
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 27]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    refresh tokens.
 
    Countermeasures:
@@ -1547,6 +1561,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    the attacker, or modifying protected resources as directed by the
    attacker.  If OAuth is used by the client to delegate authentication
    to a social site (e.g. as in the implementation of "Login" button to
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 28]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    a third-party social network site), the attacker can use the
    intercepted authorization code to log in to the client as the user.
 
@@ -1561,13 +1583,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
       protected endpoint and the browser should be utilized to
       authenticate this redirection URI using server authentication (see
       Section 5.1.2)
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 28]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
 
 4.4.1.7.  Threat: Authorization code leakage through counterfeit client
 
@@ -1602,6 +1617,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
        an email link, or blog link).  The way the attacker achieves that
        goal is out of scope.
 
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 29]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    3.  Having clicked the link, the victim is requested to authenticate
        and authorize the client site to have access.
 
@@ -1617,13 +1640,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
        redirection URI and the newly obtained authorization code and
        directs his user agent to this URL.  The authorization code is
        injected into the original client site (or application).
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 29]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
 
    7.  The client site uses the authorization code to fetch a token from
        the authorization server and associates this token with the
@@ -1657,6 +1673,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
       does not have access the deployment-specific secret.  Thus he will
       not be able to exchange the authorization code.
 
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 30]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    o  The client may consider using other flows, which are not
       vulnerable to this kind of attack such as "Implicit Grant" or
       "Resource Owner Password Credentials" (see Section 4.4.2 or
@@ -1673,14 +1697,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    This attack works against the redirection URI used in the
    authorization code flow.  An attacker could authorize an
    authorization code to their own protected resources on an
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 30]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    authorization server.  He then aborts the redirect flow back to the
    client on his device and tricks the victim into executing the
    redirect back to the client.  The client receives the redirect,
@@ -1713,6 +1729,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    buttons which are carefully constructed to be placed directly under
    important buttons on the target site.  When a user clicks a visible
    button, they are actually clicking a button (such as an "Authorize"
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 31]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    button) on the hidden page.
 
    Impact: An attacker can steal a user's authentication credentials and
@@ -1726,16 +1750,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    o  For older browsers, javascript frame-busting (see [framebusting])
       techniques can be used but may not be effective in all browsers.
-
-
-
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 31]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
 
 4.4.1.10.  Threat: Resource Owner Impersonation
 
@@ -1772,6 +1786,13 @@ Internet-Draft             OAuth 2.0 Security                August 2012
       server's ability to authenticate the resource owner automatically
       and without user interactions, e.g. based on certificates.
 
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 32]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    In all cases, such an attack is limited to clients running on the
    victim's device, within the user agent or as native app.
 
@@ -1784,14 +1805,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    Authorization servers should decide, based on an analysis of the risk
    associated with this threat, whether to detect and prevent this
    threat.
-
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 32]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
 
    In order to prevent such an attack, the authorization server may
    force a user interaction based on non-predictable input values as
@@ -1824,6 +1837,18 @@ Internet-Draft             OAuth 2.0 Security                August 2012
       access tokens granted per user.  The authorization server should
       include a nontrivial amount of entropy in authorization codes.
 
+
+
+
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 33]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
 4.4.1.12.  Threat: DoS using manufactured authorization codes
 
    An attacker who owns a botnet can locate the redirect URIs of clients
@@ -1841,13 +1866,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    factor is estimated to be around 3.5x at [ssl-latency]) the attacker
    still achieves a magnification of resource utilization at the expense
    of the authorization server.
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 33]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
 
    Impact: There are a few effects that the attacker can accomplish with
    this OAuth flow that they cannot easily achieve otherwise.
@@ -1877,6 +1895,16 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    Countermeasures
 
+
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 34]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    o  Though not a complete countermeasure by themselves, CSRF defense
       and the 'state' parameter created with secure random codes should
       be deployed on the client side.  The client should forward the
@@ -1893,17 +1921,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
       client reporting an invalid authorization code and rate limit or
       disallow connections from clients whose number of invalid requests
       exceeds a threshold.
-
-
-
-
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 34]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
 
 4.4.1.13.  Threat: Code substitution (OAuth Login)
 
@@ -1936,6 +1953,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    authorization response and substitutes their code (bound to their
    identity) for the victim's code.  This code is then exchanged by the
    client for an access token, which in turn is accepted by the identity
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 35]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    API since the audience, with respect to the resource server, is
    correct.  But since the identifier returned by the identity API is
    determined by the identity in the access token (issued based on the
@@ -1952,14 +1977,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
       authorization server must validate whether the particular
       authorization code has been issued to the particular client.  If
       possible, the client shall be authenticated beforehand.
-
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 35]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
 
    o  Clients should use appropriate protocol, such as OpenID (cf.
       [openid]) or SAML (cf. [OASIS.sstc-saml-bindings-1.1]) to
@@ -1991,6 +2008,15 @@ Internet-Draft             OAuth 2.0 Security                August 2012
       TLS) of the response from the authorization server to the client
       (see Section 5.1.1).
 
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 36]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
 4.4.2.2.  Threat: Access token leak in browser history
 
    An attacker could obtain the token from the browser's history.  Note
@@ -1998,8 +2024,8 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    Countermeasures:
 
-   o  Shorten token duration (see Section 5.1.5.3) and reduced scope of
-      the token may reduce the impact of that attack (see
+   o  Use short expiry time for tokens (see Section 5.1.5.3) and reduced
+      scope of the token may reduce the impact of that attack (see
       Section 5.1.5.1).
 
    o  Make responses non-cachable
@@ -2009,14 +2035,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    A malicious client could attempt to obtain a token by fraud.
 
    The same countermeasures as for Section 4.4.1.4 are applicable,
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 36]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    except client authentication.
 
 4.4.2.4.  Threat: Manipulation of scripts
@@ -2043,6 +2061,18 @@ Internet-Draft             OAuth 2.0 Security                August 2012
       effectiveness of copying client-side scripts for re-use in an
       attackers modified code.
 
+
+
+
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 37]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
 4.4.2.5.  Threat: CSRF attack against redirect-uri
 
    CSRF attacks (see Section 4.4.1.8) also work against the redirection
@@ -2063,15 +2093,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    device with his credentials at the external identity provider.
 
    Countermeasures:
-
-
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 37]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
 
    o  The state parameter should be used to link the authorization
       request with the redirection URI used deliver the access token.
@@ -2100,6 +2121,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    then queries the identity API for an identifier and uses it to look
    up its internal user account data (login).  The client asssumes that
    because it was able to obtain information about the user, that the
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 38]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    user has been authenticated.
 
    To succeed, the attacker needs to gather a valid access token of the
@@ -2121,13 +2150,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    Impact: the attacker gains access to an application and user-specific
    data within the application.
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 38]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
 
    Countermeasures:
 
@@ -2155,6 +2177,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    joe@example.com and joe@example.net) might easily allow someone to
    guess that the same password can be used elsewhere.
 
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 39]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    Impact: The resource server can only differentiate scope based on the
    access token being associated with a particular client.  The client
    could also acquire long-living tokens and pass them up to a attacker
@@ -2177,14 +2207,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
       providers should instead encourage users not to use the same
       password for multiple services.
 
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 39]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    o  Limit use of Resource Owner Password Credential grants to
       scenarios where the client application and the authorizing service
       are from the same organization.
@@ -2202,7 +2224,7 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    o  Use digest authentication instead of plaintext credential
       processing
 
-   o  Obfuscation of passwords in logs
+   o  Obfuscate passwords in logs
 
 4.4.3.2.  Threat: Client obtains scopes without end-user authorization
 
@@ -2211,6 +2233,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    client obtains a token with scope unknown for or unintended by the
    resource owner.  For example, the resource owner might think the
    client needs and acquires read-only access to its media storage only
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 40]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    but the client tries to acquire an access token with full access
    permissions.
 
@@ -2230,16 +2260,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    o  The authorization server could notify the resource owner by an
       appropriate media, e.g. e-Mail, of the grant issued (see
       Section 5.1.3).
-
-
-
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 40]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
 
 4.4.3.3.  Threat: Client obtains refresh token through automatic
           authorization
@@ -2266,6 +2286,17 @@ Internet-Draft             OAuth 2.0 Security                August 2012
       appropriate media, e.g. e-Mail, of the refresh token issued (see
       Section 5.1.3).
 
+
+
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 41]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
 4.4.3.4.  Threat: Obtain user passwords on transport
 
    An attacker could attempt to eavesdrop the transmission of end-user
@@ -2275,7 +2306,7 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    Countermeasures:
 
-   o  Confidentiality of Requests - Section 5.1.1
+   o  Ensure confidentiality of requests - Section 5.1.1
 
    o  alternative authentication means, which do not require to send
       plaintext credentials over the wire (e.g.  Hash-based Message
@@ -2289,20 +2320,13 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    launching a SQL injection attack.
 
    Impact: disclosure of all username/password combinations.  The impact
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 41]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    may exceed the domain of the authorization server since many users
    tend to use the same credentials on different services.
 
    Countermeasures:
 
-   o  Credential storage protection can be employed - Section 5.1.4.1
+   o  Enforce credential storage protection best practices -
+      Section 5.1.4.1
 
 4.4.3.6.  Threat: Online guessing
 
@@ -2313,13 +2337,21 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    Countermeasures:
 
-   o  Password policy - Section 5.1.4.2.1
+   o  Utilize secure password policy - Section 5.1.4.2.1
 
    o  Lock accounts - Section 5.1.4.2.3
 
-   o  Tar pit - Section 5.1.4.2.4
+   o  Use tar pit - Section 5.1.4.2.4
 
-   o  CAPTCHA - Section 5.1.4.2.5
+   o  Use CAPTCHAs - Section 5.1.4.2.5
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 42]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
 
    o  Consider not to use grant type "password"
 
@@ -2346,13 +2378,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
       that these transmissions are protected using transport-layer
       mechanisms such as TLS (see Section 5.1.1).
 
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 42]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    o  If end-to-end confidentiality cannot be guaranteed, reducing scope
       (see Section 5.1.5.1) and expiry time (see Section 5.1.5.3) for
       issued access tokens can be used to reduce the damage in case of
@@ -2370,10 +2395,19 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    Countermeasures:
 
-   o  Credential storage protection - Section 5.1.4.1
+   o  Enforce credential storage protection best practices -
+      Section 5.1.4.1
 
    o  Bind token to client id, if the attacker cannot obtain the
       required id and secret - Section 5.1.5.8
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 43]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
 
 4.5.3.  Threat: Obtain refresh token by online guessing
 
@@ -2401,20 +2435,12 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    An attacker could try to obtain valid refresh tokens by proxying
    requests to the authorization server.  Given the assumption that the
    authorization server URL is well-known at development time or can at
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 43]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    least be obtained from a well-known resource server, the attacker
    must utilize some kind of spoofing in order to succeed.
 
    Countermeasures:
 
-   o  Server authentication (as described in Section 5.1.2)
+   o  Utilize server authentication (as described in Section 5.1.2)
 
 4.6.  Accessing Protected Resources
 
@@ -2431,6 +2457,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    o  Access tokens sent as bearer tokens, should not be sent in the
       clear over an insecure channel.  As per the core OAuth spec,
       transmission of access tokens must be protected using transport-
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 44]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
       layer mechanisms such as TLS (see Section 5.1.1).
 
    o  A short lifetime reduces impact in case tokens are compromised
@@ -2456,15 +2490,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
       uniquely identify requests.  The resource server should detect and
       refuse every replayed request.
 
-
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 44]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
 4.6.3.  Threat: Guessing access tokens
 
    Where the token is a handle, the attacker may use attempt to guess
@@ -2484,6 +2509,17 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    o  Security can be further strengthened by using a short access token
       duration (see Section 5.1.5.2 and Section 5.1.5.3).
+
+
+
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 45]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
 
 4.6.4.  Threat: Access token phishing by counterfeit resource server
 
@@ -2513,14 +2549,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
       client with resource server requests (typically via signature in
       order to not disclose secret to a potential attacker).  This
       prevents the attack because the counterfeit server is assumed to
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 45]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
       lack the capability to correctly authenticate on behalf of the
       legitimate client to the resource server (Section 5.4.2).
 
@@ -2537,6 +2565,17 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    o  Tokens should be restricted to particular resource servers (see
       Section 5.1.5.5).
+
+
+
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 46]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
 
 4.6.6.  Threat: Leak of confidential data in HTTP-Proxies
 
@@ -2570,13 +2609,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    Countermeasures:
 
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 46]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    o  Use authorization headers or POST parameters instead of URI
       request parameters (see Section 5.4.1).
 
@@ -2593,6 +2625,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
       one time token usage (see Section 5.1.5.4).
 
 
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 47]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
 5.  Security Considerations
 
    This section describes the countermeasures as recommended to mitigate
@@ -2604,7 +2644,7 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    all OAuth components (client, resource server, token server, and
    user-agents).
 
-5.1.1.  Confidentiality of Requests
+5.1.1.  Ensure confidentiality of requests
 
    This is applicable to all requests sent from client to authorization
    server or resource server.  While OAuth provides a mechanism for
@@ -2626,13 +2666,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    This is a countermeasure against the following threats:
 
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 47]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    o  Replay of access tokens obtained on tokens endpoint or resource
       server's endpoint
 
@@ -2643,11 +2676,19 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    o  Replay of user passwords and client secrets
 
-5.1.2.  Server authentication
+5.1.2.  Utiliize server authentication
 
    HTTPS server authentication or similar means can be used to
    authenticate the identity of a server.  The goal is to reliably bind
    the fully qualified domain name of the server to the public key
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 48]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    presented by the server during connection establishment (see
    [RFC2818]).
 
@@ -2680,15 +2721,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    o  User consent forms
 
-
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 48]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    o  Notification messages (e.g. e-Mail, SMS, ...).  Note that
       notifications can be a phishing vector.  Messages should be such
       that look-alike phishing messages cannot be derived from them.
@@ -2705,18 +2737,26 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    all kinds of tokens (refresh and access token) or authorization
    codes.
 
-5.1.4.1.  Credential Storage Protection
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 49]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
+5.1.4.1.  Enforce credential storage protection best practices
 
    Administrators should undertake industry best practices to protect
    the storage of credentials (see for example [owasp]).  Such practices
    may include but are not limited to the following sub-sections.
 
-5.1.4.1.1.  Standard System Security Means
+5.1.4.1.1.  Enforce Standard System Security Means
 
    A server system may be locked down so that no attacker may get access
    to sensible configuration files and databases.
 
-5.1.4.1.2.  Standard SQL Injection Countermeasures
+5.1.4.1.2.  Enforce standard SQL Injection Countermeasures
 
    If a client identifier or other authentication component is queried
    or compared against a SQL Database it may become possible for an
@@ -2736,15 +2776,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
       a known format, ensure that the supplied value matches the
       identifier syntax rules.
 
-
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 49]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
 5.1.4.1.3.  No cleartext storage of credentials
 
    The authorization server should not store credentials in clear text.
@@ -2762,6 +2793,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    For client applications, insecurely persisted client credentials are
    easy targets for attackers to obtain.  Store client credentials using
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 50]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    an encrypted persistence mechanism such as a keystore or database.
    Note that compiling client credentials directly into client code
    makes client applications vulnerable to scanning as well as difficult
@@ -2774,7 +2813,7 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
 5.1.4.2.  Online attacks on secrets
 
-5.1.4.2.1.  Password policy
+5.1.4.2.1.  Utilize secure password policy
 
    The authorization server may decide to enforce a complex user
    password policy in order to increase the user passwords' entropy to
@@ -2782,7 +2821,7 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    increase the liklihood that users re-use passwords or write them down
    or otherwise store them insecurely.
 
-5.1.4.2.2.  High entropy of secrets
+5.1.4.2.2.  Use high entropy for secrets
 
    When creating secrets not intended for usage by human users (e.g.
    client secrets or token handles), the authorization server should
@@ -2792,15 +2831,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    number sequence (see [RFC4086] for best current practice) generated
    by the Authorization Server.
 
-
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 50]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
 5.1.4.2.3.  Lock accounts
 
    Online attacks on passwords can be mitigated by locking the
@@ -2809,7 +2839,7 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    Note: This measure can be abused to lock down legitimate service
    users.
 
-5.1.4.2.4.  Tar pit
+5.1.4.2.4.  Use tar pit
 
    The authorization server may react on failed attempts to authenticate
    by username/password by temporarily locking the respective account
@@ -2820,7 +2850,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    Note: this may require a more complex and stateful design of the
    authorization server.
 
-5.1.4.2.5.  Usage of CAPTCHAs
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 51]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
+5.1.4.2.5.  Usa CAPTCHAs
 
    The idea is to prevent programs from automatically checking huge
    number of passwords by requiring human interaction.
@@ -2849,14 +2886,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    interaction with the end-user (authorization code) might be
    considered more reliable than direct authorization via grant type
    username/password.  This means will reduce the impact of the
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 51]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    following threats:
 
    o  token leakage
@@ -2877,6 +2906,13 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    The expiration time is determined by a couple of factors, including:
 
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 52]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    o  risk associated to a token leakage
 
    o  duration of the underlying access grant,
@@ -2886,7 +2922,7 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    o  time required for an attacker to guess or produce valid token.
 
-5.1.5.3.  Short expiration time
+5.1.5.3.  Use short expiration time
 
    A short expiration time for tokens is a protection means against the
    following threats:
@@ -2902,16 +2938,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    Furthermore, shorter duration may require more token refreshes
    (access token) or repeated end-user authorization processes
    (authorization code and refresh token).
-
-
-
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 52]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
 
 5.1.5.4.  Limit number of usages/ One time usage
 
@@ -2933,6 +2959,15 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    authenticate and use a refresh token to obtain a fresh access token,
    or it forces the client to re-authorize the access token by involving
    the user.
+
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 53]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
 
 5.1.5.5.  Bind tokens to a particular resource server (Audience)
 
@@ -2960,15 +2995,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    requests from a counterfeit resource server, since such token will
    contain the endpoint URL of that server.
 
-
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 53]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
 5.1.5.7.  Audience and Token scopes
 
    Deployments may consider only using tokens with explicitly defined
@@ -2991,6 +3017,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    to authenticate the client's identifier.  This authentication can be
    based on secrets managed independent of the token (e.g. pre-
    registered client id/secret on authorization server) or sent with the
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 54]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    token itself (e.g. as part of the encrypted token content).
 
 5.1.5.9.  Signed tokens
@@ -3013,17 +3047,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    design it is highly recommended to adopt a standard assertion format
    (such as SAML [OASIS.saml-core-2.0-os] or JWT
    [I-D.ietf-oauth-json-web-token].
-
-
-
-
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 54]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
 
 5.1.6.  Access tokens
 
@@ -3050,6 +3073,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    Authorization Server may want to revoke all tokens granted based on
    the authorization grant.
 
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 55]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
 5.2.2.  Refresh tokens
 
 5.2.2.1.  Restricted issuance of refresh tokens
@@ -3074,13 +3105,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    Note: This binding should be protected from unauthorized
    modifications.
 
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 55]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
 5.2.2.3.  Refresh Token Rotation
 
    Refresh token rotation is intended to automatically detect and
@@ -3103,7 +3127,17 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    usage of the currently valid refresh token must be ensured.  In such
    an environment, other measures might be more appropriate.
 
-5.2.2.4.  Refresh Token Revocation
+
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 56]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
+5.2.2.4.  Revoke refresh tokens
 
    The authorization server may allow clients or end-users to explicitly
    request the invalidation of refresh tokens.  A mechanism to revoke
@@ -3130,13 +3164,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    Note: Any implementation should consider potential privacy
    implications of using device identifiers.
 
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 56]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
 5.2.2.6.  X-FRAME-OPTION header
 
    For newer browsers, avoidance of iFrames can be enforced server side
@@ -3155,6 +3182,16 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    As described in Section 3 (Security Features), clients are
    identified, authenticated and authorized for several purposes, such
    as a
+
+
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 57]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
 
    o  Collate requests to the same client,
 
@@ -3185,14 +3222,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    protect secrets ("public" clients).  This reduces probability of the
    server treating the client as strongly authenticated.
 
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 57]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    For example, it is of limited benefit to create a single client id
    and secret which is shared by all installations of a native
    application.  Such a scenario requires that this secret must be
@@ -3209,7 +3238,18 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    There are other ways to achieve a reasonable security level, as
    described in the following sections.
 
-5.2.3.2.  Public clients without secret require user consent
+
+
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 58]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
+5.2.3.2.  Require user consent for public clients without secret
 
    Authorization servers should not allow automatic authorization for
    public clients.  The authorization may issue an individual client id,
@@ -3241,14 +3281,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    be to turn otherwise "public" clients back into "confidential"
    clients.
 
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 58]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    For web applications, this could mean to create one client_id and
    client_secret per web site a software package is installed on.  So
    the provider of that particular site could request client id and
@@ -3262,6 +3294,16 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    copy of a particular application on any device is a different
    installation.  Installation-specific secrets in this scenario will
    require
+
+
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 59]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
 
    1.  Either to obtain a client_id and client_secret during download
        process from the application market, or
@@ -3298,13 +3340,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
       detect attack attempts already after first redirect to end-user
       authorization endpoint (Section 4.4.1.7).
 
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 59]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    o  Open Redirector attack via client redirection endpoint. (
       Section 4.1.5. )
 
@@ -3318,6 +3353,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    this security measure.
 
    Note: Pre-registering clients might not scale in some deployments
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 60]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    (manual process) or require dynamic client registration (not
    specified yet).  With the lack of dynamic client registration, pre-
    registered "redirect_uri" only works for clients bound to certain
@@ -3325,7 +3368,7 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    resource server discovery is required, the pre-registered
    redirect_uri may be no longer feasible.
 
-5.2.3.6.  Client secret revocation
+5.2.3.6.  Revoke client secrets
 
    An authorization server may revoke a client's secret in order to
    prevent abuse of a revealed secret.
@@ -3354,13 +3397,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    This secion involves considerations for authorization flows involving
    the end-user.
 
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 60]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
 5.2.4.1.  Automatic processing of repeated authorizations requires
           client validation
 
@@ -3371,6 +3407,15 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    client authentication (e.g. client_assertion / client_token)) or
    validation of a pre-registered redirect URI (Section 5.2.3.5
    Validation of pre-registered redirection URI ).
+
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 61]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
 
 5.2.4.2.  Informed decisions based on transparency
 
@@ -3409,14 +3454,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    o  Online guessing of authorization codes
 
    Note: This binding should be protected from unauthorized
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 61]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    modifications (e.g. using protected memory and/or a secure database).
 
 5.2.4.5.  Binding of authorization code to redirect_uri
@@ -3428,6 +3465,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    authorization code for an access token.  This measure is a
    countermeasure against authorization code leakage through counterfeit
    web sites since an attacker cannot use another redirection URI to
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 62]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    exchange an authorization code into a token.
 
 5.3.  Client App Security
@@ -3466,19 +3511,23 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    applications.  Additionally, applications can implements confidential
    data itself using a user-supplied secret, such as PIN or password.
 
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 62]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    Another option is to swap refresh token storage to a trusted backend
    server.  This mean in turn requires a resilient authentication
    mechanisms between client and backend server.  Note: Applications
    should ensure that confidential data is kept confidential even after
    reading from secure storage, which typically means to keep this data
    in the local memory of the application.
+
+
+
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 63]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
 
 5.3.4.  Utilize device lock to prevent unauthorized device access
 
@@ -3521,14 +3570,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    Authorization headers are recognized and specially treated by HTTP
    proxies and servers.  Thus the usage of such headers for sending
    access tokens to resource servers reduces the likelihood of leakage
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 63]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    or unintended storage of authenticated requests in general and
    especially Authorization headers.
 
@@ -3536,6 +3577,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    An authorization server may bind tokens to a certain client
    identifier and enable resource servers to be able to validate that
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 64]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
    association on resource access.  This will require the resource
    server to authenticate the originator of a request as the legitimate
    owner of a particular token.  There are a couple of options to
@@ -3576,15 +3625,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    o  replay attempts
 
-
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 64]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
 5.5.  A Word on User Interaction and User-Installed Apps
 
    OAuth, as a security protocol, is distinctive in that its flow
@@ -3593,6 +3633,13 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    in defending against some of the threats discussed above.  Some of
    these points have already been made, but it's worth repeating and
    highlighting them here.
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 65]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
 
    o  End users must understand what they are being asked to approve
       (see Section Section 5.2.4.1).  Users often do not have the
@@ -3635,18 +3682,19 @@ Internet-Draft             OAuth 2.0 Security                August 2012
       risk associated with granting access to the particular client.
 
 
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 65]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
 6.  IANA Considerations
 
    This document makes no request of IANA.
 
    Note to RFC Editor: this section may be removed on publication as an
    RFC.
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 66]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
 
 
 7.  Acknowledgements
@@ -3681,30 +3729,30 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    [I-D.ietf-oauth-assertions]
               Campbell, B., Mortimore, C., Jones, M., and Y. Goland,
               "Assertion Framework for OAuth 2.0",
-              draft-ietf-oauth-assertions-04 (work in progress),
-              July 2012.
+              draft-ietf-oauth-assertions-06 (work in progress),
+              September 2012.
 
    [I-D.ietf-oauth-json-web-token]
               Jones, M., Bradley, J., and N. Sakimura, "JSON Web Token
               (JWT)", draft-ietf-oauth-json-web-token-03 (work in
               progress), July 2012.
 
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 66]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    [I-D.ietf-oauth-revocation]
               Lodderstedt, T., Dronia, S., and M. Scurtescu, "Token
-              Revocation", draft-ietf-oauth-revocation-00 (work in
-              progress), May 2012.
+              Revocation", draft-ietf-oauth-revocation-01 (work in
+              progress), October 2012.
 
    [I-D.ietf-oauth-v2-http-mac]
               Hammer-Lahav, E., "HTTP Authentication: MAC Access
               Authentication", draft-ietf-oauth-v2-http-mac-01 (work in
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 67]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
               progress), February 2012.
 
    [IMEI]     3GPP, "International Mobile station Equipment Identities
@@ -3745,14 +3793,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
               (TLS) Protocol Version 1.2", RFC 5246, August 2008.
 
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 67]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    [framebusting]
               Rydstedt, G., Bursztein, Boneh, D., and C. Jackson,
               "Busting Frame Busting: a Study of Clickjacking
@@ -3761,6 +3801,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    [gross-sec-analysis]
               Gross, T., "Security Analysis of the SAML Single Sign-on
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 68]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
+
               Browser/Artifact Profile, 19th Annual Computer Security
               Applications Conference, Las Vegas", December 2003.
 
@@ -3801,14 +3849,6 @@ Appendix A.  Document History
 
    draft-ietf-oauth-v2-threatmodel-00
 
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 68]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    o  section 3.4 - added the purposes for using authorization codes.
 
    o  extended section 4.4.1.1
@@ -3816,6 +3856,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    o  merged 4.4.1.5 into 4.4.1.2
 
    o  corrected some typos
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 69]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
 
    o  reformulated "session fixation", renamed respective sections into
       "authorization code disclosure through counterfeit client"
@@ -3856,15 +3904,6 @@ Internet-Draft             OAuth 2.0 Security                August 2012
 
    draft-ietf-oauth-v2-threatmodel-02
 
-
-
-
-
-Lodderstedt, et al.     Expires February 15, 2013              [Page 69]
-
-Internet-Draft             OAuth 2.0 Security                August 2012
-
-
    o  Incoporated Tim Bray's review comments (e.g. removed all normative
       language)
 
@@ -3873,6 +3912,14 @@ Internet-Draft             OAuth 2.0 Security                August 2012
    o  removed 2119 boilerplate and normative reference
 
    o  incorporated shepherd review feedback
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 70]
+
+Internet-Draft             OAuth 2.0 Security               October 2012
+
 
    draft-ietf-oauth-v2-threatmodel-06
 
@@ -3916,5 +3963,14 @@ Authors' Addresses
 
 
 
-Lodderstedt, et al.     Expires February 15, 2013              [Page 70]
+
+
+
+
+
+
+
+
+
+Lodderstedt, et al.       Expires April 9, 2013                [Page 71]
 
