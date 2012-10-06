@@ -588,13 +588,13 @@
               <t>Don't issue secrets to public clients or clients with
               inappropriate security policy - <xref target="dont_issue"/></t>
 
-              <t>Public clients require user consent - <xref
+              <t>Require user consent for public clients- <xref
               target="forced_user_consent"/></t>
 
               <t>Use deployment-specific client secrets - <xref
               target="depl_specific_secretes"/></t>
 
-              <t>Client secret revocation - <xref
+              <t>Revoke client secrets - <xref
               target="client_secret_revocation"/></t>
             </list></t>
 
@@ -614,7 +614,7 @@
               <t>Native applications: Store secrets in a secure local storage
               - <xref target="secure_storage"/></t>
 
-              <t>Client secret revocation - <xref
+              <t>Revoke client secrets - <xref
               target="client_secret_revocation"/></t>
             </list></t>
         </section>
@@ -632,12 +632,12 @@
               associated with the particular refresh token with every refresh
               request- <xref target="binding_refresh_client_id"/></t>
 
-              <t>Limited scope tokens - <xref target="limit_scope"/></t>
+              <t>Limit token scope - <xref target="limit_scope"/></t>
 
-              <t>Refresh token revocation - <xref
+              <t>Revoke refresh tokens - <xref
               target="refresh_revocation"/></t>
 
-              <t>Client secret revocation - <xref
+              <t>Revoke client secrets - <xref
               target="client_secret_revocation"/></t>
 
               <t>Refresh tokens can automatically be replaced in order to
@@ -741,7 +741,7 @@
               <t>Keep access tokens in transient memory and limit grants:
               <xref target="access_tokens"/></t>
 
-              <t>Limited scope tokens - <xref target="limit_scope"/></t>
+              <t>Limit token scope - <xref target="limit_scope"/></t>
 
               <t>Keep access tokens in private memory or apply same protection
               means as for refresh tokens - <xref
@@ -959,11 +959,12 @@
           <t>Countermeasures:</t>
 
           <t><list style="symbols">
-              <t>System security measures - <xref target="std_sys"/></t>
+              <t>Enforce system security measures - <xref
+              target="std_sys"/></t>
 
               <t>Store access token hashes only - <xref target="noclear"/></t>
 
-              <t>Standard SQL injection Countermeasures - <xref
+              <t>Enforce standard SQL injection Countermeasures - <xref
               target="std_sql"/></t>
             </list></t>
         </section>
@@ -999,9 +1000,10 @@
           <t>Countermeasures:</t>
 
           <t><list style="symbols">
-              <t>System security measures - <xref target="std_sys"/></t>
+              <t>Enforce system security measures - <xref
+              target="std_sys"/></t>
 
-              <t>Standard SQL injection Countermeasures - <xref
+              <t>Enforce standard SQL injection Countermeasures - <xref
               target="std_sql"/></t>
 
               <t>Ensure proper handling of credentials as per <xref
@@ -1016,7 +1018,8 @@
           <t>Countermeasures:</t>
 
           <t><list style="symbols">
-              <t>High entropy of secrets - <xref target="high_entropy"/></t>
+              <t>Use high entropy for secrets - <xref
+              target="high_entropy"/></t>
 
               <t>Lock accounts - <xref target="lock_accounts"/></t>
 
@@ -1081,7 +1084,7 @@
                 authorization code to a certain client can be validated in a
                 reliable way (see <xref target="bind_code_client_id"/>).</t>
 
-                <t>Limited duration of authorization codes - <xref
+                <t>Use short expiry time for authorization codes - <xref
                 target="short_exp_time"/></t>
 
                 <t>The authorization server should enforce a one time usage
@@ -1118,7 +1121,8 @@
                 <t>Best practices for credential storage protection should be
                 employed - <xref target="cred_storage_prot"/></t>
 
-                <t>System security measures - <xref target="std_sys"/></t>
+                <t>Enforce system security measures - <xref
+                target="std_sys"/></t>
 
                 <t>Store access token hashes only - <xref
                 target="noclear"/></t>
@@ -1152,7 +1156,8 @@
                 another value the attacker has to guess - <xref
                 target="bind_code_redirect"/></t>
 
-                <t>Short expiration time - <xref target="short_exp_time"/></t>
+                <t>Use short expiry time for tokens - <xref
+                target="short_exp_time"/></t>
               </list></t>
           </section>
 
@@ -1707,7 +1712,7 @@
             <t>Countermeasures:</t>
 
             <t><list style="symbols">
-                <t>Shorten token duration (see <xref
+                <t>Use short expiry time for tokens (see <xref
                 target="short_exp_time"/>) and reduced scope of the token may
                 reduce the impact of that attack (see <xref
                 target="limit_scope"/>).</t>
@@ -1902,7 +1907,7 @@
                 <t>Use digest authentication instead of plaintext credential
                 processing</t>
 
-                <t>Obfuscation of passwords in logs</t>
+                <t>Obfuscate passwords in logs</t>
               </list></t>
           </section>
 
@@ -1972,7 +1977,7 @@
             <t>Countermeasures:</t>
 
             <t><list style="symbols">
-                <t>Confidentiality of Requests - <xref
+                <t>Ensure confidentiality of requests - <xref
                 target="conf_requests"/></t>
 
                 <t>alternative authentication means, which do not require to
@@ -1994,8 +1999,8 @@
             <t>Countermeasures:</t>
 
             <t><list style="symbols">
-                <t>Credential storage protection can be employed - <xref
-                target="cred_storage_prot"/></t>
+                <t>Enforce credential storage protection best practices -
+                <xref target="cred_storage_prot"/></t>
               </list></t>
           </section>
 
@@ -2009,13 +2014,14 @@
             <t>Countermeasures:</t>
 
             <t><list style="symbols">
-                <t>Password policy - <xref target="pwd_policy"/></t>
+                <t>Utilize secure password policy - <xref
+                target="pwd_policy"/></t>
 
                 <t>Lock accounts - <xref target="lock_accounts"/></t>
 
-                <t>Tar pit - <xref target="tar_pit"/></t>
+                <t>Use tar pit - <xref target="tar_pit"/></t>
 
-                <t>CAPTCHA - <xref target="captchas"/></t>
+                <t>Use CAPTCHAs - <xref target="captchas"/></t>
 
                 <t>Consider not to use grant type "password&ldquo;</t>
 
@@ -2066,7 +2072,7 @@
           <t>Countermeasures:</t>
 
           <t><list style="symbols">
-              <t>Credential storage protection - <xref
+              <t>Enforce credential storage protection best practices - <xref
               target="cred_storage_prot"/></t>
 
               <t>Bind token to client id, if the attacker cannot obtain the
@@ -2110,7 +2116,7 @@
           <t>Countermeasures:</t>
 
           <t><list style="symbols">
-              <t>Server authentication (as described in <xref
+              <t>Utilize server authentication (as described in <xref
               target="server_authn"/>)</t>
             </list></t>
         </section>
@@ -2303,7 +2309,8 @@
         across all OAuth components (client, resource server, token server,
         and user-agents).</t>
 
-        <section anchor="conf_requests" title="Confidentiality of Requests">
+        <section anchor="conf_requests"
+                 title="Ensure confidentiality of requests">
           <t>This is applicable to all requests sent from client to
           authorization server or resource server. While OAuth provides a
           mechanism for verifying the integrity of requests, it provides no
@@ -2338,7 +2345,7 @@
             </list></t>
         </section>
 
-        <section anchor="server_authn" title="Server authentication">
+        <section anchor="server_authn" title="Utiliize server authentication">
           <t>HTTPS server authentication or similar means can be used to
           authenticate the identity of a server. The goal is to reliably bind
           the fully qualified domain name of the server to the public key
@@ -2397,19 +2404,20 @@
           codes.</t>
 
           <section anchor="cred_storage_prot"
-                   title="Credential Storage Protection">
+                   title="Enforce credential storage protection best practices">
             <t>Administrators should undertake industry best practices to
             protect the storage of credentials (see for example <xref
             target="owasp"/>). Such practices may include but are not limited
             to the following sub-sections.</t>
 
-            <section anchor="std_sys" title="Standard System Security Means">
+            <section anchor="std_sys"
+                     title="Enforce Standard System Security Means">
               <t>A server system may be locked down so that no attacker may
               get access to sensible configuration files and databases.</t>
             </section>
 
             <section anchor="std_sql"
-                     title="Standard SQL Injection Countermeasures">
+                     title="Enforce standard SQL Injection Countermeasures">
               <t>If a client identifier or other authentication component is
               queried or compared against a SQL Database it may become
               possible for an injection attack to occur if parameters received
@@ -2466,7 +2474,8 @@
           </section>
 
           <section anchor="online_secrets" title="Online attacks on secrets">
-            <section anchor="pwd_policy" title="Password policy">
+            <section anchor="pwd_policy"
+                     title="Utilize secure password policy">
               <t>The authorization server may decide to enforce a complex user
               password policy in order to increase the user passwords' entropy
               to hinder online password attacks. Note that too much complexity
@@ -2474,7 +2483,8 @@
               them down or otherwise store them insecurely.</t>
             </section>
 
-            <section anchor="high_entropy" title="High entropy of secrets">
+            <section anchor="high_entropy"
+                     title="Use high entropy for secrets">
               <t>When creating secrets not intended for usage by human users
               (e.g. client secrets or token handles), the authorization server
               should include a reasonable level of entropy in order to
@@ -2494,7 +2504,7 @@
               service users.</t>
             </section>
 
-            <section anchor="tar_pit" title="Tar pit">
+            <section anchor="tar_pit" title="Use tar pit">
               <t>The authorization server may react on failed attempts to
               authenticate by username/password by temporarily locking the
               respective account and delaying the response for a certain
@@ -2506,7 +2516,7 @@
               the authorization server.</t>
             </section>
 
-            <section anchor="captchas" title="Usage of CAPTCHAs">
+            <section anchor="captchas" title="Usa CAPTCHAs">
               <t>The idea is to prevent programs from automatically checking
               huge number of passwords by requiring human interaction.</t>
 
@@ -2572,7 +2582,7 @@
               </list></t>
           </section>
 
-          <section anchor="short_exp_time" title="Short expiration time">
+          <section anchor="short_exp_time" title="Use short expiration time">
             <t>A short expiration time for tokens is a protection means
             against the following threats:</t>
 
@@ -2774,8 +2784,7 @@
             appropriate.</t>
           </section>
 
-          <section anchor="refresh_revocation"
-                   title="Refresh Token Revocation">
+          <section anchor="refresh_revocation" title="Revoke refresh tokens">
             <t>The authorization server may allow clients or end-users to
             explicitly request the invalidation of refresh tokens. A mechanism
             to revoke tokens is specified in <xref
@@ -2876,7 +2885,7 @@
           </section>
 
           <section anchor="forced_user_consent"
-                   title="Public clients without secret require user consent">
+                   title="Require user consent for public clients without secret">
             <t>Authorization servers should not allow automatic authorization
             for public clients. The authorization may issue an individual
             client id, but should require that all authorizations are approved
@@ -2989,7 +2998,7 @@
           </section>
 
           <section anchor="client_secret_revocation"
-                   title="Client secret revocation">
+                   title="Revoke client secrets">
             <t>An authorization server may revoke a client's secret in order
             to prevent abuse of a revealed secret.</t>
 
