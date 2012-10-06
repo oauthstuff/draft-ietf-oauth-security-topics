@@ -11,7 +11,7 @@ Expires: April 9, 2013
 
 
                             Token Revocation
-                     draft-ietf-oauth-revocation-02
+                     draft-ietf-oauth-revocation-01
 
 Abstract
 
