@@ -4,10 +4,10 @@
 OAuth Working Group                                  T. Lodderstedt, Ed.
 Internet-Draft                                       Deutsche Telekom AG
 Intended status: Standards Track                               S. Dronia
-Expires: April 4, 2013
+Expires: April 9, 2013
                                                            M. Scurtescu
                                                                   Google
-                                                         October 1, 2012
+                                                         October 6, 2012
 
 
                             Token Revocation
@@ -39,7 +39,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 4, 2013.
+   This Internet-Draft will expire on April 9, 2013.
 
 Copyright Notice
 
@@ -52,7 +52,7 @@ Copyright Notice
 
 
 
-Lodderstedt, et al.       Expires April 4, 2013                 [Page 1]
+Lodderstedt, et al.       Expires April 9, 2013                 [Page 1]
 
 Internet-Draft              Token Revocation                October 2012
 
@@ -108,7 +108,7 @@ Table of Contents
 
 
 
-Lodderstedt, et al.       Expires April 4, 2013                 [Page 2]
+Lodderstedt, et al.       Expires April 9, 2013                 [Page 2]
 
 Internet-Draft              Token Revocation                October 2012
 
@@ -156,7 +156,7 @@ Internet-Draft              Token Revocation                October 2012
    The client requests the revocation of a particular token by making an
    HTTP POST request to the token revocation endpoint.  The location of
    the token revocation endpoint can be found in the authorization
-   servers documentation.  The token endpoint URI MAY include a query
+   server's documentation.  The token endpoint URI MAY include a query
    component.
 
    Since requests to the token revocation endpoint result in the
@@ -164,7 +164,7 @@ Internet-Draft              Token Revocation                October 2012
 
 
 
-Lodderstedt, et al.       Expires April 4, 2013                 [Page 3]
+Lodderstedt, et al.       Expires April 9, 2013                 [Page 3]
 
 Internet-Draft              Token Revocation                October 2012
 
@@ -198,15 +198,16 @@ Internet-Draft              Token Revocation                October 2012
 
         token=45ghiukldjahdnhzdauz&
 
-   The authorization server first validates the client credentials (if
-   present) and verifies whether the client is authorized to revoke the
-   particular token based on the client identity and its policy.  For
-   example, only the client the token has been issued for might be
-   allowed to revoke it.  It is also conceivable to allow a dedicated
-   user self-care portal to revoke all kinds of tokens.
+   The authorization server first validates the client credentials (in
+   case of a confidential client) and verifies whether the client is
+   authorized to revoke the particular token based on the client
+   identity and its policy.  For example, only the client the token has
+   been issued for might be allowed to revoke it.  It is also
+   conceivable to allow a dedicated user self-care portal to revoke all
+   kinds of tokens.
 
    In the next step, the authorization server invalidates the token and
-   the respective access grant.  If the respective token is a refresh
+   the respective access grant.  If the particular token is a refresh
    token and the authorization server supports the revocation of access
    tokens, then the authorization server SHOULD also invalidate all
    access tokens based on the same access grant.
@@ -216,15 +217,15 @@ Internet-Draft              Token Revocation                October 2012
    MUST NOT make any assumptions about the timing and MUST NOT use the
    token again.
 
-   The authorization server indicates a successful processing of the
 
 
 
-Lodderstedt, et al.       Expires April 4, 2013                 [Page 4]
+Lodderstedt, et al.       Expires April 9, 2013                 [Page 4]
 
 Internet-Draft              Token Revocation                October 2012
 
 
+   The authorization server indicates a successful processing of the
    request by a HTTP status code 200.  Status code 401 indicates a
    failed client authentication, whereas a status code 403 is used if
    the client is not authorized to revoke the particular token.  For all
@@ -272,13 +273,15 @@ Internet-Draft              Token Revocation                October 2012
    We would like to thank Michiel de Jong, Doug Foiles, Paul Madsen,
    George Fletcher, Sebastian Ebling, Christian Stuebner, Brian
    Campbell, Igor Faynberg, Lukas Rosenstock, and Justin P. Richer for
-   their valuable feedback.
 
 
 
-Lodderstedt, et al.       Expires April 4, 2013                 [Page 5]
+Lodderstedt, et al.       Expires April 9, 2013                 [Page 5]
 
 Internet-Draft              Token Revocation                October 2012
+
+
+   their valuable feedback.
 
 
 4.  IANA Considerations
@@ -329,10 +332,7 @@ Authors' Addresses
 
 
 
-
-
-
-Lodderstedt, et al.       Expires April 4, 2013                 [Page 6]
+Lodderstedt, et al.       Expires April 9, 2013                 [Page 6]
 
 Internet-Draft              Token Revocation                October 2012
 
@@ -388,5 +388,5 @@ Internet-Draft              Token Revocation                October 2012
 
 
 
-Lodderstedt, et al.       Expires April 4, 2013                 [Page 7]
+Lodderstedt, et al.       Expires April 9, 2013                 [Page 7]
 

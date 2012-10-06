@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="1" month="October" year="2012" />
+    <date day="6" month="October" year="2012" />
 
     <!-- Meta-data Declarations -->
 
@@ -165,7 +165,7 @@
     <section anchor="Revocation" title="Token Revocation">
       <t>The client requests the revocation of a particular token by making an
       HTTP POST request to the token revocation endpoint. The location of the
-      token revocation endpoint can be found in the authorization servers
+      token revocation endpoint can be found in the authorization server's
       documentation. The token endpoint URI MAY include a query component.</t>
 
       <t>Since requests to the token revocation endpoint result in the
@@ -203,15 +203,15 @@
      token=45ghiukldjahdnhzdauz&  ]]></artwork>
       </figure>
 
-      <t>The authorization server first validates the client credentials (if
-      present) and verifies whether the client is authorized to revoke the
-      particular token based on the client identity and its policy. For
-      example, only the client the token has been issued for might be allowed
-      to revoke it. It is also conceivable to allow a dedicated user self-care
-      portal to revoke all kinds of tokens.</t>
+      <t>The authorization server first validates the client credentials (in
+      case of a confidential client) and verifies whether the client is
+      authorized to revoke the particular token based on the client identity
+      and its policy. For example, only the client the token has been issued
+      for might be allowed to revoke it. It is also conceivable to allow a
+      dedicated user self-care portal to revoke all kinds of tokens.</t>
 
       <t>In the next step, the authorization server invalidates the token and
-      the respective access grant. If the respective token is a refresh token
+      the respective access grant. If the particular token is a refresh token
       and the authorization server supports the revocation of access tokens,
       then the authorization server SHOULD also invalidate all access tokens
       based on the same access grant.</t>

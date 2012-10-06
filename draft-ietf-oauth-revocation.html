@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- saved from url=(0077)file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html -->
+<!-- saved from url=(0077)file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Token Revocation</title>
 
 <meta name="description" content="Token Revocation">
@@ -141,15 +141,15 @@
 --></style>
 </head>
 <body>
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tbody><tr><td class="TOCbug"><a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tbody><tr><td class="TOCbug"><a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
 <table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tbody><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
 <tbody><tr><td class="header">OAuth Working Group</td><td class="header">T. Lodderstedt, Ed.</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">Deutsche Telekom AG</td></tr>
 <tr><td class="header">Intended status: Standards Track</td><td class="header">S. Dronia</td></tr>
-<tr><td class="header">Expires: April 4, 2013</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Expires: April 9, 2013</td><td class="header">&nbsp;</td></tr>
 <tr><td class="header">&nbsp;</td><td class="header">M. Scurtescu </td></tr>
 <tr><td class="header">&nbsp;</td><td class="header">Google</td></tr>
-<tr><td class="header">&nbsp;</td><td class="header">October 1, 2012</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">October 6, 2012</td></tr>
 </tbody></table></td></tr></tbody></table>
 <h1><br>Token Revocation<br>draft-ietf-oauth-revocation-02</h1>
 
@@ -159,7 +159,7 @@
 </p>
 <h3>Requirements Language</h3>
 
-<p>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a class="info" href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#RFC2119">RFC 2119<span> (</span><span class="info">Bradner, S., “Key words for use in RFCs to Indicate Requirement Levels,” March&nbsp;1997.</span><span>)</span></a> [RFC2119].
+<p>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a class="info" href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#RFC2119">RFC 2119<span> (</span><span class="info">Bradner, S., “Key words for use in RFCs to Indicate Requirement Levels,” March&nbsp;1997.</span><span>)</span></a> [RFC2119].
 </p>
 <h3>Status of this Memo</h3>
 <p>
@@ -176,7 +176,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as “work in progress.”</p>
 <p>
-This Internet-Draft will expire on April 4, 2013.</p>
+This Internet-Draft will expire on April 9, 2013.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -195,35 +195,35 @@ described in the Simplified BSD License.</p>
 <a name="toc"></a><br><hr>
 <h3>Table of Contents</h3>
 <p class="toc">
-<a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#Introduction">1.</a>&nbsp;
+<a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#Introduction">1.</a>&nbsp;
 Introduction<br>
-<a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#Revocation">2.</a>&nbsp;
+<a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#Revocation">2.</a>&nbsp;
 Token Revocation<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#cross-orgin">2.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#cross-orgin">2.1.</a>&nbsp;
 Cross-Origin Support<br>
-<a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#Acknowledgements">3.</a>&nbsp;
+<a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#Acknowledgements">3.</a>&nbsp;
 Acknowledgements<br>
-<a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#IANA">4.</a>&nbsp;
+<a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#IANA">4.</a>&nbsp;
 IANA Considerations<br>
-<a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#Security">5.</a>&nbsp;
+<a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#Security">5.</a>&nbsp;
 Security Considerations<br>
-<a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#rfc.references1">6.</a>&nbsp;
+<a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#rfc.references1">6.</a>&nbsp;
 References<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#rfc.references1">6.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#rfc.references1">6.1.</a>&nbsp;
 Normative References<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#rfc.references2">6.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#rfc.references2">6.2.</a>&nbsp;
 Informative References<br>
-<a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#rfc.authors">§</a>&nbsp;
+<a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#rfc.authors">§</a>&nbsp;
 Authors' Addresses<br>
 </p>
 <br clear="all">
 
 <a name="Introduction"></a><br><hr>
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tbody><tr><td class="TOCbug"><a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tbody><tr><td class="TOCbug"><a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
 <a name="rfc.section.1"></a><h3>1.&nbsp;
 Introduction</h3>
 
-<p>The OAuth 2.0 core specification <a class="info" href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#I-D.ietf-oauth-v2">[I‑D.ietf‑oauth‑v2]<span> (</span><span class="info">Hardt, D., “The OAuth 2.0 Authorization Framework,” August&nbsp;2012.</span><span>)</span></a> defines several ways for a client to obtain refresh and access tokens. This specification supplements the core specification with a mechanism to revoke both types of tokens. A token is the external representation of an access grant issued by a resource owner to a particular client. A revocation request may discard the actual token as well as other tokens based on the same access grant and the access grant itself.
+<p>The OAuth 2.0 core specification <a class="info" href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#I-D.ietf-oauth-v2">[I‑D.ietf‑oauth‑v2]<span> (</span><span class="info">Hardt, D., “The OAuth 2.0 Authorization Framework,” August&nbsp;2012.</span><span>)</span></a> defines several ways for a client to obtain refresh and access tokens. This specification supplements the core specification with a mechanism to revoke both types of tokens. A token is the external representation of an access grant issued by a resource owner to a particular client. A revocation request may discard the actual token as well as other tokens based on the same access grant and the access grant itself.
 </p>
 <p>This mechanism facilitates the following use cases:</p>
 <ul class="text">
@@ -236,13 +236,13 @@ Introduction</h3>
 <p>By using an additional endpoint, the token revocation endpoint, clients can request the revocation of a particular token. Compliant implementation MUST support the revocation of refresh tokens, access token revocation MAY be supported.
 </p>
 <a name="Revocation"></a><br><hr>
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tbody><tr><td class="TOCbug"><a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tbody><tr><td class="TOCbug"><a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
 <a name="rfc.section.2"></a><h3>2.&nbsp;
 Token Revocation</h3>
 
-<p>The client requests the revocation of a particular token by making an HTTP POST request to the token revocation endpoint. The location of the token revocation endpoint can be found in the authorization servers documentation. The token endpoint URI MAY include a query component.
+<p>The client requests the revocation of a particular token by making an HTTP POST request to the token revocation endpoint. The location of the token revocation endpoint can be found in the authorization server's documentation. The token endpoint URI MAY include a query component.
 </p>
-<p>Since requests to the token revocation endpoint result in the transmission of plain text credentials in the HTTP request, the authorization server MUST require the use of a transport-layer security mechanism when sending requests to the token revocation endpoints. The authorization server MUST support TLS 1.0 (<a class="info" href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#RFC2246">[RFC2246]<span> (</span><span class="info">Dierks, T. and C. Allen, “The TLS Protocol Version 1.0,” January&nbsp;1999.</span><span>)</span></a>), SHOULD support TLS 1.2 (<a class="info" href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#RFC5246">[RFC5246]<span> (</span><span class="info">Dierks, T. and E. Rescorla, “The Transport Layer Security (TLS) Protocol Version 1.2,” August&nbsp;2008.</span><span>)</span></a>) and its future replacements, and MAY support additional transport-layer mechanisms meeting its security requirements.
+<p>Since requests to the token revocation endpoint result in the transmission of plain text credentials in the HTTP request, the authorization server MUST require the use of a transport-layer security mechanism when sending requests to the token revocation endpoints. The authorization server MUST support TLS 1.0 (<a class="info" href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#RFC2246">[RFC2246]<span> (</span><span class="info">Dierks, T. and C. Allen, “The TLS Protocol Version 1.0,” January&nbsp;1999.</span><span>)</span></a>), SHOULD support TLS 1.2 (<a class="info" href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#RFC5246">[RFC5246]<span> (</span><span class="info">Dierks, T. and E. Rescorla, “The Transport Layer Security (TLS) Protocol Version 1.2,” August&nbsp;2008.</span><span>)</span></a>) and its future replacements, and MAY support additional transport-layer mechanisms meeting its security requirements.
 </p>
 <p>The client constructs the request by including the following parameters using the "application/x-www-form-urlencoded" format in the HTTP request entity-body: </p>
 <blockquote class="text"><dl>
@@ -251,7 +251,7 @@ Token Revocation</h3>
 </dd>
 </dl></blockquote>
 
-<p>The client also includes its authentication credentials as described in Section 2.3. of <a class="info" href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#I-D.ietf-oauth-v2">[I‑D.ietf‑oauth‑v2]<span> (</span><span class="info">Hardt, D., “The OAuth 2.0 Authorization Framework,” August&nbsp;2012.</span><span>)</span></a>.
+<p>The client also includes its authentication credentials as described in Section 2.3. of <a class="info" href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#I-D.ietf-oauth-v2">[I‑D.ietf‑oauth‑v2]<span> (</span><span class="info">Hardt, D., “The OAuth 2.0 Authorization Framework,” August&nbsp;2012.</span><span>)</span></a>.
 </p>
 <p>For example, a client may request the revocation of a refresh token with the following request (line breaks are for display purposes only):
 </p><div style="display: table; width: 0; margin-left: 3em; margin-right: auto"><pre>     POST /revoke HTTP/1.1
@@ -260,13 +260,13 @@ Token Revocation</h3>
      Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
 
      token=45ghiukldjahdnhzdauz&amp;</pre></div>
-<p>The authorization server first validates the client credentials (if present) and verifies whether the client is authorized to revoke the particular token based on the client identity and its policy. For example, only the client the token has been issued for might be allowed to revoke it. It is also conceivable to allow a dedicated user self-care portal to revoke all kinds of tokens.
+<p>The authorization server first validates the client credentials (in case of a confidential client) and verifies whether the client is authorized to revoke the particular token based on the client identity and its policy. For example, only the client the token has been issued for might be allowed to revoke it. It is also conceivable to allow a dedicated user self-care portal to revoke all kinds of tokens.
 </p>
-<p>In the next step, the authorization server invalidates the token and the respective access grant. If the respective token is a refresh token and the authorization server supports the revocation of access tokens, then the authorization server SHOULD also invalidate all access tokens based on the same access grant.
+<p>In the next step, the authorization server invalidates the token and the respective access grant. If the particular token is a refresh token and the authorization server supports the revocation of access tokens, then the authorization server SHOULD also invalidate all access tokens based on the same access grant.
 </p>
 <p>Whether the revocation takes effect instantly or with some delay depends on the architecture of the particular deployment. The client MUST NOT make any assumptions about the timing and MUST NOT use the token again.
 </p>
-<p>The authorization server indicates a successful processing of the request by a HTTP status code 200. Status code 401 indicates a failed client authentication, whereas a status code 403 is used if the client is not authorized to revoke the particular token. For all other error conditions, a status code 400 is used along with an error response as defined in section 5.2. of <a class="info" href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#I-D.ietf-oauth-v2">[I‑D.ietf‑oauth‑v2]<span> (</span><span class="info">Hardt, D., “The OAuth 2.0 Authorization Framework,” August&nbsp;2012.</span><span>)</span></a>. The following error codes are defined for the token revocation endpoint: </p>
+<p>The authorization server indicates a successful processing of the request by a HTTP status code 200. Status code 401 indicates a failed client authentication, whereas a status code 403 is used if the client is not authorized to revoke the particular token. For all other error conditions, a status code 400 is used along with an error response as defined in section 5.2. of <a class="info" href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#I-D.ietf-oauth-v2">[I‑D.ietf‑oauth‑v2]<span> (</span><span class="info">Hardt, D., “The OAuth 2.0 Authorization Framework,” August&nbsp;2012.</span><span>)</span></a>. The following error codes are defined for the token revocation endpoint: </p>
 <blockquote class="text"><dl>
 <dt>unsupported_token_type</dt>
 <dd>The authorization server does not support the revocation of the presented token type. I.e. the client tried to revoke an access token on a server not supporting this feature.
@@ -277,11 +277,11 @@ Token Revocation</h3>
 </dl></blockquote>
 
 <a name="cross-orgin"></a><br><hr>
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tbody><tr><td class="TOCbug"><a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tbody><tr><td class="TOCbug"><a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
 <a name="rfc.section.2.1"></a><h3>2.1.&nbsp;
 Cross-Origin Support</h3>
 
-<p>The revokation end-point SHOULD support <a class="info" href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#W3C.WD-cors-20120403">CORS<span> (</span><span class="info">Kesteren, A., “Cross-Origin Resource Sharing,” April&nbsp;2012.</span><span>)</span></a> if it is aimed at use in combination with user-agent-based applications. In addition, for interoperability with legacy user-agents, it MAY offer <a class="info" href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#jsonp">JSONP<span> (</span><span class="info">Ippolito, B., “Remote JSON - JSONP,” December&nbsp;2005.</span><span>)</span></a> by allowing GET requests with an additional parameter: </p>
+<p>The revokation end-point SHOULD support <a class="info" href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#W3C.WD-cors-20120403">CORS<span> (</span><span class="info">Kesteren, A., “Cross-Origin Resource Sharing,” April&nbsp;2012.</span><span>)</span></a> if it is aimed at use in combination with user-agent-based applications. In addition, for interoperability with legacy user-agents, it MAY offer <a class="info" href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#jsonp">JSONP<span> (</span><span class="info">Ippolito, B., “Remote JSON - JSONP,” December&nbsp;2005.</span><span>)</span></a> by allowing GET requests with an additional parameter: </p>
 <blockquote class="text"><dl>
 <dt>callback</dt>
 <dd>The qualified name of a JavaScript function.
@@ -301,33 +301,33 @@ callback=package.myCallback
 <p>Clients should be aware that when relying on JSONP, a malicious revokation end-point may attempt to inject malicious code into the client.
 </p>
 <a name="Acknowledgements"></a><br><hr>
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tbody><tr><td class="TOCbug"><a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tbody><tr><td class="TOCbug"><a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
 <a name="rfc.section.3"></a><h3>3.&nbsp;
 Acknowledgements</h3>
 
 <p>We would like to thank Michiel de Jong, Doug Foiles, Paul Madsen, George Fletcher, Sebastian Ebling, Christian Stübner, Brian Campbell, Igor Faynberg, Lukas Rosenstock, and Justin P. Richer for their valuable feedback.
 </p>
 <a name="IANA"></a><br><hr>
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tbody><tr><td class="TOCbug"><a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tbody><tr><td class="TOCbug"><a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
 <a name="rfc.section.4"></a><h3>4.&nbsp;
 IANA Considerations</h3>
 
 <p>This draft includes no request to IANA.
 </p>
 <a name="Security"></a><br><hr>
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tbody><tr><td class="TOCbug"><a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tbody><tr><td class="TOCbug"><a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
 <a name="rfc.section.5"></a><h3>5.&nbsp;
 Security Considerations</h3>
 
 <p>All relevant security considerations have been given in the functional specification.
 </p>
 <a name="rfc.references"></a><br><hr>
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tbody><tr><td class="TOCbug"><a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tbody><tr><td class="TOCbug"><a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
 <a name="rfc.section.6"></a><h3>6.&nbsp;
 References</h3>
 
 <a name="rfc.references1"></a><br><hr>
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tbody><tr><td class="TOCbug"><a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tbody><tr><td class="TOCbug"><a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
 <h3>6.1.&nbsp;Normative References</h3>
 <table width="99%" border="0">
 <tbody><tr><td class="author-text" valign="top"><a name="I-D.ietf-oauth-v2">[I-D.ietf-oauth-v2]</a></td>
@@ -341,7 +341,7 @@ References</h3>
 </tbody></table>
 
 <a name="rfc.references2"></a><br><hr>
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tbody><tr><td class="TOCbug"><a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tbody><tr><td class="TOCbug"><a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
 <h3>6.2.&nbsp;Informative References</h3>
 <table width="99%" border="0">
 <tbody><tr><td class="author-text" valign="top"><a name="W3C.WD-cors-20120403">[W3C.WD-cors-20120403]</a></td>
@@ -351,7 +351,7 @@ References</h3>
 </tbody></table>
 
 <a name="rfc.authors"></a><br><hr>
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tbody><tr><td class="TOCbug"><a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-2942315938530371634.html#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tbody><tr><td class="TOCbug"><a href="file:///C:/Users/tolo/AppData/Local/Temp/xml2rfc-xxe-4933189932034149905.html#toc">&nbsp;TOC&nbsp;</a></td></tr></tbody></table>
 <h3>Authors' Addresses</h3>
 <table width="99%" border="0" cellpadding="0" cellspacing="0">
 <tbody><tr><td class="author-text">&nbsp;</td>
