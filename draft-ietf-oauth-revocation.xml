@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-oauth-revocation-01" ipr="trust200902">
+<rfc category="std" docName="draft-ietf-oauth-revocation-02" ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
 		full3667, noModification3667, noDerivatives3667 you can add the
@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="6" month="October" year="2012" />
+    <date day="6" month="November" year="2012" />
 
     <!-- Meta-data Declarations -->
 
@@ -113,7 +113,7 @@
 
     <abstract>
       <t>This draft proposes an additional endpoint for OAuth authorization
-      servers for revoking tokens.</t>
+      servers, which allows clients to revoke their tokens.</t>
     </abstract>
 
     <note title="Requirements Language">
@@ -131,35 +131,27 @@
       obtain refresh and access tokens. This specification supplements the
       core specification with a mechanism to revoke both types of tokens. A
       token is the external representation of an access grant issued by a
-      resource owner to a particular client. A revocation request may discard
-      the actual token as well as other tokens based on the same access grant
-      and the access grant itself.</t>
+      resource owner to a particular client. A revocation request will
+      invalidate the actual token and, if applicable, other tokens based on
+      the same access grant and the access grant itself.</t>
 
-      <t>This mechanism facilitates the following use cases:<list
-          style="symbols">
-          <t>The end-user triggers revocation from within the client that
-          sends the appropriate revocation request to the autorization server.
-          The request causes the removal of the client's access grant the
-          particular token refers to. From the end-user's perspective, this
-          looks like a &ldquo;logout&rdquo; or &ldquo;reset&rdquo; function.
-          This use case makes it even more comfortable to the end-user to
-          revoke his access grant immediately via the client.</t>
+      <t>Clients request the revocation by using an additional endpoint on the
+      authorization server. Compliant implementation MUST support the
+      revocation of refresh tokens, access token revocation MAY be
+      supported.</t>
 
-          <t>In contrast to revocation by a client, the authorization server
-          (or a related entity) may offer its end-users a self-care portal to
-          delete access grants given to clients independent of any token
-          storing devices. Such a portal offers the possibility to an end-user
-          to look at and revoke all access grants he once authorized. In cases
-          the token storing device is not available, e.g. it is lost or
-          stolen, revocation by a self-care portal is the only possibility to
-          limit or avoid abuse.</t>
-        </list> In the end, security, usability, and ease of use are increased
-      by token revocation.</t>
-
-      <t>By using an additional endpoint, the token revocation endpoint,
-      clients can request the revocation of a particular token. Compliant
-      implementation MUST support the revocation of refresh tokens, access
-      token revocation MAY be supported.</t>
+      <t>From an end-users perspective, OAuth is typically used to log into a
+      certain site or app. This revocation mechanism allows a client to
+      invalidate its tokens if the end-user logs out, changes identity, or
+      uninstalls the respective app. Notifying the authorization server that
+      the token is no longer needed allows the authorization server to cleanup
+      data associated with that token and the underlying access grant. This
+      prevents a situation, where there is still a validate access grant for
+      that particular client, which the end-user is not aware of. This way,
+      token revocation prevents abuse of orphaned tokens and facilitates a
+      better end-user experience, since invalidated access grants will no
+      longer turn up in a list of access grants the authorization server might
+      present to the end-user.</t>
     </section>
 
     <section anchor="Revocation" title="Token Revocation">
@@ -205,10 +197,8 @@
 
       <t>The authorization server first validates the client credentials (in
       case of a confidential client) and verifies whether the client is
-      authorized to revoke the particular token based on the client identity
-      and its policy. For example, only the client the token has been issued
-      for might be allowed to revoke it. It is also conceivable to allow a
-      dedicated user self-care portal to revoke all kinds of tokens.</t>
+      authorized to revoke the particular token. It therefore validates
+      whether this token had been issued to this client. </t>
 
       <t>In the next step, the authorization server invalidates the token and
       the respective access grant. If the particular token is a refresh token
@@ -216,10 +206,16 @@
       then the authorization server SHOULD also invalidate all access tokens
       based on the same access grant.</t>
 
-      <t>Whether the revocation takes effect instantly or with some delay
-      depends on the architecture of the particular deployment. The client
-      MUST NOT make any assumptions about the timing and MUST NOT use the
-      token again.</t>
+      <t>Note: Depending on the authorization server's design, immediate
+      revocation of access tokens might be a costly process. For example,
+      immediate revocation of self-contained access tokens requires
+      (time-consuming) backend calls between resource and authorization server
+      on every request to the resource server or a push notification from the
+      authorization server to the affected resource servers. The service
+      provider should decide based on a risk analysis whether immediate
+      revocation of access tokens is required.</t>
+
+      <t>The client MUST NOT use the token again after revocation.</t>
 
       <t>The authorization server indicates a successful processing of the
       request by a HTTP status code 200. Status code 401 indicates a failed

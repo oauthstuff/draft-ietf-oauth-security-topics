@@ -4,19 +4,19 @@
 OAuth Working Group                                  T. Lodderstedt, Ed.
 Internet-Draft                                       Deutsche Telekom AG
 Intended status: Standards Track                               S. Dronia
-Expires: April 9, 2013
+Expires: May 10, 2013
                                                            M. Scurtescu
                                                                   Google
-                                                         October 6, 2012
+                                                        November 6, 2012
 
 
                             Token Revocation
-                     draft-ietf-oauth-revocation-01
+                     draft-ietf-oauth-revocation-02
 
 Abstract
 
    This draft proposes an additional endpoint for OAuth authorization
-   servers for revoking tokens.
+   servers, which allows clients to revoke their tokens.
 
 Requirements Language
 
@@ -39,7 +39,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 9, 2013.
+   This Internet-Draft will expire on May 10, 2013.
 
 Copyright Notice
 
@@ -52,9 +52,9 @@ Copyright Notice
 
 
 
-Lodderstedt, et al.       Expires April 9, 2013                 [Page 1]
+Lodderstedt, et al.       Expires May 10, 2013                  [Page 1]
 
-Internet-Draft              Token Revocation                October 2012
+Internet-Draft              Token Revocation               November 2012
 
 
    publication of this document.  Please review these documents
@@ -108,9 +108,9 @@ Table of Contents
 
 
 
-Lodderstedt, et al.       Expires April 9, 2013                 [Page 2]
+Lodderstedt, et al.       Expires May 10, 2013                  [Page 2]
 
-Internet-Draft              Token Revocation                October 2012
+Internet-Draft              Token Revocation               November 2012
 
 
 1.  Introduction
@@ -120,35 +120,27 @@ Internet-Draft              Token Revocation                October 2012
    specification supplements the core specification with a mechanism to
    revoke both types of tokens.  A token is the external representation
    of an access grant issued by a resource owner to a particular client.
-   A revocation request may discard the actual token as well as other
-   tokens based on the same access grant and the access grant itself.
+   A revocation request will invalidate the actual token and, if
+   applicable, other tokens based on the same access grant and the
+   access grant itself.
 
-   This mechanism facilitates the following use cases:
+   Clients request the revocation by using an additional endpoint on the
+   authorization server.  Compliant implementation MUST support the
+   revocation of refresh tokens, access token revocation MAY be
+   supported.
 
-   o  The end-user triggers revocation from within the client that sends
-      the appropriate revocation request to the autorization server.
-      The request causes the removal of the client's access grant the
-      particular token refers to.  From the end-user's perspective, this
-      looks like a "logout" or "reset" function.  This use case makes it
-      even more comfortable to the end-user to revoke his access grant
-      immediately via the client.
-
-   o  In contrast to revocation by a client, the authorization server
-      (or a related entity) may offer its end-users a self-care portal
-      to delete access grants given to clients independent of any token
-      storing devices.  Such a portal offers the possibility to an end-
-      user to look at and revoke all access grants he once authorized.
-      In cases the token storing device is not available, e.g. it is
-      lost or stolen, revocation by a self-care portal is the only
-      possibility to limit or avoid abuse.
-
-   In the end, security, usability, and ease of use are increased by
-   token revocation.
-
-   By using an additional endpoint, the token revocation endpoint,
-   clients can request the revocation of a particular token.  Compliant
-   implementation MUST support the revocation of refresh tokens, access
-   token revocation MAY be supported.
+   From an end-users perspective, OAuth is typically used to log into a
+   certain site or app.  This revocation mechanism allows a client to
+   invalidate its tokens if the end-user logs out, changes identity, or
+   uninstalls the respective app.  Notifying the authorization server
+   that the token is no longer needed allows the authorization server to
+   cleanup data associated with that token and the underlying access
+   grant.  This prevents a situation, where there is still a validate
+   access grant for that particular client, which the end-user is not
+   aware of.  This way, token revocation prevents abuse of orphaned
+   tokens and facilitates a better end-user experience, since
+   invalidated access grants will no longer turn up in a list of access
+   grants the authorization server might present to the end-user.
 
 
 2.  Token Revocation
@@ -161,14 +153,6 @@ Internet-Draft              Token Revocation                October 2012
 
    Since requests to the token revocation endpoint result in the
    transmission of plain text credentials in the HTTP request, the
-
-
-
-Lodderstedt, et al.       Expires April 9, 2013                 [Page 3]
-
-Internet-Draft              Token Revocation                October 2012
-
-
    authorization server MUST require the use of a transport-layer
    security mechanism when sending requests to the token revocation
    endpoints.  The authorization server MUST support TLS 1.0
@@ -177,6 +161,14 @@ Internet-Draft              Token Revocation                October 2012
    meeting its security requirements.
 
    The client constructs the request by including the following
+
+
+
+Lodderstedt, et al.       Expires May 10, 2013                  [Page 3]
+
+Internet-Draft              Token Revocation               November 2012
+
+
    parameters using the "application/x-www-form-urlencoded" format in
    the HTTP request entity-body:
 
@@ -200,11 +192,8 @@ Internet-Draft              Token Revocation                October 2012
 
    The authorization server first validates the client credentials (in
    case of a confidential client) and verifies whether the client is
-   authorized to revoke the particular token based on the client
-   identity and its policy.  For example, only the client the token has
-   been issued for might be allowed to revoke it.  It is also
-   conceivable to allow a dedicated user self-care portal to revoke all
-   kinds of tokens.
+   authorized to revoke the particular token.  It therefore validates
+   whether this token had been issued to this client.
 
    In the next step, the authorization server invalidates the token and
    the respective access grant.  If the particular token is a refresh
@@ -212,24 +201,30 @@ Internet-Draft              Token Revocation                October 2012
    tokens, then the authorization server SHOULD also invalidate all
    access tokens based on the same access grant.
 
-   Whether the revocation takes effect instantly or with some delay
-   depends on the architecture of the particular deployment.  The client
-   MUST NOT make any assumptions about the timing and MUST NOT use the
-   token again.
+   Note: Depending on the authorization server's design, immediate
+   revocation of access tokens might be a costly process.  For example,
+   immediate revocation of self-contained access tokens requires (time-
+   consuming) backend calls between resource and authorization server on
+   every request to the resource server or a push notification from the
+   authorization server to the affected resource servers.  The service
+   provider should decide based on a risk analysis whether immediate
+   revocation of access tokens is required.
 
-
-
-
-Lodderstedt, et al.       Expires April 9, 2013                 [Page 4]
-
-Internet-Draft              Token Revocation                October 2012
-
+   The client MUST NOT use the token again after revocation.
 
    The authorization server indicates a successful processing of the
    request by a HTTP status code 200.  Status code 401 indicates a
    failed client authentication, whereas a status code 403 is used if
    the client is not authorized to revoke the particular token.  For all
    other error conditions, a status code 400 is used along with an error
+
+
+
+Lodderstedt, et al.       Expires May 10, 2013                  [Page 4]
+
+Internet-Draft              Token Revocation               November 2012
+
+
    response as defined in section 5.2. of [I-D.ietf-oauth-v2].  The
    following error codes are defined for the token revocation endpoint:
 
@@ -273,15 +268,17 @@ Internet-Draft              Token Revocation                October 2012
    We would like to thank Michiel de Jong, Doug Foiles, Paul Madsen,
    George Fletcher, Sebastian Ebling, Christian Stuebner, Brian
    Campbell, Igor Faynberg, Lukas Rosenstock, and Justin P. Richer for
-
-
-
-Lodderstedt, et al.       Expires April 9, 2013                 [Page 5]
-
-Internet-Draft              Token Revocation                October 2012
-
-
    their valuable feedback.
+
+
+
+
+
+
+
+Lodderstedt, et al.       Expires May 10, 2013                  [Page 5]
+
+Internet-Draft              Token Revocation               November 2012
 
 
 4.  IANA Considerations
@@ -332,9 +329,12 @@ Authors' Addresses
 
 
 
-Lodderstedt, et al.       Expires April 9, 2013                 [Page 6]
+
+
+
+Lodderstedt, et al.       Expires May 10, 2013                  [Page 6]
 
-Internet-Draft              Token Revocation                October 2012
+Internet-Draft              Token Revocation               November 2012
 
 
    Stefanie Dronia
@@ -388,5 +388,5 @@ Internet-Draft              Token Revocation                October 2012
 
 
 
-Lodderstedt, et al.       Expires April 9, 2013                 [Page 7]
+Lodderstedt, et al.       Expires May 10, 2013                  [Page 7]
 
