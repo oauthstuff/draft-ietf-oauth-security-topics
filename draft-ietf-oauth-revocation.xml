@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="6" month="November" year="2012" />
+    <date day="18" month="November" year="2012" />
 
     <!-- Meta-data Declarations -->
 
@@ -145,12 +145,12 @@
       uninstalls the respective app. Notifying the authorization server that
       the token is no longer needed allows the authorization server to cleanup
       data associated with that token (e.g. session data) and the underlying
-      access grant. This prevents a situation, where there is still a validate
+      access grant. This prevents a situation, where there is still a valid
       access grant for that particular client, which the end-user is not aware
-      of. This way, token revocation prevents abuse of orphaned tokens and
-      facilitates a better end-user experience, since invalidated access
-      grants will no longer turn up in a list of access grants the
-      authorization server might present to the end-user.</t>
+      of. This way, token revocation prevents abuse of abandoned tokens and
+      facilitates a better end-user experience since invalidated access grants
+      will no longer turn up in a list of access grants the authorization
+      server might present to the end-user.</t>
     </section>
 
     <section anchor="Revocation" title="Token Revocation">
@@ -173,8 +173,8 @@
       case, a client would revoke the refresh token and access tokens issued
       based on this particular refresh token are at most valid until
       expiration. Whether this is an viable option or whether access token
-      revocation is required, should be decided based on the service
-      provider's risk analysis.</t>
+      revocation is required should be decided based on the service provider's
+      risk analysis.</t>
 
       <t>Since requests to the token revocation endpoint result in the
       transmission of plain text credentials in the HTTP request, the
@@ -286,10 +286,10 @@ package.myCallback({"error":"invalid_token"});
     </section>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
-      <t>We would like to thank Michiel de Jong, Doug Foiles, Paul Madsen,
-      George Fletcher, Sebastian Ebling, Christian St&uuml;bner, Brian
-      Campbell, Igor Faynberg, Lukas Rosenstock, and Justin P. Richer for
-      their valuable feedback.</t>
+      <t>We would like to thank Hannes Tschofenig, Michiel de Jong, Doug
+      Foiles, Paul Madsen, George Fletcher, Sebastian Ebling, Christian
+      St&uuml;bner, Brian Campbell, Igor Faynberg, Lukas Rosenstock, and
+      Justin P. Richer for their valuable feedback.</t>
     </section>
 
     <!-- Possibly a 'Contributors' section ... -->
