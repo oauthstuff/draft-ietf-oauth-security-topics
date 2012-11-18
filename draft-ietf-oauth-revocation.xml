@@ -112,8 +112,12 @@
 		-->
 
     <abstract>
-      <t>This draft proposes an additional endpoint for OAuth authorization
-      servers, which allows clients to revoke their tokens.</t>
+      <t>This document proposes an additional endpoint for OAuth authorization
+      servers, which allows clients to notify the authorization server that a
+      previously obtained refresh or access token is no longer needed. This
+      allows the authorization server to cleanup security credentials. A
+      revocation request will invalidate the actual token and, if applicable,
+      other tokens based on the same access grant.</t>
     </abstract>
 
     <note title="Requirements Language">
@@ -126,32 +130,27 @@
 
   <middle>
     <section anchor="Introduction" title="Introduction">
-      <t>The OAuth 2.0 core specification <xref
-      target="I-D.ietf-oauth-v2"></xref> defines several ways for a client to
-      obtain refresh and access tokens. This specification supplements the
-      core specification with a mechanism to revoke both types of tokens. A
-      token is the external representation of an access grant issued by a
-      resource owner to a particular client. A revocation request will
-      invalidate the actual token and, if applicable, other tokens based on
-      the same access grant and the access grant itself.</t>
+      <t>The OAuth 2.0 core specification <xref target="RFC6749"></xref>
+      defines several ways for a client to obtain refresh and access tokens.
+      This specification supplements the core specification with a mechanism
+      to revoke both types of tokens. A token is the external representation
+      of an access grant issued by a resource owner to a particular client. A
+      revocation request will invalidate the actual token and, if applicable,
+      other tokens based on the same access grant and the access grant
+      itself.</t>
 
-      <t>Clients request the revocation by using an additional endpoint on the
-      authorization server. Compliant implementation MUST support the
-      revocation of refresh tokens, access token revocation MAY be
-      supported.</t>
-
-      <t>From an end-users perspective, OAuth is typically used to log into a
+      <t>From an end-user's perception, OAuth is often used to log into a
       certain site or app. This revocation mechanism allows a client to
       invalidate its tokens if the end-user logs out, changes identity, or
       uninstalls the respective app. Notifying the authorization server that
       the token is no longer needed allows the authorization server to cleanup
-      data associated with that token and the underlying access grant. This
-      prevents a situation, where there is still a validate access grant for
-      that particular client, which the end-user is not aware of. This way,
-      token revocation prevents abuse of orphaned tokens and facilitates a
-      better end-user experience, since invalidated access grants will no
-      longer turn up in a list of access grants the authorization server might
-      present to the end-user.</t>
+      data associated with that token (e.g. session data) and the underlying
+      access grant. This prevents a situation, where there is still a validate
+      access grant for that particular client, which the end-user is not aware
+      of. This way, token revocation prevents abuse of orphaned tokens and
+      facilitates a better end-user experience, since invalidated access
+      grants will no longer turn up in a list of access grants the
+      authorization server might present to the end-user.</t>
     </section>
 
     <section anchor="Revocation" title="Token Revocation">
@@ -159,6 +158,23 @@
       HTTP POST request to the token revocation endpoint. The location of the
       token revocation endpoint can be found in the authorization server's
       documentation. The token endpoint URI MAY include a query component.</t>
+
+      <t>Compliant implementation MUST support the revocation of refresh
+      tokens, access token revocation SHOULD be supported.</t>
+
+      <t>Note: Depending on the authorization server's token design,
+      revocation of access tokens might be a costly process. For example,
+      revocation of self-contained access tokens requires (time-consuming)
+      backend calls between resource and authorization server on every request
+      to the resource server or to push notifications from the authorization
+      server to the affected resource servers. Alternatively, authorization
+      servers may choose to issue short living access tokens, which can be
+      refreshed at any time using the corresponding refresh tokens. In this
+      case, a client would revoke the refresh token and access tokens issued
+      based on this particular refresh token are at most valid until
+      expiration. Whether this is an viable option or whether access token
+      revocation is required, should be decided based on the service
+      provider's risk analysis.</t>
 
       <t>Since requests to the token revocation endpoint result in the
       transmission of plain text credentials in the HTTP request, the
@@ -179,7 +195,7 @@
         </list></t>
 
       <t>The client also includes its authentication credentials as described
-      in Section 2.3. of <xref target="I-D.ietf-oauth-v2"></xref>.</t>
+      in Section 2.3. of <xref target="RFC6749"></xref>.</t>
 
       <t>For example, a client may request the revocation of a refresh token
       with the following request (line breaks are for display purposes
@@ -198,7 +214,7 @@
       <t>The authorization server first validates the client credentials (in
       case of a confidential client) and verifies whether the client is
       authorized to revoke the particular token. It therefore validates
-      whether this token had been issued to this client. </t>
+      whether this token had been issued to this client.</t>
 
       <t>In the next step, the authorization server invalidates the token and
       the respective access grant. If the particular token is a refresh token
@@ -206,14 +222,8 @@
       then the authorization server SHOULD also invalidate all access tokens
       based on the same access grant.</t>
 
-      <t>Note: Depending on the authorization server's design, immediate
-      revocation of access tokens might be a costly process. For example,
-      immediate revocation of self-contained access tokens requires
-      (time-consuming) backend calls between resource and authorization server
-      on every request to the resource server or a push notification from the
-      authorization server to the affected resource servers. The service
-      provider should decide based on a risk analysis whether immediate
-      revocation of access tokens is required.</t>
+      <t>Note: for considerations regarding access token revocation see note
+      above.</t>
 
       <t>The client MUST NOT use the token again after revocation.</t>
 
@@ -222,9 +232,9 @@
       client authentication, whereas a status code 403 is used if the client
       is not authorized to revoke the particular token. For all other error
       conditions, a status code 400 is used along with an error response as
-      defined in section 5.2. of <xref target="I-D.ietf-oauth-v2"></xref>. The
-      following error codes are defined for the token revocation endpoint:
-      <list hangIndent="8" style="hanging">
+      defined in section 5.2. of <xref target="RFC6749"></xref>. The following
+      error codes are defined for the token revocation endpoint: <list
+          hangIndent="8" style="hanging">
           <t hangText="unsupported_token_type">The authorization server does
           not support the revocation of the presented token type. I.e. the
           client tried to revoke an access token on a server not supporting
@@ -289,8 +299,32 @@ package.myCallback({"error":"invalid_token"});
     </section>
 
     <section anchor="Security" title="Security Considerations">
-      <t>All relevant security considerations have been given in the
-      functional specification.</t>
+      <t>If the authorization server does not support access token revocation,
+      access tokens will not be immediately invalidated when the corresponding
+      refresh token is revoked. Deployments MUST take this in account when
+      conducting their security risk analysis.</t>
+
+      <t>Cleaning up tokens using revocation contributes to overall security
+      and privacy since it reduces the liklyhood for abuse of abandoned
+      tokens. This specification in general does not intend to provide
+      countermeasures against token theft and abuse. For a discussion of
+      respective threats and countermeasures, consult the security
+      considerations given in section 10 of the OAuth core specification <xref
+      target="RFC6749"></xref> and the OAuth threat model document <xref
+      target="I-D.ietf-oauth-v2-threatmodel"></xref>.</t>
+
+      <t>Malicious clients could attempt to use the new endpoint to launch
+      denial of service attacks on the authorization server. Appropriate
+      countermeasures, which must be in place for the token endpoint as well,
+      should be applied to the revocation endpoint.</t>
+
+      <t>A malicious client may attempt to guess valid tokens on this
+      endpoints. As a pre-requisite, the client either requires a valid
+      client_id of a public client or the credentials of a confidential
+      client. An sucessful attempt would result in the revocation of the
+      respective token, thus causing the legitimate client to loss its
+      authorization. The malicious client does not gain further
+      advantages.</t>
     </section>
   </middle>
 
@@ -304,7 +338,7 @@ package.myCallback({"error":"invalid_token"});
 
       <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.5246.xml' ?>
 
-      <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-v2.xml' ?>
+      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.6749.xml' ?>
     </references>
 
     <references title="Informative References">
@@ -324,6 +358,8 @@ package.myCallback({"error":"invalid_token"});
         <format target="http://bob.pythonmac.org/archives/2005/12/05/remote-json-jsonp"
                 type="HTML" />
       </reference>
+
+      <?rfc include="reference.I-D.ietf-oauth-v2-threatmodel.xml"?>
     </references>
   </back>
 </rfc>
