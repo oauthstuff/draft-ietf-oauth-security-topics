@@ -199,6 +199,7 @@ Pragma: no-cache
   <back>
     <references title="Normative References">
       <?rfc include="reference.RFC.2119"?>
+<?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.6749.xml' ?>
     </references>
 
     <references title="Informative References">
