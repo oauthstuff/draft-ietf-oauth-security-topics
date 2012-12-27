@@ -199,10 +199,8 @@
       </figure>
 
       <t>The authorization server first validates the client credentials (in
-      case of a confidential client) and then verifies whether the client is
-      authorized to revoke the token. A client may only revoke a token if the
-      validation of the client identity succeeds and the particular token had
-      been issued to this client.</t>
+      case of a confidential client) and then verifies whether the token was
+      issued to the client making the revocation request. </t>
 
       <t>In the next step, the authorization server invalidates the token and
       the respective authorization. If the particular token is a refresh token
@@ -238,8 +236,8 @@
         offer <xref format="title" target="jsonp">JSONP</xref> by allowing GET
         requests with an additional parameter: <list hangIndent="8"
             style="hanging">
-            <t hangText="callback">The qualified name of a JavaScript
-            function.</t>
+            <t hangText="callback">OPTIONAL. The qualified name of a
+            JavaScript function.</t>
           </list></t>
 
         <t>For example, a client may request the revocation of an access token
@@ -248,8 +246,8 @@
 
         <figure>
           <artwork><![CDATA[
-https://example.com/revoke?token=agabcdefddddafdd&
-callback=package.myCallback
+     https://example.com/revoke?token=agabcdefddddafdd&
+     callback=package.myCallback
 ]]></artwork>
         </figure>
 
@@ -257,7 +255,7 @@ callback=package.myCallback
 
         <figure>
           <artwork><![CDATA[
-package.myCallback();
+     package.myCallback();
 ]]></artwork>
         </figure>
 
@@ -265,7 +263,7 @@ package.myCallback();
 
         <figure>
           <artwork><![CDATA[
-package.myCallback({"error":"invalid_token"});
+     package.myCallback({"error":"invalid_token"});
 ]]></artwork>
         </figure>
 
