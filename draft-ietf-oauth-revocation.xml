@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="25" month="December" year="2012" />
+    <date day="3" month="January" year="2013" />
 
     <!-- Meta-data Declarations -->
 
@@ -190,35 +190,37 @@
 
       <figure>
         <artwork><![CDATA[
-     POST /revoke HTTP/1.1
-     Host: server.example.com
-     Content-Type: application/x-www-form-urlencoded
-     Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
+  POST /revoke HTTP/1.1
+  Host: server.example.com
+  Content-Type: application/x-www-form-urlencoded
+  Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
      
-     token=45ghiukldjahdnhzdauz&  ]]></artwork>
+  token=45ghiukldjahdnhzdauz&  ]]></artwork>
       </figure>
 
       <t>The authorization server first validates the client credentials (in
       case of a confidential client) and then verifies whether the token was
-      issued to the client making the revocation request. </t>
+      issued to the client making the revocation request. If this validation
+      fails, the request is refused and the client is informed of the error by
+      the authorization server as described below.</t>
 
-      <t>In the next step, the authorization server invalidates the token and
-      the respective authorization. If the particular token is a refresh token
-      and the authorization server supports the revocation of access tokens,
-      then the authorization server SHOULD also invalidate all access tokens
-      based on the same authorization (see <xref format="title"
+      <t>In the next step, the authorization server invalidates the token. The
+      client MUST NOT use this token again after revocation.</t>
+
+      <t>Depending on the authorization server's revocation policy, the
+      revocation of a particular token may cause the revocation of related
+      tokens and the underlying authorization. If the particular token is a
+      refresh token and the authorization server supports the revocation of
+      access tokens, then the authorization server SHOULD also invalidate all
+      access tokens based on the same authorization (see <xref format="title"
       target="impl"></xref>).</t>
 
-      <t>The client MUST NOT use the token again after revocation.</t>
-
       <t>The authorization server indicates a successful processing of the
-      request by a HTTP status code 200. Status code 401 indicates a failed
-      client authentication, whereas a status code 403 is used if the client
-      is not authorized to revoke the particular token. For all other error
-      conditions, a status code 400 is used along with an error response as
-      defined in section 5.2. of <xref target="RFC6749"></xref>. The following
-      error codes are defined for the token revocation endpoint: <list
-          hangIndent="8" style="hanging">
+      request by a HTTP status code 200. The error presentation conforms to
+      the defintion in section 5.2 of <xref target="RFC6749"></xref>. </t>
+
+      <t>The following additional error codes are defined for the token
+      revocation endpoint: <list hangIndent="8" style="hanging">
           <t hangText="unsupported_token_type">The authorization server does
           not support the revocation of the presented token type. I.e. the
           client tried to revoke an access token on a server not supporting
@@ -246,8 +248,8 @@
 
         <figure>
           <artwork><![CDATA[
-     https://example.com/revoke?token=agabcdefddddafdd&
-     callback=package.myCallback
+  https://example.com/revoke?token=agabcdefddddafdd&
+  callback=package.myCallback
 ]]></artwork>
         </figure>
 
@@ -255,7 +257,7 @@
 
         <figure>
           <artwork><![CDATA[
-     package.myCallback();
+  package.myCallback();
 ]]></artwork>
         </figure>
 
@@ -263,7 +265,7 @@
 
         <figure>
           <artwork><![CDATA[
-     package.myCallback({"error":"invalid_token"});
+  package.myCallback({"error":"invalid_token"});
 ]]></artwork>
         </figure>
 
@@ -294,7 +296,8 @@
       access token revocation is desired. Another design alternative is to
       issue short-lived access tokens, which can be refreshed at any time
       using the corresponding refresh tokens. This allows the authorization
-      server to have a limit on the time revoked access tokens are in use.</t>
+      server to impose a limit on the time revoked access tokens are in
+      use.</t>
 
       <t>Which approach of token revocation is chosen will depend on the
       overall system design and on the application service provider's risk
@@ -304,10 +307,11 @@
     </section>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
-      <t>We would like to thank Amanda Anganes, Mark Wubben, Hannes
-      Tschofenig, Michiel de Jong, Doug Foiles, Paul Madsen, George Fletcher,
-      Sebastian Ebling, Christian St&uuml;bner, Brian Campbell, Igor Faynberg,
-      Lukas Rosenstock, and Justin Richer for their valuable feedback.</t>
+      <t>We would like to thank Peter, Mauritius, Amanda Anganes, Mark Wubben,
+      Hannes Tschofenig, Michiel de Jong, Doug Foiles, Paul Madsen, George
+      Fletcher, Sebastian Ebling, Christian St&uuml;bner, Brian Campbell, Igor
+      Faynberg, Lukas Rosenstock, and Justin Richer for their valuable
+      feedback.</t>
     </section>
 
     <!-- Possibly a 'Contributors' section ... -->
@@ -319,7 +323,7 @@
     <section anchor="Security" title="Security Considerations">
       <t>If the authorization server does not support access token revocation,
       access tokens will not be immediately invalidated when the corresponding
-      refresh token is revoked. Deployments MUST take this in account when
+      refresh token is revoked. Deployments MUST take this into account when
       conducting their security risk analysis.</t>
 
       <t>Cleaning up tokens using revocation contributes to overall security
