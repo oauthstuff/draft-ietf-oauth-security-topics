@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="3" month="January" year="2013" />
+    <date day="7" month="January" year="2013" />
 
     <!-- Meta-data Declarations -->
 
@@ -217,7 +217,7 @@
 
       <t>The authorization server indicates a successful processing of the
       request by a HTTP status code 200. The error presentation conforms to
-      the defintion in section 5.2 of <xref target="RFC6749"></xref>. </t>
+      the defintion in section 5.2 of <xref target="RFC6749"></xref>.</t>
 
       <t>The following additional error codes are defined for the token
       revocation endpoint: <list hangIndent="8" style="hanging">
@@ -230,7 +230,7 @@
         </list></t>
 
       <section anchor="cross-orgin" title="Cross-Origin Support">
-        <t>The revokation end-point SHOULD support <xref format="title"
+        <t>The revocation end-point SHOULD support <xref format="title"
         target="W3C.WD-cors-20120403">CORS</xref> if it is aimed at use in
         combination with user-agent-based applications.</t>
 
@@ -270,7 +270,7 @@
         </figure>
 
         <t>Clients should be aware that when relying on JSONP, a malicious
-        revokation end-point may attempt to inject malicious code into the
+        revocation end-point may attempt to inject malicious code into the
         client.</t>
       </section>
     </section>

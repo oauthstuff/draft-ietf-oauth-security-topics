@@ -4,10 +4,10 @@
 OAuth Working Group                                  T. Lodderstedt, Ed.
 Internet-Draft                                       Deutsche Telekom AG
 Intended status: Standards Track                               S. Dronia
-Expires: July 7, 2013
+Expires: July 11, 2013
                                                            M. Scurtescu
                                                                   Google
-                                                         January 3, 2013
+                                                         January 7, 2013
 
 
                             Token Revocation
@@ -43,7 +43,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on July 7, 2013.
+   This Internet-Draft will expire on July 11, 2013.
 
 Copyright Notice
 
@@ -52,7 +52,7 @@ Copyright Notice
 
 
 
-Lodderstedt, et al.       Expires July 7, 2013                  [Page 1]
+Lodderstedt, et al.       Expires July 11, 2013                 [Page 1]
 
 Internet-Draft              Token Revocation                January 2013
 
@@ -108,7 +108,7 @@ Table of Contents
 
 
 
-Lodderstedt, et al.       Expires July 7, 2013                  [Page 2]
+Lodderstedt, et al.       Expires July 11, 2013                 [Page 2]
 
 Internet-Draft              Token Revocation                January 2013
 
@@ -164,7 +164,7 @@ Internet-Draft              Token Revocation                January 2013
 
 
 
-Lodderstedt, et al.       Expires July 7, 2013                  [Page 3]
+Lodderstedt, et al.       Expires July 11, 2013                 [Page 3]
 
 Internet-Draft              Token Revocation                January 2013
 
@@ -220,7 +220,7 @@ Internet-Draft              Token Revocation                January 2013
 
 
 
-Lodderstedt, et al.       Expires July 7, 2013                  [Page 4]
+Lodderstedt, et al.       Expires July 11, 2013                 [Page 4]
 
 Internet-Draft              Token Revocation                January 2013
 
@@ -229,7 +229,7 @@ Internet-Draft              Token Revocation                January 2013
 
 2.1.  Cross-Origin Support
 
-   The revokation end-point SHOULD support CORS [W3C.WD-cors-20120403]
+   The revocation end-point SHOULD support CORS [W3C.WD-cors-20120403]
    if it is aimed at use in combination with user-agent-based
    applications.
 
@@ -255,7 +255,7 @@ Internet-Draft              Token Revocation                January 2013
      package.myCallback({"error":"invalid_token"});
 
    Clients should be aware that when relying on JSONP, a malicious
-   revokation end-point may attempt to inject malicious code into the
+   revocation end-point may attempt to inject malicious code into the
    client.
 
 
@@ -276,7 +276,7 @@ Internet-Draft              Token Revocation                January 2013
 
 
 
-Lodderstedt, et al.       Expires July 7, 2013                  [Page 5]
+Lodderstedt, et al.       Expires July 11, 2013                 [Page 5]
 
 Internet-Draft              Token Revocation                January 2013
 
@@ -332,7 +332,7 @@ Internet-Draft              Token Revocation                January 2013
 
 
 
-Lodderstedt, et al.       Expires July 7, 2013                  [Page 6]
+Lodderstedt, et al.       Expires July 11, 2013                 [Page 6]
 
 Internet-Draft              Token Revocation                January 2013
 
@@ -388,7 +388,7 @@ Internet-Draft              Token Revocation                January 2013
 
 
 
-Lodderstedt, et al.       Expires July 7, 2013                  [Page 7]
+Lodderstedt, et al.       Expires July 11, 2013                 [Page 7]
 
 Internet-Draft              Token Revocation                January 2013
 
@@ -444,5 +444,5 @@ Authors' Addresses
 
 
 
-Lodderstedt, et al.       Expires July 7, 2013                  [Page 8]
+Lodderstedt, et al.       Expires July 11, 2013                 [Page 8]
 
