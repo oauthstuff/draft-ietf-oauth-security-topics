@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-oauth-revocation-04" ipr="trust200902">
+<rfc category="std" docName="draft-ietf-oauth-revocation-05" ipr="trust200902">
   <!--gran
 		category values: std, bcp, info, exp, and historic ipr values:
 		full3667, noModification3667, noDerivatives3667 you can add the
@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="7" month="January" year="2013" />
+    <date day="10" month="February" year="2013" />
 
     <!-- Meta-data Declarations -->
 
@@ -117,7 +117,7 @@
       previously obtained refresh or access token is no longer needed. This
       allows the authorization server to cleanup security credentials. A
       revocation request will invalidate the actual token and, if applicable,
-      other tokens based on the same authorization.</t>
+      other tokens based on the same authorization grant.</t>
     </abstract>
 
     <note title="Requirements Language">
@@ -134,9 +134,10 @@
       defines several ways for a client to obtain refresh and access tokens.
       This specification supplements the core specification with a mechanism
       to revoke both types of tokens. A token is a string representing an
-      authorization issued by the resource owner to the client. A revocation
-      request will invalidate the actual token and, if applicable, other
-      tokens based on the same authorization and the authorization itself.</t>
+      authorization grant issued by the resource owner to the client. A
+      revocation request will invalidate the actual token and, if applicable,
+      other tokens based on the same authorization grant and the authorization
+      grant itself.</t>
 
       <t>From an end-user's perspective, OAuth is often used to log into a
       certain site or app. This revocation mechanism allows a client to
@@ -144,24 +145,31 @@
       uninstalls the respective app. Notifying the authorization server that
       the token is no longer needed allows the authorization server to clean
       up data associated with that token (e.g. session data) and the
-      underlying authorization. This behavior prevents a situation where there
-      is still a valid authorization for a particular client which the end
-      user is not aware of. This way, token revocation prevents abuse of
-      abandoned tokens and facilitates a better end-user experience since
-      invalidated authorization will no longer turn up in a list of
-      authorizations the authorization server might present to the
+      underlying authorization grant. This behavior prevents a situation where
+      there is still a valid authorization grant for a particular client which
+      the end user is not aware of. This way, token revocation prevents abuse
+      of abandoned tokens and facilitates a better end-user experience since
+      invalidated authorization grants will no longer turn up in a list of
+      authorization grants the authorization server might present to the
       end-user.</t>
     </section>
 
     <section anchor="Revocation" title="Token Revocation">
-      <t>The client requests the revocation of a particular token by making an
-      HTTP POST request to the token revocation endpoint. The location of the
-      token revocation endpoint can be found in the authorization server's
-      documentation. The token endpoint URI MAY include a query component.</t>
-
       <t>Implementations MUST support the revocation of refresh tokens and
       SHOULD support the revocation of access tokens (see <xref format="title"
       target="impl"></xref>).</t>
+
+      <t>The client requests the revocation of a particular token by making an
+      HTTP POST request to the token revocation endpoint URI. The token
+      endpoint URI MAY include a query component.</t>
+
+      <t>The means to obtain the location of the revocation endpoint is out of
+      scope of this specification. There is a range of options: The client
+      could, for example, automatically discover this information (along with
+      other server andpoints and properties). Alternatively, the client
+      developer could also get to know the endpoint location from the server's
+      documentation. As this endpoint is handling security credentials, the
+      endpoint location MUST be obtained from a trustworthy source.</t>
 
       <t>Since requests to the token revocation endpoint result in the
       transmission of plain text credentials in the HTTP request, the
@@ -177,8 +185,19 @@
       parameters using the "application/x-www-form-urlencoded" format in the
       HTTP request entity-body: <list hangIndent="8" style="hanging">
           <t hangText="token">REQUIRED. The token that the client wants to get
-          revoked. Note: the authorization server is supposed to detect the
-          token type automatically.</t>
+          revoked. </t>
+
+          <t hangText="token_type_hint">OPTIONAL. Passed to the Authorization
+          server as a hint about the type of the token submitted for
+          revocation. This specification defines the values "access_token" and
+          "refresh_token". Clients may pass this parameter in order to help
+          the authorization server to optimize the token lookup. This may
+          especially help authorization server, which are unable to determine
+          the token type based on the value of the "token" parameter. If the
+          server is unable to locate the token using the given hint, it MUST
+          extend its search accross all of its supported token types. An
+          authorization server may decide to ignore this parameter, e.g. if it
+          is able to detect the token type automatically. </t>
         </list></t>
 
       <t>The client also includes its authentication credentials as described
@@ -205,32 +224,44 @@
       the authorization server as described below.</t>
 
       <t>In the next step, the authorization server invalidates the token. The
-      client MUST NOT use this token again after revocation.</t>
+      client MUST assume the revocation is immediate upon the return of the
+      request. The client MUST NOT use the token again after the
+      revocation.</t>
 
       <t>Depending on the authorization server's revocation policy, the
       revocation of a particular token may cause the revocation of related
-      tokens and the underlying authorization. If the particular token is a
-      refresh token and the authorization server supports the revocation of
-      access tokens, then the authorization server SHOULD also invalidate all
-      access tokens based on the same authorization (see <xref format="title"
-      target="impl"></xref>).</t>
+      tokens and the underlying authorization grant. If the particular token
+      is a refresh token and the authorization server supports the revocation
+      of access tokens, then the authorization server SHOULD also invalidate
+      all access tokens based on the same authorization grant (see <xref
+      format="title" target="impl"></xref>). If the token passed to the
+      request is an access token, the server MAY decide to revoke the
+      respective refresh token as well.</t>
+
+      <t>Note: A client compliant with <xref target="RFC6749"></xref> must be
+      prepared to handle unexpected token invalidation at any time.
+      Independent of the revocation mechanism specificied in this document,
+      resource owners may decide to revoke authorization grants or the
+      authorization server may invalidate tokens in order to mitigate security
+      threats. Thus having different server policies with respect to cascading
+      the revocation of tokens should not pose interoperability problems.</t>
 
       <t>The authorization server indicates a successful processing of the
-      request by a HTTP status code 200. The error presentation conforms to
-      the defintion in section 5.2 of <xref target="RFC6749"></xref>.</t>
+      request by a HTTP status code 200. This also applies if the client
+      submits an invalid token to the revocation endpoint. </t>
 
-      <t>The following additional error codes are defined for the token
-      revocation endpoint: <list hangIndent="8" style="hanging">
+      <t>The error presentation conforms to the defintion in section 5.2 of
+      <xref target="RFC6749"></xref>. The following additional error code is
+      defined for the token revocation endpoint: <list hangIndent="8"
+          style="hanging">
           <t hangText="unsupported_token_type">The authorization server does
           not support the revocation of the presented token type. I.e. the
           client tried to revoke an access token on a server not supporting
           this feature.</t>
-
-          <t hangText="invalid_token">The presented token is invalid.</t>
         </list></t>
 
       <section anchor="cross-orgin" title="Cross-Origin Support">
-        <t>The revocation end-point SHOULD support <xref format="title"
+        <t>The revocation end-point MAY support <xref format="title"
         target="W3C.WD-cors-20120403">CORS</xref> if it is aimed at use in
         combination with user-agent-based applications.</t>
 
@@ -351,8 +382,13 @@
       client's credentials and one of their tokens, they could do much worse
       damage by using the token elsewhere than by revoking it. If they chose
       to revoke the token, the legitimate client will lose its authorization
-      and will need to prompt the user again. No further damage is done and
-      the guessed token is now worthless.</t>
+      grant and will need to prompt the user again. No further damage is done
+      and the guessed token is now worthless.</t>
+
+      <t>Since the revocation endpoint is handling security credentials,
+      clients shall obtain its location from a trustworthy source only.
+      Otherwise, an attacker could capture valid security tokens by utilizing
+      a counterfeit revocation endpoint.</t>
     </section>
   </middle>
 
