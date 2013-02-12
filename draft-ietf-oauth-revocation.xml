@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="10" month="February" year="2013" />
+    <date day="12" month="February" year="2013" />
 
     <!-- Meta-data Declarations -->
 
@@ -160,16 +160,13 @@
       target="impl"></xref>).</t>
 
       <t>The client requests the revocation of a particular token by making an
-      HTTP POST request to the token revocation endpoint URI. The token
-      endpoint URI MAY include a query component.</t>
-
-      <t>The means to obtain the location of the revocation endpoint is out of
-      scope of this specification. There is a range of options: The client
-      could, for example, automatically discover this information (along with
-      other server andpoints and properties). Alternatively, the client
-      developer could also get to know the endpoint location from the server's
-      documentation. As this endpoint is handling security credentials, the
-      endpoint location MUST be obtained from a trustworthy source.</t>
+      HTTP POST request to the token revocation endpoint URL. The token
+      endpoint URL MAY include a query component. The means to obtain the
+      location of the revocation endpoint is out of scope of this
+      specification. For example, the client developler may consult the
+      server's documentation or automatic discovery may be used. As this
+      endpoint is handling security credentials, the endpoint location MUST be
+      obtained from a trustworthy source.</t>
 
       <t>Since requests to the token revocation endpoint result in the
       transmission of plain text credentials in the HTTP request, the
@@ -181,84 +178,97 @@
       additional transport-layer mechanisms meeting its security
       requirements.</t>
 
-      <t>The client constructs the request by including the following
-      parameters using the "application/x-www-form-urlencoded" format in the
-      HTTP request entity-body: <list hangIndent="8" style="hanging">
-          <t hangText="token">REQUIRED. The token that the client wants to get
-          revoked. </t>
+      <section title="Revocation Request">
+        <t>The client constructs the request by including the following
+        parameters using the "application/x-www-form-urlencoded" format in the
+        HTTP request entity-body:</t>
 
-          <t hangText="token_type_hint">OPTIONAL. Passed to the Authorization
-          server as a hint about the type of the token submitted for
-          revocation. This specification defines the values "access_token" and
-          "refresh_token". Clients may pass this parameter in order to help
-          the authorization server to optimize the token lookup. This may
-          especially help authorization server, which are unable to determine
-          the token type based on the value of the "token" parameter. If the
-          server is unable to locate the token using the given hint, it MUST
-          extend its search accross all of its supported token types. An
-          authorization server may decide to ignore this parameter, e.g. if it
-          is able to detect the token type automatically. </t>
-        </list></t>
+        <t><list hangIndent="8" style="hanging">
+            <t hangText="token">REQUIRED. The token that the client wants to
+            get revoked.</t>
 
-      <t>The client also includes its authentication credentials as described
-      in Section 2.3. of <xref target="RFC6749"></xref>.</t>
+            <t hangText="token_type_hint">OPTIONAL. A hint about the type of
+            the token submitted for revocation. Clients MAY pass this
+            parameter in order to help the authorization server to optimize
+            the token lookup. If the server is unable to locate the token
+            using the given hint, it MUST extend its search accross all of its
+            supported token types. An authorization server MAY ignore this
+            parameter, particularly if it is able to detect the token type
+            automatically. This specification defines two such values:</t>
 
-      <t>For example, a client may request the revocation of a refresh token
-      with the following request (line breaks are for display purposes
-      only):</t>
+            <t><list style="symbols">
+                <t>access_token An Access Token as defined in <xref
+                target="RFC6749"></xref> section 1.4</t>
 
-      <figure>
-        <artwork><![CDATA[
+                <t>refresh_token A Refresh Token as defined in <xref
+                target="RFC6749"></xref> section 1.5</t>
+              </list>Specific implementations, profiles, and extensions of
+            this specification MAY define other values for this parameter.</t>
+          </list>The client also includes its authentication credentials as
+        described in Section 2.3. of <xref target="RFC6749"></xref>.</t>
+
+        <t>For example, a client may request the revocation of a refresh token
+        with the following request (line breaks are for display purposes
+        only):</t>
+
+        <figure>
+          <artwork><![CDATA[
   POST /revoke HTTP/1.1
   Host: server.example.com
   Content-Type: application/x-www-form-urlencoded
   Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
      
-  token=45ghiukldjahdnhzdauz&  ]]></artwork>
-      </figure>
+  token=45ghiukldjahdnhzdauz&token_type_hint=refresh_token]]></artwork>
+        </figure>
 
-      <t>The authorization server first validates the client credentials (in
-      case of a confidential client) and then verifies whether the token was
-      issued to the client making the revocation request. If this validation
-      fails, the request is refused and the client is informed of the error by
-      the authorization server as described below.</t>
+        <t>The authorization server first validates the client credentials (in
+        case of a confidential client) and then verifies whether the token was
+        issued to the client making the revocation request. If this validation
+        fails, the request is refused and the client is informed of the error
+        by the authorization server as described below.</t>
 
-      <t>In the next step, the authorization server invalidates the token. The
-      client MUST assume the revocation is immediate upon the return of the
-      request. The client MUST NOT use the token again after the
-      revocation.</t>
+        <t>In the next step, the authorization server invalidates the token.
+        The client MUST assume the revocation is immediate upon the return of
+        the request. The client MUST NOT use the token again after the
+        revocation.</t>
 
-      <t>Depending on the authorization server's revocation policy, the
-      revocation of a particular token may cause the revocation of related
-      tokens and the underlying authorization grant. If the particular token
-      is a refresh token and the authorization server supports the revocation
-      of access tokens, then the authorization server SHOULD also invalidate
-      all access tokens based on the same authorization grant (see <xref
-      format="title" target="impl"></xref>). If the token passed to the
-      request is an access token, the server MAY decide to revoke the
-      respective refresh token as well.</t>
+        <t>Depending on the authorization server's revocation policy, the
+        revocation of a particular token may cause the revocation of related
+        tokens and the underlying authorization grant. If the particular token
+        is a refresh token and the authorization server supports the
+        revocation of access tokens, then the authorization server SHOULD also
+        invalidate all access tokens based on the same authorization grant
+        (see <xref format="title" target="impl"></xref>). If the token passed
+        to the request is an access token, the server MAY decide to revoke the
+        respective refresh token as well.</t>
 
-      <t>Note: A client compliant with <xref target="RFC6749"></xref> must be
-      prepared to handle unexpected token invalidation at any time.
-      Independent of the revocation mechanism specificied in this document,
-      resource owners may decide to revoke authorization grants or the
-      authorization server may invalidate tokens in order to mitigate security
-      threats. Thus having different server policies with respect to cascading
-      the revocation of tokens should not pose interoperability problems.</t>
+        <t>Note: A client compliant with <xref target="RFC6749"></xref> must
+        be prepared to handle unexpected token invalidation at any time.
+        Independent of the revocation mechanism specified in this document,
+        resource owners may decide to revoke authorization grants or the
+        authorization server may invalidate tokens in order to mitigate
+        security threats. Thus having different server policies with respect
+        to cascading the revocation of tokens should not pose interoperability
+        problems.</t>
+      </section>
 
-      <t>The authorization server indicates a successful processing of the
-      request by a HTTP status code 200. This also applies if the client
-      submits an invalid token to the revocation endpoint. </t>
+      <section title="Revocation Response">
+        <t>The authorization server indicates a successful processing of the
+        request by a HTTP status code 200. This also applies if the client
+        submits an invalid token to the revocation endpoint.</t>
 
-      <t>The error presentation conforms to the defintion in section 5.2 of
-      <xref target="RFC6749"></xref>. The following additional error code is
-      defined for the token revocation endpoint: <list hangIndent="8"
-          style="hanging">
-          <t hangText="unsupported_token_type">The authorization server does
-          not support the revocation of the presented token type. I.e. the
-          client tried to revoke an access token on a server not supporting
-          this feature.</t>
-        </list></t>
+        <section title="Error Response">
+          <t>The error presentation conforms to the defintion in section 5.2
+          of <xref target="RFC6749"></xref>. The following additional error
+          code is defined for the token revocation endpoint: <list
+              hangIndent="8" style="hanging">
+              <t hangText="unsupported_token_type">The authorization server
+              does not support the revocation of the presented token type.
+              I.e. the client tried to revoke an access token on a server not
+              supporting this feature.</t>
+            </list></t>
+        </section>
+      </section>
 
       <section anchor="cross-orgin" title="Cross-Origin Support">
         <t>The revocation end-point MAY support <xref format="title"
@@ -266,9 +276,9 @@
         combination with user-agent-based applications.</t>
 
         <t>In addition, for interoperability with legacy user-agents, it MAY
-        offer <xref format="title" target="jsonp">JSONP</xref> by allowing GET
-        requests with an additional parameter: <list hangIndent="8"
-            style="hanging">
+        also offer <xref format="title" target="jsonp">JSONP</xref> by
+        allowing GET requests with an additional parameter: <list
+            hangIndent="8" style="hanging">
             <t hangText="callback">OPTIONAL. The qualified name of a
             JavaScript function.</t>
           </list></t>
@@ -296,7 +306,7 @@
 
         <figure>
           <artwork><![CDATA[
-  package.myCallback({"error":"invalid_token"});
+  package.myCallback({"error":"unsupported_token_type"});
 ]]></artwork>
         </figure>
 
