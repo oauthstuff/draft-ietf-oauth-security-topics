@@ -10,8 +10,8 @@ Expires: November 20, 2013                                  M. Scurtescu
                                                             May 19, 2013
 
 
-                         OAuth Token Revocation
-                     draft-ietf-oauth-revocation-08
+                       OAuth 2.0 Token Revocation
+                     draft-ietf-oauth-revocation-09
 
 Abstract
 

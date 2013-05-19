@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-oauth-revocation-08" ipr="trust200902">
+<rfc category="std" docName="draft-ietf-oauth-revocation-09" ipr="trust200902">
   <!--gran
 		category values: std, bcp, info, exp, and historic ipr values:
 		full3667, noModification3667, noDerivatives3667 you can add the
@@ -60,7 +60,7 @@
 			necessary if the full title is longer than 39 characters
 		-->
 
-    <title abbrev="Token Revocation">OAuth Token Revocation</title>
+    <title abbrev="Token Revocation">OAuth 2.0 Token Revocation</title>
 
     <author fullname="Torsten Lodderstedt" initials="T." role="editor"
             surname="Lodderstedt">
