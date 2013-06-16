@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="15" month="June" year="2013"/>
+    <date day="16" month="June" year="2013"/>
 
     <!-- Meta-data Declarations -->
 
@@ -160,29 +160,23 @@
       target="impl"/>).</t>
 
       <t>The client requests the revocation of a particular token by making an
-      HTTP POST request to the token revocation endpoint URL. This URL MAY
-      include a query component. The means to obtain the location of the
-      revocation endpoint is out of scope of this specification. For example,
-      the client developer may consult the server's documentation or automatic
-      discovery may be used. As this endpoint is handling security
-      credentials, the endpoint location needs to be obtained from a
-      trustworthy source.</t>
+      HTTP POST request to the token revocation endpoint URL. This URL MUST
+      conform to the rules given in <xref target="RFC6749"/>, section 3.1.</t>
+
+      <t>The means to obtain the location of the revocation endpoint is out of
+      scope of this specification. For example, the client developer may
+      consult the server's documentation or automatic discovery may be used.
+      As this endpoint is handling security credentials, the endpoint location
+      needs to be obtained from a trustworthy source.</t>
 
       <t>Since requests to the token revocation endpoint result in the
       transmission of plain text credentials in the HTTP request, the
       authorization server MUST require the use of a transport-layer security
       mechanism when sending requests to the token revocation endpoints. The
-      authorization server MUST use Transport Layer Security (TLS). It MAY
-      also support additional transport-layer security mechanisms that meet
-      its security requirements.</t>
-
-      <t>The appropriate version (or versions) of TLS will vary over time,
-      based on the widespread deployment and known security vulnerabilities.
-      At the time of this writing, TLS version 1.2 <xref target="RFC5246"/> is
-      the most recent version, but has a very limited deployment base and
-      might not be readily available for implementation. TLS version 1.0 <xref
-      target="RFC2246"/> is the most widely deployed version and will provide
-      the broadest interoperability.</t>
+      authorization server MUST use Transport Layer Security (TLS) in a
+      version compliant with <xref target="RFC6749"/>, section 1.6.
+      Implementations MAY also support additional transport-layer security
+      mechanisms that meet their security requirements.</t>
 
       <section title="Revocation Request">
         <t>The client constructs the request by including the following
@@ -203,10 +197,10 @@
             automatically. This specification defines two such values:<list
                 style="symbols">
                 <t>access_token: An Access Token as defined in <xref
-                target="RFC6749"/> section 1.4</t>
+                target="RFC6749"/>, section 1.4</t>
 
                 <t>refresh_token: A Refresh Token as defined in <xref
-                target="RFC6749"/> section 1.5</t>
+                target="RFC6749"/>, section 1.5</t>
               </list>Specific implementations, profiles, and extensions of
             this specification MAY define other values for this parameter
             using the registry defined in <xref target="hint-reg"/>.</t>
@@ -249,29 +243,36 @@
         revocation of access tokens, then the authorization server SHOULD also
         invalidate all access tokens based on the same authorization grant
         (see <xref format="title" target="impl"/>). If the token passed to the
-        request is an access token, the server MAY decide to revoke the
-        respective refresh token as well.</t>
+        request is an access token, the server MAY revoke the respective
+        refresh token as well.</t>
 
-        <t>A client compliant with <xref target="RFC6749"/> MUST be prepared
-        to handle unexpected token invalidation at any time. Independent of
-        the revocation mechanism specified in this document, resource owners
-        may decide to revoke authorization grants or the authorization server
-        may invalidate tokens in order to mitigate security threats. Thus
-        having different server policies with respect to cascading the
+        <t>Note: A client compliant with <xref target="RFC6749"/> must be
+        prepared to handle unexpected token invalidation at any time.
+        Independent of the revocation mechanism specified in this document,
+        resource owners may revoke authorization grants or the authorization
+        server may invalidate tokens in order to mitigate security threats.
+        Thus having different server policies with respect to cascading the
         revocation of tokens should not pose interoperability problems.</t>
       </section>
 
       <section title="Revocation Response">
         <t>The authorization server responds with HTTP status code 200 if the
         token has been revoked sucessfully or if the client submitted an
-        invalid token. The content of the response body is ignored by the
-        client as all information is conveyed in the response code.</t>
+        invalid token. </t>
+
+        <t>Note: invalid tokens do not cause an error response since the
+        client cannot handle such an error in a reasonable way. Moreover, the
+        purpose of the revocation request, invalidating the particular token,
+        is already achieved. </t>
+
+        <t>The content of the response body is ignored by the client as all
+        necessary information is conveyed in the response code.</t>
 
         <t>An invalid token type hint value is ignored by the authorization
         server and does not influence the revocation response.</t>
 
         <section title="Error Response">
-          <t>The error presentation conforms to the defintion in section 5.2
+          <t>The error presentation conforms to the definition in section 5.2
           of <xref target="RFC6749"/>. The following additional error code is
           defined for the token revocation endpoint: <list hangIndent="8"
               style="hanging">
@@ -367,7 +368,8 @@
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
-      <t/>
+      <t>This specification registers an error value in the OAuth Extension
+      Error registry and establishes the OAuth Token Type registry.</t>
 
       <section title="OAuth Extensions Error Registration">
         <t>This specification registers the following error values in the
