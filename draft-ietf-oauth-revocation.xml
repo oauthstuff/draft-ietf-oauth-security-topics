@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-oauth-revocation-10" ipr="trust200902">
+<rfc category="std" docName="draft-ietf-oauth-revocation-11" ipr="trust200902">
   <!--gran
 		category values: std, bcp, info, exp, and historic ipr values:
 		full3667, noModification3667, noDerivatives3667 you can add the
@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="16" month="June" year="2013"/>
+    <date day="13" month="July" year="2013"/>
 
     <!-- Meta-data Declarations -->
 
@@ -161,7 +161,8 @@
 
       <t>The client requests the revocation of a particular token by making an
       HTTP POST request to the token revocation endpoint URL. This URL MUST
-      conform to the rules given in <xref target="RFC6749"/>, section 3.1.</t>
+      conform to the rules given in <xref target="RFC6749"/>, section 3.1.
+      Clients MUST verify that the URL is an HTTPS URL.</t>
 
       <t>The means to obtain the location of the revocation endpoint is out of
       scope of this specification. For example, the client developer may
@@ -170,13 +171,18 @@
       needs to be obtained from a trustworthy source.</t>
 
       <t>Since requests to the token revocation endpoint result in the
-      transmission of plain text credentials in the HTTP request, the
-      authorization server MUST require the use of a transport-layer security
-      mechanism when sending requests to the token revocation endpoints. The
-      authorization server MUST use Transport Layer Security (TLS) in a
-      version compliant with <xref target="RFC6749"/>, section 1.6.
-      Implementations MAY also support additional transport-layer security
-      mechanisms that meet their security requirements.</t>
+      transmission of plain text credentials in the HTTP request, URLs for
+      token revocation endpoints MUST be HTTPS URLs. The authorization server
+      MUST use Transport Layer Security (TLS) in a version compliant with
+      <xref target="RFC6749"/>, section 1.6. Implementations MAY also support
+      additional transport-layer security mechanisms that meet their security
+      requirements.</t>
+
+      <t>If the host of the token revocation endpoint can also be reached over
+      HTTP, then the server SHOULD also offer a revocation service at the
+      corresponding HTTP URI, but MUST NOT publish this URI as a token
+      revocation endpoint. This ensures that tokens accidentally sent over
+      HTTP will be revoked.</t>
 
       <section title="Revocation Request">
         <t>The client constructs the request by including the following
@@ -258,12 +264,12 @@
       <section title="Revocation Response">
         <t>The authorization server responds with HTTP status code 200 if the
         token has been revoked sucessfully or if the client submitted an
-        invalid token. </t>
+        invalid token.</t>
 
         <t>Note: invalid tokens do not cause an error response since the
         client cannot handle such an error in a reasonable way. Moreover, the
         purpose of the revocation request, invalidating the particular token,
-        is already achieved. </t>
+        is already achieved.</t>
 
         <t>The content of the response body is ignored by the client as all
         necessary information is conveyed in the response code.</t>
