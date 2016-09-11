@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+		This template is for creating an Internet Draft using xml2rfc, which
+		is available here: http://xml.resource.org.
+	-->
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!-- One method to get references from the online citation libraries.
+     There has to be one entity for each item to be referenced. 
+     An alternate method (rfc include) is described in the references. -->
+<!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY RFC2629 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2629.xml">
+<!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
+<!ENTITY I-D.narten-iana-considerations-rfc2434bis SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.narten-iana-considerations-rfc2434bis.xml">
+]>
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+<?rfc strict="yes" ?>
+<!-- give errors regarding ID-nits and DTD validation -->
+<!-- control the table of contents (ToC) -->
+<?rfc toc="yes"?>
+<!-- generate a ToC -->
+<?rfc tocdepth="4"?>
+<!-- the number of levels of subsections in ToC. default: 3 -->
+<!-- control references -->
+<?rfc symrefs="yes"?>
+<!-- use symbolic references tags, i.e, [RFC2119] instead of [1] -->
+<?rfc sortrefs="yes" ?>
+<!-- sort the reference entries alphabetically -->
+<!--
+		control vertical white space (using these PIs as follows is
+		recommended by the RFC Editor)
+	-->
+<?rfc compact="yes" ?>
+<!-- do not start each main section on a new page -->
+<?rfc subcompact="no" ?>
+<!-- keep one blank line between list items -->
+<!-- end of list of popular I-D processing instructions -->
+<rfc category="info" docName="draft-lodderstedt-oauth-security-topics-00"
+     ipr="trust200902">
+  <!--
+		category values: std, bcp, info, exp, and historic ipr values:
+		full3667, noModification3667, noDerivatives3667 you can add the
+		attributes updates="NNNN" and obsoletes="NNNN" they will automatically
+		be output with "(if approved)"
+	-->
+
+  <!-- ***** FRONT MATTER ***** -->
+
+  <front>
+    <!--
+			The abbreviated title is used in the page header - it is only
+			necessary if the full title is longer than 39 characters
+		-->
+
+    <title abbrev="Security Topics">OAuth Security Topics</title>
+
+    <author fullname="Torsten Lodderstedt" initials="T." role="editor"
+            surname="Lodderstedt">
+      <organization>Deutsche Telekom AG</organization>
+
+      <address>
+        <email>torsten@lodderstedt.net</email>
+
+        <!-- uri and facsimile elements may also be added -->
+      </address>
+    </author>
+
+    <date day="11" month="September" year="2016" />
+
+    <!-- Meta-data Declarations -->
+
+    <area>Security Area</area>
+
+    <workgroup>Open Authentication Protocol</workgroup>
+
+    <!--
+			WG name at the upperleft corner of the doc, IETF is fine for
+			individual submissions. If this element is not present, the default
+			is "Network Working Group", which is used by the RFC Editor as a nod
+			to the history of the IETF.
+		-->
+
+    <keyword>security</keyword>
+
+    <keyword>oauth2</keyword>
+
+    <!--
+			Keywords will be incorporated into HTML output files in a meta tag
+			but they have no effect on text or nroff output. If you submit your
+			draft to the RFC Editor, the keywords will be used for the search
+			engine.
+		-->
+
+    <abstract>
+      <t>This draft gives a comprehensive overview on OAuth open security topics. It is intended 
+	  to serve as a tool for the OAuth working group to systematically recommending mitigations and 
+	  potentially also defining OAuth extensions needed to cope with the respective security threats.</t>
+    </abstract>
+  </front>
+
+  <middle>
+    <section anchor="Introduction" title="Introduction">
+      <t>It been a while since OAuth has been published in RFCs 6749 and 6750. Since publication, 
+	  OAuth 2.0 has gotten massive traction in the market and became the standard for API protection
+	  and, as foundation of OpenID Connect, identity providing. 
+	  
+	  antipattern can be observered (XSRF, referrer header)
+	  
+	  Although most of this threats are covered in RFC 6819, ...
+	  
+	  technology has changed (browser redirect #)
+	  
+	  OAuth is used in much more dynamic setups as originally anticipated, creating new challanges with respect 
+	  to security.
+	  </t>
+    </section>
+
+    <section anchor="cred_leakage" title="OAuth Credentials Leakage">
+      <t>
+	  <list style="symbols">
+	  <t>authorization code via redirect URIs - mitigation: client authentication, exact redirect URL matching</t>
+	  <t>authorization code via referrer headers - redirect to itself, post mode instead of redirect</t>	  
+	  <t>access tokens via referrer header -> caused by changed fragment handling in current web browsers - post message, other grant types</t>	  
+	  <t>access token on bad resource servers - </t>	  
+	  <t>mix up attacks on authz code flow - AS specific redirect + transaction intend in client state, iss/client_id response parameter, ID Token, Origin header</t>	  
+	  </list>
+	  </t>
+    </section>
+
+	<section anchor="cred_injection" title="OAuth Credentials Injection">
+      <t>
+	  <list style="symbols">
+	  <t>XSRF - mitigation: XSRF tokens w/ user agent binding, https://www.owasp.org/index.php/CrossSite_Request_Forgery_(CSRF)_Prevention_Cheat_Sheet</t>
+	  <t>code injection: bind code to XSRF token/nonce/state/PKCE, token binding</t>	  
+	  <t>access token injection: id_token/signed response+nonce - OIDC token id_token - don't use it, token binding</t>	  
+	  </list>
+	  </t>
+    </section>
+	
+	<section anchor="other" title="Other Attacks">
+	<t>Open Redirector - error handling AS (redirects) (draft-ietf-oauth-closing-redirectors-00)</t>
+	<t>redirect via status code 307 - use 302</t>	  
+    </section>
+	
+    <section anchor="Acknowledgements" title="Acknowledgements">
+      <t>We would like to thank ... for their valuable feedback.</t>
+    </section>
+
+    <section anchor="IANA" title="IANA Considerations">
+      <t>This draft includes no request to IANA.</t>
+    </section>
+
+    <section anchor="Security" title="Security Considerations">
+      <t>All relevant security considerations have been given in the
+      functional specification.</t>
+    </section>
+  </middle>
+
+  <back>
+    <references title="Normative References">
+      <?rfc include="reference.RFC.2119"?>
+      <?rfc include="reference.RFC.2246"?>
+      <?rfc include="reference.RFC.5246"?>
+      <?rfc include="reference.RFC.6749"?>
+      <?rfc include="reference.RFC.6750"?>
+      <?rfc include="reference.RFC.6819"?>
+    </references>
+
+    <references title="Informative References">
+      <?rfc include="reference.RFC.7009"?>
+    </references>
+  </back>
+</rfc>
