@@ -92,8 +92,9 @@
 
     <abstract>
       <t>This draft gives a comprehensive overview on OAuth open security topics. It is intended 
-	  to serve as a tool for the OAuth working group to systematically recommending mitigations and 
-	  potentially also defining OAuth extensions needed to cope with the respective security threats.</t>
+	  to serve as a tool for the OAuth working group to systematically address the open security topics, 
+	  recommending mitigations, and potentially also defining OAuth extensions needed to cope with the 
+	  respective security threats. This draft will potentially become a BCP over time.</t>
     </abstract>
   </front>
 
@@ -103,34 +104,76 @@
 	  OAuth 2.0 has gotten massive traction in the market and became the standard for API protection
 	  and, as foundation of OpenID Connect, identity providing. 
 	  
+	  OAuth implementations being attacked, revealing typical implementation weaknesses
 	  antipattern can be observered (XSRF, referrer header)
 	  
-	  Although most of this threats are covered in RFC 6819, ...
+	  Although most of this threats are covered in RFC 6819, ... it sometimes seems to difficult to implement it correctly or there is a need for more specific recommendations.
 	  
 	  technology has changed (browser redirect #)
 	  
 	  OAuth is used in much more dynamic setups as originally anticipated, creating new challanges with respect 
-	  to security.
+	  to security. not documented in RFC 6819
 	  </t>
     </section>
 
     <section anchor="cred_leakage" title="OAuth Credentials Leakage">
       <t>
 	  <list style="symbols">
-	  <t>authorization code via redirect URIs - mitigation: client authentication, exact redirect URL matching</t>
-	  <t>authorization code via referrer headers - redirect to itself, post mode instead of redirect</t>	  
-	  <t>access tokens via referrer header -> caused by changed fragment handling in current web browsers - post message, other grant types</t>	  
-	  <t>access token on bad resource servers - </t>	  
-	  <t>mix up attacks on authz code flow - AS specific redirect + transaction intend in client state, iss/client_id response parameter, ID Token, Origin header</t>	  
-	  </list>
+	  <t>redirect URI matching
+	  
+	  threat: leakage of code or access token to adversary impersonating legitimate client
+	  can directly be exchanged or injected into flow at legitimate client but on attackers device
+	  
+	  code 
+	  - RFC says - strict matching at tokens endpoint - AS implementation flaw: pattern matching only on both authz and tokens endpoint (saves AS state), pattern matching can be flawed (exact matching is easy to implement), client needs to memorize concrete URL if TX state is represented in URI query parameters != state
+	  - Alternative: require exact matching on both endpoints (does not requires state at the AS or the client to retain actual URI), requires client to maintain state of the tx in the state parameter (along with XSRF token), clients with 
+	  multiple redirect URIs need to register all of them explicitly
+	  -> normative change to RFC 6749 (AS behaviour)
+	  
+	  access token/implicit grant
+	  - redirect URI matching is client authentication, no other way to prevent leakage towards faked client - exact redirect matching needed
+	  -> normative change to RFC 6749 (AS behaviour)
+	  </t>
+	  <t>authorization code via referrer headers (redirect uri)
+	  
+	  prevent leakage: redirect to itself, post mode instead of redirect
+	  prevent abuse: client authentication, one time use (assuming the code had been redeemed before rendering the respective page)
+	  
+	  </t>	  
+	  <t>WFF changed fragment handling in current browser implementations may cause problems: Original assumption of implicit
+	  grant was the access token is only exposed to JS client in user agent. Now, access token is also sent to servers
+	  where the JS is loaded from. Might be a problem if JS client and server belong to different security domains or 
+	  organisations.
+	  Potential scenarios: server uses the token, token end up in log files, ...
+	  Mitigation: use Windows post message instead</t>
+	 
+	 <t>WFF Note: Access tokens should not turn up in referrer header - according to 
+	 https://tools.ietf.org/html/rfc7231#section-5.5.2 referer header may not include fragments</t>	  
+
+	 <t>access token on bad resource servers - prevent leakage - basic assumption "well known RS URL" only holds true for static deployments, dynamic scenarios with late binding require other solutions: (AS to tell client where to use AT (identify by URL), encrypted ATs, authenticate RS) vs prevent abuse - basic assumption "audience restriction" - not sufficient in dynamic scenarios - POP, token binding</t>	  
+
+	 <t>mix up attacks on authz code flow - AS specific redirect + transaction intend in client state, iss/client_id response parameter, use hybrid flow (ID Token contains cryptographically secured issuer), Origin header</t>	  
+
+	 </list>
 	  </t>
     </section>
 
 	<section anchor="cred_injection" title="OAuth Credentials Injection">
       <t>
 	  <list style="symbols">
-	  <t>XSRF - mitigation: XSRF tokens w/ user agent binding, https://www.owasp.org/index.php/CrossSite_Request_Forgery_(CSRF)_Prevention_Cheat_Sheet</t>
-	  <t>code injection: bind code to XSRF token/nonce/state/PKCE, token binding</t>	  
+	  <t>XSRF - mitigation: XSRF tokens w/ user agent binding, https://www.owasp.org/index.php/CrossSite_Request_Forgery_(CSRF)_Prevention_Cheat_Sheet
+	  
+	  typically injection of something on a victims device. in the OAuth context, this could be a code or an access token. 
+	  
+	  </t>
+	  <t>code injection: 
+	  
+	  injection of leaked OAuth credential on a device under the attackers control. 
+	  
+	  Code injection: bind code to user agent instance state/nonce(OIDC)/PKCE, token binding
+	  Access token injection: token binding, hybrid flow+nonce(OIDC)
+	  
+	  </t>	  
 	  <t>access token injection: id_token/signed response+nonce - OIDC token id_token - don't use it, token binding</t>	  
 	  </list>
 	  </t>
