@@ -504,16 +504,16 @@
 <p id="rfc.section.1.p.1">It's been a while since OAuth has been published in <a href="#RFC6749">RFC 6749</a> <cite title="NONE">[RFC6749]</cite> and <a href="#RFC6750">RFC 6750</a> <cite title="NONE">[RFC6750]</cite>.  Since publication, OAuth 2.0 has gotten massive traction in the market and became the standard for API protection and, as foundation of OpenID Connect, identity providing.  </p>
 
 <ul>
-  <li>OAuth implementations are being attacked, which reveals typical implementation weaknesses and antipattern can be observered (XSRF, referrer header). Although most of this threats are covered in <a href="#RFC6819">RFC 6819</a> <cite title="NONE">[RFC6819]</cite>, it sometimes seems to difficult to implement it correctly or there is a need for more specific recommendations.</li>
+  <li>OAuth implementations are being attacked through known implementation weaknesses and anti-patterns (XSRF, referrer header). Although most of these threats are discussed in <a href="#RFC6819">RFC 6819</a> <cite title="NONE">[RFC6819]</cite>, continued exploitation demonstrates there may be a need for more specific recommendations or that the existing mitigations are too difficult to deploy.</li>
   <li>Technology has changed, e.g. the way browsers treat fragments in some situations, which may change the implicit grant's underlying security model.</li>
-  <li>OAuth is used in much more dynamic setups as originally anticipated, creating new challenges with respect to security. Those challenges go beyond the original scope of both <a href="#RFC6749">RFC 6749</a> <cite title="NONE">[RFC6749]</cite> and <a href="#RFC6819">RFC 6819</a> <cite title="NONE">[RFC6819]</cite>.</li>
+  <li>OAuth is used in much more dynamic setups than originally anticipated, creating new challenges with respect to security. Those challenges go beyond the original scope of both <a href="#RFC6749">RFC 6749</a> <cite title="NONE">[RFC6749]</cite> and <a href="#RFC6819">RFC 6819</a> <cite title="NONE">[RFC6819]</cite>.</li>
 </ul>
 
 <p> </p>
-<p id="rfc.section.1.p.2">This remainder of the document is organized as follows: The next section describes various scenarios how OAuth credentials (namely access tokens and authorization codes) may be disclosed to attackers and proposes respective countermeasures. Afterwards, the document discusses different ways an attacker could utilize captured credential and how these attacks can be prevented. The last sections gives an description of additional threats.</p>
+<p id="rfc.section.1.p.2">This remainder of the document is organized as follows: The next section describes various scenarios how OAuth credentials (namely access tokens and authorization codes) may be disclosed to attackers and proposes countermeasures. Afterwards, the document discusses attacks possible with captured credential and how they may be prevented. The last sections discuss additional threats.</p>
 <h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#cred_leakage" id="cred_leakage">OAuth Credentials Leakage</a></h1>
 <h1 id="rfc.section.2.1"><a href="#rfc.section.2.1">2.1.</a> Redirect URI validation of authorization requests</h1>
-<p id="rfc.section.2.1.p.1">The following implementation issue has been observed: Some authorization servers allow clients to register redirect URI patterns instead of complete redirect URIs. In those cases, the authorization servers, at runtime, matches the actual redirect URI parameter value at the authorization endpoint against this pattern. This approach shall allow clients to encode transaction state into additional redirect URI parameters or to register just a single pattern for multiple redirect URIs. As a downside, it turned out to be more complex to implement and error prone to manage than exact redirect URI matching. Several successful attacks have been observed in the wild, which utilized flaws in the pattern matching implementation or concrete configurations. Such a flaw effectively breaks client identification or authentication (depending on grant and client type) and allows the attacker to obtain an authorization code or access token, either </p>
+<p id="rfc.section.2.1.p.1">The following implementation issue has been observed: Some authorization servers allow clients to register redirect URI patterns instead of complete redirect URIs. In those cases, the authorization servers, at runtime, match the actual redirect URI parameter value at the authorization endpoint against this pattern. This approach allows clients to encode transaction state into additional redirect URI parameters or to register just a single pattern for multiple redirect URIs. As a downside, it turned out to be more complex to implement and error prone to manage than exact redirect URI matching. Several successful attacks have been observed in the wild, which utilized flaws in the pattern matching implementation or concrete configurations. Such a flaw effectively breaks client identification or authentication (depending on grant and client type) and allows the attacker to obtain an authorization code or access token, either </p>
 
 <ul>
   <li>by directly sending the user agent to a URI under the attackers control or</li>
@@ -523,7 +523,7 @@
 <p> </p>
 <h1 id="rfc.section.2.1.1"><a href="#rfc.section.2.1.1">2.1.1.</a> Authorization Code Grant</h1>
 <p id="rfc.section.2.1.1.p.1">For a public client using the grant type code, an attack would look as follows: </p>
-<p id="rfc.section.2.1.1.p.2">Let's assume the pattern "https://*.example.com/*" had been registered for the client "s6BhdRkqt3". This pattern allows redirect URI from any host residing  in the domain example.com. So if an attacker manager to establish a host or subdomain in "example.com" he can impersonate the legitimate client. So let's assume the attacker sets up the host "evil.example.com".</p>
+<p id="rfc.section.2.1.1.p.2">Let's assume the pattern "https://*.example.com/*" had been registered for the client "s6BhdRkqt3". This pattern allows redirect URI from any host residing  in the domain example.com. So if an attacker manager to establish a host or subdomain in "example.com" he can impersonate the legitimate client. Assume the attacker sets up the host "evil.example.com".</p>
 <p/>
 
 <dl>
@@ -550,18 +550,18 @@ Host: server.example.com</pre>
 </dl>
 
 <p> </p>
-<p id="rfc.section.2.1.1.p.6">Note: This attack will not work for confidential clients, since the code exchange requires authentication with the legitimate client's secret. The attacker will need to utilize the legitimite client to redeem the code. This and other kinds of injections are covered in Section <a href="#cred_injection">OAuth Credentials Injection</a>.</p>
+<p id="rfc.section.2.1.1.p.6">Note: This attack will not work for confidential clients, since the code exchange requires authentication with the legitimate client's secret. The attacker will need to utilize the legitimate client to redeem the code. This and other kinds of injections are covered in Section <a href="#cred_injection">OAuth Credentials Injection</a>.</p>
 <h1 id="rfc.section.2.1.2"><a href="#rfc.section.2.1.2">2.1.2.</a> Implicit Grant</h1>
-<p id="rfc.section.2.1.2.p.1">The attack described above for grant type authorization code works similarly for the implicit grant. If the attacker is able to send the authorization response to a URI under his control, it will directly get access to the fragment carrying the access token.</p>
-<p id="rfc.section.2.1.2.p.2">Additionally, it is possible to conduct an attack utilizing the way user agents treat fragments in case of redirects. User agents append fragments to redirect URIs, if the location header does not contain a fragment (see <a href="#RFC7231">[RFC7231]</a>, section 9.5). In this attack, this behavior is combined with the client as an open redirector in order to get access to access tokens. This will allow to circumvent even tighter redirect URI patterns.</p>
-<p id="rfc.section.2.1.2.p.3">Lets assume, the pattern for client "s6BhdRkqt3" is "https://client.example.com/cb?*", i.e. any parameter is allowed for redirects to "https://client.example.com/cb". Unfortunately, the client exposes an open redirector. This endpoint supports a parameter "redirect_to", which takes a target URL and will send the browser to this URL using a HTTP 302.</p>
+<p id="rfc.section.2.1.2.p.1">The attack described above for grant type authorization code works similarly for the implicit grant. If the attacker is able to send the authorization response to a URI under his control, he will directly get access to the fragment carrying the access token.</p>
+<p id="rfc.section.2.1.2.p.2">Additionally, it is possible to conduct an attack utilizing the way user agents treat fragments in case of redirects. User agents re-attach fragments to the destination URL of a redirect if the location header does not contain a fragment (see <a href="#RFC7231">[RFC7231]</a>, section 9.5). In this attack this behavior is combined with the client as an open redirector in order to get access to access tokens. This allows circumvention even of strict redirect URI patterns.</p>
+<p id="rfc.section.2.1.2.p.3">Assume the pattern for client "s6BhdRkqt3" is "https://client.example.com/cb?*", i.e. any parameter is allowed for redirects to "https://client.example.com/cb". Unfortunately, the client exposes an open redirector. This endpoint supports a parameter "redirect_to", which takes a target URL and will send the browser to this URL using a HTTP 302.</p>
 <p/>
 
 <dl>
   <dt>(1)   </dt>
-  <dd>Same as above</dd>
+  <dd>Same as above, the attacker needs to trick the user into opening a tampered URL in his browser, which launches a page under the attacker's control, say "https://www.evil.com".</dd>
   <dt>(2)   </dt>
-  <dd>The attacker now initiates an authorization request, which is very similar to the attack on the code flow. As differences, it utilizes the open redirector by encoding "redirect_to=https://client.evil.com" into the redirect URI and it uses the response type "token" (line breaks are for display purposes only):</dd>
+  <dd>The URL initiates an authorization request, which is very similar to the attack on the code flow. As differences, it utilizes the open redirector by encoding "redirect_to=https://client.evil.com" into the redirect URI and it uses the response type "token" (line breaks are for display purposes only):</dd>
 </dl>
 
 <p> </p>
@@ -574,7 +574,7 @@ Host: server.example.com</pre>
 
 <dl>
   <dt>(3)   </dt>
-  <dd>The authorization server let the request pass and sends the resulting access token to the redirect URI (some response parameter are omitted for better readability)</dd>
+  <dd>Since the redirect URI matches the registered pattern, the authorization server allows the request and sends the resulting access token with a 302 redirect (some response parameters are omitted for better readability)</dd>
 </dl>
 
 <p> </p>
@@ -586,7 +586,7 @@ Host: server.example.com</pre>
 
 <dl>
   <dt>(4)   </dt>
-  <dd>At the legitimate client, the redirector issues a HTTP 302 to the URL "https://evil.example.com/cb" without an fragment.</dd>
+  <dd>At the example.com, the request arrives at the open redirector. It will read the redirect parameter and will issue a HTTP 302 to the URL "https://evil.example.com/cb".</dd>
 </dl>
 
 <p> </p>
@@ -597,7 +597,7 @@ Host: server.example.com</pre>
 
 <dl>
   <dt>(5)   </dt>
-  <dd>The user agent will then add the fragment <br/>"#access_token=2YotnFZFEjr1zCsicMWpAA&amp;..." to the URL and will navigate to the following URL:</dd>
+  <dd>Since the redirector at example.com does not include a fragment in the Location header, the user agent will re-attach the original fragment <br/>"#access_token=2YotnFZFEjr1zCsicMWpAA&amp;..." to the URL and will navigate to the following URL:</dd>
 </dl>
 
 <p> </p>
@@ -607,7 +607,7 @@ Host: server.example.com</pre>
 
 <dl>
   <dt>(6)   </dt>
-  <dd>The attacker may conveniently access the fragment and obtain the access token.</dd>
+  <dd>The attacker's page at client.evil.com can access the fragment and obtain the access token.</dd>
 </dl>
 
 <p> </p>
@@ -626,7 +626,7 @@ Host: server.example.com</pre>
 <p id="rfc.section.2.1.3.p.3">Additional recommendations: </p>
 
 <ul>
-  <li>Clients should make sure not to expose any open redirectors (see respective section)</li>
+  <li>It is also advisable that the domains on which callbacks are hosted should not expose open redirectors (see respective section).</li>
   <li>As a further recommendation, clients may drop fragments via intermediary URL with fix fragment (e.g. https://developers.facebook.com/blog/post/552/) to prevent the user agent from appending any unintended fragments.</li>
 </ul>
 

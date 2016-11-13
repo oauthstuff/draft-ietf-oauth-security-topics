@@ -121,23 +121,24 @@
 	  standard for API protection and, as foundation of OpenID Connect, identity 
 	  providing.
 	  <list style="symbols">
-	  <t>OAuth implementations are being attacked, which reveals typical implementation 
-	  weaknesses and antipattern can be observered (XSRF, referrer header). Although 
-	  most of this threats are covered in <xref target="RFC6819">RFC 6819</xref>, it sometimes seems to difficult to 
-	  implement it correctly or there is a need for more specific recommendations.</t>
+	  <t>OAuth implementations are being attacked through known implementation 
+	  weaknesses and anti-patterns (XSRF, referrer header). Although most of these
+	  threats are discussed in <xref target="RFC6819">RFC 6819</xref>, continued exploitation 
+ 	  demonstrates there may be a need for more specific recommendations or that the existing 
+	  mitigations are too difficult to deploy.</t>
 	  <t>Technology has changed, e.g. the way browsers treat fragments in some situations, 
 	  which may change the implicit grant's underlying security model.</t>
-	  <t>OAuth is used in much more dynamic setups as originally anticipated, creating new 
+	  <t>OAuth is used in much more dynamic setups than originally anticipated, creating new 
 	  challenges with respect to security. Those challenges go beyond the original 
 	  scope of both <xref target="RFC6749">RFC 6749</xref> and <xref target="RFC6819">RFC 6819</xref>.</t>
 	  </list>
 	  </t>
 	  <t>This remainder of the document is organized as follows: The next section 
 	  describes various scenarios how OAuth credentials (namely access tokens and 
-	  authorization codes) may be disclosed to attackers and proposes respective 
-	  countermeasures. Afterwards, the document discusses different ways an attacker 
-	  could utilize captured credential and how these attacks can be prevented. The last 
-	  sections gives an description of additional threats.</t>
+	  authorization codes) may be disclosed to attackers and proposes
+	  countermeasures. Afterwards, the document discusses attacks possible with 
+	  captured credential and how they may be prevented. The last 
+	  sections discuss additional threats.</t>
     </section>
 
     <section anchor="cred_leakage" title="OAuth Credentials Leakage">
@@ -145,9 +146,9 @@
 	  <t>The following implementation issue has been observed: Some authorization 
 	  servers allow clients to register redirect URI patterns instead of 
 	  complete redirect URIs. In those cases, the authorization servers, 
-	  at runtime, matches the actual redirect URI parameter value at the 
-	  authorization endpoint against this pattern. This approach shall 
-	  allow clients to encode transaction state into additional 
+	  at runtime, match the actual redirect URI parameter value at the 
+	  authorization endpoint against this pattern. This approach 
+	  allows clients to encode transaction state into additional 
 	  redirect URI parameters or to register just a single pattern for 
 	  multiple redirect URIs. As a downside, it turned out to be more 
 	  complex to implement and error prone to manage than exact 
@@ -172,7 +173,7 @@
 	  for the client "s6BhdRkqt3". This pattern allows redirect URI from any 
 	  host residing  in the domain example.com. So if an attacker manager to 
 	  establish a host or subdomain in "example.com" he can impersonate the 
-	  legitimate client. So let's assume the attacker sets up the host 
+	  legitimate client. Assume the attacker sets up the host 
 	  "evil.example.com".</t>
 	  <t>
 	   <list style="format (%d)" counter="my_count">
@@ -188,7 +189,7 @@
 	  <t>
 	  	<figure>
           <artwork><![CDATA[GET /authorize?response_type=code&client_id=s6BhdRkqt3&state=xyz
-        &redirect_uri=https%3A%2F%2Fevil.client.example.com%2Fcb HTTP/1.1
+  &redirect_uri=https%3A%2F%2Fevil.client.example.com%2Fcb HTTP/1.1
 Host: server.example.com]]></artwork>
         </figure>	
 	  </t>
@@ -209,23 +210,23 @@ Host: server.example.com]]></artwork>
 	  </t>
 	  <t>Note: This attack will not work for confidential clients, since the 
 	  code exchange requires authentication with the legitimate client's 
-	  secret. The attacker will need to utilize the legitimite client to 
+	  secret. The attacker will need to utilize the legitimate client to 
 	  redeem the code. This and other kinds of injections are covered in 
 	  Section <xref format="title" target="cred_injection"/>.</t>
 	   </section>
 	   <section title="Implicit Grant">
 	   <t>The attack described above for grant type authorization code works 
 	   similarly for the implicit grant. If the attacker is able to send the 
-	   authorization response to a URI under his control, it will directly get 
+	   authorization response to a URI under his control, he will directly get 
 	   access to the fragment carrying the access token.</t>
 	   <t>Additionally, it is possible to conduct an attack utilizing the way 
-	   user agents treat fragments in case of redirects. User agents append 
-	   fragments to redirect URIs, if the location header does not contain a 
+	   user agents treat fragments in case of redirects. User agents re-attach 
+	   fragments to the destination URL of a redirect if the location header does not contain a 
 	   fragment (see <xref target="RFC7231"/>, section 9.5). In this 
-	   attack, this behavior is combined with the client as an open redirector 
-	   in order to get access to access tokens. This will allow to circumvent 
-	   even tighter redirect URI patterns.</t>
-	   <t>Lets assume, the pattern for client "s6BhdRkqt3" is
+	   attack this behavior is combined with the client as an open redirector 
+	   in order to get access to access tokens. This allows circumvention even of 
+	   strict redirect URI patterns.</t>
+	   <t>Assume the pattern for client "s6BhdRkqt3" is
 	   "https://client.example.com/cb?*", i.e. any parameter is allowed for 
 	   redirects to "https://client.example.com/cb". Unfortunately, the client 
 	   exposes an open redirector. This endpoint supports a parameter 
@@ -233,8 +234,10 @@ Host: server.example.com]]></artwork>
 	   this URL using a HTTP 302.</t>
 	  <t>
 	   <list style="format (%d)" counter="my_count1">
-	    <t>Same as above</t>
-	    <t>The attacker now initiates an authorization request, which is very 
+	    <t>Same as above, the attacker needs to trick the user into opening a 
+		tampered URL in his browser, which launches a page under the attacker's control, 
+		say "https://www.evil.com".</t>
+	    <t>The URL initiates an authorization request, which is very 
 		similar to the attack on the code flow. As differences, it utilizes the 
 		open redirector by encoding "redirect_to=https://client.evil.com" into 
 		the redirect URI and it uses the response type "token" (line breaks 
@@ -244,29 +247,30 @@ Host: server.example.com]]></artwork>
 	  <t>
 	  	<figure>
           <artwork><![CDATA[GET /authorize?response_type=token&client_id=s6BhdRkqt3&state=xyz
-        &redirect_uri=https%3A%2F%2Fclient.example.com%2Fcb%26redirect_to
-           %253Dhttps%253A%252F%252Fclient.evil.com%252Fcb HTTP/1.1
+  &redirect_uri=https%3A%2F%2Fclient.example.com%2Fcb%26redirect_to
+  %253Dhttps%253A%252F%252Fclient.evil.com%252Fcb HTTP/1.1
 Host: server.example.com]]></artwork>
         </figure>	
 	  </t>
 	  <t>
 	   <list style="format (%d)" counter="my_count1">
-	    <t>The authorization server let the request pass and sends the 
-		resulting access token to the redirect URI (some response parameter are 
-		omitted for better readability)</t>
+	    <t>Since the redirect URI matches the registered pattern, the authorization server 
+		allows the request and sends the resulting access token with a 302 redirect (some 
+		response parameters are omitted for better readability)</t>
 	   </list>	   
 	  </t>
 	  <t>
 	  	<figure>
           <artwork><![CDATA[HTTP/1.1 302 Found
-     Location: https://client.example.com/cb?redirect_to%3Dhttps%3A%2F%2Fclient.evil.com%2Fcb
-#access_token=2YotnFZFEjr1zCsicMWpAA&...]]></artwork>
+  Location: https://client.example.com/cb?
+  redirect_to%3Dhttps%3A%2F%2Fclient.evil.com%2Fcb
+  #access_token=2YotnFZFEjr1zCsicMWpAA&...]]></artwork>
         </figure>	
 	  </t>	
       <t>   	  
 	   <list style="format (%d)" counter="my_count1">
-	    <t>At the legitimate client, the redirector issues a HTTP 302 to the 
-		URL "https://evil.example.com/cb" without an fragment.</t>
+	    <t>At the example.com, the request arrives at the open redirector. It will read the 
+		redirect parameter and will issue a HTTP 302 to the URL "https://evil.example.com/cb".</t>
 	   </list>	   
 	  </t>
 	  <t>
@@ -277,7 +281,8 @@ Host: server.example.com]]></artwork>
       </t>
 	  <t>
 	   <list style="format (%d)" counter="my_count1">
-	    <t>The user agent will then add the fragment <vspace/>"#access_token=2YotnFZFEjr1zCsicMWpAA&amp;..." 
+	    <t>Since the redirector at example.com does not include a fragment in the Location header, 
+		the user agent will re-attach the original fragment <vspace/>"#access_token=2YotnFZFEjr1zCsicMWpAA&amp;..." 
 		to the URL and will navigate to the following URL:</t>
 	   </list>	  
 	  </t>
@@ -288,7 +293,7 @@ Host: server.example.com]]></artwork>
 	  </t>
 	  <t>
 	   <list style="format (%d)" counter="my_count1">	  
-      <t>The attacker may conveniently access the fragment and obtain the access token.</t>
+      <t>The attacker's page at client.evil.com can access the fragment and obtain the access token.</t>
 	   </list>	  
 	  </t>	  
 	   </section>
@@ -321,7 +326,7 @@ Host: server.example.com]]></artwork>
 	   </t>
 	   <t>Additional recommendations:
 	   <list style="symbols">
-	   <t>Clients should make sure not to expose any open redirectors (see respective section)</t>
+	   <t>It is also advisable that the domains on which callbacks are hosted should not expose open redirectors (see respective section).</t>
 	   <t>As a further recommendation, clients may drop fragments via intermediary URL with fix fragment 
 	   (e.g. https://developers.facebook.com/blog/post/552/) to prevent the user agent from appending any unintended fragments.</t>
 	   </list>
