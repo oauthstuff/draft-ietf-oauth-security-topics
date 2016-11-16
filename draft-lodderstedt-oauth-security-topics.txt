@@ -4,24 +4,24 @@
 
 Open Authentication Protocol                         T. Lodderstedt, Ed.
 Internet-Draft                                       Deutsche Telekom AG
-Intended status: Informational                                J. Bradley
-Expires: May 16, 2017                                      Ping Identity
+Intended status: Best Current Practice                        J. Bradley
+Expires: May 20, 2017                                      Ping Identity
                                                              A. Labunets
                                                                 Facebook
-                                                       November 12, 2016
+                                                       November 16, 2016
 
 
                          OAuth Security Topics
-               draft-lodderstedt-oauth-security-topics-00
+               draft-lodderstedt-oauth-security-topics-01
 
 Abstract
 
    This draft gives a comprehensive overview on open OAuth security
-   topics.  It is intended to serve as a tool for the OAuth working
-   group to systematically address these open security topics,
-   recommending mitigations, and potentially also defining OAuth
-   extensions needed to cope with the respective security threats.  This
-   draft will potentially become a BCP over time.
+   topics.  It is intended to serve as a working document for the OAuth
+   working group to systematically capture and discuss these security
+   topics and respective mitigations and eventually recommend best
+   current practice and also OAuth extensions needed to cope with the
+   respective security threats.
 
 Status of This Memo
 
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on May 16, 2017.
+   This Internet-Draft will expire on May 20, 2017.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Lodderstedt, et al.       Expires May 16, 2017                  [Page 1]
+Lodderstedt, et al.       Expires May 20, 2017                  [Page 1]
 
 Internet-Draft               Security Topics               November 2016
 
@@ -77,17 +77,19 @@ Table of Contents
      2.4.  Access token in browser history (TBD) . . . . . . . . . .   8
      2.5.  Access token on bad resource servers (TBD)  . . . . . . .   8
      2.6.  Mix-Up (TBD)  . . . . . . . . . . . . . . . . . . . . . .   9
-   3.  OAuth Credentials Injection . . . . . . . . . . . . . . . . .   9
-     3.1.  Code Injection  . . . . . . . . . . . . . . . . . . . . .   9
-       3.1.1.  Proposed Counter Measures . . . . . . . . . . . . . .  11
+   3.  OAuth Credentials Injection . . . . . . . . . . . . . . . . .  10
+     3.1.  Code Injection  . . . . . . . . . . . . . . . . . . . . .  10
+       3.1.1.  Proposed Counter Measures . . . . . . . . . . . . . .  12
        3.1.2.  Access Token Injection (TBD)  . . . . . . . . . . . .  13
-       3.1.3.  XSRF (TBD)  . . . . . . . . . . . . . . . . . . . . .  13
+       3.1.3.  XSRF (TBD)  . . . . . . . . . . . . . . . . . . . . .  14
    4.  Other Attacks . . . . . . . . . . . . . . . . . . . . . . . .  14
-   5.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  14
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  14
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  14
-   8.  Normative References  . . . . . . . . . . . . . . . . . . . .  14
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  15
+   5.  Other Topics  . . . . . . . . . . . . . . . . . . . . . . . .  14
+   6.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  14
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  15
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  15
+   9.  Normative References  . . . . . . . . . . . . . . . . . . . .  15
+   Appendix A.  Document History . . . . . . . . . . . . . . . . . .  15
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  16
 
 1.  Introduction
 
@@ -103,16 +105,18 @@ Table of Contents
       for more specific recommendations or that the existing mitigations
       are too difficult to deploy.
 
-   o  Technology has changed, e.g. the way browsers treat fragments in
-      some situations, which may change the implicit grant's underlying
-      security model.
 
 
 
-Lodderstedt, et al.       Expires May 16, 2017                  [Page 2]
+
+Lodderstedt, et al.       Expires May 20, 2017                  [Page 2]
 
 Internet-Draft               Security Topics               November 2016
 
+
+   o  Technology has changed, e.g. the way browsers treat fragments in
+      some situations, which may change the implicit grant's underlying
+      security model.
 
    o  OAuth is used in much more dynamic setups than originally
       anticipated, creating new challenges with respect to security.
@@ -157,19 +161,19 @@ Internet-Draft               Security Topics               November 2016
    For a public client using the grant type code, an attack would look
    as follows:
 
-   Let's assume the pattern "https://*.example.com/*" had been
-   registered for the client "s6BhdRkqt3".  This pattern allows redirect
-   URI from any host residing in the domain example.com.  So if an
-   attacker manager to establish a host or subdomain in "example.com" he
 
 
 
 
-Lodderstedt, et al.       Expires May 16, 2017                  [Page 3]
+Lodderstedt, et al.       Expires May 20, 2017                  [Page 3]
 
 Internet-Draft               Security Topics               November 2016
 
 
+   Let's assume the pattern "https://*.example.com/*" had been
+   registered for the client "s6BhdRkqt3".  This pattern allows redirect
+   URI from any host residing in the domain example.com.  So if an
+   attacker manager to establish a host or subdomain in "example.com" he
    can impersonate the legitimate client.  Assume the attacker sets up
    the host "evil.example.com".
 
@@ -214,18 +218,18 @@ Internet-Draft               Security Topics               November 2016
    the authorization response to a URI under his control, he will
    directly get access to the fragment carrying the access token.
 
-   Additionally, it is possible to conduct an attack utilizing the way
-   user agents treat fragments in case of redirects.  User agents re-
-   attach fragments to the destination URL of a redirect if the location
-   header does not contain a fragment (see [RFC7231], section 9.5).  In
 
 
 
-Lodderstedt, et al.       Expires May 16, 2017                  [Page 4]
+Lodderstedt, et al.       Expires May 20, 2017                  [Page 4]
 
 Internet-Draft               Security Topics               November 2016
 
 
+   Additionally, it is possible to conduct an attack utilizing the way
+   user agents treat fragments in case of redirects.  User agents re-
+   attach fragments to the destination URL of a redirect if the location
+   header does not contain a fragment (see [RFC7231], section 9.5).  In
    this attack this behavior is combined with the client as an open
    redirector in order to get access to access tokens.  This allows
    circumvention even of strict redirect URI patterns.
@@ -270,18 +274,17 @@ Internet-Draft               Security Topics               November 2016
    HTTP/1.1 302 Found
         Location: https://client.evil.com/cb
 
-   (5)  Since the redirector at example.com does not include a fragment
-        in the Location header, the user agent will re-attach the
-        original fragment
 
 
 
-
-Lodderstedt, et al.       Expires May 16, 2017                  [Page 5]
+Lodderstedt, et al.       Expires May 20, 2017                  [Page 5]
 
 Internet-Draft               Security Topics               November 2016
 
 
+   (5)  Since the redirector at example.com does not include a fragment
+        in the Location header, the user agent will re-attach the
+        original fragment
         "#access_token=2YotnFZFEjr1zCsicMWpAA&..." to the URL and will
         navigate to the following URL:
 
@@ -326,17 +329,18 @@ Internet-Draft               Security Topics               November 2016
    o  Exact redirect matching does not work for native apps utilizing a
       local web server due to dynamic port numbers - at least wild cards
       for port numbers are required.
-      Note: Does redirect uri validation solve any problem for native
-      apps?  Effective against impersonation when used in conjunction
-      with claimed HTTPS redirect URIs only.
 
 
 
 
-Lodderstedt, et al.       Expires May 16, 2017                  [Page 6]
+Lodderstedt, et al.       Expires May 20, 2017                  [Page 6]
 
 Internet-Draft               Security Topics               November 2016
 
+
+      Note: Does redirect uri validation solve any problem for native
+      apps?  Effective against impersonation when used in conjunction
+      with claimed HTTPS redirect URIs only.
 
    Additional recommendations:
 
@@ -382,17 +386,17 @@ Internet-Draft               Security Topics               November 2016
       referrer-policy/ - work in progress (seems Google, Chrome and Edge
       support it))
 
-   o  Redirect to intermediate page (sanitize history) before sending
-      user agent to other pages
-      Note: double check redirect/referrer header behavior
 
 
 
-
-Lodderstedt, et al.       Expires May 16, 2017                  [Page 7]
+Lodderstedt, et al.       Expires May 20, 2017                  [Page 7]
 
 Internet-Draft               Security Topics               November 2016
 
+
+   o  Redirect to intermediate page (sanitize history) before sending
+      user agent to other pages
+      Note: double check redirect/referrer header behavior
 
    o  Use form post mode instead of redirect for authorization response
 
@@ -437,26 +441,33 @@ Internet-Draft               Security Topics               November 2016
 
    As OAuth clients nowadays more and more bind dynamically at runtime
    to authorization and resource servers, there need to be alternative
-   solutions to ensure, client do not deliver access tokens to bad
-   resource servers.
-
-   ...
 
 
 
 
-Lodderstedt, et al.       Expires May 16, 2017                  [Page 8]
+Lodderstedt, et al.       Expires May 20, 2017                  [Page 8]
 
 Internet-Draft               Security Topics               November 2016
 
 
+   solutions to ensure clients do not deliver access tokens to bad
+   resource servers.
+
+   ...
+
    Potential mitigations:
 
-   o  PoP
+   o  PoP (https://tools.ietf.org/html/draft-ietf-oauth-pop-
+      architecture-08)
 
-   o  Token Binding
+   o  Token Binding (https://tools.ietf.org/html/draft-jones-oauth-
+      token-binding-00)
 
-   o  AS-provided Meta Data
+   o  OAuth Response Metadata (https://tools.ietf.org/html/draft-
+      sakimura-oauth-meta-07)
+
+   o  Resource Indicators (https://tools.ietf.org/html/draft-campbell-
+      oauth-resource-indicators-01)
 
    o  ...
 
@@ -484,6 +495,17 @@ Internet-Draft               Security Topics               November 2016
 
    o  ...
 
+
+
+
+
+
+
+Lodderstedt, et al.       Expires May 20, 2017                  [Page 9]
+
+Internet-Draft               Security Topics               November 2016
+
+
 3.  OAuth Credentials Injection
 
    Credential injection means an attacker somehow obtained a valid OAuth
@@ -498,13 +520,6 @@ Internet-Draft               Security Topics               November 2016
    control.  In the simplest case, the attacker would want to use the
    code in his own client.  But there are situations where this might
    not be possible or intended.  Example are:
-
-
-
-Lodderstedt, et al.       Expires May 16, 2017                  [Page 9]
-
-Internet-Draft               Security Topics               November 2016
-
 
    o  The code is bound to a particular confidential client and the
       attacker is unable to obtain the required client credentials to
@@ -540,6 +555,13 @@ Internet-Draft               Security Topics               November 2016
    (6)  If all checks succeed, the authorization server issues access
         and other tokens to the client.
 
+
+
+Lodderstedt, et al.       Expires May 20, 2017                 [Page 10]
+
+Internet-Draft               Security Topics               November 2016
+
+
    (7)  The attacker just impersonated the victim.
 
    Obviously, the check in step (5) will fail, if the code was issued to
@@ -554,14 +576,6 @@ Internet-Draft               Security Topics               November 2016
    "redirect_uri" parameter is present if the "redirect_uri" parameter
    was included in the initial authorization request as described in
    Section 4.1.1, and if included ensure that their values are
-
-
-
-Lodderstedt, et al.       Expires May 16, 2017                 [Page 10]
-
-Internet-Draft               Security Topics               November 2016
-
-
    identical."  In the attack scenario described above, the legitimate
    client would use the correct redirect URI it always uses for
    authorization requests.  But this URI would not match the tampered
@@ -596,6 +610,14 @@ Internet-Draft               Security Topics               November 2016
 
    It is also assumed that the requirements defined in [RFC6749],
    Section 4.1.3, increase client implementation complexity as clients
+
+
+
+Lodderstedt, et al.       Expires May 20, 2017                 [Page 11]
+
+Internet-Draft               Security Topics               November 2016
+
+
    need to memorize or re-construct the correct redirect URI for the
    call to the tokens endpoint.
 
@@ -609,14 +631,6 @@ Internet-Draft               Security Topics               November 2016
    to a certain client on a certain device (or in a certain user agent)
    in the context of a certain transaction.  There are multiple
    technical solutions to achieve this goal:
-
-
-
-
-Lodderstedt, et al.       Expires May 16, 2017                 [Page 11]
-
-Internet-Draft               Security Topics               November 2016
-
 
    Nonce   OpenID Connect's existing "nonce" parameter is used for this
            purpose.  The nonce value is one time use and created by the
@@ -652,6 +666,14 @@ Internet-Draft               Security Topics               November 2016
            con:
            - state needs to fulfil certain requirements (one time use,
            complexity)
+
+
+
+Lodderstedt, et al.       Expires May 20, 2017                 [Page 12]
+
+Internet-Draft               Security Topics               November 2016
+
+
            - new parameter means normative spec change
 
    PKCE    Basically, the PKCE challenge/verifier could be used in the
@@ -665,18 +687,12 @@ Internet-Draft               Security Topics               November 2016
            - currently used and recommended for native apps, not web
            apps
 
-
-
-
-
-Lodderstedt, et al.       Expires May 16, 2017                 [Page 12]
-
-Internet-Draft               Security Topics               November 2016
-
-
    Token Binding  Code must be bind to UA-AS and UA-Client legs -
            requires further data (extension to response) to manifest
            binding id for particular code.
+           Note: token binding could be used in conjunction with PKCE as
+           an option (https://tools.ietf.org/html/draft-campbell-oauth-
+           tbpkce).
            pro:
            - highly secure
            con:
@@ -704,6 +720,16 @@ Internet-Draft               Security Topics               November 2016
    attacks simply illustrates the fact that bearer tokens utilized by
    OAuth are reusable similar to passwords unless they are protected by
    further means.
+
+
+
+
+
+Lodderstedt, et al.       Expires May 20, 2017                 [Page 13]
+
+Internet-Draft               Security Topics               November 2016
+
+
    (where do we treat access token replay/use at the resource server?
    https://tools.ietf.org/html/rfc6819#section-4.6.4 has some text about
    it but is it sufficient?)
@@ -722,14 +748,6 @@ Internet-Draft               Security Topics               November 2016
    injection of code or access token on a victim's device (e.g. to cause
    client to access resources under the attacker's control)
 
-
-
-
-Lodderstedt, et al.       Expires May 16, 2017                 [Page 13]
-
-Internet-Draft               Security Topics               November 2016
-
-
    mitigation: XSRF tokens (one time use) w/ user agent binding (cf.
    https://www.owasp.org/index.php/
    CrossSite_Request_Forgery_(CSRF)_Prevention_Cheat_Sheet)
@@ -743,20 +761,41 @@ Internet-Draft               Security Topics               November 2016
 
    redirect via status code 307 - use 302
 
-5.  Acknowledgements
+5.  Other Topics
+
+   why to rotate refresh tokens
+
+   how to support multi AS per RS
+
+   ...
+
+   differentiate native, JS and web clients
+
+6.  Acknowledgements
 
    We would like to thank ... for their valuable feedback.
 
-6.  IANA Considerations
+
+
+
+
+
+
+Lodderstedt, et al.       Expires May 20, 2017                 [Page 14]
+
+Internet-Draft               Security Topics               November 2016
+
+
+7.  IANA Considerations
 
    This draft includes no request to IANA.
 
-7.  Security Considerations
+8.  Security Considerations
 
    All relevant security considerations have been given in the
    functional specification.
 
-8.  Normative References
+9.  Normative References
 
    [RFC3986]  Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
               Resource Identifier (URI): Generic Syntax", STD 66,
@@ -777,19 +816,31 @@ Internet-Draft               Security Topics               November 2016
               DOI 10.17487/RFC6819, January 2013,
               <http://www.rfc-editor.org/info/rfc6819>.
 
-
-
-
-
-Lodderstedt, et al.       Expires May 16, 2017                 [Page 14]
-
-Internet-Draft               Security Topics               November 2016
-
-
    [RFC7231]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
               Protocol (HTTP/1.1): Semantics and Content", RFC 7231,
               DOI 10.17487/RFC7231, June 2014,
               <http://www.rfc-editor.org/info/rfc7231>.
+
+Appendix A.  Document History
+
+   [[ To be removed from the final specification ]]
+
+   -01
+
+   o  Added references to mitigation methods for token leakage
+
+   o  Added reference to Token Binding for Authorization Code
+
+
+
+
+
+
+
+Lodderstedt, et al.       Expires May 20, 2017                 [Page 15]
+
+Internet-Draft               Security Topics               November 2016
+
 
 Authors' Addresses
 
@@ -837,4 +888,9 @@ Authors' Addresses
 
 
 
-Lodderstedt, et al.       Expires May 16, 2017                 [Page 15]
+
+
+
+
+
+Lodderstedt, et al.       Expires May 20, 2017                 [Page 16]

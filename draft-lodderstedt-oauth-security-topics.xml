@@ -13,6 +13,7 @@
 <!ENTITY I-D.narten-iana-considerations-rfc2434bis SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.narten-iana-considerations-rfc2434bis.xml">
 ]>
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 <?rfc strict="yes" ?>
 <!-- give errors regarding ID-nits and DTD validation -->
 <!-- control the table of contents (ToC) -->
@@ -34,7 +35,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="info" docName="draft-lodderstedt-oauth-security-topics-00"
+<rfc category="bcp" docName="draft-lodderstedt-oauth-security-topics-01"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -77,7 +78,7 @@
       </address>
     </author>
 
-    <date day="12" month="November" year="2016" />
+    <date day="16" month="November" year="2016" />
 
     <!-- Meta-data Declarations -->
 
@@ -105,10 +106,10 @@
 
     <abstract>
       <t>This draft gives a comprehensive overview on open OAuth security topics. 
-	  It is intended to serve as a tool for the OAuth working group to systematically 
-	  address these open security topics, recommending mitigations, and potentially also 
-	  defining OAuth extensions needed to cope with the respective security threats. 
-	  This draft will potentially become a BCP over time.</t>
+	  It is intended to serve as a working document for the OAuth working group 
+	  to systematically capture and discuss these security topics and respective 
+	  mitigations and eventually recommend best current practice and also OAuth 
+	  extensions needed to cope with the respective security threats.</t>
     </abstract>
   </front>
 
@@ -383,14 +384,15 @@ Host: server.example.com]]></artwork>
 	  servers serve as trust anchor. The validation whether the client talks to a legitimate resource 
 	  server is based on TLS server authentication (see <xref target="RFC6819"/>, Section 4.5.4).</t>
 	  <t>As OAuth clients nowadays more and more bind dynamically at runtime to authorization and resource 
-	  servers, there need to be alternative solutions to ensure, client do not deliver access tokens to
+	  servers, there need to be alternative solutions to ensure clients do not deliver access tokens to
 	  bad resource servers.</t>
 	  <t>...</t>
 	  <t>Potential mitigations:
 	    <list style="symbols">
-	     <t>PoP</t>
-	     <t>Token Binding</t>
-	     <t>AS-provided Meta Data</t>
+	     <t>PoP (https://tools.ietf.org/html/draft-ietf-oauth-pop-architecture-08)</t>
+	     <t>Token Binding (https://tools.ietf.org/html/draft-jones-oauth-token-binding-00)</t>
+	     <t>OAuth Response Metadata (https://tools.ietf.org/html/draft-sakimura-oauth-meta-07)</t>
+		 <t>Resource Indicators (https://tools.ietf.org/html/draft-campbell-oauth-resource-indicators-01)</t>
 	     <t>...</t>
 	    </list>
 	  </t>
@@ -547,6 +549,8 @@ Host: server.example.com]]></artwork>
 		 <t hangText="Token Binding">Code must be bind to UA-AS and UA-Client legs - 
 		 requires further data (extension to response) to manifest binding id for 
 		 particular code.
+		 <vspace/>Note: token binding could be used in conjunction with 
+		 PKCE as an option (https://tools.ietf.org/html/draft-campbell-oauth-tbpkce).
 		 <vspace/>
 		 pro:
 		 <vspace/>
@@ -597,8 +601,15 @@ Host: server.example.com]]></artwork>
 	<section anchor="other" title="Other Attacks">
 	<t>Using the AS as Open Redirector - error handling AS (redirects) (draft-ietf-oauth-closing-redirectors-00)</t>
 	<t>Using the Client as Open Redirector</t>
-	<t>redirect via status code 307 - use 302</t>	  
+	<t>redirect via status code 307 - use 302</t>
     </section>
+	
+	<section title="Other Topics">
+	<t>why to rotate refresh tokens</t>
+	<t>how to support multi AS per RS</t>
+	<t>...</t>
+	<t>differentiate native, JS and web clients</t>
+	</section>
 	
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>We would like to thank ... for their valuable feedback.</t>
@@ -625,5 +636,13 @@ Host: server.example.com]]></artwork>
 <!--
     <references title="Informative References">
     </references> -->
+    <section anchor="History" title="Document History">
+      <t>[[ To be removed from the final specification ]]</t>
+
+      <t>-01 <list style="symbols">
+          <t>Added references to mitigation methods for token leakage</t>
+          <t>Added reference to Token Binding for Authorization Code</t>
+        </list></t>
+    </section>		
   </back>
 </rfc>
