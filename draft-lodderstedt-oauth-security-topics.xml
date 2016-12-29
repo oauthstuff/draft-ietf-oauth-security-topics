@@ -609,6 +609,7 @@ Host: server.example.com]]></artwork>
 	<t>how to support multi AS per RS</t>
 	<t>...</t>
 	<t>differentiate native, JS and web clients</t>
+	<t>federated login to apps (code flow to own AS in browser and federated login to 3rd party IDP in browser)</t>
 	</section>
 	
     <section anchor="Acknowledgements" title="Acknowledgements">
