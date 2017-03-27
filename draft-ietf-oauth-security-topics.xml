@@ -35,7 +35,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="bcp" docName="draft-ietf-oauth-security-topics-00"
+<rfc category="bcp" docName="draft-ietf-oauth-security-topics-01"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -78,7 +78,7 @@
       </address>
     </author>
 
-    <date day="12" month="March" year="2017" />
+    <date day="27" month="March" year="2017" />
 
     <!-- Meta-data Declarations -->
 
@@ -117,10 +117,10 @@
     <section anchor="Introduction" title="Introduction">
       <t>It's been a while since OAuth has been published in 
 	  <xref target="RFC6749">RFC 6749</xref> and <xref target="RFC6750">RFC 6750</xref>. 
-	  Since 
-	  publication, OAuth 2.0 has gotten massive traction in the market and became the 
+	  Since publication, OAuth 2.0 has gotten massive traction in the market and became the 
 	  standard for API protection and, as foundation of OpenID Connect, identity 
-	  providing.
+	  providing. While OAuth was used in a variety of scenarios and different kinds of 
+	  deployments, the following challenges could be observed:
 	  <list style="symbols">
 	  <t>OAuth implementations are being attacked through known implementation 
 	  weaknesses and anti-patterns (XSRF, referrer header). Although most of these
@@ -145,11 +145,13 @@
     </section>
 
     <section anchor="cred_leakage" title="OAuth Credentials Leakage">
-	  <section title="Redirect URI validation of authorization requests">
-	  <t>The following implementation issue has been observed: Some authorization 
-	  servers allow clients to register redirect URI patterns instead of 
-	  complete redirect URIs. In those cases, the authorization servers, 
-	  at runtime, match the actual redirect URI parameter value at the 
+    <t>This section describes a couple of different ways how OAuth credentials, namely 
+    authorization codes and access tokens, can be exposed to attackers.</t>
+	  <section title="Insufficient redirect URI validation">
+	  <t>Some authorization servers allow clients to register redirect URI 
+	  patterns instead of 
+	  complete redirect URIs. In those cases, the authorization server, 
+	  at runtime, matches the actual redirect URI parameter value at the 
 	  authorization endpoint against this pattern. This approach 
 	  allows clients to encode transaction state into additional 
 	  redirect URI parameters or to register just a single pattern for 
@@ -164,22 +166,22 @@
 	  <list style="symbols">
 	  <t>by directly sending the user agent to a URI under the attackers 
 	  control or</t>
-	  <t>usually via the client as open redirector in conjunction with 
-	  fragment handling (implicit grant) carrying the response including 
-	  the respective OAuth credentials.</t>
+	  <t>by exposing the OAuth credentials to an attacker by utilizing an 
+	  open redirector at the client in conjunction with the way user agents
+	  handle URL fragments.</t>
 	  </list>
 	  </t>
-	  <section title="Authorization Code Grant">
+	  <section title="Attacks on Authorization Code Grant">
 	  <t>For a public client using the grant type code, an attack 
 	  would look as follows: </t>
-	  <t>Let's assume the pattern "https://*.example.com/*" had been registered 
-	  for the client "s6BhdRkqt3". This pattern allows redirect URI from any 
+	  <t>Let's assume the redirect URL pattern "https://*.example.com/*" had been registered 
+	  for the client "s6BhdRkqt3". This pattern allows redirect URIs from any 
 	  host residing  in the domain example.com. So if an attacker manager to 
 	  establish a host or subdomain in "example.com" he can impersonate the 
 	  legitimate client. Assume the attacker sets up the host 
 	  "evil.example.com".</t>
 	  <t>
-	   <list style="format (%d)" counter="my_count">
+	   <list style="format (%d)">
 	    <t>The attacker needs to trick the user into opening a tampered URL 
 	  in his browser, which launches a page under the attacker's control, 
 	  say "https://www.evil.com".</t>
@@ -211,24 +213,25 @@ Host: server.example.com]]></artwork>
 	  the code for tokens at the respective token endpoint.</t>
 	  </list>
 	  </t>
-	  <t>Note: This attack will not work for confidential clients, since the 
+	  <t>Note: This attack will not directly work for confidential clients, since the 
 	  code exchange requires authentication with the legitimate client's 
 	  secret. The attacker will need to utilize the legitimate client to 
-	  redeem the code. This and other kinds of injections are covered in 
+	  redeem the code (e.g. by mounting a code injection attack). This and other kinds 
+	  of injections are covered in 
 	  Section <xref format="title" target="cred_injection"/>.</t>
 	   </section>
-	   <section title="Implicit Grant">
-	   <t>The attack described above for grant type authorization code works 
-	   similarly for the implicit grant. If the attacker is able to send the 
+	   <section title="Attacks on Implicit Grant">
+	   <t>The attack described above works for the implicit grant as well. If the attacker 
+	   is able to send the 
 	   authorization response to a URI under his control, he will directly get 
 	   access to the fragment carrying the access token.</t>
-	   <t>Additionally, it is possible to conduct an attack utilizing the way 
-	   user agents treat fragments in case of redirects. User agents re-attach 
-	   fragments to the destination URL of a redirect if the location header does not contain a 
-	   fragment (see <xref target="RFC7231"/>, section 9.5). In this 
-	   attack this behavior is combined with the client as an open redirector 
+	   <t>Additionally, implicit clients can be subject to a further kind of attacks. 
+	   It utilizes the fact that user agents re-attach fragments to the destination URL 
+	   of a redirect if the location header does not contain a 
+	   fragment (see <xref target="RFC7231"/>, section 9.5). The attack described here 
+	   combines this behavior with the client as an open redirector 
 	   in order to get access to access tokens. This allows circumvention even of 
-	   strict redirect URI patterns.</t>
+	   strict redirect URI patterns (but not strict URL matching!).</t>
 	   <t>Assume the pattern for client "s6BhdRkqt3" is
 	   "https://client.example.com/cb?*", i.e. any parameter is allowed for 
 	   redirects to "https://client.example.com/cb". Unfortunately, the client 
@@ -236,7 +239,7 @@ Host: server.example.com]]></artwork>
 	   "redirect_to", which takes a target URL and will send the browser to 
 	   this URL using a HTTP 302.</t>
 	  <t>
-	   <list style="format (%d)" counter="my_count1">
+	   <list style="format (%d)">
 	    <t>Same as above, the attacker needs to trick the user into opening a 
 		tampered URL in his browser, which launches a page under the attacker's control, 
 		say "https://www.evil.com".</t>
@@ -300,10 +303,11 @@ Host: server.example.com]]></artwork>
 	   </list>	  
 	  </t>	  
 	   </section>
-	   <section title="Countermeasure: exact redirect URI matching">
-	   <t>Since the cause of the implementation and management issues is the complexity 
-	   of the pattern matching, this document proposes to recommend general use of exact
-	   redirect URI matching instead, i.e. the authorization server shall compare the two 
+	   <section title="Proposed Countermeasures">
+	   <t>The complexitity of implementing and managing pattern matching correctly 
+		obviously causes security issues. This document therefore proposes to 
+	   simplify the required logic and configuration by using exact redirect URI matching only.
+              This means the authorization server shall compare the two 
 	   URIs using simple string comparison as defined in <xref target="RFC3986"/>, Section 6.2.1..</t>
 	   <t>This would cause the following impacts:
 	    <list style="symbols">
@@ -320,22 +324,25 @@ Host: server.example.com]]></artwork>
 		<t>Clients with multiple redirect URIs need to register all of them explicitly. 
 		<vspace/>Note: clients with just a single redirect URI would not even need to send a redirect URI 
 		with the authorization request. Does it make sense to emphasize this option? Would that further 
-		simplify use of the protocol?</t>
+		simplify use of the protocol and foster security?</t>
 		<t>Exact redirect matching does not work for native apps utilizing a local web server due to 
 		dynamic port numbers - at least wild cards for port numbers are required.
-		<vspace/>Note: Does redirect uri validation solve any problem for native apps? Effective against 
+		<vspace/>Question: Does redirect uri validation solve any problem for native apps? Effective against 
 		impersonation when used in conjunction with claimed HTTPS redirect URIs only.</t>
 		</list>
 	   </t>
 	   <t>Additional recommendations:
 	   <list style="symbols">
-	   <t>It is also advisable that the domains on which callbacks are hosted should not expose open redirectors (see respective section).</t>
-	   <t>As a further recommendation, clients may drop fragments via intermediary URL with fix fragment 
+	   <t>Servers on which callbacks are hosted must not expose open redirectors (see respective section).</t>
+	   <t>Clients may drop fragments via intermediary URLs with "fix fragments" 
 	   (e.g. https://developers.facebook.com/blog/post/552/) to prevent the user agent from appending any unintended fragments.</t>
 	   </list>
 	   </t>
-	   <t>Alternatives to exact redirect URI matching: authenticate client using digital 
-	   signatures (JAR? https://tools.ietf.org/html/draft-ietf-oauth-jwsreq-09), ...</t>	   
+	   <t>Alternatives to exact redirect URI matching: 
+	   <list style="symbols"><t>authenticate client using digital 
+	   signatures (JAR? https://tools.ietf.org/html/draft-ietf-oauth-jwsreq-09)</t>
+	   </list>	 
+	   </t>  
 	   </section>
 	  </section> 
 	   <section title="Authorization code leakage via referrer headers">
@@ -348,7 +355,7 @@ Host: server.example.com]]></artwork>
 	   <t>It is also possible that an attacker injects cross-domain content somehow into the page, such 
 	   as &lt;img&gt; (f.e. if this is blog web site etc.): the implication is obviously the same - loading this 
 	   content by browser results in leaking referrer with a code.</t>
-	   <section title="Countermeasures">
+	   <section title="Proposed Countermeasures">
 	   <t>There are some means to prevent leakage as described above:</t>
 	   <t>
 	   <list style="symbols">
@@ -369,7 +376,7 @@ Host: server.example.com]]></artwork>
 	  <section title="Code in browser history (TBD)">
 	  <t>When browser navigates to "client.com/redirection_endpoint?code=abcd" as a result 
 	  of a redirect from a provider's authorization endpoint.</t>
-	  <t>Proposal for counter-measures: code is one time use, has limited duration, is bound to client id/secret (confidential clients only)</t>
+	  <t>Proposed countermeasures: code is one time use, has limited duration, is bound to client id/secret (confidential clients only)</t>
 	  </section>
 	  <section title="Access token in browser history (TBD)">
 	  <t>When a client or just a web site which already has a token deliberately navigates to a page like 
@@ -405,7 +412,7 @@ Host: server.example.com]]></artwork>
 	  goal of the attack is to obtain an authorization code or an access token by 
 	  tricking the client into sending those credentials to the attacker (which acts as 
 	  MITM between client and authorization server)</t>
-	  <t>A detailed description of the attack and potential counter-measures is 
+	  <t>A detailed description of the attack and potential countermeasures is 
 	  given in cf. https://tools.ietf.org/html/draft-ietf-oauth-mix-up-mitigation-01.</t>
 	  <t>Potential mitigations:
 	    <list style="symbols">
@@ -494,7 +501,7 @@ Host: server.example.com]]></artwork>
 	   <t>The authors therefore propose to the working group to drop this feature in favor of more 
 	   effective and (hopefully) simpler approaches to code injection prevention as described in the 
 	   following section.</t>
-	   <section title="Proposed Counter Measures">
+	   <section title="Proposed Countermeasures">
 	   <t>The general proposal is to bind every particular authorization code to a certain client on a 
 	   certain device (or in a certain user agent) in the context of a certain transaction. 
 	   There are multiple technical solutions to achieve this goal:</t>
@@ -518,7 +525,7 @@ Host: server.example.com]]></artwork>
 		 <vspace/>
 		 - OAuth does not have an ID Token - would need to push that down the stack</t>
 		 
-		 <t hangText="State">It has been discussed in the security workshop in December to use 
+		 <t hangText="Code-bound State">It has been discussed in the security workshop in December to use 
 		 the OAuth state value much similar in the way as described above. In the case of the 
 		 state value, the idea is to add a further parameter state to the code exchange request. 
 		 The authorization server then compares the state value it associated with the code and the 
@@ -565,7 +572,7 @@ Host: server.example.com]]></artwork>
 		 <t hangText="per instance client id/secret">...</t>		 
 		</list>
 		</t>
-		<t>Note on pre-warmed secrets: An attacker can circumvent the counter-measures described
+		<t>Note on pre-warmed secrets: An attacker can circumvent the countermeasures described
 		above if he is able to create the respective secret on a device under his control, which 
 		is then used in the victim's authorization request. 
 		<vspace/>Exact redirect URI matching of authorization requests can prevent the attacker
@@ -616,7 +623,7 @@ Host: server.example.com]]></artwork>
 	</section>
 	
     <section anchor="Acknowledgements" title="Acknowledgements">
-      <t>We would like to thank Jim Manico for his valuable feedback.</t>
+      <t>We would like to thank Jim Manico and Phil Hunt for their valuable feedback.</t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
@@ -646,6 +653,8 @@ Host: server.example.com]]></artwork>
       <t>-01 <list style="symbols">
           <t>Added references to mitigation methods for token leakage</t>
           <t>Added reference to Token Binding for Authorization Code</t>
+          <t>incorporated feedback of Phil Hunt</t>
+          <t>fixed numbering issue in attack descriptions in section 2</t>
         </list></t>
       <t>-00 (WG document)<list style="symbols">
           <t>turned the ID into a WG document and a BCP</t>
