@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="US-ASCII"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 		This template is for creating an Internet Draft using xml2rfc, which
 		is available here: http://xml.resource.org.
@@ -35,7 +35,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="bcp" docName="draft-ietf-oauth-security-topics-01"
+<rfc category="bcp" docName="draft-ietf-oauth-security-topics-02"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -137,13 +137,47 @@
 	  </list>
 	  </t>
 	  <t>The remainder of the document is organized as follows: The next section 
-	  describes various scenarios how OAuth credentials (namely access tokens and 
+	  gives a summary of the set of security mechanisms and practices, the working
+	  group shall consider to recommend to OAuth implementers. This is followed by 
+	  a section proposing modifications to OAuth meanly intended to either simplify
+	  its usage and to strengten it security.
+	  The remainder of the 
+	  draft gives a detailed analyses of the weaknesses and implementation issues, 
+	  which can be found in the wild today along with a discussion of potential 
+	  counter measures. Section A describes various scenarios how OAuth credentials 
+	  (namely access tokens and 
 	  authorization codes) may be disclosed to attackers and proposes
 	  countermeasures. Afterwards, the document discusses attacks possible with 
 	  captured credential and how they may be prevented. The last 
 	  sections discuss additional threats.</t>
     </section>
+    
+    <section anchor="recommendations" title="Recommended Best Practice">
+    <t>This section describes the set of security mechanisms the authors believe should be
+    taken into consideration by the OAuth working group to be recommended to OAuth
+    implementers. It also recommends some changes to the OAuth set of specs.</t>
 
+    <section title="protecting redirect-based flows">
+
+    <t>exact redirect URI matching to prevent code/access Token leakage (also 
+    per-requisite für mix up prevention) (AS)</t>
+	<t>prevent open redirectors on client-side to prevent Access token leakage 
+	(CLIENT)</t>
+	<t>User Agent-bound one-time-use XSRF Token in State to prevent xsrf (CLIENT)</t>
+	<t>per AS transactional, User Agent bound redirect URI matching to prevent 
+	mixup/pre-warmed PKCE challenges (CLIENT)</t>
+	<t>Code Injection: transaction specific and User Agent-bound PKCE (web and native 
+	Apps! confidential as well as public clients) (AS)</t>
+
+    </section>
+    
+   </section>
+   
+       <section title="Recommended modifications and extensions to OAuth">
+		<t>Remove requirement to check actual redirect URI at token endpoint - seems to be 
+	complicated to implement properly and could be compromised</t>
+    </section>
+    
     <section anchor="cred_leakage" title="OAuth Credentials Leakage">
     <t>This section describes a couple of different ways how OAuth credentials, namely 
     authorization codes and access tokens, can be exposed to attackers.</t>
@@ -615,6 +649,7 @@ Host: server.example.com]]></artwork>
 	
 	<section title="Other Topics">
 	<t>why to rotate refresh tokens</t>
+	<t>why audience restriction</t>
 	<t>how to support multi AS per RS</t>
 	<t>...</t>
 	<t>differentiate native, JS and web clients</t>
