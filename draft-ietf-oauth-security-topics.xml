@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!--
 		This template is for creating an Internet Draft using xml2rfc, which
 		is available here: http://xml.resource.org.
@@ -179,7 +179,7 @@
 	mentioned information regarding the AS the client sent the request to helps to detect
 	mix-up attacks.</t>
 	<t>Note: <xref target="I-D.bradley-oauth-jwt-encoded-state"></xref> gives advice 
-	on how implemented XSRF prevention and AS matching using signed JWTs in the 
+	on how to implement XSRF prevention and AS matching using signed JWTs in the 
 	STATE parameter.</t>
 	<t>Clients shall use <xref target="RFC7636">PKCE</xref> in order to (with the help 
 	of the authorization server) 
@@ -225,7 +225,7 @@
 	  matching implementation or concrete configurations. Such a flaw 
 	  effectively breaks client identification or authentication 
 	  (depending on grant and client type) and allows the attacker to 
-	  obtain an authorization code or access token, either
+	  obtain an authorization code or access token, either:
 	  <list style="symbols">
 	  <t>by directly sending the user agent to a URI under the attackers 
 	  control or</t>
@@ -377,11 +377,11 @@ Host: server.example.com]]></artwork>
 		<t>This change will require all OAuth clients to maintain the transaction state (and XSRF tokens) 
 		in the "state" parameter. This is a normative change to RFC 6749 since section 3.1.2.2 allows for 
 		dynamic URI query parameters in the redirect URI. In order to assess the practical impact, the 
-		working group needs to collect data whether this feature is used in deployed reality today.</t> 
+		working group needs to collect data on whether this feature is realy used in deployments today.</t> 
 		<t>The 
-		working group might also consider this change as a step towards improved interoperability for OAuth 
-		implementations since RFC 6749 is somehow vague on redirect URI validation. There is especially no 
-		rule for pattern matching. So one may assume all clients utilizing pattern matching will do so in a 
+		working group may also consider this change as a step towards improved interoperability for OAuth 
+		implementations since RFC 6749 is somewhat vague on redirect URI validation. Notably there are no 
+		rules for pattern matching. One may therefore assume all clients utilizing pattern matching will do so in a 
 		deployment specific way. On the other hand, RFC 6749 already recommends exact matching if the full 
 		URL had been registered.</t>
 		<t>Clients with multiple redirect URIs need to register all of them explicitly. 
@@ -391,7 +391,9 @@ Host: server.example.com]]></artwork>
 		<t>Exact redirect matching does not work for native apps utilizing a local web server due to 
 		dynamic port numbers - at least wild cards for port numbers are required.
 		<vspace/>Question: Does redirect uri validation solve any problem for native apps? Effective against 
-		impersonation when used in conjunction with claimed HTTPS redirect URIs only.</t>
+		impersonation when used in conjunction with claimed HTTPS redirect URIs only.
+		<vspace/>For Windows token broker exact redirect URI matching is impotant as the redirect URI encodes the app identity.
+		For custom scheme redirects there is a question however it is probably a usfull part of defense in depth.</t>
 		</list>
 	   </t>
 	   <t>Additional recommendations:
@@ -635,7 +637,7 @@ Host: server.example.com]]></artwork>
 		</list>
 		</t>
 		<t>Note on pre-warmed secrets: An attacker can circumvent the countermeasures described
-		above if he is able to create the respective secret on a device under his control, which 
+		above if he is able to create or capture the respective secret or code_challange on a device under his control, which 
 		is then used in the victim's authorization request. 
 		<vspace/>Exact redirect URI matching of authorization requests can prevent the attacker
 		from using the pre-warmed secret in the faked authorization transaction on the victim's 
