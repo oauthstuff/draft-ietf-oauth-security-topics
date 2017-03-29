@@ -139,41 +139,70 @@
 	  <t>The remainder of the document is organized as follows: The next section 
 	  gives a summary of the set of security mechanisms and practices, the working
 	  group shall consider to recommend to OAuth implementers. This is followed by 
-	  a section proposing modifications to OAuth meanly intended to either simplify
-	  its usage and to strengten it security.
-	  The remainder of the 
+	  a section proposing modifications to OAuth intended to either simplify
+	  its usage and to strengten its security.</t>
+	  <t>The remainder of the 
 	  draft gives a detailed analyses of the weaknesses and implementation issues, 
 	  which can be found in the wild today along with a discussion of potential 
-	  counter measures. Section A describes various scenarios how OAuth credentials 
-	  (namely access tokens and 
-	  authorization codes) may be disclosed to attackers and proposes
-	  countermeasures. Afterwards, the document discusses attacks possible with 
-	  captured credential and how they may be prevented. The last 
+	  counter measures. First, various scenarios how OAuth credentials 
+	  (namely access tokens and authorization codes) may be disclosed to attackers and 
+	  proposes countermeasures are discussed. Afterwards, the document discusses attacks 
+	  possible with captured credential and how they may be prevented. The last 
 	  sections discuss additional threats.</t>
     </section>
     
     <section anchor="recommendations" title="Recommended Best Practice">
     <t>This section describes the set of security mechanisms the authors believe should be
     taken into consideration by the OAuth working group to be recommended to OAuth
-    implementers. It also recommends some changes to the OAuth set of specs.</t>
+    implementers.</t>
 
-    <section title="protecting redirect-based flows">
+    <section title="Protecting redirect-based flows">
 
-    <t>exact redirect URI matching to prevent code/access Token leakage (also 
-    per-requisite für mix up prevention) (AS)</t>
-	<t>prevent open redirectors on client-side to prevent Access token leakage 
-	(CLIENT)</t>
-	<t>User Agent-bound one-time-use XSRF Token in State to prevent xsrf (CLIENT)</t>
-	<t>per AS transactional, User Agent bound redirect URI matching to prevent 
-	mixup/pre-warmed PKCE challenges (CLIENT)</t>
-	<t>Code Injection: transaction specific and User Agent-bound PKCE (web and native 
-	Apps! confidential as well as public clients) (AS)</t>
-
+    <t>Authorization servers shall utilize exact matching of client redirect URIs against 
+    pre-registered URIs. This measure contributes to the prevention of leakage of 
+    authorization codes and access tokens (depending on the grant type). It also helps
+    to detect mix up attacks.</t>
+	<t>Clients shall avoid any redirects or forwards, which can be parameterized by 
+	URI query parameters, in order to provide a further layer of defence against 
+	token leakage. If there is a need for this kind of redirects, clients are advised 
+	to implement appropriate counter measures against open redirection, e.g. as described
+	by the <xref target="owasp">OWASP</xref>.</t>
+	<t>Clients shall ensure to only process redirect responses of the OAuth authorization 
+	server they send the respective request to and in the same user agent this request 
+	was initiated in. In particular, clients shall implement appropriate XSRF prevention
+	by utilizing one-time use XSRF tokens carried in the STATE parameter, which are 
+	securely bound to the user agent. Moreover, the client shall store the authorization
+	server's identity it send an authorization request to in a transaction-specific 
+	manner, which is also bound to the particular user agent. Furthermore, clients 
+	should use AS-specific redirect URIs as a means to 
+	identify the AS a particular response came from. Matching this with the before 
+	mentioned information regarding the AS the client sent the request to helps to detect
+	mix-up attacks.</t>
+	<t>Note: <xref target="I-D.bradley-oauth-jwt-encoded-state"></xref> gives advice 
+	on how implemented XSRF prevention and AS matching using signed JWTs in the 
+	STATE parameter.</t>
+	<t>Clients shall use <xref target="RFC7636">PKCE</xref> in order to (with the help 
+	of the authorization server) 
+	detect attempts to inject authorization codes into the authorization response. The 
+	PKCE challenges must be transaction-specific and securely bound to the user agent, in 
+	which the transaction was started.</t>
+	<t> Note: although PKCE so far was recommended as 
+	mechanism to protect native apps, this advice applies to all kinds of OAuth clients, 
+	including web applications.</t>
+	
     </section>
+    
+    <section title="TBD" />
     
    </section>
    
        <section title="Recommended modifications and extensions to OAuth">
+       <t>This section describes the set of modifications and extensions the authors 
+       believe should be taken into consideration by the OAuth working group 
+       change and extend OAuth in order to strengthen its security and make it simpler
+       to implement.
+    
+    It also recommends some changes to the OAuth set of specs.</t>
 		<t>Remove requirement to check actual redirect URI at token endpoint - seems to be 
 	complicated to implement properly and could be compromised</t>
     </section>
@@ -380,8 +409,7 @@ Host: server.example.com]]></artwork>
 	   </section>
 	  </section> 
 	   <section title="Authorization code leakage via referrer headers">
-	   <t>The section above already discussed use of the referrer header for one kind of attack to obtain 
-	   OAuth credentials. It is also possible authorization codes are unintentionally disclosed to attackers, 
+	   <t>It is possible authorization codes are unintentionally disclosed to attackers, 
 	   if a OAuth client renders a page containing links to other pages (ads, faq, ...) as result of a 
 	   successful authorization request. </t>
 	   <t>If the user clicks onto one of those links and the target is under the control of an attacker, 
@@ -679,9 +707,26 @@ Host: server.example.com]]></artwork>
       <?rfc include="reference.RFC.6819"?>
 	  <?rfc include="reference.RFC.7231"?>
     </references>
-<!--
+
     <references title="Informative References">
-    </references> -->
+    
+          <?rfc include="reference.RFC.7636"?>
+    
+    <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.bradley-oauth-jwt-encoded-state.xml'?>
+    
+    <reference anchor="owasp" target="https://www.owasp.org/">
+        <front>
+          <title>Open Web Application Security Project Home Page</title>
+
+          <author></author>
+
+          <date />
+        </front>
+      </reference>
+    
+    </references>
+    
+    
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
 
