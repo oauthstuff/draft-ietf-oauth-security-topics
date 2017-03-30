@@ -437,6 +437,7 @@ Host: server.example.com]]></artwork>
 	   referrer headers (cf. https://tools.ietf.org/html/rfc7231#section-5.5.2)</t>
 	   </section>
 	  </section>
+	  <section title="Attacks in the Browser">
 	  <section title="Code in browser history (TBD)">
 	  <t>When browser navigates to "client.com/redirection_endpoint?code=abcd" as a result 
 	  of a redirect from a provider's authorization endpoint.</t>
@@ -450,27 +451,59 @@ Host: server.example.com]]></artwork>
 	  redirect from a provider's authorization endpoint.</t>
 	  <t>Proposal: replace implicit flow with postmessage communication</t>
 	  </section>
-	  <section title="Access token on bad resource servers (TBD)">
-	  <t>In the beginning, the basic assumption of OAuth 2.0 was that the OAuth client is implemented
-	  for and tightly bound to a certain deployment. It therefore knows the URLs of the authorization
-	  and resource servers upfront, at development/deployment time. So well-known URLs to resource
-	  servers serve as trust anchor. The validation whether the client talks to a legitimate resource 
-	  server is based on TLS server authentication (see <xref target="RFC6819"/>, Section 4.5.4).</t>
-	  <t>As OAuth clients nowadays more and more bind dynamically at runtime to authorization and resource 
-	  servers, there need to be alternative solutions to ensure clients do not deliver access tokens to
-	  bad resource servers.</t>
-	  <t>...</t>
-	  <t>Potential mitigations:
+	  <section title="Javascript Code stealing Access Tokens (TBD)">
+	    <t>sandboxing using service workers</t>
+	  </section>
+	  </section>
+	  <section title="Dynamic OAuth Scenarios">
+	  <t>OAuth initially assumed a static relationship between client, authorization 
+	  server and resource servers. The URLs of AS and RS were know to the client
+	  at deployment time and built an anchor for the trust relationsship among those
+	  parties. The validation whether the client talks to a legitimate server is based on 
+	  TLS server authentication (see <xref target="RFC6819"/>, Section 4.5.4).</t>
+	  <t>With the increasing adoption of OAuth, this simple model dissolved and, in
+	  several scenarios, was replaced by a dynamic establishment of the relationship
+	  between clients on one side and the authorization and resource servers of a 
+	  particular deployment on the other side. This way the same client can be 
+	  used to access services of different providers (in case of standard APIs, such 
+	  as e-Mail or OpenID Connect) or serves as a frontend to a particular tenant in a 
+	  multi-tenancy.</t>
+	  <t>Extensions of OAuth, such as <xref target="RFC7591"/> and 
+	  <xref target="I-D.ietf-oauth-discovery"/> were developed in order to support
+	  the usage of OAuth in dynamic scenarios.</t>
+	  <t>As a challenge to the community, such usage scenarios open up new attack angles, 
+	  which are discussed in this section.</t>
+	  
+	  <section title="Access Token Phishing by Counterfeit Resource Server">
+	  <t>An attacker may pretend to be a particular resource server and to
+   accept tokens from a particular authorization server.  If the client
+   sends a valid access token to this counterfeit resource server, the
+   server in turn may use that token to access other services on behalf
+   of the resource owner.</t>
+   	  <t>Potential mitigation strategies:
 	    <list style="symbols">
-	     <t>PoP (https://tools.ietf.org/html/draft-ietf-oauth-pop-architecture-08)</t>
-	     <t>Token Binding (https://tools.ietf.org/html/draft-jones-oauth-token-binding-00)</t>
-	     <t>OAuth Response Metadata (https://tools.ietf.org/html/draft-sakimura-oauth-meta-07)</t>
-		 <t>Resource Indicators (https://tools.ietf.org/html/draft-campbell-oauth-resource-indicators-01)</t>
-	     <t>...</t>
+	     <t>AS may publish information about its legitimate resource servers, clients
+	     must only send access tokens to this servers</t>
+	     <t>Clients indicate resource server they intend to use the access token for
+	     at AS, AS may refuse to issue tokens for ressource servers it does not know</t>
+	     <t>AS indicates resource servers a particular access token is good for 
+	     to client - client enforced audience restriction - prevents disclosure (e.g. 
+	     OAuth Response Metadata (https://tools.ietf.org/html/draft-sakimura-oauth-meta-07)</t>    
+	     <t>Access tokens are audience restricted - prevents replay if the audience 
+	     is a URL determined by the client, reduces impact in case of legitimate 
+	     resource server uses token at other resource server (e.g. 
+	     https://tools.ietf.org/html/draft-campbell-oauth-resource-indicators-01)</t>
+		 <t>Access Token is sender restricted - sender is cryptographically verified
+		 <list style="symbols">
+		 <t>https://tools.ietf.org/html/draft-ietf-oauth-pop-architecture-08</t>
+	     <t>https://tools.ietf.org/html/draft-jones-oauth-token-binding-00</t>
+	     <t>https://datatracker.ietf.org/doc/draft-campbell-oauth-mtls</t>
+	     <t>https://datatracker.ietf.org/doc/html/draft-sakimura-oauth-jpop</t>
+		 </list></t>
 	    </list>
 	  </t>
 	  </section>
-	  <section title="Mix-Up (TBD)">
+	  <section title="Mix-Up">
 	  <t>Mix-up is another kind of attack on more dynamic OAuth scenarios (or at least 
 	  scenarios where a OAuth client interacts with multiple authorization servers). The
 	  goal of the attack is to obtain an authorization code or an access token by 
@@ -482,11 +515,13 @@ Host: server.example.com]]></artwork>
 	    <list style="symbols">
 		 <t>AS returns client_id and its iss in the response. Client compares 
 		  this data to AS it believed it sent the user agent to.</t>
-		 <t>ID token (so requires OpenID Connect) carries client id and issuer</t>
-	     <t>register AS-specific redirect URIs, bind transaction to AS</t>
-	     <t>...</t>
+		 <t>ID token carries client id and issuer (requires OpenID Connect)</t>
+	     <t>Clients use AS-specific redirect URIs, for every authorization request
+	     store intended AS and compare intention with actual redirect URI where the
+	     response was received (no change to OAuth required)</t>
 	    </list>
 	  </t>
+	  </section>
 	  </section>
     </section>
 
@@ -636,15 +671,17 @@ Host: server.example.com]]></artwork>
 		 <t hangText="per instance client id/secret">...</t>		 
 		</list>
 		</t>
-		<t>Note on pre-warmed secrets: An attacker can circumvent the countermeasures described
-		above if he is able to create or capture the respective secret or code_challange on a device under his control, which 
-		is then used in the victim's authorization request. 
-		<vspace/>Exact redirect URI matching of authorization requests can prevent the attacker
-		from using the pre-warmed secret in the faked authorization transaction on the victim's 
-		device. 
-		<vspace/>Unfortunately it does not work for all kinds of OAuth clients. It is effective 
-		for web and JS apps, for native apps with claimed URLs. What about other native apps? 
-		Treat nonce or PKCE challenge as replay detection tokens (needs to ensure cluster-wide one-time use)?</t>
+		<t>Note on pre-warmed secrets: An attacker can circumvent the countermeasures 
+		described above if he is able to create or capture the respective secret or 
+		code_challenge on a device under his control, which is then used in the victim's 
+		authorization request. 
+		<vspace/>Exact redirect URI matching of authorization requests can prevent the 
+		attacker from using the pre-warmed secret in the faked authorization transaction 
+		on the victim's device. 
+		<vspace/>Unfortunately it does not work for all kinds of OAuth clients. It is 
+		effective for web and JS apps and for native apps with claimed URLs. What about 
+		other native apps? Treat nonce or PKCE challenge as replay detection tokens 
+		(needs to ensure cluster-wide one-time use)?</t>
 
 	   </section>
 	   
@@ -708,9 +745,12 @@ Host: server.example.com]]></artwork>
       <?rfc include="reference.RFC.6750"?>
       <?rfc include="reference.RFC.6819"?>
 	  <?rfc include="reference.RFC.7231"?>
+	  <?rfc include="reference.RFC.7591"?>
     </references>
 
     <references title="Informative References">
+    
+    <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-discovery-04.xml'?>
     
           <?rfc include="reference.RFC.7636"?>
     
