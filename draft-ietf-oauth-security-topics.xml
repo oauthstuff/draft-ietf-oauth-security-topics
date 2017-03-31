@@ -78,7 +78,7 @@
       </address>
     </author>
 
-    <date day="27" month="March" year="2017" />
+    <date day="30" month="March" year="2017" />
 
     <!-- Meta-data Declarations -->
 
@@ -257,7 +257,7 @@
 	  <t>
 	  	<figure>
           <artwork><![CDATA[GET /authorize?response_type=code&client_id=s6BhdRkqt3&state=xyz
-  &redirect_uri=https%3A%2F%2Fevil.client.example.com%2Fcb HTTP/1.1
+  &redirect_uri=https%3A%2F%2Fevil.example.com%2Fcb HTTP/1.1
 Host: server.example.com]]></artwork>
         </figure>	
 	  </t>
@@ -496,7 +496,7 @@ Host: server.example.com]]></artwork>
 		 <t>Access Token is sender restricted - sender is cryptographically verified
 		 <list style="symbols">
 		 <t>https://tools.ietf.org/html/draft-ietf-oauth-pop-architecture-08</t>
-	     <t>https://tools.ietf.org/html/draft-jones-oauth-token-binding-00</t>
+	     <t>https://tools.ietf.org/html/draft-ietf-oauth-token-binding-02</t>
 	     <t>https://datatracker.ietf.org/doc/draft-campbell-oauth-mtls</t>
 	     <t>https://datatracker.ietf.org/doc/html/draft-sakimura-oauth-jpop</t>
 		 </list></t>
@@ -658,7 +658,7 @@ Host: server.example.com]]></artwork>
 		 requires further data (extension to response) to manifest binding id for 
 		 particular code.
 		 <vspace/>Note: token binding could be used in conjunction with 
-		 PKCE as an option (https://tools.ietf.org/html/draft-campbell-oauth-tbpkce).
+		 PKCE as an option (https://tools.ietf.org/html/draft-ietf-oauth-token-binding-02#section-4).
 		 <vspace/>
 		 pro:
 		 <vspace/>
@@ -725,7 +725,8 @@ Host: server.example.com]]></artwork>
 	</section>
 	
     <section anchor="Acknowledgements" title="Acknowledgements">
-      <t>We would like to thank Jim Manico and Phil Hunt for their valuable feedback.</t>
+      <t>We would like to thank Jim Manico, Phil Hunt, and Brian Campbell for their 
+      valuable feedback.</t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
@@ -771,7 +772,14 @@ Host: server.example.com]]></artwork>
     
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
-
+      <t>-03 <list style="symbols">
+          <t>incorporated Brian Campbell's findings</t>
+        </list></t>      
+      <t>-02 <list style="symbols">
+          <t>Folded Mix up and Access Token leakage through a bad AS 
+          into new section for dynamic OAuth threats</t>
+          <t>reworked dynamic OAuth section</t>
+        </list></t>
       <t>-01 <list style="symbols">
           <t>Added references to mitigation methods for token leakage</t>
           <t>Added reference to Token Binding for Authorization Code</t>
