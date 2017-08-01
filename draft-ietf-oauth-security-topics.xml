@@ -491,12 +491,74 @@ Host: server.example.com]]></artwork>
 	resource server and knows its URL during development time, but 
 	the client is configured with an resource server's URL at runtime. 
 	This kind of late binding is typical in situations, where the client
-	uses a standard API, such as for e-Mail, calendar, health, or banking
+	uses a standard API, e.g. for e-Mail, calendar, health, or banking
 	and is configured by an user or administrator for the standard-based 
 	service, this particular user or company uses.</t>
-	<t></t>
-   	  <t>Potential mitigation strategies:
-	    <list style="symbols">  
+   	  <t>There are several potential mitigation strategies, which will be discussed 
+   	  in the following sections.</t>
+   	  
+      <section title="Metadata">
+      <t>An authorization server could provide the client with additional
+      information about the location where it is safe to use its access tokens. </t>
+      <t>In the simplest 
+      form, this would require the AS to publish a list of its known resource 
+      servers, illustrated in the following example using a metadata parameter 
+      <spanx style="verb">resource_servers</spanx>:</t>
+      
+      	  <t>
+  	  	<figure>
+          <artwork><![CDATA[HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "issuer":"https://server.example.com",
+  "authorization_endpoint":"https://server.example.com/authorize",
+  “resource_servers”:[
+    “email.example.com”,
+    ”storage.example.com”,
+    ”video.example.com”]
+  ...
+}]]></artwork>
+        </figure>
+	  </t>
+      
+      <t>
+      The AS could also return the URL(s) an access token is good
+      for in the token response, illustrated by the example return parameter 
+      <spanx style="verb">access_token_resource_server</spanx>:</t>
+      
+      	  <t>
+  	  	<figure>
+          <artwork><![CDATA[HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Cache-Control: no-store
+Pragma: no-cache
+
+{
+  "access_token":"2YotnFZFEjr1zCsicMWpAA",
+  “access_token_resource_server”:"https://hostedresource.example.com/path1",            
+...
+}]]></artwork>
+        </figure>
+	  </t>      
+      <t>This mitigation strategy would rely on the client to enforce the security
+      policy and to only send access tokens to legitimate destinations. Results
+      of OAuth related security research (see for example 
+      <xref target="oauth_security_ubc"/> and <xref target="oauth_security_cmu"/>) 
+      indicate a large portion 
+      of client implementations do not or fail to properly implement security controls,
+      like state checks. So relying on clients to detect and properly handle access token
+      phishing is likely to fail as well. Moreover given the ratio of clients to authorization
+      and resource servers, it is considered the more viable approach to move as much as 
+      possible security-related logic to those entities. Clearly, the client has to
+      contribute to the overall security. But there are alternative counter measures, as
+      described in the next sections, which provide a better balance between the involved
+      parties.</t>    
+      
+	  </section>
+	  
+	 <section title="Sender Constrained Access Tokens"> 
+
 		 <t>Sender Constrained Access Tokens: The basic idea is the access
 		 token is bound to a certain secret key and the sender of a requests demonstrates
 		 its possession of that key by signing the request or parts of the request
@@ -507,6 +569,10 @@ Host: server.example.com]]></artwork>
 		 <t>https://tools.ietf.org/html/draft-ietf-oauth-signed-http-request</t>
 	     <t>https://datatracker.ietf.org/doc/html/draft-sakimura-oauth-jpop</t>
 		 </list></t>
+		 
+	</section>
+	<section title="Audience Restricted Access Tokens"> 
+
 	     <t>Audience Restricted Access Tokens: Access tokens are restricted to 
 	     the resource server URL, the client will use to invoke the service. The client
 	     indicates the target URL to the authorization server 
@@ -521,9 +587,8 @@ Host: server.example.com]]></artwork>
 	     resource server. Note: if the authorization server knows the URL of all 
 	     resource server it mints token for, it can already refuse to create a token,
 	     if it doesn't know the resource server URL indicated by the client.</t>
-	    </list>
-	  </t>
 	  
+	  </section>
 	  </section>
 	  </section>
 	  
@@ -795,7 +860,47 @@ Host: server.example.com]]></artwork>
           <date />
         </front>
       </reference>
+      
+      <reference anchor="oauth_security_ubc" target="http://passwordresearch.com/papers/paper267.html">
+        <front>
+          <title>The Devil is in the (Implementation) Details: An Empirical Analysis of OAuth SSO Systems</title>
+          <author fullname="San-Tsai Sun">
+            <organization abbrev="UBC">University of British Columbia</organization>
+          </author>
+          <author fullname="Konstantin Beznosov">
+            <organization abbrev="UBC">University of British Columbia</organization>
+          </author>
+          <date month="October" year="2012"/>
+        </front>
+        <format target="http://passwordresearch.com/papers/paper267.html" type="HTML" />
+      </reference> 
     
+      <reference anchor="oauth_security_cmu">
+        <front>
+          <title>OAuth Demystified for Mobile Application Developers</title>
+          <author fullname="Eric Chen">
+            <organization abbrev="CMU">Carnegie Mellon University</organization>
+          </author>
+          <author fullname="Yutong Pei">
+            <organization abbrev="CMU">Carnegie Mellon University</organization>
+          </author>
+           <author fullname="Shuo Chen">
+            <organization abbrev="MR">Microsoft Research</organization>
+          </author>
+          <author fullname="Yuan Tian">
+            <organization abbrev="CMU">Carnegie Mellon University</organization>
+          </author>          
+          <author fullname="Robert Kotcher">
+            <organization abbrev="CMU">Carnegie Mellon University</organization>
+          </author>
+          <author fullname="Patrick Tague">
+            <organization abbrev="CMU">Carnegie Mellon University</organization>
+          </author>        
+          <date month="November" year="2014"/>
+        </front>
+        <format target="http://css.csail.mit.edu/6.858/2012/readings/oauth-sso.pdf" type="pdf" />
+      </reference> 
+      
     </references>
     
     
