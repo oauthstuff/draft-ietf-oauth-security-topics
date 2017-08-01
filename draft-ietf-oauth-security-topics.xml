@@ -479,7 +479,6 @@ Host: server.example.com]]></artwork>
 	   </section>
 	   <section title="Eavesdropping on the data center internal network">
 	   </section>
-
 	  
 	  <section title="Access Token Phishing by Counterfeit Resource Server">
 	  <t>An attacker may setup his own resource server and trick 
@@ -488,12 +487,13 @@ Host: server.example.com]]></artwork>
 	  this counterfeit resource server, the attacker in turn may use that 
 	  token to access other services on behalf of the resource owner.</t>
 	<t>This attack assumes the client is not bound to a certain
-	resource server and knows its URL during development time, but 
-	the client is configured with an resource server's URL at runtime. 
+	resource server (and the respective URL) at development time, but 
+	client instances are configured with an resource server's URL at runtime. 
 	This kind of late binding is typical in situations, where the client
 	uses a standard API, e.g. for e-Mail, calendar, health, or banking
 	and is configured by an user or administrator for the standard-based 
 	service, this particular user or company uses.</t>
+	
    	  <t>There are several potential mitigation strategies, which will be discussed 
    	  in the following sections.</t>
    	  
@@ -554,22 +554,105 @@ Pragma: no-cache
       contribute to the overall security. But there are alternative counter measures, as
       described in the next sections, which provide a better balance between the involved
       parties.</t>    
-      
 	  </section>
 	  
 	 <section title="Sender Constrained Access Tokens"> 
 
-		 <t>Sender Constrained Access Tokens: The basic idea is the access
-		 token is bound to a certain secret key and the sender of a requests demonstrates
-		 its possession of that key by signing the request or parts of the request
-		 using this key.
-		 <list style="symbols">
-		 <t>https://tools.ietf.org/html/draft-ietf-oauth-token-binding</t>
-	     <t>https://datatracker.ietf.org/doc/draft-campbell-oauth-mtls</t>
-		 <t>https://tools.ietf.org/html/draft-ietf-oauth-signed-http-request</t>
-	     <t>https://datatracker.ietf.org/doc/html/draft-sakimura-oauth-jpop</t>
-		 </list></t>
+		 <t>As the name suggests, sender constraint access token scope the applicability 
+		 of an access token to a certain sender. This sender is obliged to demonstrate 
+		 knowledge of a certain secret as prerequisite for the acceptance of that token 
+		 at a resource server.</t>
 		 
+		 <t>A typical flow looks like this:
+		 <list style="numbers">
+		 <t>The authorization server associates data with the access token, which bind 
+		 this particular token to a certain client. The binding can utilize the client 
+		 identity, but in most cases the AS utilizes key material (or data derived from 
+		 the key material) known to the client.</t>
+		 <t>This key material must be distributed somehow. Either the key material 
+		 already exists before the AS creates the binding or the AS creates ephemeral 
+		 keys. The way pre-existing key material is distributed varies among the 
+		 different approaches. For example, X.509 Certificates can be used in which 
+		 case the distribution happens explicitly during the enrollment process. Or the 
+		 key material is created and distributed at the TLS layer, in which case it might 
+		 automatically happens during the setup of a TLS connection.</t>
+		 <t>The RS must implement the actual proof of possession check. This is typically 
+		 done on the application level, it may utilize capabilities of the transport 
+		 layer (e.g. TLS). Note: replay detection is required as well!</t>
+		 </list>
+		 </t>
+		 	 
+		 <t>There exists several proposals to demonstrate the proof of possession in 
+		 the scope of the OAuth working group:
+		 <list style="symbols">
+		 <t><xref target="I-D.ietf-oauth-token-binding"></xref>: In this approach,
+		 an access tokens is, via the so-called token binding id, bound to key material 
+		 representing a long term association between a client and a certain TLS host.
+		 Negotiation of the key material and proof of possession in the context of 
+		 a TLS handshake is taken care of by the TLS stack. The client needs to determine 
+		 the token binding id of the target resource server and pass this data to the 
+		 access token request. The authorization server than associates the access 
+		 token with this id. The resource server checks on every invocation that the 
+		 token binding id of the active TLS connection and the token binding id of 
+		 associated with the access token match. Since all crypto-related functions
+		 are covered by the TLS stack, this approach is very client developer friendly. 
+		 As a prerequisite, token binding as described in 
+		 <xref target="I-D.ietf-tokbind-https"></xref> (including federated token bindings) 
+		 must be supported on all ends (client, authorization server, resource server).</t>
+		 <t><xref target="I-D.ietf-oauth-mtls"></xref>: The approach as specified in this
+		 document allow use of mutual TLS for both client authentication and sender 
+		 constraint access tokens. For the purpose of sender constraint access tokens, 
+		 the client is identified towards the resource server by the fingerprint of its 
+		 public key certificate. During processing of an access token request, the 
+		 authorization server obtains the public key certificate from the TLS stack and 
+		 associates its fingerprint with the respective access tokens. The resource server
+		 in the same way obtains the public key certificate from the TLS stack and compares 
+		 its fingerprint with the fingerprint associated with the access token.</t>
+		 <t><xref target="I-D.ietf-oauth-signed-http-request"></xref>: An approach to 
+		 sign HTTP requests. It utilizes 
+		 <xref target="I-D.ietf-oauth-pop-key-distribution"></xref> and represents 
+		 the elements of the signature in a JSON object. The signature is built using JWS. 
+		 The mechanism has built-in support for signing of HTTP method, query parameters 
+		 and headers. It also incorporates a timestamp as basis for replay detection.</t>
+		 <t><xref target="I-D.sakimura-oauth-jpop"></xref>: Describes different ways to 
+		 constrain access token usage using TLS or request signing. Note: Since the 
+		 TLS-related proposal was contributed to <xref target="I-D.ietf-oauth-mtls"></xref>, 
+		 only the request signing is further considered. For request signing, 
+		 the draft utilizes <xref target="I-D.ietf-oauth-pop-key-distribution"></xref> and 
+		 <xref target="RFC7800">RFC 7800</xref>. The signature data is 
+		 represented in a JWT and JWS is used for signing. Replay detection is provided 
+		 by building the signature over a server-provided nonce, client-provided none 
+		 and a nonce counter.</t>
+		 </list>
+		 </t>
+		  
+		 <t><xref target="I-D.ietf-oauth-mtls"></xref> and   
+		 <xref target="I-D.ietf-oauth-token-binding"></xref> are built on top of TLS and 
+		 this way continue the successful OAuth2 philosophy to leverage TLS to secure
+		 OAuth wherever possible. Both mechanisms allow prevention of access token leakage 
+		 in a pretty client developer friendly way.</t>
+		 <t>There are some differences between both approaches: To 
+		 start with, in <xref target="I-D.ietf-oauth-token-binding"></xref> all key material 
+		 is automatically managed by the TLS stack and different key pairs can be used for 
+		 different servers in most cases. This is an advantage in terms of ease of use and 
+		 privacy. On the other hand, <xref target="I-D.ietf-oauth-mtls"></xref> only 
+		 requires widely deployed TLS features, which might be an advantage in some
+		 deployments.</t>
+		 
+		 <t>Application level signing approaches, like 
+		 <xref target="I-D.ietf-oauth-signed-http-request"></xref> and
+		 <xref target="I-D.sakimura-oauth-jpop"></xref> have been debated for a long time
+		 in the OAuth working group without a clear outcome.</t>
+		 
+		 <t>As one advantage, application-level signing allows for end-to-end protection 
+		 including non-repudiation even if the TLS connection is terminated between client 
+		 and resource server. But deployment experiences have revealed challenges 
+		 regarding robustness (e.g. reproduction of the signature base
+		 string including correct URL) as well as state management (e.g. replay detection).</t>
+		 
+		 <t>This document therefore recommends implementors to consider one of 
+		 TLS-based approaches wherever possible.</t>
+
 	</section>
 	<section title="Audience Restricted Access Tokens"> 
 
@@ -845,11 +928,16 @@ Pragma: no-cache
 
     <references title="Informative References">
     
-    <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-discovery-04.xml'?>
-    
-          <?rfc include="reference.RFC.7636"?>
-    
-    <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.bradley-oauth-jwt-encoded-state.xml'?>
+    <?rfc include="reference.RFC.7636"?>       
+    <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.bradley-oauth-jwt-encoded-state.xml'?>    
+    <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-discovery.xml'?>    
+    <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-token-binding.xml'?>
+    <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-mtls.xml'?>
+    <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-signed-http-request.xml'?>
+    <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.sakimura-oauth-jpop.xml'?>
+    <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-tokbind-https.xml'?>
+    <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-pop-key-distribution'?>
+    <?rfc include="reference.RFC.7800"?>
     
     <reference anchor="owasp" target="https://www.owasp.org/">
         <front>
