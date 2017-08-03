@@ -475,11 +475,6 @@ Host: server.example.com]]></artwork>
 	  </section>
 	  <section title="Access Token Leakage at the Resource Server">
 	  
-	   <section title="Compromised Resource Server">
-	   </section>
-	   <section title="Eavesdropping on the data center internal network">
-	   </section>
-	  
 	  <section title="Access Token Phishing by Counterfeit Resource Server">
 	  <t>An attacker may setup his own resource server and trick 
 	  a client into sending access tokens to it, which are valid for
@@ -603,41 +598,48 @@ Pragma: no-cache
 		 document allow use of mutual TLS for both client authentication and sender 
 		 constraint access tokens. For the purpose of sender constraint access tokens, 
 		 the client is identified towards the resource server by the fingerprint of its 
-		 public key certificate. During processing of an access token request, the 
-		 authorization server obtains the public key certificate from the TLS stack and 
+		 public key. During processing of an access token request, the 
+		 authorization server obtains the client's public key from the TLS stack and 
 		 associates its fingerprint with the respective access tokens. The resource server
-		 in the same way obtains the public key certificate from the TLS stack and compares 
+		 in the same way obtains the public key from the TLS stack and compares 
 		 its fingerprint with the fingerprint associated with the access token.</t>
-		 <t><xref target="I-D.ietf-oauth-signed-http-request"></xref>: An approach to 
-		 sign HTTP requests. It utilizes 
+		 <t><xref target="I-D.ietf-oauth-signed-http-request"></xref> specifies an approach 
+		 to sign HTTP requests. It utilizes 
 		 <xref target="I-D.ietf-oauth-pop-key-distribution"></xref> and represents 
 		 the elements of the signature in a JSON object. The signature is built using JWS. 
 		 The mechanism has built-in support for signing of HTTP method, query parameters 
 		 and headers. It also incorporates a timestamp as basis for replay detection.</t>
-		 <t><xref target="I-D.sakimura-oauth-jpop"></xref>: Describes different ways to 
-		 constrain access token usage using TLS or request signing. Note: Since the 
-		 TLS-related proposal was contributed to <xref target="I-D.ietf-oauth-mtls"></xref>, 
-		 only the request signing is further considered. For request signing, 
+		 <t><xref target="I-D.sakimura-oauth-jpop"></xref>: this draft describes different 
+		 ways to constrain access token usage, namely TLS or request signing. Note: Since 
+		 the authors of this draft contributed the TLS-related proposal to 
+		 <xref target="I-D.ietf-oauth-mtls"></xref>, this document only considers the
+		 request signing part. For request signing, 
 		 the draft utilizes <xref target="I-D.ietf-oauth-pop-key-distribution"></xref> and 
 		 <xref target="RFC7800">RFC 7800</xref>. The signature data is 
 		 represented in a JWT and JWS is used for signing. Replay detection is provided 
-		 by building the signature over a server-provided nonce, client-provided none 
+		 by building the signature over a server-provided nonce, client-provided nonce 
 		 and a nonce counter.</t>
 		 </list>
 		 </t>
 		  
 		 <t><xref target="I-D.ietf-oauth-mtls"></xref> and   
 		 <xref target="I-D.ietf-oauth-token-binding"></xref> are built on top of TLS and 
-		 this way continue the successful OAuth2 philosophy to leverage TLS to secure
+		 this way continue the successful OAuth 2.0 philosophy to leverage TLS to secure
 		 OAuth wherever possible. Both mechanisms allow prevention of access token leakage 
-		 in a pretty client developer friendly way.</t>
+		 in a fairly client developer friendly way.</t>
 		 <t>There are some differences between both approaches: To 
 		 start with, in <xref target="I-D.ietf-oauth-token-binding"></xref> all key material 
-		 is automatically managed by the TLS stack and different key pairs can be used for 
-		 different servers in most cases. This is an advantage in terms of ease of use and 
-		 privacy. On the other hand, <xref target="I-D.ietf-oauth-mtls"></xref> only 
-		 requires widely deployed TLS features, which might be an advantage in some
-		 deployments.</t>
+		 is automatically managed by the TLS stack whereas 
+		 <xref target="I-D.ietf-oauth-mtls"></xref> requires the developer to create and 
+		 maintain the key pairs and respective certificates. Use of self-signed 
+		 certificates, which is supported by the draft, significantly reduce the 
+		 complexity of this task. Furthermore, 
+		 <xref target="I-D.ietf-oauth-token-binding"></xref> 
+		 allows to use different key pairs for different resource servers, which is 
+		 a privacy benefit. 
+		 On the other hand, <xref target="I-D.ietf-oauth-mtls"></xref> only 
+		 requires widely deployed TLS features, which means it might be easier to adopt
+		 in the short term.</t>
 		 
 		 <t>Application level signing approaches, like 
 		 <xref target="I-D.ietf-oauth-signed-http-request"></xref> and
@@ -655,23 +657,100 @@ Pragma: no-cache
 
 	</section>
 	<section title="Audience Restricted Access Tokens"> 
-
-	     <t>Audience Restricted Access Tokens: Access tokens are restricted to 
-	     the resource server URL, the client will use to invoke the service. The client
-	     indicates the target URL to the authorization server 
-	     (e.g. by utilizing 
-	     https://tools.ietf.org/html/draft-campbell-oauth-resource-indicators-01), which 
-	     in turn associates
-	     the URL as the audience with the access token being issued. Every 
-	     resource server must verify the audience and ensure it is the URL under which
-	     is it exposed to clients. Any attempt to invoke a service using an 
-	     access token with another audience must be refused. This way, audience 
-	     restricted access tokens prevent replay of an access token on the legitimate 
-	     resource server. Note: if the authorization server knows the URL of all 
-	     resource server it mints token for, it can already refuse to create a token,
-	     if it doesn't know the resource server URL indicated by the client.</t>
-	  
+		<t>An audience restriction essentially restricts the resource server a 
+		particular access token can be used at. The authorization server associates
+		the access token with a certain resource server and every resource server
+		is obliged to verify for every request, whether the access token send with
+		that request was meant to be used at the particular resource server. If
+		not, the resource server must refuse to serve the respective request. In
+		the general case, audience restrictions limit the impact of a token 
+		leakage. In the case of a counterfeit resource server, it may (as described 
+		see below) also prevent abuse of the phished access token at the legitimate 
+		resource server.</t>
+		<t>The audience can basically be expressed using logical names or physical 
+		addresses (like URLs). In order to detect phishing, it is necessary to use 
+		the actual URL the client will send requests to. 
+		In the phishing case, this URL will point to the 
+		counterfeit resource server. If the attacker tries to use the access token 
+		at the legitimate resource server (which has a different URL), the resource 
+		server will detect the mismatch (wrong audience) and refuse to server the 
+		request.</t>
+		<t>In deployments where the authorization server knows the URLs of all resource
+		servers, the authorization server may just refuse to issue access tokens for
+		unknown resource server URLs.</t>
+		<t>The client needs to tell the authorization server, at which URL it will
+		use the access token it is requesting. It could use the mechanism proposed
+		<xref target="I-D.campbell-oauth-resource-indicators"></xref> or
+		encode the information in the scope value.</t>
+		<t>Instead of the URL, it is also possible to utilize the fingerprint of
+		the resource server's X.509 certificate as audience value. This variant would
+		also allow to detect an attempt to spoof the legit resource server's URL by using 
+		a valid TLS certificate obtained from a different CA. It might also be considered
+		a privacy benefit to hide the resource server URL from the authorization 
+		server.</t>
+	     <t>Audience restriction seems easy to use since it does not require any 
+	     crypto on the client side. But since every access token is bound to a certain
+	     resource server, the client also needs to obtain different RS-specific
+	     access tokens, if it wants to access several resource services. 
+	     <xref target="I-D.ietf-oauth-token-binding"></xref> has the same property, since
+	     different token binding ids must be associated with the access token. 
+	     <xref target="I-D.ietf-oauth-mtls"></xref> on the other hand allows a 
+	     client to use the access token at multiple resource servers.</t>
+	     <t>It shall be noted that audience restrictions, or general speaking an 
+	     indication by the client to the authorization server where it wants to use 
+	     the access token, has additional benefits beyond the scope of token leakage 
+	     prevention. It allows the authorization server to create different access 
+	     token whose format and content is specifically minted for the respective server. 
+	     This has huge functional and privacy advantages if the deployments uses
+	     structured access tokens.</t>
 	  </section>
+	  </section>
+	   <section title="Compromised Resource Server">
+	   <t>ranging from partial (logfiles) to full (root access) control over resource server
+access resources without access control (behind the defence line)
+capture resource tokens valid for other resource servers, worst case: access token can 
+be used on any RS in a certain security domain
+
+no question, this kind of take over must be prevented - standard security practices
+we focus on impact on OAuth-related parts of the ecosystem
+
+0) do not log any OAuth credentials
+
+1) Sender constraint access tokens
+
+depending on the severity of the penetration, cannot be replayed since attacker lacks 
+private key
+
+2) Audience restriction (single value)
+
+can still be replayed on the same resource server, but limits impact to compromised 
+resource server</t>
+	   
+	   </section>
+	   <section title="TLS Terminating Reverse Proxies">
+	   <t>A common deployment architecture for HTTP applications is to 
+	   have the application server sitting behind a reverse proxy, which terminates
+	   the TLS connection and dispatches the incoming requests to the respective 
+	   application server nodes.</t>
+	   <t>This section highlights some attack angles of this deployment architecture,
+	   which are relevant to OAuth, and give recommendations for security controls.</t>
+	   <t>In some situations, the reverse proxy needs to pass security-related data
+	   to the upstream application servers for further processing. Examples include IP 
+	   addresses of a request originator, token binding ids and authenticated TLS 
+	   client certificates.</t>
+	   <t>NEED TO CHECK THIS!!!</t>
+	   	<section title="Spoofed Proxy Parameters">
+	    	<t>attacker sends HTTP Proxy headers through the Proxy</t>
+	  		<t>sanitize, sanitize!</t>
+	    </section>
+	    <section title="Compromized Proxy">
+	    <t>same as compromized resource server</t>
+	    </section>
+	    <section title="Eavesdropping on the data center internal network">
+	     <t>access to the network
+	     prevent tapping and injection (incl. replay prevention)</t>
+	    </section>
+
 	  </section>
 	  </section>
 	  
@@ -937,6 +1016,8 @@ Pragma: no-cache
     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.sakimura-oauth-jpop.xml'?>
     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-tokbind-https.xml'?>
     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-pop-key-distribution'?>
+    <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.campbell-oauth-resource-indicators'?>
+    
     <?rfc include="reference.RFC.7800"?>
     
     <reference anchor="owasp" target="https://www.owasp.org/">
