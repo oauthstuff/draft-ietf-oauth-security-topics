@@ -551,7 +551,7 @@ Pragma: no-cache
       parties.</t>    
 	  </section>
 	  
-	 <section title="Sender Constrained Access Tokens"> 
+	 <section anchor="pop_tokens" title="Sender Constrained Access Tokens"> 
 
 		 <t>As the name suggests, sender constraint access token scope the applicability 
 		 of an access token to a certain sender. This sender is obliged to demonstrate 
@@ -656,7 +656,7 @@ Pragma: no-cache
 		 TLS-based approaches wherever possible.</t>
 
 	</section>
-	<section title="Audience Restricted Access Tokens"> 
+	<section anchor="aud_restriction" title="Audience Restricted Access Tokens"> 
 		<t>An audience restriction essentially restricts the resource server a 
 		particular access token can be used at. The authorization server associates
 		the access token with a certain resource server and every resource server
@@ -706,27 +706,40 @@ Pragma: no-cache
 	  </section>
 	  </section>
 	   <section title="Compromised Resource Server">
-	   <t>ranging from partial (logfiles) to full (root access) control over resource server
-access resources without access control (behind the defence line)
-capture resource tokens valid for other resource servers, worst case: access token can 
-be used on any RS in a certain security domain
-
-no question, this kind of take over must be prevented - standard security practices
-we focus on impact on OAuth-related parts of the ecosystem
-
-0) do not log any OAuth credentials
-
-1) Sender constraint access tokens
-
-depending on the severity of the penetration, cannot be replayed since attacker lacks 
-private key
-
-2) Audience restriction (single value)
-
-can still be replayed on the same resource server, but limits impact to compromised 
-resource server</t>
-	   
+	   <t>An attacker may compromise a resource server in order to get access
+	   to its resources and other resources of the respective deployment. 
+	   Such a compromise may range from partial access to the system, e.g. its logfiles, 
+	   to full control of the respective server.</t> 
+	   <t>If the attacker were able to take over full control including shell access
+	   it will be able to circumvent all controls in place and 
+	   access resources without access control. It will also get access
+	   to access tokens, which are sent to compromised the system and which potentially 
+	   are valid for access to other resource servers as well. Even if the attacker "only"
+	   is able to access logfiles or databases of the server system, it may get access to 
+	   valid access tokens.</t>   
+	   <t>Preventing and detecting server breaches by way of hardening and monitoring 
+	   server systems is considered a standard operational procedure and therefore out
+	   of scope of this document. This section will focus on the impact of
+	   such breaches on OAuth-related parts of the ecosystem, which is the replay of 
+	   captured access tokens on the compromised resource server and other resource 
+	   servers of the respective deployment.</t>
+	   <t>The following measures shall be taken into account by implementors in order 
+	   to cope with access token replay:</t>
+	   <t>
+	   <list style="symbols">
+	     <t>The resource server must treat access tokens like any other credentials. It
+	     is considered good practice to not log them and not to store them in plain form.</t> 
+	     <t>Sender constraint access tokens as described in 
+	     <xref target="pop_tokens"/> will prevent the attacker from replaying the access
+	     tokens on other resource servers. Depending on the severity of the penetration, 
+	     it will also prevent replay on the compromised system.</t> 
+	     <t>Audience restriction as described in <xref target="aud_restriction"/>
+	     may be used to prevent replay of captured access tokens on other resource
+	     servers.</t>
+	   </list>
+       </t>
 	   </section>
+	   
 	   <section title="TLS Terminating Reverse Proxies">
 	   <t>A common deployment architecture for HTTP applications is to 
 	   have the application server sitting behind a reverse proxy, which terminates
@@ -735,22 +748,26 @@ resource server</t>
 	   <t>This section highlights some attack angles of this deployment architecture,
 	   which are relevant to OAuth, and give recommendations for security controls.</t>
 	   <t>In some situations, the reverse proxy needs to pass security-related data
-	   to the upstream application servers for further processing. Examples include IP 
-	   addresses of a request originator, token binding ids and authenticated TLS 
+	   to the upstream application servers for further processing. Examples include the IP 
+	   address of the request originator, token binding ids and authenticated TLS 
 	   client certificates.</t>
-	   <t>NEED TO CHECK THIS!!!</t>
-	   	<section title="Spoofed Proxy Parameters">
-	    	<t>attacker sends HTTP Proxy headers through the Proxy</t>
-	  		<t>sanitize, sanitize!</t>
-	    </section>
-	    <section title="Compromized Proxy">
-	    <t>same as compromized resource server</t>
-	    </section>
-	    <section title="Eavesdropping on the data center internal network">
-	     <t>access to the network
-	     prevent tapping and injection (incl. replay prevention)</t>
-	    </section>
-
+	   <t>If the reverse proxy would pass through any header sent from the outside,
+	   an attacker could try to directly send the faked header values through the proxy
+	   to the application server in order to circumvent security controls that way.
+	   For example, it is standard practice of reverse proxies to accept 
+	   <spanx style="verb">forwarded_for</spanx>
+	   headers and just add the origin of the inbound request (making it a list). 
+	   Depending on the logic performed in the application server, the attacker could
+	   simply add a whitelisted IP address to the header and render a IP whitelist 
+	   useless. A reverse proxy must therefore sanitize any inbound requests to ensure
+	   the authenticity and integrity of all header values relevant for the security of the 
+	   application servers.</t>
+	   <t>If an attacker would be able to get access to the internal network between 
+	   proxy and application server, it could also try to circumvent security 
+	   controls in place. It is therefore important to ensure the authenticity of 
+	   the communicating entities. Furthermore, the communication link between reverse 
+	   proxy and application server must therefore be protected against tapping and 
+	   injection (including replay prevention).</t>
 	  </section>
 	  </section>
 	  
