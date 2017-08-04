@@ -35,7 +35,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="bcp" docName="draft-ietf-oauth-security-topics-03"
+<rfc category="bcp" docName="draft-ietf-oauth-security-topics-04"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -78,7 +78,7 @@
       </address>
     </author>
 
-    <date day="30" month="June" year="2017" />
+    <date day="04" month="August" year="2017" />
 
     <!-- Meta-data Declarations -->
 
@@ -1092,6 +1092,9 @@ Pragma: no-cache
     
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
+      <t>-04 <list style="symbols">
+          <t>Added section on Access Token Leakage at Resource Server</t>
+        </list></t>  
       <t>-03 <list style="symbols">
           <t>incorporated Brian Campbell's findings</t>
         </list></t>      
