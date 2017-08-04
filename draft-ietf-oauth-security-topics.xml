@@ -728,7 +728,7 @@ Pragma: no-cache
 	   <t>
 	   <list style="symbols">
 	     <t>The resource server must treat access tokens like any other credentials. It
-	     is considered good practice to not log them and not to store them in plain form.</t> 
+	     is considered good practice to not log them and not to store them in plain text.</t> 
 	     <t>Sender constraint access tokens as described in 
 	     <xref target="pop_tokens"/> will prevent the attacker from replaying the access
 	     tokens on other resource servers. Depending on the severity of the penetration, 
