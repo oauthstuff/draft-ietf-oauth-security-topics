@@ -137,8 +137,8 @@
 	  </list>
 	  </t>
 	  <t>OAuth initially assumed a static relationship between client, authorization 
-	  server and resource servers. The URLs of AS and RS were know to the client
-	  at deployment time and built an anchor for the trust relationsship among those
+	  server and resource servers. The URLs of AS and RS were known to the client
+	  at deployment time and built an anchor for the trust relationship among those
 	  parties. The validation whether the client talks to a legitimate server is based on 
 	  TLS server authentication (see <xref target="RFC6819"/>, Section 4.5.4).</t>
 	  <t>With the increasing adoption of OAuth, this simple model dissolved and, in
@@ -158,7 +158,7 @@
 	  gives a summary of the set of security mechanisms and practices, the working
 	  group shall consider to recommend to OAuth implementers. This is followed by 
 	  a section proposing modifications to OAuth intended to either simplify
-	  its usage and to strengten its security.</t>
+	  its usage and to strengthen its security.</t>
 	  <t>The remainder of the 
 	  draft gives a detailed analyses of the weaknesses and implementation issues, 
 	  which can be found in the wild today along with a discussion of potential 
@@ -190,7 +190,7 @@
 	was initiated in. In particular, clients shall implement appropriate XSRF prevention
 	by utilizing one-time use XSRF tokens carried in the STATE parameter, which are 
 	securely bound to the user agent. Moreover, the client shall store the authorization
-	server's identity it send an authorization request to in a transaction-specific 
+	server's identity it sends an authorization request to in a transaction-specific 
 	manner, which is also bound to the particular user agent. Furthermore, clients 
 	should use AS-specific redirect URIs as a means to 
 	identify the AS a particular response came from. Matching this with the before 
@@ -385,7 +385,7 @@ Host: server.example.com]]></artwork>
 	  </t>	  
 	   </section>
 	   <section title="Proposed Countermeasures">
-	   <t>The complexitity of implementing and managing pattern matching correctly 
+	   <t>The complexity of implementing and managing pattern matching correctly 
 		obviously causes security issues. This document therefore proposes to 
 	   simplify the required logic and configuration by using exact redirect URI matching only.
               This means the authorization server shall compare the two 
@@ -395,7 +395,7 @@ Host: server.example.com]]></artwork>
 		<t>This change will require all OAuth clients to maintain the transaction state (and XSRF tokens) 
 		in the "state" parameter. This is a normative change to RFC 6749 since section 3.1.2.2 allows for 
 		dynamic URI query parameters in the redirect URI. In order to assess the practical impact, the 
-		working group needs to collect data on whether this feature is realy used in deployments today.</t> 
+		working group needs to collect data on whether this feature is really used in deployments today.</t> 
 		<t>The 
 		working group may also consider this change as a step towards improved interoperability for OAuth 
 		implementations since RFC 6749 is somewhat vague on redirect URI validation. Notably there are no 
@@ -410,8 +410,8 @@ Host: server.example.com]]></artwork>
 		dynamic port numbers - at least wild cards for port numbers are required.
 		<vspace/>Question: Does redirect uri validation solve any problem for native apps? Effective against 
 		impersonation when used in conjunction with claimed HTTPS redirect URIs only.
-		<vspace/>For Windows token broker exact redirect URI matching is impotant as the redirect URI encodes the app identity.
-		For custom scheme redirects there is a question however it is probably a usfull part of defense in depth.</t>
+		<vspace/>For Windows token broker exact redirect URI matching is important as the redirect URI encodes the app identity.
+		For custom scheme redirects there is a question however it is probably a useful part of defense in depth.</t>
 		</list>
 	   </t>
 	   <t>Additional recommendations:
@@ -673,7 +673,7 @@ Pragma: no-cache
 		In the phishing case, this URL will point to the 
 		counterfeit resource server. If the attacker tries to use the access token 
 		at the legitimate resource server (which has a different URL), the resource 
-		server will detect the mismatch (wrong audience) and refuse to server the 
+		server will detect the mismatch (wrong audience) and refuse to serve the 
 		request.</t>
 		<t>In deployments where the authorization server knows the URLs of all resource
 		servers, the authorization server may just refuse to issue access tokens for
@@ -696,7 +696,7 @@ Pragma: no-cache
 	     different token binding ids must be associated with the access token. 
 	     <xref target="I-D.ietf-oauth-mtls"></xref> on the other hand allows a 
 	     client to use the access token at multiple resource servers.</t>
-	     <t>It shall be noted that audience restrictions, or general speaking an 
+	     <t>It shall be noted that audience restrictions, or generally speaking an 
 	     indication by the client to the authorization server where it wants to use 
 	     the access token, has additional benefits beyond the scope of token leakage 
 	     prevention. It allows the authorization server to create different access 
@@ -710,7 +710,7 @@ Pragma: no-cache
 	   to its resources and other resources of the respective deployment. 
 	   Such a compromise may range from partial access to the system, e.g. its logfiles, 
 	   to full control of the respective server.</t> 
-	   <t>If the attacker were able to take over full control including shell access
+	   <t>If the attacker was able to take over full control including shell access
 	   it will be able to circumvent all controls in place and 
 	   access resources without access control. It will also get access
 	   to access tokens, which are sent to compromised the system and which potentially 
