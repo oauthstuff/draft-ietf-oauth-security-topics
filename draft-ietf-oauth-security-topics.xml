@@ -78,7 +78,7 @@
       </address>
     </author>
 
-    <date day="04" month="August" year="2017" />
+    <date day="10" month="September" year="2017" />
 
     <!-- Meta-data Declarations -->
 
@@ -138,20 +138,20 @@
 	  </t>
 	  <t>OAuth initially assumed a static relationship between client, authorization 
 	  server and resource servers. The URLs of AS and RS were known to the client
-	  at deployment time and built an anchor for the trust relationship among those
-	  parties. The validation whether the client talks to a legitimate server is based on 
-	  TLS server authentication (see <xref target="RFC6819"/>, Section 4.5.4).</t>
-	  <t>With the increasing adoption of OAuth, this simple model dissolved and, in
+	  at deployment time and built an anchor for the trust relationsship among those
+	  parties. The validation whether the client talks to a legitimate server was based on 
+	  TLS server authentication (see <xref target="RFC6819"/>, Section 4.5.4).
+	  With the increasing adoption of OAuth, this simple model dissolved and, in
 	  several scenarios, was replaced by a dynamic establishment of the relationship
 	  between clients on one side and the authorization and resource servers of a 
-	  particular deployment on the other side. This way the same client can be 
+	  particular deployment on the other side. This way the same client could be 
 	  used to access services of different providers (in case of standard APIs, such 
 	  as e-Mail or OpenID Connect) or serves as a frontend to a particular tenant in a 
-	  multi-tenancy.</t>
-	  <t>Extensions of OAuth, such as <xref target="RFC7591"/> and 
+	  multi-tenancy.
+	  Extensions of OAuth, such as <xref target="RFC7591"/> and 
 	  <xref target="I-D.ietf-oauth-discovery"/> were developed in order to support
-	  the usage of OAuth in dynamic scenarios.</t>
-	  <t>As a challenge to the community, such usage scenarios open up new attack angles, 
+	  the usage of OAuth in dynamic scenarios.
+	  As a challenge to the community, such usage scenarios open up new attack angles, 
 	  which are discussed in this document.</t>	  
 	  
 	  <t>The remainder of the document is organized as follows: The next section 
@@ -174,7 +174,7 @@
     taken into consideration by the OAuth working group to be recommended to OAuth
     implementers.</t>
 
-    <section title="Protecting redirect-based flows">
+    <section anchor="rec_redirect" title="Protecting redirect-based flows">
 
     <t>Authorization servers shall utilize exact matching of client redirect URIs against 
     pre-registered URIs. This measure contributes to the prevention of leakage of 
@@ -210,7 +210,13 @@
 	
     </section>
     
-    <section title="TBD" />
+    <section title="TBD">
+    <t>Add further topics:
+    <list style="symbols">
+    <t>Access Token Leakage at resource servers</t>
+    </list>
+    </t>
+    </section>
     
    </section>
    
@@ -222,7 +228,9 @@
     
     It also recommends some changes to the OAuth set of specs.</t>
 		<t>Remove requirement to check actual redirect URI at token endpoint - seems to be 
-	complicated to implement properly and could be compromised</t>
+	complicated to implement properly and could be compromised. The protection goal is 
+	achieved even more effective by utilizing PKCE as recommended in 
+	<xref target="rec_redirect"/>.</t>
     </section>
     
     <section anchor="cred_leakage" title="OAuth Credentials Leakage">
@@ -701,7 +709,7 @@ Pragma: no-cache
 	     the access token, has additional benefits beyond the scope of token leakage 
 	     prevention. It allows the authorization server to create different access 
 	     token whose format and content is specifically minted for the respective server. 
-	     This has huge functional and privacy advantages if the deployments uses
+	     This has huge functional and privacy advantages in deployments using
 	     structured access tokens.</t>
 	  </section>
 	  </section>
@@ -713,7 +721,7 @@ Pragma: no-cache
 	   <t>If the attacker was able to take over full control including shell access
 	   it will be able to circumvent all controls in place and 
 	   access resources without access control. It will also get access
-	   to access tokens, which are sent to compromised the system and which potentially 
+	   to access tokens, which are sent to the compromised system and which potentially 
 	   are valid for access to other resource servers as well. Even if the attacker "only"
 	   is able to access logfiles or databases of the server system, it may get access to 
 	   valid access tokens.</t>   
@@ -989,12 +997,11 @@ Pragma: no-cache
 	
 	<section title="Other Topics">
 	<t>why to rotate refresh tokens</t>
-	<t>why audience restriction</t>
 	<t>how to support multi AS per RS</t>
-	<t>...</t>
 	<t>differentiate native, JS and web clients</t>
-	<t>federated login to apps (code flow to own AS in browser and federated login to 3rd party IDP in browser)</t>
 	<t>do not put sensitive data in URL/GET parameters (Jim Manico)</t>
+	<t>Incorporate Christian Mainka's feedback</t>
+	<t>WPAD attack - https://www.blackhat.com/docs/us-16/materials/us-16-Kotler-Crippling-HTTPS-With-Unholy-PAC.pdf</t>
 	</section>
 	
     <section anchor="Acknowledgements" title="Acknowledgements">
