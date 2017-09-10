@@ -35,7 +35,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="bcp" docName="draft-ietf-oauth-security-topics-04"
+<rfc category="bcp" docName="draft-ietf-oauth-security-topics-03"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -1099,10 +1099,8 @@ Pragma: no-cache
     
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
-      <t>-04 <list style="symbols">
-          <t>Added section on Access Token Leakage at Resource Server</t>
-        </list></t>  
       <t>-03 <list style="symbols">
+      	  <t>Added section on Access Token Leakage at Resource Server</t>
           <t>incorporated Brian Campbell's findings</t>
         </list></t>      
       <t>-02 <list style="symbols">
