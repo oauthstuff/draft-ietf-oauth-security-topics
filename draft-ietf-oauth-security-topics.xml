@@ -35,7 +35,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="bcp" docName="draft-ietf-oauth-security-topics-04"
+<rfc category="bcp" docName="draft-ietf-oauth-security-topics-05"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -78,7 +78,7 @@
       </address>
     </author>
 
-    <date day="13" month="November" year="2017" />
+    <date day="17" month="February" year="2018" />
 
     <!-- Meta-data Declarations -->
 
@@ -196,17 +196,19 @@
 	on how to implement XSRF prevention and AS matching using signed JWTs in the 
 	STATE parameter.</t>
 	<t>Clients shall use <xref target="RFC7636">PKCE</xref> in order to (with the help 
-	of the authorization server) 
-	detect attempts to inject authorization codes into the authorization response. The 
-	PKCE challenges must be transaction-specific and securely bound to the user agent, in 
-	which the transaction was started.</t>
+	of the authorization server) detect attempts to inject (replay) authorization codes 
+	into the authorization response. The PKCE challenges must be transaction-specific and 
+	securely bound to the user agent, in which the transaction was started.</t>
 	<t> Note: although PKCE so far was recommended as 
 	mechanism to protect native apps, this advice applies to all kinds of OAuth clients, 
 	including web applications.</t>
+	<t>Authorization servers shall consider the recommendations given in 
+	<xref target="RFC6819"/>, section 4.4.1.1, on authorization code replay 
+	prevention.</t>
 	
     </section>
     
-    <section title="Token Leakage Prevention">
+    <section title="Token Replay Prevention">
     <t>Authorization servers shall use TLS-based methods for sender constraint access 
     tokens as described in  section <xref target="pop_tokens"/>, such as token 
     binding <xref target="I-D.ietf-oauth-token-binding"></xref> or Mutual TLS for 
@@ -223,8 +225,8 @@
        to implement.
     
     It also recommends some changes to the OAuth set of specs.</t>
-		<t>Remove requirement to check actual redirect URI at token endpoint - seems to be 
-	complicated to implement properly and could be compromised. The protection goal is 
+		<t>Remove requirement to check actual redirect URI at token endpoint - seems to be
+		to  complicated to be implemented properly and could be compromised. The protection goal is 
 	achieved even more effective by utilizing PKCE as recommended in 
 	<xref target="rec_redirect"/>.</t>
     </section>
@@ -423,8 +425,8 @@ Host: server.example.com]]></artwork>
 	   </list>
 	   </t>
 	   <t>Alternatives to exact redirect URI matching: 
-	   <list style="symbols"><t>authenticate client using digital 
-	   signatures (JAR? https://tools.ietf.org/html/draft-ietf-oauth-jwsreq-09)</t>
+	   <list style="symbols"><t>Authenticate client using digital 
+	   signatures (see <xref target="I-D.ietf-oauth-jwsreq"/>)</t>
 	   </list>	 
 	   </t>  
 	   </section>
@@ -436,42 +438,58 @@ Host: server.example.com]]></artwork>
 	   <t>If the user clicks onto one of those links and the target is under the control of an attacker, 
 	   it can get access to the response URL in the referrer header.</t>
 	   <t>It is also possible that an attacker injects cross-domain content somehow into the page, such 
-	   as &lt;img&gt; (f.e. if this is blog web site etc.): the implication is obviously the same - loading this 
-	   content by browser results in leaking referrer with a code.</t>
+	   as &lt;img&gt; (e.g if this is a blog web site). The implication is obviously the same: loading this 
+	   content by browser results in leaking referrer with a code.</t> 
 	   <section title="Proposed Countermeasures">
 	   <t>There are some means to prevent leakage as described above:</t>
 	   <t>
-	   <list style="symbols">
-	   <t>Use of the HTML link attribute rel="noreferrer" (Chrome 52.0.2743.116, FF 49.0.1, Edge 38.14393.0.0, IE/Win10)</t>
-	   <t>Use of the "referrer" meta link attribute (possible values e.g. noreferrer, origin, ...) 
-	   (cf. https://w3c.github.io/webappsec-referrer-policy/ - work in progress (seems Google, Chrome and Edge support it))</t>
-	   <t>Redirect to intermediate page (sanitize history) before sending user agent to other pages<vspace/>Note: double 
-	   check redirect/referrer header behavior</t>
-	   <t>Use form post mode instead of redirect for authorization response (don't transport credentials via URL parameters and GET)</t>
-	   </list>
+	   	<list style="symbols">
+	   		<t>Don't include links to external sites into the page rendered as result 
+	   		of a OAuth authorization response</t>
+	   		<t>Redirect to intermediate page (sanitize history) before sending user 
+	   		agent to other pages<vspace/>Editor's Note: 
+	   			need to double check redirect/referrer header behavior</t>
+	   		<t>Use of the HTML link attribute rel="noreferrer" to suppress referrer header</t>
+	   		<t>Use of the "referrer" meta link attribute to suppress referrer header 
+	   		(see <xref target="webappsec-referrer-policy"/>)</t>
+	   		<t>Use form post response mode instead of redirect for authorization 
+	   		response (see <xref target="oauth-v2-form-post-response-mode"/>)</t>
+	   	</list>
 	   </t>
-	   <t>Note: There shouldn't be a referer header when loading HTTP content from a 
-	   HTTPS -loaded page (e.g. help/faq pages)</t>
-	   <t>Note: This kind of attack is not applicable to the implicit grant since fragments are not be included in 
-	   referrer headers (cf. https://tools.ietf.org/html/rfc7231#section-5.5.2)</t>
 	   </section>
 	  </section>
 	  <section title="Attacks in the Browser">
-	  <section title="Code in browser history (TBD)">
+	  <section title="Code in browser history">
 	  <t>When browser navigates to "client.com/redirection_endpoint?code=abcd" as a result 
-	  of a redirect from a provider's authorization endpoint.</t>
-	  <t>Proposed countermeasures: code is one time use, has limited duration, is bound to client id/secret (confidential clients only)</t>
+	  of a redirect from a provider's authorization endpoint, the URL including the 
+	  authorization code will end up in the browser's history. An attacker
+	  with access to the device could obtain the code and try to replay it.</t>
+	  <t>Proposed countermeasures:
+	  	<list>
+	  		<t>Authorization code replay prevention as described in 
+	  		<xref target="RFC6819"/>, section 4.4.1.1, and <xref target="code_injection"/></t>
+			<t>Use form post response mode instead of redirect for authorization 
+	  			response (see <xref target="oauth-v2-form-post-response-mode"/>)</t>
+	  	</list>
+	  </t>
 	  </section>
-	  <section title="Access token in browser history (TBD)">
-	  <t>When a client or just a web site which already has a token deliberately navigates to a page like 
-	  provider.com/get_user_profile?access_token=abcdef.. Actually RFC6750 discourages this practice and asks to 
-	  transfer tokens via a header, but in practice web sites often just pass access token in query</t>
-	  <t>When browser navigates to client.com/redirection_endpoint#access_token=abcef as a result of a 
-	  redirect from a provider's authorization endpoint.</t>
-	  <t>Proposal: replace implicit flow with postmessage communication</t>
-	  </section>
-	  <section title="Javascript Code stealing Access Tokens (TBD)">
-	    <t>sandboxing using service workers</t>
+	  <section title="Access token in browser history">
+	  <t>An access token may end up in the browser history if a a client or just a web 
+	  site, which already has a token, deliberately navigates to a page like 
+	  "provider.com/get_user_profile?access_token=abcdef.". 
+	  Actually <xref target="RFC6750"/>discourages this practice and asks to transfer 
+	  tokens via a header, but in practice web sites often just pass access token in 
+	  query parameters.</t>
+	  <t>In case of implicit grant, a URL like 
+	  "client.com/redirection_endpoint#access_token=abcdef" may also end up in the browser 
+	  history as a result of a redirect from a provider's authorization endpoint.</t>
+	  <t>Proposed countermeasures:
+	  	<list>
+	  		<t>Replace implicit flow with postmessage communication or 
+	  		the authorization code grant</t>
+	  		<t>Never pass access tokens in URL query parameters</t>
+	  	</list>
+	  </t>
 	  </section>
 	  </section>
 	  
@@ -482,15 +500,15 @@ Host: server.example.com]]></artwork>
 	  tricking the client into sending those credentials to the attacker (which acts as 
 	  MITM between client and authorization server)</t>
 	  <t>A detailed description of the attack and potential countermeasures is 
-	  given in cf. https://tools.ietf.org/html/draft-ietf-oauth-mix-up-mitigation-01.</t>
+	  given in <xref target="I-D.ietf-oauth-mix-up-mitigation"/>.</t>
 	  <t>Potential mitigations:
 	    <list style="symbols">
-		 <t>AS returns client_id and its iss in the response. Client compares 
-		  this data to AS it believed it sent the user agent to.</t>
-		 <t>ID token carries client id and issuer (requires OpenID Connect)</t>
-	     <t>Clients use AS-specific redirect URIs, for every authorization request
+	     <t>Clients use AS-specific redirect URIs and, for every authorization request,
 	     store intended AS and compare intention with actual redirect URI where the
-	     response was received (no change to OAuth required)</t>
+	     response was received</t>
+	     <t>AS returns client_id and its iss in the response. Client compares 
+		  this data to AS it believed it sent the user agent to.</t>
+		 <t>ID token carries client id and issuer (OpenID Connect specific)</t>
 	    </list>
 	  </t>
 	  </section>
@@ -499,44 +517,50 @@ Host: server.example.com]]></artwork>
 	  <t>In such an attack, the adversary attempts to inject a stolen authorization 
 	  code into a legitimate client on a device under his control. In the simplest 
 	  case, the attacker would want to use the code in his own client. But there
-	  are situations where this might not be possible or intended. Example are:
+	  are situations where this might not be possible or intended. Examples are:
 	  <list style="symbols">
+	   <t>The attacker wants to access certain functions in this particular client. 
+	   As an example, 
+	   the attacker wants to impersonate his victim in a certain app or on a certain 
+	   web site.</t>
 	   <t>The code is bound to a particular confidential client and the attacker is 
-	   unable to obtain the required client credentials to redeem the code himself and/or</t>
-	   <t>The attacker wants to access certain functions in this particular client. As an example, 
-	   the attacker potentially wants to impersonate his victim in a certain app.</t>
-	   <t>Another
-	   example could be that access to the authorization and resource servers is some
-	   how limited to networks, the attackers is unable to access directly.</t>
+	   unable to obtain the required client credentials to redeem the code himself.</t>
+	   <t>The authorization or resource servers are limited to certain networks, the 
+	   attackers is unable to access directly.</t>
 	   </list>
 	   </t>
 	   <t>How does an attack look like?</t>
 	   <t>
 	   <list style="format (%d)">
-	    <t>The attacker obtains an authorization code by executing any of the attacks described 
-		above.</t>
-		<t>It performs an OAuth authorization process with the legitimate client on his device.</t>
+	    <t>The attacker obtains an authorization code by mounting any of the attacks 
+	    described above.</t>
+		<t>It performs a regular OAuth authorization process with the legitimate client on 
+		his device.</t>
 		<t>The attacker injects the stolen authorization code in the response of the 
 		authorization server to the legitimate client.</t>
 		<t>The client sends the code to the authorization server's token endpoint, 
 		along with client id, client secret and actual redirect_uri.</t>
-		<t>The authorization server checks the client secret, whether the code was issued to the 
-		particular client and whether the actual redirect URI matches the redirect_uri parameter.</t>
+		<t>The authorization server checks the client secret, whether the code was issued 
+		to the particular client and whether the actual redirect URI matches the 
+		redirect_uri parameter (see <xref target="RFC6749"/>).</t>
 		<t>If all checks succeed, the authorization server issues access and other tokens 
-		to the client. </t>
-		<t>The attacker just impersonated the victim.</t>
+		to the client and the attacker succeeded in her attempt to impersonate the 
+		legitimate user.</t>
 	   </list>
 	   </t>
 	   <t>Obviously, the check in step (5) will fail, if the code was issued to 
-	   another client id, e.g. a client set up by the attacker.</t>
-	   <t>An attempt to inject a code obtained via a malware pretending to be the legitimate client 
-	   should also be detected, if the authorization server stored the complete redirect URI used 
-	   in the authorization request and compares it with the redirect_uri parameter.</t>
-	   <t><xref target="RFC6749"/>, Section 4.1.3, requires the AS to ... 
-	   "ensure that the "redirect_uri" 
+	   another client id, e.g. a client set up by the attacker. The check will also fail 
+	   if the authorization code was already redeemed by the legitimate user and was
+	   one time use, only.</t>
+	   <t>An attempt to inject a code obtained via a malware pretending to be the 
+	   legitimate client should also be detected, if the authorization server stored the 
+	   complete redirect URI used in the authorization request and compares it with 
+	   the redirect_uri parameter.</t>
+	   <t><xref target="RFC6749"/>, Section 4.1.3, requires the AS to 
+	   "... ensure that the "redirect_uri" 
 	   parameter is present if the "redirect_uri" parameter was included in the initial 
 	   authorization request as described in Section 4.1.1, and if included ensure that 
-	   their values are identical." In the attack scenario described above, the legitimate 
+	   their values are identical.". In the attack scenario described above, the legitimate 
 	   client would use the correct redirect URI it always uses for authorization requests. 
 	   But this URI would not match the tampered redirect URI used by the attacker (otherwise, 
 	   the redirect would not land at the attackers page). So the authorization server would 
@@ -566,12 +590,13 @@ Host: server.example.com]]></artwork>
 	   effective and (hopefully) simpler approaches to code injection prevention as described in the 
 	   following section.</t>
 	   <section title="Proposed Countermeasures">
-	   <t>The general proposal is to bind every particular authorization code to a certain client on a 
-	   certain device (or in a certain user agent) in the context of a certain transaction. 
+	   <t>The general proposal is to bind every authorization code to a certain 
+	   client instance on a certain device (or in a certain user agent) in the context of a 
+	   certain transaction. 
 	   There are multiple technical solutions to achieve this goal:</t>
 	    <t>
 		<list hangIndent="8" style="hanging">
-		 <t hangText="Nonce">OpenID Connect's existing "nonce" parameter is used for this purpose. 
+		 <t hangText="Nonce">OpenID Connect's existing "nonce" parameter could be used for this purpose. 
 		 The nonce value is one time use and created by the client. The client is supposed to bind 
 		 it to the user agent session and sends it with the initial request to the OpenId Provider 
 		 (OP). The OP associates the nonce to the authorization code and attests this binding in the
@@ -579,63 +604,39 @@ Host: server.example.com]]></artwork>
 		 injected an authorization code in the authorization response, the nonce value in the client 
 		 session and the nonce value in the ID token will not match and the attack is detected.
 		 assumption: attacker cannot get hold of the user agent state on the victims device, where he 
-		 has stolen the respective authorization code.
-		 <vspace/>
-		 pro:
-		 <vspace/>
-		 - existing feature, used in the wild
-		 <vspace/>
-		 con:
-		 <vspace/>
-		 - OAuth does not have an ID Token - would need to push that down the stack</t>
-		 
-		 <t hangText="Code-bound State">It has been discussed in the security workshop in December to use 
-		 the OAuth state value much similar in the way as described above. In the case of the 
-		 state value, the idea is to add a further parameter state to the code exchange request. 
-		 The authorization server then compares the state value it associated with the code and the 
-		 state value in the parameter. If those values do not match, it is considered an attack and 
-		 the request fails. Note: a variant of this solution would be send a hash of the state (in 
-		 order to prevent bulky requests and DoS).
-		 <vspace/>
-		 pro:
-		 <vspace/>
-		 - use existing concept
-		 <vspace/>
-		 con:
-		 <vspace/>
-		 - state needs to fulfil certain requirements (one time use, complexity)
-         <vspace/>- new parameter means normative spec change</t>
-
-		 <t hangText="PKCE">Basically, the PKCE challenge/verifier could be used in the 
-		 same way as Nonce or State. In contrast to its original intention, the verifier 
+		 has stolen the respective authorization code. The main advantage of this option is that Nonce
+		 is an existing feature used in the wild. On the other hand, leveraging Nonce to
+		 the broader OAuth community would require AS and client to adopt ID Tokens.</t>
+		 <t hangText="Code-bound State">The state parameter could be used similarly to
+		  the way as described above. This would require to add a further parameter 
+		  "state" to the code exchange token endpoint request. 
+		 The authorization server would then compares the state value it associated with 
+		 the code and the state value in the parameter. If those values do not match, 
+		 it is considered an attack and the request fails. The advantage of this approach 
+		 would be to utilize an existing OAuth parameter. But it would also mean to 
+		 re-interpret the purpose of state and to extend the token endpoint request.</t>
+		 <t hangText="PKCE">The PKCE challenge/verifier could be used in the 
+		 same way as "Nonce" or "State". In contrast to its original intention, the verifier 
 		 check would fail although the client uses its correct verifier but the code is 
-		 associated with a challenge, which does not match.
-		 <vspace/>
-		 pro:
-		 <vspace/>
-		 - existing and deployed OAuth feature
-		 <vspace/>
-		 con:
-		 <vspace/>
-		 - currently used and recommended for native apps, not web apps</t>
-		 
-		 <t hangText="Token Binding">Code must be bind to UA-AS and UA-Client legs - 
-		 requires further data (extension to response) to manifest binding id for 
-		 particular code.
-		 <vspace/>Note: token binding could be used in conjunction with 
-		 PKCE as an option (https://tools.ietf.org/html/draft-ietf-oauth-token-binding-02#section-4).
-		 <vspace/>
-		 pro:
-		 <vspace/>
-		 - highly secure
-		 <vspace/>
-		 con:
-		 <vspace/>
-		 - highly sophisticated, requires browser support, will it work for native apps?</t>
-
-		 <t hangText="per instance client id/secret">...</t>		 
+		 associated with a challenge, which does not match. PKCE is a deployed OAuth feature,
+		 even so it is today used to secure native apps, only.</t>
+		 <t hangText="Token Binding">Token binding 
+		 <xref target="I-D.ietf-oauth-token-binding"/> could also be used. In this case, the 
+		 code would need to be bound to two legs, between user agent and AS and the user 
+		 agent and the client. This requires further data (extension to response) to 
+		 manifest binding id for particular code. Token binding is promising as a 
+		 secure and convenient mechanism (due to its browser integration). As a challenge, 
+		 it requires broad browser support and use with native apps still under 
+		 discussion.</t>
+		 <t hangText="per instance client id/secret">One could use per instance client_id 
+		 and secrets and bind the code to the respective client_id. Unfortunately, 
+		 this does not fit into the web application programming model (would need to use 
+		 per user client ids).</t>		 
 		</list>
 		</t>
+		<t>PKCE seem to be the most obvious solution for OAuth clients as it available and 
+		effectively used today for similar purposes for OAuth native apps. Nonce is even 
+		well suited for OpenId Connect clients.</t>
 		<t>Note on pre-warmed secrets: An attacker can circumvent the countermeasures 
 		described above if he is able to create or capture the respective secret or 
 		code_challenge on a device under his control, which is then used in the victim's 
@@ -644,18 +645,20 @@ Host: server.example.com]]></artwork>
 		attacker from using the pre-warmed secret in the faked authorization transaction 
 		on the victim's device. 
 		<vspace/>Unfortunately it does not work for all kinds of OAuth clients. It is 
-		effective for web and JS apps and for native apps with claimed URLs. What about 
-		other native apps? Treat nonce or PKCE challenge as replay detection tokens 
-		(needs to ensure cluster-wide one-time use)?</t>
-
+		effective for web and JS apps and for native apps with claimed URLs. Attacks on
+		native apps using custom schemes or redirect URIs on localhost cannot be detected
+		this way, except if the AS enforces one time use for PKCE verifier or Nonce 
+		values.</t>
 	   </section>
 	   	  </section>
 	   	  
-	   <section title="XSRF (TBD)">
-	    <t>injection of code or access token on a victim's device (e.g. to 
-		cause client to access resources under the attacker's control)</t>
-		<t>mitigation: XSRF tokens (one time use) w/ user agent binding 
-		(cf. https://www.owasp.org/index.php/CrossSite_Request_Forgery_(CSRF)_Prevention_Cheat_Sheet)</t>
+	   <section title="Cross Site Request Forgery">
+	   <t>An attacker might attempt to inject a request to the redirect URI of the 
+	   legitimate client on the victim's device, e.g. to cause the client to access 
+	   resources under the attacker's control.</t>
+		<t>Proposed mitigation: use of XSRF tokens (one time use), which are bound to 
+		the user agent and passed in the state parameter to the authorization server. 
+		For more details see <xref target="owasp_csrf"/>.</t>
 	   </section>
 
 	  <section title="Access Token Leakage at the Resource Server">
@@ -1021,7 +1024,9 @@ Pragma: no-cache
     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-tokbind-https.xml'?>
     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-pop-key-distribution'?>
     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.campbell-oauth-resource-indicators'?>
-    
+     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-jwsreq'?> 
+     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-mix-up-mitigation'?> 
+     
     <?rfc include="reference.RFC.7800"?>
     
     <reference anchor="owasp" target="https://www.owasp.org/">
@@ -1033,6 +1038,47 @@ Pragma: no-cache
           <date />
         </front>
       </reference>
+      
+        <reference anchor="owasp_csrf" target="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)_Prevention_Cheat_Sheet">
+        <front>
+          <title>Cross-Site Request Forgery (CSRF) Prevention Cheat Sheet</title>
+
+          <author></author>
+
+          <date />
+        </front>
+      </reference>
+      
+      
+      
+       <reference anchor="webappsec-referrer-policy" target="https://w3c.github.io/webappsec-referrer-policy">
+        <front>
+          <title>Referrer Policy</title>
+
+		  <author fullname="Jochen Eisinger">
+            <organization>Google Inc.</organization>
+          </author>
+          <author fullname="Emily Stark">
+            <organization>Google Inc.</organization>
+          </author>
+          <date day="20" month="April" year="2017"/>
+        </front>
+      </reference>
+      
+       <reference anchor="oauth-v2-form-post-response-mode" target="http://openid.net/specs/oauth-v2-form-post-response-mode-1_0.html">
+        <front>
+          <title>OAuth 2.0 Form Post Response Mode</title>
+
+		  <author fullname="Mike Jones">
+            <organization>Microsoft</organization>
+          </author>
+          <author fullname="Brian Campbell">
+            <organization>Ping Identity</organization>
+          </author>
+          <date day="27" month="April" year="2015"/>
+        </front>
+      </reference>       
+      
       
       <reference anchor="oauth_security_ubc" target="http://passwordresearch.com/papers/paper267.html">
         <front>
@@ -1079,6 +1125,11 @@ Pragma: no-cache
     
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
+      <t>-05 <list style="symbols">
+      	  <t>Completed sections on code leakage via referrer header, attacks in 
+      	  browser, mix-up, and CSRF</t>
+          <t>Reworked Code Injection Section</t>
+        </list></t>       
       <t>-04 <list style="symbols">
       	  <t>Restructured document for better readability</t>
           <t>Added best practices on Token Leakage prevention</t>
