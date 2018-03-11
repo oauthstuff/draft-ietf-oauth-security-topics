@@ -78,7 +78,7 @@
       </address>
     </author>
 
-    <date day="17" month="February" year="2018" />
+    <date day="11" month="March" year="2018" />
 
     <!-- Meta-data Declarations -->
 
@@ -118,7 +118,8 @@
       <t>It's been a while since OAuth has been published in 
 	  <xref target="RFC6749">RFC 6749</xref> and <xref target="RFC6750">RFC 6750</xref>. 
 	  Since publication, OAuth 2.0 has gotten massive traction in the market and became the 
-	  standard for API protection and, as foundation of OpenID Connect, identity 
+	  standard for API protection and, as foundation of 
+	  <xref target="OpenID">OpenID Connect</xref>, identity 
 	  providing. While OAuth was used in a variety of scenarios and different kinds of 
 	  deployments, the following challenges could be observed:
 	  <list style="symbols">
@@ -185,9 +186,10 @@
 	server they send the respective request to and in the same user agent this request 
 	was initiated in. In particular, clients shall implement appropriate XSRF prevention
 	by utilizing one-time use XSRF tokens carried in the STATE parameter, which are 
-	securely bound to the user agent. Moreover, the client shall store the authorization
-	server's identity it sends an authorization request to in a transaction-specific 
-	manner, which is also bound to the particular user agent. Furthermore, clients 
+	securely bound to the user agent. Moreover, the client shall memorize which 
+	authorization server it sent an authorization request to and bind this information 
+	to the user agent and ensure any sub-sequent 
+	messages are sent to the same authorization server. Furthermore, clients 
 	should use AS-specific redirect URIs as a means to 
 	identify the AS a particular response came from. Matching this with the before 
 	mentioned information regarding the AS the client sent the request to helps to detect
@@ -198,8 +200,12 @@
 	<t>Clients shall use <xref target="RFC7636">PKCE</xref> in order to (with the help 
 	of the authorization server) detect attempts to inject (replay) authorization codes 
 	into the authorization response. The PKCE challenges must be transaction-specific and 
-	securely bound to the user agent, in which the transaction was started.</t>
-	<t> Note: although PKCE so far was recommended as 
+	securely bound to the user agent, in which the transaction was started. OpenID
+	Connect clients may use the <spanx style="verb">nonce</spanx> parameter of the 
+	OpenID Connect authentication request as specified in <xref target="OpenID"/>
+	in conjuction with the corresponding ID Token 
+	claim of the for the same purpose.</t>
+	<t>Note: although PKCE so far was recommended as 
 	mechanism to protect native apps, this advice applies to all kinds of OAuth clients, 
 	including web applications.</t>
 	<t>Authorization servers shall consider the recommendations given in 
@@ -260,7 +266,7 @@
 	  would look as follows: </t>
 	  <t>Let's assume the redirect URL pattern "https://*.example.com/*" had been registered 
 	  for the client "s6BhdRkqt3". This pattern allows redirect URIs from any 
-	  host residing  in the domain example.com. So if an attacker manager to 
+	  host residing  in the domain example.com. So if an attacker manages to 
 	  establish a host or subdomain in "example.com" he can impersonate the 
 	  legitimate client. Assume the attacker sets up the host 
 	  "evil.example.com".</t>
@@ -419,13 +425,13 @@ Host: server.example.com]]></artwork>
 	   </t>
 	   <t>Additional recommendations:
 	   <list style="symbols">
-	   <t>Servers on which callbacks are hosted must not expose open redirectors (see respective section).</t>
+	   <t>Servers on which callbacks are hosted must not expose open redirectors (see <xref target="Open.Redirection"/>).</t>
 	   <t>Clients may drop fragments via intermediary URLs with "fix fragments" 
 	   (e.g. https://developers.facebook.com/blog/post/552/) to prevent the user agent from appending any unintended fragments.</t>
 	   </list>
 	   </t>
 	   <t>Alternatives to exact redirect URI matching: 
-	   <list style="symbols"><t>Authenticate client using digital 
+	   <list style="symbols"><t>Authenticate clients using digital 
 	   signatures (see <xref target="I-D.ietf-oauth-jwsreq"/>)</t>
 	   </list>	 
 	   </t>  
@@ -444,6 +450,10 @@ Host: server.example.com]]></artwork>
 	   <t>There are some means to prevent leakage as described above:</t>
 	   <t>
 	   	<list style="symbols">
+	   	    <t>Make authorization codes one-time use. In this case, the code was already 
+	   	    deemed and invalidated when the attacker tries to request a code exchange.</t>
+	   	    <t>Bind authorization code to a confidential client or PKCE challenge.
+	   	    In this case, the attacker lacks the secret to request the code exchange.</t>
 	   		<t>Don't include links to external sites into the page rendered as result 
 	   		of a OAuth authorization response</t>
 	   		<t>Redirect to intermediate page (sanitize history) before sending user 
@@ -465,7 +475,7 @@ Host: server.example.com]]></artwork>
 	  authorization code will end up in the browser's history. An attacker
 	  with access to the device could obtain the code and try to replay it.</t>
 	  <t>Proposed countermeasures:
-	  	<list>
+	  	<list style="symbols">
 	  		<t>Authorization code replay prevention as described in 
 	  		<xref target="RFC6819"/>, section 4.4.1.1, and <xref target="code_injection"/></t>
 			<t>Use form post response mode instead of redirect for authorization 
@@ -484,7 +494,7 @@ Host: server.example.com]]></artwork>
 	  "client.com/redirection_endpoint#access_token=abcdef" may also end up in the browser 
 	  history as a result of a redirect from a provider's authorization endpoint.</t>
 	  <t>Proposed countermeasures:
-	  	<list>
+	  	<list style="symbols">
 	  		<t>Replace implicit flow with postmessage communication or 
 	  		the authorization code grant</t>
 	  		<t>Never pass access tokens in URL query parameters</t>
@@ -551,7 +561,7 @@ Host: server.example.com]]></artwork>
 	   <t>Obviously, the check in step (5) will fail, if the code was issued to 
 	   another client id, e.g. a client set up by the attacker. The check will also fail 
 	   if the authorization code was already redeemed by the legitimate user and was
-	   one time use, only.</t>
+	   one-time use, only.</t>
 	   <t>An attempt to inject a code obtained via a malware pretending to be the 
 	   legitimate client should also be detected, if the authorization server stored the 
 	   complete redirect URI used in the authorization request and compares it with 
@@ -596,8 +606,9 @@ Host: server.example.com]]></artwork>
 	   There are multiple technical solutions to achieve this goal:</t>
 	    <t>
 		<list hangIndent="8" style="hanging">
-		 <t hangText="Nonce">OpenID Connect's existing "nonce" parameter could be used for this purpose. 
-		 The nonce value is one time use and created by the client. The client is supposed to bind 
+		 <t hangText="Nonce">OpenID Connect's existing <spanx style="verb">nonce</spanx> 
+		 parameter could be used for this purpose. 
+		 The nonce value is one-time use and created by the client. The client is supposed to bind 
 		 it to the user agent session and sends it with the initial request to the OpenId Provider 
 		 (OP). The OP associates the nonce to the authorization code and attests this binding in the
 		 ID token, which is issued as part of the code exchange at the token endpoint. If an attacker 
@@ -607,16 +618,20 @@ Host: server.example.com]]></artwork>
 		 has stolen the respective authorization code. The main advantage of this option is that Nonce
 		 is an existing feature used in the wild. On the other hand, leveraging Nonce to
 		 the broader OAuth community would require AS and client to adopt ID Tokens.</t>
-		 <t hangText="Code-bound State">The state parameter could be used similarly to
+		 <t hangText="Code-bound State">The <spanx style="verb">state</spanx> parameter 
+		 as specified in <xref target="RFC6749"/> could be used similarly to
 		  the way as described above. This would require to add a further parameter 
-		  "state" to the code exchange token endpoint request. 
+		  <spanx style="verb">state</spanx> to the code exchange token endpoint request. 
 		 The authorization server would then compares the state value it associated with 
 		 the code and the state value in the parameter. If those values do not match, 
 		 it is considered an attack and the request fails. The advantage of this approach 
 		 would be to utilize an existing OAuth parameter. But it would also mean to 
 		 re-interpret the purpose of state and to extend the token endpoint request.</t>
-		 <t hangText="PKCE">The PKCE challenge/verifier could be used in the 
-		 same way as "Nonce" or "State". In contrast to its original intention, the verifier 
+		 <t hangText="PKCE">The PKCE parameter <spanx style="verb">challenge</spanx> along  
+		 with the corresponding <spanx style="verb">verifier</spanx> as specified 
+		 in <xref target="RFC7636"/> could be used in the same way 
+		 as <spanx style="verb">nonce</spanx> or 
+		 <spanx style="verb">state</spanx>. In contrast to its original intention, the verifier 
 		 check would fail although the client uses its correct verifier but the code is 
 		 associated with a challenge, which does not match. PKCE is a deployed OAuth feature,
 		 even so it is today used to secure native apps, only.</t>
@@ -635,8 +650,8 @@ Host: server.example.com]]></artwork>
 		</list>
 		</t>
 		<t>PKCE seem to be the most obvious solution for OAuth clients as it available and 
-		effectively used today for similar purposes for OAuth native apps. Nonce is even 
-		well suited for OpenId Connect clients.</t>
+		effectively used today for similar purposes for OAuth native apps whereas 
+		<spanx style="verb">nonce</spanx> is appropriate for OpenId Connect clients.</t>
 		<t>Note on pre-warmed secrets: An attacker can circumvent the countermeasures 
 		described above if he is able to create or capture the respective secret or 
 		code_challenge on a device under his control, which is then used in the victim's 
@@ -647,7 +662,7 @@ Host: server.example.com]]></artwork>
 		<vspace/>Unfortunately it does not work for all kinds of OAuth clients. It is 
 		effective for web and JS apps and for native apps with claimed URLs. Attacks on
 		native apps using custom schemes or redirect URIs on localhost cannot be detected
-		this way, except if the AS enforces one time use for PKCE verifier or Nonce 
+		this way, except if the AS enforces one-time use for PKCE verifier or Nonce 
 		values.</t>
 	   </section>
 	   	  </section>
@@ -656,7 +671,7 @@ Host: server.example.com]]></artwork>
 	   <t>An attacker might attempt to inject a request to the redirect URI of the 
 	   legitimate client on the victim's device, e.g. to cause the client to access 
 	   resources under the attacker's control.</t>
-		<t>Proposed mitigation: use of XSRF tokens (one time use), which are bound to 
+		<t>Proposed mitigation: use of XSRF tokens (one-time use), which are bound to 
 		the user agent and passed in the state parameter to the authorization server. 
 		For more details see <xref target="owasp_csrf"/>.</t>
 	   </section>
@@ -929,17 +944,21 @@ Pragma: no-cache
 	   </section>
 	   
 	  </section>
-	  
 
-	  
-	  <section title="Refresh Token Leakage (TBD)">
-	  <t>mitm, log files on the device, ...</t>
-	  <t>refresh token rotation, mutual TLS authentication at the token endpoint</t>
-	  </section>
-
-<section title="Open Redirection (TBD)">
-	<t>Using the AS as Open Redirector - error handling AS (redirects) (draft-ietf-oauth-closing-redirectors-00)</t>
-	<t>Using the Client as Open Redirector</t>
+<section anchor="Open.Redirection" title="Open Redirection">
+	<t>Authorization servers MUST prevent attempts to abuse the AS as an Open 
+	Redirector. A comprehensive description of the attack vector and countermeasures is
+	given in <xref target="I-D.ietf-oauth-closing-redirectors"/>.</t>
+	<t>Client MUST not expose URLs, which could be utilized as open redirector.
+	An open redirector is a way to cause the recipient of a
+	HTTP request to issue a redirect to a target URL that is passed as a parameter.
+	Attackers may utilize such a mechanism to produce URLs, which appear to 
+	point to the client, which might trick users to trust the URL and follow
+	it in her browser. Another abuse case is to produce URLs pointing to the 
+	client and utilize them to impersonate a client with an authorization server.</t>
+	<t>In order to prevent open redirection, clients should only expose such a 
+	function, if the target URLs are whitelisted or if the origin of a request 
+	can be authenticated.</t>
 </section>
 	
  <section title="TLS Terminating Reverse Proxies">
@@ -972,24 +991,11 @@ Pragma: no-cache
 	   injection (including replay prevention).</t>
 	  </section>
 	
-	<section title="Other Topics">
-	<t>
-	<list style="symbols">
-	<t>redirect via status code 307 - use 302</t>
-	<t>why to rotate refresh tokens</t>
-	<t>how to support multi AS per RS</t>
-	<t>differentiate native, JS and web clients</t>
-	<t>do not put sensitive data in URL/GET parameters (Jim Manico)</t>
-	<t>Incorporate Christian Mainka's feedback</t>
-	<t>WPAD attack - https://www.blackhat.com/docs/us-16/materials/us-16-Kotler-Crippling-HTTPS-With-Unholy-PAC.pdf</t>
-	</list>
-	</t>
-	</section>
 	</section>
 	
     <section anchor="Acknowledgements" title="Acknowledgements">
-      <t>We would like to thank Jim Manico, Phil Hunt, and Brian Campbell for their 
-      valuable feedback.</t>
+      <t>We would like to thank Jim Manico, Phil Hunt, Nat Sakimura, Christian Mainka, and 
+      Brian Campbell for their valuable feedback.</t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
@@ -1011,9 +1017,7 @@ Pragma: no-cache
 	  <?rfc include="reference.RFC.7231"?>
 	  <?rfc include="reference.RFC.7591"?>
     </references>
-
     <references title="Informative References">
-    
     <?rfc include="reference.RFC.7636"?>       
     <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.bradley-oauth-jwt-encoded-state.xml'?>    
     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-discovery.xml'?>    
@@ -1026,8 +1030,32 @@ Pragma: no-cache
     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.campbell-oauth-resource-indicators'?>
      <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-jwsreq'?> 
      <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-mix-up-mitigation'?> 
+    <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-closing-redirectors'?>     
      
     <?rfc include="reference.RFC.7800"?>
+    
+       <reference anchor="OpenID" target="http://openid.net/specs/openid-connect-core-1_0.html">
+        <front>
+          <title>OpenID Connect Core 1.0 incorporating errata set 1</title>
+
+		  <author fullname="Nat Sakimura">
+            <organization>NRI</organization>
+          </author>
+          <author fullname="John Bradley">
+            <organization>Ping Identity</organization>
+          </author>
+          <author fullname="Mike Jones">
+            <organization>Microsoft</organization>
+          </author>
+          <author fullname="Breno de Medeiros">
+            <organization>Google</organization>
+          </author>
+          <author fullname="Chuck Mortimore">
+            <organization>Salesforce</organization>
+          </author>
+         <date day="8" month="Nov" year="2014"/>
+        </front>
+      </reference>
     
     <reference anchor="owasp" target="https://www.owasp.org/">
         <front>
@@ -1048,7 +1076,6 @@ Pragma: no-cache
           <date />
         </front>
       </reference>
-      
       
       
        <reference anchor="webappsec-referrer-policy" target="https://w3c.github.io/webappsec-referrer-policy">
@@ -1122,13 +1149,17 @@ Pragma: no-cache
       
     </references>
     
-    
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
       <t>-05 <list style="symbols">
       	  <t>Completed sections on code leakage via referrer header, attacks in 
       	  browser, mix-up, and CSRF</t>
           <t>Reworked Code Injection Section</t>
+          <t>Added reference to OpenID Connect spec</t>
+          <t>removed refresh token leakage as respective considerations 
+          have been given in section 10.4 of RFC 6749</t>
+          <t>first version on open redirection</t>
+          <t>incorporated Christian Mainka's review feedback</t>
         </list></t>       
       <t>-04 <list style="symbols">
       	  <t>Restructured document for better readability</t>
