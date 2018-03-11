@@ -65,7 +65,7 @@
 
     <author fullname="Torsten Lodderstedt" initials="T." role="editor"
             surname="Lodderstedt">
-      <organization>YSES.com AG</organization>
+      <organization>YES.com AG</organization>
 
       <address>
         <email>torsten@lodderstedt.net</email>
@@ -112,7 +112,7 @@
 		-->
 
     <abstract>
-      <t>This draft proposes an additional response type JWT for the 
+      <t>This draft proposes an additional JWT-based response type for the 
       OAuth 2.0 Token Introspection endpoint.</t>
     </abstract>
   </front>
@@ -124,20 +124,23 @@
       status at the respective authorization server. This allows deployments
       to implement handle-based access tokens in an interoperable way.</t>
       <t>The introspection endpoint as specified in <xref target="RFC7662">OAuth 
-      2.0 Token Introspection</xref>returns the token data as a plain JSON object.
+      2.0 Token Introspection</xref> returns the token data as a plain JSON object 
+      in "application/json" format.
       However, there are use cases where the resource server needs evidence 
       about the fact the AS minted the access token and is liable for its 
       contents. An example is a resource server using verified person data 
       to create qualified electronic signatures.</t>
       <t>In such use cases, it would be useful to return a signed JWT as 
-      introspection response.</t>
+      introspection response. This draft extends the Introspection Endpoint
+      by the capability to return responses as JWTs.</t>
     </section>
 
 
     <section anchor="jwt_response" title="JWT Response">
-      <t>The Introspection endpoint returns a JWT in "application/jwt" format.</t>
+      <t>The introspection endpoint may respond with a JWT in "application/jwt" format.</t>
       <t>This JWT may contain all the members describes in Section 2.2. of 
       <xref target="RFC7662"/>.</t>
+      <t>TBD: is the status needed in this format?</t>
     </section>
     
     <section anchor="client_metadata" title="Client Metadata">
@@ -148,14 +151,34 @@
       the response format by utilizing new parameters for dynamic client 
       registration.</t>
       <t>The new parameters follow the pattern established by the
-      <xref target="oidc_reg">OpenID Connect
+      <xref target="OpenID.Registration">OpenID Connect
       Dynamic Client registration</xref> specification for configuring signing and 
       encryption algorithms for the user info endpoint.</t>
       <t>The following parameters are introduced by this specification: 
-		<list style="symbols">
-      	  <t>introspection_response_signed_response_alg</t>
-          <t>introspection_response_encrypted_response_alg</t>
-          <t>introspection_response_encrypted_response_enc</t>
+		<list hangIndent="8" style="hanging">
+      	  <t hangText="introspection_response_signed_response_alg"><xref target="RFC7515">JWS</xref> 
+      	  <spanx style="verb">alg</spanx> algorithm 
+      	  <xref target="RFC7518">JWA</xref> REQUIRED for signing introspection responses. If 
+      	  this is specified, the response will be <xref target="RFC7519">JWT</xref> 
+      	  serialized, and signed using JWS. The default, 
+      	  if omitted, is for the introspection response to return the Claims as a 
+      	  UTF-8 encoded JSON object using the application/json content-type
+      	  as defined in <xref target="RFC7662"/>.</t>
+          <t hangText="introspection_response_encrypted_response_alg"> 
+          <xref target="RFC7516">JWE</xref> <spanx style="verb">alg</spanx> algorithm 
+          <xref target="RFC7518">JWA</xref> 
+          REQUIRED for encrypting introspection responses. 
+          If both signing and encryption are requested, the response will be 
+          signed then encrypted, with the result being a Nested JWT, as defined in 
+          <xref target="RFC7519">JWT</xref>. The default, if omitted, is that no 
+          encryption is performed.</t>
+          <t hangText="introspection_response_encrypted_response_enc"><xref target="RFC7516">JWE</xref>
+          <spanx style="verb">enc</spanx> algorithm <xref target="RFC7518">JWA</xref> REQUIRED for encrypting 
+          introspection responses. If 
+          <spanx style="verb">introspection_response_encrypted_response_algy</spanx> is specified, the default 
+          for this value is A128CBC-HS256. When 
+          <spanx style="verb">introspection_response_encrypted_response_enc</spanx> is included, 
+          <spanx style="verb">introspection_response_encrypted_response_alg</spanx> MUST also be provided.</t>
         </list>
       </t>
     </section>    
@@ -189,7 +212,12 @@
 
       <?rfc include="reference.RFC.7662"?>
       
-       <reference anchor="oidc_reg" target="https://openid.net/specs/openid-connect-registration-1_0.html">
+      <?rfc include="reference.RFC.7518"?>
+      
+      <?rfc include="reference.RFC.7515"?>
+      <?rfc include="reference.RFC.7516"?>
+      
+       <reference anchor="OpenID.Registration" target="https://openid.net/specs/openid-connect-registration-1_0.html">
         <front>
           <title>OpenID Connect Dynamic Client Registration 1.0 incorporating errata set 1</title>
 
