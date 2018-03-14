@@ -72,17 +72,19 @@
 
         <!-- uri and facsimile elements may also be added -->
       </address>
-    </author>
-
-<!--
-    <author fullname="Marius Scurtescu" initials="M." surname="Scurtescu ">
-      <organization>Google</organization>
+      </author>
+          
+    <author fullname="Vladimir Dzhuvinov" initials="V." 
+            surname="Dzhuvinov">
+      <organization>Connect2id Ltd.</organization>
 
       <address>
-        <email>mscurtescu@google.com</email>
+        <email>vladimir@connect2id.com</email>
+
+        <!-- uri and facsimile elements may also be added -->
       </address>
     </author>
--->
+
     <date day="11" month="March" year="2018" />
 
     <!-- Meta-data Declarations -->
@@ -131,7 +133,7 @@
       contents. An example is a resource server using verified person data 
       to create qualified electronic signatures.</t>
       <t>In such use cases, it would be useful to return a signed JWT as 
-      introspection response. This draft extends the Introspection Endpoint
+      introspection response. This draft extends the Token Introspection endpoint
       by the capability to return responses as JWTs.</t>
     </section>
 
