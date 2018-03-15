@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="11" month="March" year="2018" />
+    <date day="15" month="March" year="2018" />
 
     <!-- Meta-data Declarations -->
 
@@ -114,22 +114,23 @@
 		-->
 
     <abstract>
-      <t>This draft proposes an additional JWT-based response type for the 
-      OAuth 2.0 Token Introspection endpoint.</t>
+      <t>This draft proposes an additional JSON Web Token (JWT) based response 
+      for OAuth 2.0 Token Introspection.</t>
     </abstract>
   </front>
 
   <middle>
     <section anchor="Introduction" title="Introduction">
-      <t><xref target="RFC7662">OAuth 2.0 Token Introspection</xref> introduces a 
-      mechanisms to query data associated with a certain access token and its
-      status at the respective authorization server. This allows deployments
-      to implement handle-based access tokens in an interoperable way.</t>
+      <t><xref target="RFC7662">OAuth 2.0 Token Introspection</xref> specifies a 
+      method for a protected resource to query an OAuth 2.0 authorization server 
+      to determine the active state and meta-information of an OAuth 2.0 token. 
+      This allows deployments to implement identifier-based access tokens 
+      in an interoperable way.</t>
       <t>The introspection endpoint as specified in <xref target="RFC7662">OAuth 
-      2.0 Token Introspection</xref> returns the token data as a plain JSON object 
-      in "application/json" format.
+      2.0 Token Introspection</xref> is a plain JSON object in 
+      "application/json" format.
       However, there are use cases where the resource server needs evidence 
-      about the fact the AS minted the access token and is liable for its 
+      about the fact the AS issued the access token and is liable for its 
       contents. An example is a resource server using verified person data 
       to create qualified electronic signatures.</t>
       <t>In such use cases, it would be useful to return a signed JWT as 
@@ -142,14 +143,56 @@
       <t>The introspection endpoint may respond with a JWT in "application/jwt" format.</t>
       <t>This JWT may contain all the members describes in Section 2.2. of 
       <xref target="RFC7662"/>.</t>
-      <t>TBD: is the status needed in this format?</t>
+      <t>The following is a non-normative example response 
+      (with line breaks for display purposes only):</t>
+	  <t>
+	  	<figure>
+          <artwork><![CDATA[HTTP/1.1 200 OK
+Content-Type: application/jwt
+
+eyJraWQiOiIxIiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJaNU8zdXBQQzg4UXJBa
+ngwMGRpcyIsImF1ZCI6Imh0dHBzOlwvXC9wcm90ZWN0ZWQuZXhhbXBsZS5uZXRcL
+3Jlc291cmNlIiwiZXh0ZW5zaW9uX2ZpZWxkIjoidHdlbnR5LXNldmVuIiwic2Nvc
+GUiOiJyZWFkIHdyaXRlIGRvbHBoaW4iLCJpc3MiOiJodHRwczpcL1wvc2VydmVyL
+mV4YW1wbGUuY29tXC8iLCJhY3RpdmUiOnRydWUsImV4cCI6MTQxOTM1NjIzOCwia
+WF0IjoxNDE5MzUwMjM4LCJjbGllbnRfaWQiOiJsMjM4ajMyM2RzLTIzaWo0Iiwid
+XNlcm5hbWUiOiJqZG9lIn0.HEQHf05vqVvWVnWuEjbzUnPz6JDQVR69QkxgzBNq5
+kk-sK54ieg1STazXGsdFAT8nUhiiV1f_Z4HOKNnBs8TLKaFXokhA0MqNBOYI--2u
+nVHDqI_RPmC3p0NmP02Xmv4hzxFmTmpgjSy3vpKQDihOjhwNBh7G81JNaJqjJQTR
+v_1dHUPJotQjMK3k8_5FyiO2p64Y2VyxyQn1VWVlgOHlJwhj6BaGHk4Qf5F8DHQZ
+1WCPg2p_-hwfINfXh1_buSjxyDRF4oe9pKy6ZB3ejh9qIMm-WrwltuU1uWMXxN6e
+S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
+        </figure>	
+        </t>
+        <t>
+        The example response contains the following JSON document:
+        </t>
+        <t>
+        <figure>
+          <artwork><![CDATA[{
+  "sub": "Z5O3upPC88QrAjx00dis",
+  "aud": "https://protected.example.net/resource",
+  "extension_field": "twenty-seven",
+  "scope": "read write dolphin",
+  "iss": "https://server.example.com/",
+  "active": true,
+  "exp": 1419356238,
+  "iat": 1419350238,
+  "client_id": "l238j323ds-23ij4",
+  "username": "jdoe"
+}]]></artwork>
+        </figure>
+
+	  </t>
+	  
+	  
     </section>
     
     <section anchor="client_metadata" title="Client Metadata">
       <t>The authorization server determines what format to use for a particular 
       introspection response. The decision can be based on the mechanisms described 
       in this section.</t>
-      <t>The proposal is to register resource servers as client and let them determine
+      <t>The proposal is to register resource servers as clients and let them determine
       the response format by utilizing new parameters for dynamic client 
       registration.</t>
       <t>The new parameters follow the pattern established by the
@@ -183,6 +226,9 @@
           <spanx style="verb">introspection_response_encrypted_response_alg</spanx> MUST also be provided.</t>
         </list>
       </t>
+      <t>Resource servers may register their public encryption keys 
+      using the <spanx style="verb">jwks_uri</spanx> or <spanx style="verb">jwks</spanx> 
+      metadata parameters.</t>
     </section>    
     
     <section anchor="Acknowledgements" title="Acknowledgements">
