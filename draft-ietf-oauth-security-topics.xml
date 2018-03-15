@@ -52,7 +52,7 @@
 			necessary if the full title is longer than 39 characters
 		-->
 
-    <title abbrev="Security Topics">OAuth Security Topics</title>
+    <title abbrev="Security Topics">OAuth 2.0 Security Best Current Practice</title>
 
     <author fullname="Torsten Lodderstedt" initials="T." role="editor"
             surname="Lodderstedt">
@@ -105,11 +105,10 @@
 		-->
 
     <abstract>
-      <t>This draft gives a comprehensive overview on open OAuth security topics. 
-	  It is intended to serve as a working document for the OAuth working group 
-	  to systematically capture and discuss these security topics and respective 
-	  mitigations and eventually recommend best current practice and also OAuth 
-	  extensions needed to cope with the respective security threats.</t>
+      <t>This document describes best current security practices for OAuth 2.0..
+      It updates and extends the OAuth 2.0 Security Threat Model to incorporate
+      practical experiences gathered since OAuth 2.0 was published and cover
+      new threats relevant due to the broader application of OAuth 2.0.</t>
     </abstract>
   </front>
 
@@ -125,7 +124,9 @@
 	  <list style="symbols">
 	  <t>OAuth implementations are being attacked through known implementation 
 	  weaknesses and anti-patterns (XSRF, referrer header). Although most of these
-	  threats are discussed in <xref target="RFC6819">RFC 6819</xref>, continued exploitation 
+	  threats are discussed in the 
+	  <xref target="RFC6819">OAuth 2.0 Threat Model and Security Considerations</xref>, 
+	  continued exploitation 
  	  demonstrates there may be a need for more specific recommendations or that the existing 
 	  mitigations are too difficult to deploy.</t>
 	  <t>Technology has changed, e.g. the way browsers treat fragments in some situations, 
@@ -156,17 +157,13 @@
 	  which are discussed in this document.</t>	  
 	  
 	  <t>The remainder of the document is organized as follows: The next section 
-	  gives a summary of the set of security mechanisms and practices, the working
-	  group shall consider to recommend to OAuth implementers. This is followed by 
-	  a section proposing modifications to OAuth intended to either simplify
-	  its usage and to strengthen its security.</t>
-	  <t>The remainder of the 
-	  draft gives a detailed analyses of the weaknesses and implementation issues, 
-	  which can be found in the wild today, along with a discussion of potential 
-	  counter measures.</t>
+	  summarizes the most important recommendations of the OAuth working group
+	  for every OAuth implementor. Afterwards, a detailed analyses of the threats and 
+	  implementation issues, which can be found in the wild today, is given 
+	  along with a discussion of potential counter measures.</t>
     </section>
     
-    <section anchor="recommendations" title="Best Practices">
+    <section anchor="recommendations" title="Recommendations">
     <t>This section describes the set of security mechanisms the authors believe should be
     taken into consideration by the OAuth working group to be recommended to OAuth
     implementers.</t>
@@ -224,18 +221,6 @@
     
    </section>
    
-       <section title="Recommended Changes to OAuth">
-       <t>This section describes the set of modifications and extensions the authors 
-       believe should be taken into consideration by the OAuth working group 
-       change and extend OAuth in order to strengthen its security and make it simpler
-       to implement.
-    
-    It also recommends some changes to the OAuth set of specs.</t>
-		<t>Remove requirement to check actual redirect URI at token endpoint - seems to be
-		to  complicated to be implemented properly and could be compromised. The protection goal is 
-	achieved even more effective by utilizing PKCE as recommended in 
-	<xref target="rec_redirect"/>.</t>
-    </section>
     <section title="Attacks and Mitigations">
 	  <section title="Insufficient redirect URI validation">
 	  <t>Some authorization servers allow clients to register redirect URI 
