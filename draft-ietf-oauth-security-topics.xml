@@ -78,7 +78,7 @@
       </address>
     </author>
 
-    <date day="11" month="March" year="2018" />
+    <date day="18" month="March" year="2018" />
 
     <!-- Meta-data Declarations -->
 
@@ -195,12 +195,13 @@
 	on how to implement XSRF prevention and AS matching using signed JWTs in the 
 	STATE parameter.</t>
 	<t>Clients shall use <xref target="RFC7636">PKCE</xref> in order to (with the help 
-	of the authorization server) detect attempts to inject (replay) authorization codes 
+	of the authorization server) detect and prevent attempts to inject (replay) 
+	authorization codes 
 	into the authorization response. The PKCE challenges must be transaction-specific and 
 	securely bound to the user agent, in which the transaction was started. OpenID
 	Connect clients may use the <spanx style="verb">nonce</spanx> parameter of the 
 	OpenID Connect authentication request as specified in <xref target="OpenID"/>
-	in conjuction with the corresponding ID Token 
+	in conjunction with the corresponding ID Token 
 	claim of the for the same purpose.</t>
 	<t>Note: although PKCE so far was recommended as 
 	mechanism to protect native apps, this advice applies to all kinds of OAuth clients, 
@@ -291,7 +292,7 @@ Host: server.example.com]]></artwork>
 	  <t>Note: This attack will not directly work for confidential clients, since the 
 	  code exchange requires authentication with the legitimate client's 
 	  secret. The attacker will need to utilize the legitimate client to 
-	  redeem the code (e.g. by mounting a code injection attack). This kind 
+	  redeem the code (e.g. by performing a code injection attack). This kind 
 	  of injections is covered in 
 	  Section <xref format="title" target="code_injection"/>.</t>
 	   </section>
@@ -435,15 +436,13 @@ Host: server.example.com]]></artwork>
 	   <t>There are some means to prevent leakage as described above:</t>
 	   <t>
 	   	<list style="symbols">
-	   	    <t>Make authorization codes one-time use. In this case, the code was already 
-	   	    deemed and invalidated when the attacker tries to request a code exchange.</t>
+	   	    <t>Make authorization codes one-time use. For example, if the legitimate client 
+	   	    redeemed and invalidated the code in the above scenario, the 
+	   	    attacker would fail exchanging this code later.</t>
 	   	    <t>Bind authorization code to a confidential client or PKCE challenge.
 	   	    In this case, the attacker lacks the secret to request the code exchange.</t>
 	   		<t>Don't include links to external sites into the page rendered as result 
 	   		of a OAuth authorization response</t>
-	   		<t>Redirect to intermediate page (sanitize history) before sending user 
-	   		agent to other pages<vspace/>Editor's Note: 
-	   			need to double check redirect/referrer header behavior</t>
 	   		<t>Use of the HTML link attribute rel="noreferrer" to suppress referrer header</t>
 	   		<t>Use of the "referrer" meta link attribute to suppress referrer header 
 	   		(see <xref target="webappsec-referrer-policy"/>)</t>
@@ -455,9 +454,9 @@ Host: server.example.com]]></artwork>
 	  </section>
 	  <section title="Attacks in the Browser">
 	  <section title="Code in browser history">
-	  <t>When browser navigates to "client.com/redirection_endpoint?code=abcd" as a result 
+	  <t>When a browser navigates to "client.com/redirection_endpoint?code=abcd" as a result 
 	  of a redirect from a provider's authorization endpoint, the URL including the 
-	  authorization code will end up in the browser's history. An attacker
+	  authorization code may end up in the browser's history. An attacker
 	  with access to the device could obtain the code and try to replay it.</t>
 	  <t>Proposed countermeasures:
 	  	<list style="symbols">
@@ -527,7 +526,7 @@ Host: server.example.com]]></artwork>
 	   <t>How does an attack look like?</t>
 	   <t>
 	   <list style="format (%d)">
-	    <t>The attacker obtains an authorization code by mounting any of the attacks 
+	    <t>The attacker obtains an authorization code by performing any of the attacks 
 	    described above.</t>
 		<t>It performs a regular OAuth authorization process with the legitimate client on 
 		his device.</t>
@@ -538,15 +537,15 @@ Host: server.example.com]]></artwork>
 		<t>The authorization server checks the client secret, whether the code was issued 
 		to the particular client and whether the actual redirect URI matches the 
 		redirect_uri parameter (see <xref target="RFC6749"/>).</t>
-		<t>If all checks succeed, the authorization server issues access and other tokens 
-		to the client and the attacker succeeded in her attempt to impersonate the 
-		legitimate user.</t>
+		<t>If all checks succeed, the authorization server issues access 
+		and other tokens to the client, so now the attacker is able to impersonate 
+		the legitimate user.</t>
 	   </list>
 	   </t>
 	   <t>Obviously, the check in step (5) will fail, if the code was issued to 
 	   another client id, e.g. a client set up by the attacker. The check will also fail 
 	   if the authorization code was already redeemed by the legitimate user and was
-	   one-time use, only.</t>
+	   one-time use only.</t>
 	   <t>An attempt to inject a code obtained via a malware pretending to be the 
 	   legitimate client should also be detected, if the authorization server stored the 
 	   complete redirect URI used in the authorization request and compares it with 
@@ -563,7 +562,8 @@ Host: server.example.com]]></artwork>
 	   <t>Note: this check could also detect attempt to inject a code, which had been obtained 
 	   from another instance of the same client on another device, if certain conditions are fulfilled:
 	   <list style="symbols">
-	   <t>the redirect URI itself needs to contain a nonce or another kind of one-time use, secret data and</t>
+	   <t>the redirect URI itself needs to contain a nonce or another kind of one-time use, 
+	   secret data and</t>
 	   <t>the client has bound this data to this particular instance</t>
 	   </list>
 	   </t>
@@ -601,7 +601,7 @@ Host: server.example.com]]></artwork>
 		 session and the nonce value in the ID token will not match and the attack is detected.
 		 assumption: attacker cannot get hold of the user agent state on the victims device, where he 
 		 has stolen the respective authorization code. The main advantage of this option is that Nonce
-		 is an existing feature used in the wild. On the other hand, leveraging Nonce to
+		 is an existing feature used in the wild. On the other hand, leveraging Nonce by
 		 the broader OAuth community would require AS and client to adopt ID Tokens.</t>
 		 <t hangText="Code-bound State">The <spanx style="verb">state</spanx> parameter 
 		 as specified in <xref target="RFC6749"/> could be used similarly to
@@ -646,7 +646,7 @@ Host: server.example.com]]></artwork>
 		on the victim's device. 
 		<vspace/>Unfortunately it does not work for all kinds of OAuth clients. It is 
 		effective for web and JS apps and for native apps with claimed URLs. Attacks on
-		native apps using custom schemes or redirect URIs on localhost cannot be detected
+		native apps using custom schemes or redirect URIs on localhost cannot be prevented
 		this way, except if the AS enforces one-time use for PKCE verifier or Nonce 
 		values.</t>
 	   </section>
@@ -730,7 +730,7 @@ Pragma: no-cache
       <xref target="oauth_security_ubc"/> and <xref target="oauth_security_cmu"/>) 
       indicate a large portion 
       of client implementations do not or fail to properly implement security controls,
-      like state checks. So relying on clients to detect and properly handle access token
+      like state checks. So relying on clients to prevent access token
       phishing is likely to fail as well. Moreover given the ratio of clients to authorization
       and resource servers, it is considered the more viable approach to move as much as 
       possible security-related logic to those entities. Clearly, the client has to
@@ -761,7 +761,7 @@ Pragma: no-cache
 		 automatically happens during the setup of a TLS connection.</t>
 		 <t>The RS must implement the actual proof of possession check. This is typically 
 		 done on the application level, it may utilize capabilities of the transport 
-		 layer (e.g. TLS). Note: replay detection is required as well!</t>
+		 layer (e.g. TLS). Note: replay prevention is required as well!</t>
 		 </list>
 		 </t>
 		 	 
@@ -796,7 +796,7 @@ Pragma: no-cache
 		 <xref target="I-D.ietf-oauth-pop-key-distribution"></xref> and represents 
 		 the elements of the signature in a JSON object. The signature is built using JWS. 
 		 The mechanism has built-in support for signing of HTTP method, query parameters 
-		 and headers. It also incorporates a timestamp as basis for replay detection.</t>
+		 and headers. It also incorporates a timestamp as basis for replay prevention.</t>
 		 <t><xref target="I-D.sakimura-oauth-jpop"></xref>: this draft describes different 
 		 ways to constrain access token usage, namely TLS or request signing. Note: Since 
 		 the authors of this draft contributed the TLS-related proposal to 
@@ -804,7 +804,7 @@ Pragma: no-cache
 		 request signing part. For request signing, 
 		 the draft utilizes <xref target="I-D.ietf-oauth-pop-key-distribution"></xref> and 
 		 <xref target="RFC7800">RFC 7800</xref>. The signature data is 
-		 represented in a JWT and JWS is used for signing. Replay detection is provided 
+		 represented in a JWT and JWS is used for signing. Replay prevention is provided 
 		 by building the signature over a server-provided nonce, client-provided nonce 
 		 and a nonce counter.</t>
 		 </list>
@@ -838,7 +838,7 @@ Pragma: no-cache
 		 including non-repudiation even if the TLS connection is terminated between client 
 		 and resource server. But deployment experiences have revealed challenges 
 		 regarding robustness (e.g. reproduction of the signature base
-		 string including correct URL) as well as state management (e.g. replay detection).</t>
+		 string including correct URL) as well as state management (e.g. replay prevention).</t>
 		 
 		 <t>This document therefore recommends implementors to consider one of 
 		 TLS-based approaches wherever possible.</t>
@@ -856,7 +856,7 @@ Pragma: no-cache
 		see below) also prevent abuse of the phished access token at the legitimate 
 		resource server.</t>
 		<t>The audience can basically be expressed using logical names or physical 
-		addresses (like URLs). In order to detect phishing, it is necessary to use 
+		addresses (like URLs). In order to prevent phishing, it is necessary to use 
 		the actual URL the client will send requests to. 
 		In the phishing case, this URL will point to the 
 		counterfeit resource server. If the attacker tries to use the access token 
@@ -905,7 +905,7 @@ Pragma: no-cache
 	   are valid for access to other resource servers as well. Even if the attacker "only"
 	   is able to access logfiles or databases of the server system, it may get access to 
 	   valid access tokens.</t>   
-	   <t>Preventing and detecting server breaches by way of hardening and monitoring 
+	   <t>Preventing server breaches by way of hardening and monitoring 
 	   server systems is considered a standard operational procedure and therefore out
 	   of scope of this document. This section will focus on the impact of
 	   such breaches on OAuth-related parts of the ecosystem, which is the replay of 
@@ -931,10 +931,25 @@ Pragma: no-cache
 	  </section>
 
 <section anchor="Open.Redirection" title="Open Redirection">
-	<t>Authorization servers MUST prevent attempts to abuse the AS as an Open 
-	Redirector. A comprehensive description of the attack vector and countermeasures is
-	given in <xref target="I-D.ietf-oauth-closing-redirectors"/>.</t>
-	<t>Client MUST not expose URLs, which could be utilized as open redirector.
+<section title="Authorization Server as Open Redirector">
+	<t>Attackers could try to utilize a user's trust in the authorization 
+	server (and its URL in particular) for performing phishing attacks.  
+	The attacker could send an authorization request with an invalid 
+	combination of client_id and redirect_uri. <xref target="RFC6749"/>, 
+	section 4.1.2.1, already states that the AS MUST NOT automatically 
+	redirect the user agent in this case to prevent open redirection.</t>
+	<t>But as described in <xref target="I-D.ietf-oauth-closing-redirectors"/>, 
+	the attacker could also attempt to register a client and intentionally
+	send an  erroneous authorization request, e.g. by using an invalid scope
+	value. According to <xref target="RFC6749"/>, the AS would send the user
+	agent to the redirect_uri with an <spanx style="verb">invalid_request</spanx> 
+	error response. This is dangerous because the authorization server would 
+	serve as an open redirector. Therefore this draft recommends that every
+	invalid authorization request MUST NOT automatically redirect the user 
+	agent to the client's redirect URI.</t>
+</section>
+<section title="Clients as Open Redirector">
+	<t>Client MUST not expose URLs which could be utilized as open redirector.
 	An open redirector is a way to cause the recipient of a
 	HTTP request to issue a redirect to a target URL that is passed as a parameter.
 	Attackers may utilize such a mechanism to produce URLs, which appear to 
@@ -944,6 +959,7 @@ Pragma: no-cache
 	<t>In order to prevent open redirection, clients should only expose such a 
 	function, if the target URLs are whitelisted or if the origin of a request 
 	can be authenticated.</t>
+</section>
 </section>
 	
  <section title="TLS Terminating Reverse Proxies">
