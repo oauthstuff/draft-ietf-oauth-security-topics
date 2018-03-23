@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 		This template is for creating an Internet Draft using xml2rfc, which
 		is available here: http://xml.resource.org.
@@ -105,7 +105,7 @@
 		-->
 
     <abstract>
-      <t>This document describes best current security practices for OAuth 2.0..
+      <t>This document describes best current security practices for OAuth 2.0.
       It updates and extends the OAuth 2.0 Security Threat Model to incorporate
       practical experiences gathered since OAuth 2.0 was published and cover
       new threats relevant due to the broader application of OAuth 2.0.</t>
@@ -140,7 +140,7 @@
 	  </t>
 	  <t>OAuth initially assumed a static relationship between client, authorization 
 	  server and resource servers. The URLs of AS and RS were known to the client
-	  at deployment time and built an anchor for the trust relationsship among those
+	  at deployment time and built an anchor for the trust relationship among those
 	  parties. The validation whether the client talks to a legitimate server was based on 
 	  TLS server authentication (see <xref target="RFC6819"/>, Section 4.5.4).
 	  With the increasing adoption of OAuth, this simple model dissolved and, in
@@ -173,8 +173,8 @@
     <t>Authorization servers shall utilize exact matching of client redirect URIs against 
     pre-registered URIs. This measure contributes to the prevention of leakage of 
     authorization codes and access tokens (depending on the grant type). It also helps
-    to detect mix up attacks.</t>
-	<t>Clients shall avoid any redirects or forwards, which can be parameterized by 
+    to detect mix-up attacks.</t>
+	<t>Clients shall avoid any redirects or forwards which can be parameterized by 
 	URI query parameters, in order to provide a further layer of defence against 
 	token leakage. If there is a need for this kind of redirects, clients are advised 
 	to implement appropriate counter measures against open redirection, e.g. as described
@@ -213,7 +213,7 @@
     </section>
     
     <section title="Token Replay Prevention">
-    <t>Authorization servers shall use TLS-based methods for sender constraint access 
+    <t>Authorization servers shall use TLS-based methods for sender constrained access 
     tokens as described in  section <xref target="pop_tokens"/>, such as token 
     binding <xref target="I-D.ietf-oauth-token-binding"></xref> or Mutual TLS for 
     OAuth 2.0 <xref target="I-D.ietf-oauth-mtls"></xref>. It is also recommend to use
@@ -251,7 +251,7 @@
 	  <t>For a public client using the grant type code, an attack 
 	  would look as follows: </t>
 	  <t>Let's assume the redirect URL pattern "https://*.example.com/*" had been registered 
-	  for the client "s6BhdRkqt3". This pattern allows redirect URIs from any 
+	  for the client "s6BhdRkqt3". This pattern allows redirect URIs pointing to any 
 	  host residing  in the domain example.com. So if an attacker manages to 
 	  establish a host or subdomain in "example.com" he can impersonate the 
 	  legitimate client. Assume the attacker sets up the host 
@@ -388,7 +388,7 @@ Host: server.example.com]]></artwork>
 	   <t>This would cause the following impacts:
 	    <list style="symbols">
 		<t>This change will require all OAuth clients to maintain the transaction state (and XSRF tokens) 
-		in the "state" parameter. This is a normative change to RFC 6749 since section 3.1.2.2 allows for 
+		in the "state" parameter. This is a normative change to RFC 6749 since Section 3.1.2.2 allows for 
 		dynamic URI query parameters in the redirect URI. In order to assess the practical impact, the 
 		working group needs to collect data on whether this feature is really used in deployments today.</t> 
 		<t>The 
@@ -500,7 +500,7 @@ Host: server.example.com]]></artwork>
 	     <t>Clients use AS-specific redirect URIs and, for every authorization request,
 	     store intended AS and compare intention with actual redirect URI where the
 	     response was received</t>
-	     <t>AS returns client_id and its iss in the response. Client compares 
+	     <t>AS returns <spanx style="verb">client_id</spanx> and its <spanx style="verb">iss</spanx> in the response. Client compares 
 		  this data to AS it believed it sent the user agent to.</t>
 		 <t>ID token carries client id and issuer (OpenID Connect specific)</t>
 	    </list>
@@ -533,10 +533,10 @@ Host: server.example.com]]></artwork>
 		<t>The attacker injects the stolen authorization code in the response of the 
 		authorization server to the legitimate client.</t>
 		<t>The client sends the code to the authorization server's token endpoint, 
-		along with client id, client secret and actual redirect_uri.</t>
+		along with client id, client secret and actual <spanx style="verb">redirect_uri</spanx>.</t>
 		<t>The authorization server checks the client secret, whether the code was issued 
 		to the particular client and whether the actual redirect URI matches the 
-		redirect_uri parameter (see <xref target="RFC6749"/>).</t>
+		<spanx style="verb">redirect_uri</spanx> parameter (see <xref target="RFC6749"/>).</t>
 		<t>If all checks succeed, the authorization server issues access 
 		and other tokens to the client, so now the attacker is able to impersonate 
 		the legitimate user.</t>
@@ -575,7 +575,7 @@ Host: server.example.com]]></artwork>
 	   redirect URI pattern. This saves the authorization server from storing the link between the 
 	   actual redirect URI and the respective authorization code for every transaction. But this kind of 
 	   check obviously does not fulfill the intent of the spec, since the tampered redirect URI is not 
-	   considered. So any attempt to inject a code obtained using the client_id of a legitimate client 
+	   considered. So any attempt to inject a code obtained using the <spanx style="verb">client_id</spanx> of a legitimate client 
 	   or by utilizing the legitimate client on another device won't be detected in the respective deployments.</t>
        <t>It is also assumed that the requirements defined in <xref target="RFC6749"/>, Section 4.1.3, 
 	   increase client implementation 
@@ -628,8 +628,8 @@ Host: server.example.com]]></artwork>
 		 secure and convenient mechanism (due to its browser integration). As a challenge, 
 		 it requires broad browser support and use with native apps still under 
 		 discussion.</t>
-		 <t hangText="per instance client id/secret">One could use per instance client_id 
-		 and secrets and bind the code to the respective client_id. Unfortunately, 
+		 <t hangText="per instance client id/secret">One could use per instance <spanx style="verb">client_id</spanx> 
+		 and secrets and bind the code to the respective <spanx style="verb">client_id</spanx>. Unfortunately, 
 		 this does not fit into the web application programming model (would need to use 
 		 per user client ids).</t>		 
 		</list>
@@ -741,7 +741,7 @@ Pragma: no-cache
 	  
 	 <section anchor="pop_tokens" title="Sender Constrained Access Tokens"> 
 
-		 <t>As the name suggests, sender constraint access token scope the applicability 
+		 <t>As the name suggests, sender constrained access token scope the applicability 
 		 of an access token to a certain sender. This sender is obliged to demonstrate 
 		 knowledge of a certain secret as prerequisite for the acceptance of that token 
 		 at a resource server.</t>
@@ -935,14 +935,14 @@ Pragma: no-cache
 	<t>Attackers could try to utilize a user's trust in the authorization 
 	server (and its URL in particular) for performing phishing attacks.  
 	The attacker could send an authorization request with an invalid 
-	combination of client_id and redirect_uri. <xref target="RFC6749"/>, 
+	combination of <spanx style="verb">client_id</spanx> and <spanx style="verb">redirect_uri</spanx>. <xref target="RFC6749"/>, 
 	section 4.1.2.1, already states that the AS MUST NOT automatically 
 	redirect the user agent in this case to prevent open redirection.</t>
 	<t>But as described in <xref target="I-D.ietf-oauth-closing-redirectors"/>, 
 	the attacker could also attempt to register a client and intentionally
 	send an  erroneous authorization request, e.g. by using an invalid scope
 	value. According to <xref target="RFC6749"/>, the AS would send the user
-	agent to the redirect_uri with an <spanx style="verb">invalid_request</spanx> 
+	agent to the <spanx style="verb">redirect_uri</spanx> with an <spanx style="verb">invalid_request</spanx> 
 	error response. This is dangerous because the authorization server would 
 	serve as an open redirector. Therefore this draft recommends that every
 	invalid authorization request MUST NOT automatically redirect the user 
