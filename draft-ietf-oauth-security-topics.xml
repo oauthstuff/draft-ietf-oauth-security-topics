@@ -656,9 +656,22 @@ Host: server.example.com]]></artwork>
 	   <t>An attacker might attempt to inject a request to the redirect URI of the 
 	   legitimate client on the victim's device, e.g. to cause the client to access 
 	   resources under the attacker's control.</t>
-		<t>Proposed mitigation: use of XSRF tokens (one-time use), which are bound to 
-		the user agent and passed in the state parameter to the authorization server. 
-		For more details see <xref target="owasp_csrf"/>.</t>
+	   <section title="Proposed Countermeasures">
+             <t>Standard CSRF defenses should be used to protect the redirection endpoint, for example:</t>
+             <t>
+             <list hangIndent="15" style="hanging">
+               <t hangText="CSRF Tokens">Use of CSRF tokens which are
+               bound to the user agent and passed in the <spanx style="verb">state</spanx>
+               parameter to the authorization server.</t>
+               <t hangText="Origin Header">The Origin header can be
+               used to detect and prevent CSRF attacks. Since this
+               feature, at the time of writing, is not consistently
+               supported by all browsers, CSRF tokens should be used
+               in addition to Origin header checking.</t>
+             </list>
+             </t>
+             <t>For more details see <xref target="owasp_csrf"/>.</t>
+           </section>
 	   </section>
 
 	  <section title="Access Token Leakage at the Resource Server">
