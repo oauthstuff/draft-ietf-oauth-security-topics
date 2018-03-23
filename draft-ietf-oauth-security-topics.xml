@@ -423,34 +423,37 @@ Host: server.example.com]]></artwork>
 	   </t>  
 	   </section>
 	  </section> 
-	   <section title="Authorization code leakage via referrer headers">
-	   <t>It is possible authorization codes are unintentionally disclosed to attackers, 
-	   if a OAuth client renders a page containing links to other pages (ads, faq, ...) as result of a 
-	   successful authorization request. </t>
-	   <t>If the user clicks onto one of those links and the target is under the control of an attacker, 
-	   it can get access to the response URL in the referrer header.</t>
-	   <t>It is also possible that an attacker injects cross-domain content somehow into the page, such 
-	   as &lt;img&gt; (e.g if this is a blog web site). The implication is obviously the same: loading this 
-	   content by browser results in leaking referrer with a code.</t> 
+	   <section title="Authorization Code or State Leakage via Referrer Headers">
+	     <t>Authorization codes or values of <spanx style="verb">state</spanx> can unintentionally be disclosed to attackers through the referrer header if an OAuth client, as a result of a successful authorization request, renders a page that
+             </t>
+             <t>
+             <list style="symbols">
+               <t>contains links to other pages under the attacker's control (ads, faq, ...) and a user clicks on such a link, or</t>
+               <t>includes third-party content (iframes, images, etc.) for example if the page contains user-generated content (blog).</t>
+             </list>
+             </t>
+             <t>
+             As soon as the browser navigates to the attacker's page or loads the third-party content, the attacker receives the authorization response URL and can extract <spanx style="verb">code</spanx> or <spanx style="verb">state</spanx>.
+             </t>
+             <t>In a similar way, an attacker can learn <spanx style="verb">state</spanx> if the authorization endpoint at the authorization server contains links or third-party content as above.</t>
+             
 	   <section title="Proposed Countermeasures">
-	   <t>There are some means to prevent leakage as described above:</t>
-	   <t>
-	   	<list style="symbols">
-	   	    <t>Make authorization codes one-time use. For example, if the legitimate client 
-	   	    redeemed and invalidated the code in the above scenario, the 
-	   	    attacker would fail exchanging this code later.</t>
-	   	    <t>Bind authorization code to a confidential client or PKCE challenge.
-	   	    In this case, the attacker lacks the secret to request the code exchange.</t>
-	   		<t>Don't include links to external sites into the page rendered as result 
-	   		of a OAuth authorization response</t>
-	   		<t>Use of the HTML link attribute rel="noreferrer" to suppress referrer header</t>
-	   		<t>Use of the "referrer" meta link attribute to suppress referrer header 
-	   		(see <xref target="webappsec-referrer-policy"/>)</t>
-	   		<t>Use form post response mode instead of redirect for authorization 
-	   		response (see <xref target="oauth-v2-form-post-response-mode"/>)</t>
-	   	</list>
-	   </t>
+	     <t>The page rendered as a result of the OAuth authorization response and the authorization endpoint SHOULD therefore not include third-party resources or links to external sites.</t>
+             <t>If that is not possible, a number of measures can be taken to reduce the chances of a successful attack:</t>
+	     <t>
+	       <list style="symbols">
+                 <t>Make authorization codes and <spanx style="verb">state</spanx> one-time use. For example, if the legitimate client 
+	         redeemed and invalidated the code in the above scenario, the 
+	         attacker would fail exchanging this code later. The <spanx style="verb">state</spanx> value can be expired after its first use at the redirection endpoint.</t>
+	         <t>Bind authorization code to a confidential client or PKCE challenge.
+	         In this case, the attacker lacks the secret to request the code exchange.</t>
+                 <t>Suppress the referrer header by adding the attribute <spanx style="verb">rel="noreferrer"</spanx> to HTML links or by applying an appropriate Referrer Policy <xref target="webappsec-referrer-policy"/> to the document (either as part of the "referrer" meta attribute or by setting a Referrer-Policy header).</t>
+	         <t>Use form post response mode instead of redirect for authorization 
+                 response (see <xref target="oauth-v2-form-post-response-mode"/>).</t>
+               </list>
+	     </t>
 	   </section>
+           
 	  </section>
 	  <section title="Attacks in the Browser">
 	  <section title="Code in browser history">
