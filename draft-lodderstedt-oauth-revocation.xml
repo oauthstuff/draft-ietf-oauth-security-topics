@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+		This template is for creating an Internet Draft using xml2rfc, which
+		is available here: http://xml.resource.org.
+	-->
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!-- One method to get references from the online citation libraries.
+     There has to be one entity for each item to be referenced. 
+     An alternate method (rfc include) is described in the references. -->
+<!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY RFC2629 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2629.xml">
+<!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
+<!ENTITY I-D.narten-iana-considerations-rfc2434bis SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.narten-iana-considerations-rfc2434bis.xml">
+]>
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+<!-- used by XSLT processors -->
+<!--
+		For a complete list and description of processing instructions (PIs),
+		please see http://xml.resource.org/authoring/README.html.
+	-->
+<!--
+		Below are generally applicable Processing Instructions (PIs) that most
+		I-Ds might want to use. (Here they are set differently than their
+		defaults in xml2rfc v1.32)
+	-->
+<?rfc strict="yes" ?>
+<!-- give errors regarding ID-nits and DTD validation -->
+<!-- control the table of contents (ToC) -->
+<?rfc toc="yes"?>
+<!-- generate a ToC -->
+<?rfc tocdepth="4"?>
+<!-- the number of levels of subsections in ToC. default: 3 -->
+<!-- control references -->
+<?rfc symrefs="yes"?>
+<!-- use symbolic references tags, i.e, [RFC2119] instead of [1] -->
+<?rfc sortrefs="yes" ?>
+<!-- sort the reference entries alphabetically -->
+<!--
+		control vertical white space (using these PIs as follows is
+		recommended by the RFC Editor)
+	-->
+<?rfc compact="yes" ?>
+<!-- do not start each main section on a new page -->
+<?rfc subcompact="no" ?>
+<!-- keep one blank line between list items -->
+<!-- end of list of popular I-D processing instructions -->
+<rfc category="std" docName="draft-lodderstedt-oauth-revocation-04"
+     ipr="trust200902">
+  <!--
+		category values: std, bcp, info, exp, and historic ipr values:
+		full3667, noModification3667, noDerivatives3667 you can add the
+		attributes updates="NNNN" and obsoletes="NNNN" they will automatically
+		be output with "(if approved)"
+	-->
+
+  <!-- ***** FRONT MATTER ***** -->
+
+  <front>
+    <!--
+			The abbreviated title is used in the page header - it is only
+			necessary if the full title is longer than 39 characters
+		-->
+
+    <title abbrev="Token Revocation">Token Revocation</title>
+
+    <author fullname="Torsten Lodderstedt" initials="T." role="editor"
+            surname="Lodderstedt">
+      <organization>Deutsche Telekom AG</organization>
+
+      <address>
+        <email>torsten@lodderstedt.net</email>
+
+        <!-- uri and facsimile elements may also be added -->
+      </address>
+    </author>
+
+    <author fullname="Stefanie Dronia" initials="S." surname="Dronia">
+      <organization>SYRACOM Consulting AG</organization>
+
+      <address>
+        <email>sdronia@gmx.de</email>
+
+        <!-- uri and facsimile elements may also be added -->
+      </address>
+    </author>
+
+    <author fullname="Marius Scurtescu" initials="M." surname="Scurtescu ">
+      <organization>Google</organization>
+
+      <address>
+        <email>mscurtescu@google.com</email>
+      </address>
+    </author>
+
+    <date day="31" month="March" year="2012" />
+
+    <!-- Meta-data Declarations -->
+
+    <area>Security Area</area>
+
+    <workgroup>Open Authentication Protocol</workgroup>
+
+    <!--
+			WG name at the upperleft corner of the doc, IETF is fine for
+			individual submissions. If this element is not present, the default
+			is "Network Working Group", which is used by the RFC Editor as a nod
+			to the history of the IETF.
+		-->
+
+    <keyword>token revocation</keyword>
+
+    <keyword>oauth2</keyword>
+
+    <!--
+			Keywords will be incorporated into HTML output files in a meta tag
+			but they have no effect on text or nroff output. If you submit your
+			draft to the RFC Editor, the keywords will be used for the search
+			engine.
+		-->
+
+    <abstract>
+      <t>This draft proposes an additional endpoint for OAuth authorization
+      servers for revoking tokens.</t>
+    </abstract>
+  </front>
+
+  <middle>
+    <section anchor="Introduction" title="Introduction">
+      <t>The OAuth 2.0 core specification <xref
+      target="I-D.ietf-oauth-v2"></xref> defines several ways for a client to
+      obtain refresh and access tokens. This specification supplements the
+      core specification with a mechanism to revoke both types of tokens and
+      facilitates the following use cases:<list style="symbols">
+          <t>The end-user triggers revocation from within the client that
+          sends the appropriate revocation request to the autorization server.
+          From the end-user's perspective, this looks like a
+          &ldquo;logout&rdquo; or &ldquo;reset&rdquo; function. The request
+          causes the removal of the client permissions associated with the
+          particular token to access the end-user&rsquo;s protected resources.
+          This use case makes it even more comfortable to the end-user to
+          revoke his access grant immediately via the client.</t>
+
+          <t>In contrast to revocation by a client, the authorization server
+          (or a related entity) may offer its end-users a self-care portal to
+          delete access grants given to clients independent of any token
+          storing devices. Such a portal offers the possibility to an end-user
+          to look at and revoke all access grants he once authorized. In cases
+          the token storing device is not available, e.g. it is lost or
+          stolen, revocation by a self-care portal is the only possibility to
+          limit or avoid abuse.</t>
+        </list> In the end, security, usability, and ease of use are increased
+      by token revocation.</t>
+
+      <t>By using an additional endpoint, the token revocation endpoint,
+      clients can request the revocation of a particular token. Compliant
+      implementation MUST support the revocation of refresh tokens, access
+      token revocation MAY be supported.</t>
+    </section>
+
+    <section anchor="Revocation" title="Token Revocation">
+      <t>The client requests the revocation of a particular token by making an
+      HTTP POST request to the token revocation endpoint. The location of the
+      token revocation endpoint can be found in the authorization servers
+      documentation. The token endpoint URI MAY include a query component.</t>
+
+      <t>Since requests to the token revocation endpoint result in the
+      transmission of plain text credentials in the HTTP request, the
+      authorization server MUST require the use of a transport-layer security
+      mechanism when sending requests to the token revocation endpoints. The
+      authorization server MUST support TLS 1.0 (<xref
+      target="RFC2246"></xref>), SHOULD support TLS 1.2 (<xref
+      target="RFC5246"></xref>) and its future replacements, and MAY support
+      additional transport-layer mechanisms meeting its security
+      requirements.</t>
+
+      <t>The client constructs the request by including the following
+      parameters using the "application/x-www-form-urlencoded" format in the
+      HTTP request entity-body: <list hangIndent="8" style="hanging">
+          <t hangText="token">REQUIRED. The token that the client wants to get
+          revoked. Note: the authorization server is supposed to detect the
+          token type automatically.</t>
+        </list></t>
+
+      <t>The client also includes its authentication credentials as described
+      in Section 2.3. of <xref target="I-D.ietf-oauth-v2"></xref>.</t>
+
+      <t>For example, a client may request the revocation of a refresh token
+      with the following request (line breaks are for display purposes
+      only):</t>
+
+      <figure>
+        <artwork><![CDATA[
+     POST /revoke HTTP/1.1
+     Host: server.example.com
+     Content-Type: application/x-www-form-urlencoded
+     Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
+     
+     token=45ghiukldjahdnhzdauz&  ]]></artwork>
+      </figure>
+
+      <t>The authorization server first validates the client credentials (if
+      present) and verifies whether the client is authorized to revoke the
+      particular token based on the client identity and its policy. For
+      example, only the client the token has been issued for might be allowed
+      to revoke it. It is also conceivable to allow a dedicated user self-care
+      portal to revoke all kinds of tokens.</t>
+
+      <t>In the next step, the authorization server invalidates the token.
+      Whether the revocation takes effect instantly or with some delay depends
+      on the architecture of the particular deployment. The client MUST NOT
+      make any assumptions about the timing and MUST NOT use the token
+      again.</t>
+
+      <t>If the processed token is a refresh token and the authorization
+      server supports the revocation of access tokens, then the authorization
+      server SHOULD also invalidate all access tokens issued for that refresh
+      token.</t>
+
+      <t>The authorization server indicates a successful processing of the
+      request by a HTTP status code 200. Status code 401 indicates a failed
+      client authentication, whereas a status code 403 is used if the client
+      is not authorized to revoke the particular token. For all other error
+      conditions, a status code 400 is used along with an error response as
+      defined in section 5.2. of <xref target="I-D.ietf-oauth-v2"></xref>. The
+      following error codes are defined for the token revocation endpoint:
+      <list hangIndent="8" style="hanging">
+          <t hangText="unsupported_token_type">The authorization server does
+          not support the revocation of the presented token type. I.e. the
+          client tried to revoke an access token on a server not supporting
+          this feature.</t>
+
+          <t hangText="invalid_token">The presented token is invalid.</t>
+        </list></t>
+
+      <section anchor="JSONP" title="JSONP Support">
+        <t>The revocation endpoint MAY support <xref format="title"
+        target="jsonp">JSONP</xref> by allowing GET requests with an
+        additional parameter: <list hangIndent="8" style="hanging">
+            <t hangText="callback">The qualified name of a JavaScript
+            function.</t>
+          </list></t>
+
+        <t>Example request:</t>
+
+        <figure>
+          <artwork><![CDATA[
+https://example.com/revoke?token=45ghiukldjahdnhzdauz&
+callback=package.myCallback
+]]></artwork>
+        </figure>
+
+        <t>Successful response:</t>
+
+        <figure>
+          <artwork><![CDATA[
+package.myCallback();
+]]></artwork>
+        </figure>
+
+        <t>Error response:</t>
+
+        <figure>
+          <artwork><![CDATA[
+package.myCallback({"error":"invalid_token"});
+]]></artwork>
+        </figure>
+      </section>
+    </section>
+
+    <section anchor="Acknowledgements" title="Acknowledgements">
+      <t>We would like to thank Sebastian Ebling, Christian St&uuml;bner,
+      Brian Campbell, Igor Faynberg, Lukas Rosenstock, and Justin P. Richer
+      for their valuable feedback.</t>
+    </section>
+
+    <!-- Possibly a 'Contributors' section ... -->
+
+    <section anchor="IANA" title="IANA Considerations">
+      <t>This draft includes no request to IANA.</t>
+    </section>
+
+    <section anchor="Security" title="Security Considerations">
+      <t>All relevant security considerations have been given in the
+      functional specification.</t>
+    </section>
+  </middle>
+
+  <!--  *****BACK MATTER ***** -->
+
+  <back>
+    <references title="Normative References">
+      <?rfc include="reference.RFC.2119"?>
+
+      <?rfc include="reference.RFC.2246"?>
+
+      <?rfc include="reference.RFC.5246"?>
+
+      <?rfc include="reference.I-D.ietf-oauth-v2.xml"?>
+    </references>
+
+    <references title="Informative References">
+      <reference anchor="jsonp">
+        <front>
+          <title>Remote JSON - JSONP</title>
+
+          <author fullname="Bob Ippolito" initials="B." surname="Ippolito">
+            <organization></organization>
+          </author>
+
+          <date day="5" month="December" year="2005" />
+        </front>
+
+        <format target="http://bob.pythonmac.org/archives/2005/12/05/remote-json-jsonp"
+                type="HTML" />
+      </reference>
+    </references>
+  </back>
+</rfc>
