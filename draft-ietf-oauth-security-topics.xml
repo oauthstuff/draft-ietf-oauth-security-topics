@@ -247,7 +247,7 @@
 	  handle URL fragments.</t>
 	  </list>
 	  </t>
-	  <section title="Attacks on Authorization Code Grant">
+	  <section title="Attacks on Authorization Code Grant" anchor="insufficient_uri_validation_acg">
 	  <t>For a public client using the grant type code, an attack 
 	  would look as follows: </t>
 	  <t>Let's assume the redirect URL pattern "https://*.example.com/*" had been registered 
@@ -443,9 +443,14 @@ Host: server.example.com]]></artwork>
              and can extract <spanx style="verb">code</spanx> or 
              <spanx style="verb">state</spanx>.
              </t>
-             <t>In a similar way, an attacker can learn <spanx style="verb">state</spanx> 
-             if the authorization endpoint at the authorization server contains links or 
-             third-party content as above.</t>
+             <t>In a similar way, an attacker can learn <spanx style="verb">state</spanx> if the
+             authorization endpoint at the authorization server contains links or third-party
+             content as above.</t>
+             <t>An attacker that learns a valid code through a referrer header can perform the same
+             attacks as described in Section <xref target="insufficient_uri_validation_acg"/>. If
+             the attacker learns <spanx style="verb">state</spanx>, the CSRF protection achieved by
+             using <spanx style="verb">state</spanx> (see Section <xref
+             target="csrf_countermeasures"/>) is lost.</t>
              
 	   <section title="Proposed Countermeasures">
 	     <t>The page rendered as a result of the OAuth authorization response and the 
@@ -679,7 +684,7 @@ Host: server.example.com]]></artwork>
 	   <t>An attacker might attempt to inject a request to the redirect URI of the 
 	   legitimate client on the victim's device, e.g. to cause the client to access 
 	   resources under the attacker's control.</t>
-	   <section title="Proposed Countermeasures">
+	   <section title="Proposed Countermeasures" anchor="csrf_countermeasures">
              <t>Standard CSRF defenses should be used to protect the redirection endpoint, for example:</t>
              <t>
              <list hangIndent="15" style="hanging">
