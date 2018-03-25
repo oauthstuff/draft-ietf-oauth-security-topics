@@ -940,7 +940,8 @@ Pragma: no-cache
 	<t>However, as described in <xref target="I-D.ietf-oauth-closing-redirectors"/>, an
 	attacker could also utilize a correctly registered redirect URI to 
 	perform phishing attacks. It could for example register a client
-	via dynamic client registration and intentionally send an 
+	via dynamic client <xref target="RFC7591"/> 
+	registration and intentionally send an 
 	erroneous authorization request, e.g. by using an invalid 
 	scope value, to cause the AS to automatically redirect the user
 	agent to its phishing site.</t>
