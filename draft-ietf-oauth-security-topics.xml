@@ -456,16 +456,14 @@ Host: server.example.com]]></artwork>
 	     <t>The page rendered as a result of the OAuth authorization response and the 
 	     authorization endpoint SHOULD therefore not include third-party resources or 
 	     links to external sites.</t>
-             <t>If that is not possible, a number of measures can be taken to reduce 
-             the chances of a successful attack:</t>
+         <t>The following measures further reduce the chances of a successful attack:</t>
 	     <t>
 	       <list style="symbols">
-                 <t>Make authorization codes and <spanx style="verb">state</spanx> 
-                 one-time use. For example, if the legitimate client 
-	         redeemed and invalidated the code in the above scenario, the 
-	         attacker would fail exchanging this code later. The 
-	         <spanx style="verb">state</spanx> value can be expired after its first 
-	         use at the redirection endpoint.</t>
+             <t>Authorization codes and <spanx style="verb">state</spanx> SHOULD be invalidated
+             after their first use. For example, in the above scenario, if the AS invalidated the
+             code after the legitimate client redeemed it, the attacker would fail exchanging this
+             code later. The <spanx style="verb">state</spanx> value SHOULD be expired after its first
+             use at the redirection endpoint.</t>
 	         <t>Bind authorization code to a confidential client or PKCE challenge.
 	         In this case, the attacker lacks the secret to request the code exchange.</t>
                  <t>Suppress the referrer header by adding the attribute 
