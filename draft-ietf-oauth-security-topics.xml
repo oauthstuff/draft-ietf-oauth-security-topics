@@ -516,14 +516,15 @@ Host: server.example.com]]></artwork>
 	  </section>
 	  
 	  <section title="Mix-Up">
-	  <t>Mix-up is an attack on scenarios where a OAuth client interacts with multiple
+	  <t>Mix-up is an attack on scenarios where an OAuth client interacts with multiple
 	  authorization servers, as is usually the case when dynamic registration is used. The goal
 	  of the attack is to obtain an authorization code or an access token by tricking the client
 	  into sending those credentials to the attacker instead of using them at the respective
 	  endpoint at the authorization/resource server.</t>
       <section title="Attack Description">
-        <t>This attack description closely follows the detailed description in <xref
-	  target="arXiv.1601.01229"/>.</t>
+        <t>For a detailed attack description, refer to <xref target="arXiv.1601.01229"/> and <xref
+        target="I-D.ietf-oauth-mix-up-mitigation"/>. The description here closely follows <xref
+        target="arXiv.1601.01229"/>, with variants of the attack outlined below.</t>
         <t>Preconditions: For the attack to work, we assume that
         <list style="format (%d)">
           <t>the implicit or authorization code grant are used with
@@ -537,8 +538,7 @@ Host: server.example.com]]></artwork>
           selects a certain AS and is then redirected by the client to
           that AS).</t>
         </list>
-        Below we describe attack variants that require different
-        preconditions.
+        Some of the attack variants described below require different preconditions.
         </t>
         <t>In the following, we assume that the client is registered
         with H-AS (URI: "https://honest.as.example", client id:
