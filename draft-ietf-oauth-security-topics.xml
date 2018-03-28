@@ -578,18 +578,19 @@ Host: server.example.com]]></artwork>
           </t>
         <t>
         <list style="format (%d)" counter="counter_mixup_acg">
-          <t anchor="list_mixup_acg_after_authep">Now, the user authorizes the client to access her resources at H-AS. H-AS issues a code
-          and sends it (via the browser) back to the client.</t>
+          <t anchor="list_mixup_acg_after_authep">Now, the user authorizes the client to access her
+          resources at H-AS. H-AS issues a code and sends it (via the browser) back to the
+          client.</t>
           <t>Since the client still assumes that the code was issued by A-AS, it will try to redeem
           the code at A-AS's token endpoint.</t>
           <t>The attacker therefore obtains code and can either exchange the code for an access
           token (for public clients) or perform a code injection attack as described in Section
           <xref target="code_injection"/>.</t>
+        </list>
+        </t>
           <t>Note: The attacker can also use this attack to provide false information about the user
           to the client by answering the request to the token endpoint with some access token which
           the client will then use to obtain information about the user from A-AS.</t>
-        </list>
-        </t>
         <t>Variants:
         <list hangIndent="8" style="hanging">
           <t hangText="Implicit Grant">
@@ -604,13 +605,13 @@ Host: server.example.com]]></artwork>
             immediately redirects the user to H-AS (changing the client id "7ZGZldHQ"). (A vigilant
             user might at this point detect that she intended to use A-AS instead of H-AS.) The
             attack now proceeds exactly as in step <xref format="counter"
-            target="list_mixup_acg_after_authep"/> of the attack description above.
+            target="list_mixup_acg_after_authep"/> of the attack description above.  <!-- I think this counter is not working properly! -->
           </t>
           <t hangText="Per-AS Redirect URIs">
             If clients use different redirect URIs for different ASs, do not store the selected AS
             in the user's session, and ASs do not check the redirect URIs properly, attackers can
             mount an attack called "Cross-Social Network Request Forgery". We refer to <xref
-            target="oauth_security_jcs_14"/> for details. <!-- I think this counter is not working properly! -->
+            target="oauth_security_jcs_14"/> for details.
           </t>
           <t hangText="OpenID Connect">
             There are several variants that can be used to attack OpenID Connect. They are described
@@ -621,23 +622,25 @@ Host: server.example.com]]></artwork>
         </t>
       </section>
       <section title="Countermeasures">
-        <t>TODO TODO Potential countermeasures against mix-up attacks are discussed in <xref
-        target="I-D.ietf-oauth-mix-up-mitigation"/>.</t>
-	    <t>Potential mitigations:
-	    <list style="symbols">
-	      <t>Clients use AS-specific redirect URIs and, for every authorization request,
-	      store intended AS and compare intention with actual redirect URI where the
-	      response was received</t>
-	      <t>AS returns <spanx style="verb">client_id</spanx> and its <spanx style="verb">iss</spanx> in the response. Client compares 
-		  this data to AS it believed it sent the user agent to.</t>
-		  <t>ID token carries client id and issuer (OpenID Connect specific)</t>
-	    </list>
-	    </t>
+        <t>In scenarios where an OAuth client interacts with multiple authorization servers, clients
+        must prevent mix-up attacks.</t>
+        <t>Potential countermeasures:
+	<list style="symbols">
+	  <t>Configure authorization servers to return an AS identitifier (<spanx
+	  style="verb">iss</spanx>) and the <spanx style="verb">client_id</spanx> for which a code
+	  or token was issued in the authorization response. This enables clients to compare this
+	  data to their own client id and the <spanx style="verb">iss</spanx> identifier of the AS
+	  it believed it sent the user agent to. This mitigation is discussed in detail in <xref
+	  target="I-D.ietf-oauth-mix-up-mitigation"/>. (In OpenID Connect, if an ID token is
+	  returned in the authorization response, it carries client id and issuer. It can be used
+	  for this mitigation.)</t>
+	  <t>As can be seen in the preconditions of the attacks above, clients can prevent mix-up
+	  attack by (1) using AS-specific redirect URIs with exact redirect URI matching, (2)
+	  storing, for each authorization request, the intended AS, and (3) comparing the intended
+	  AS with the actual redirect URI where the authorization response was received.</t>
+	</list>
+	</t>
       </section>
-      <!--
-	  <t>A more detailed description of mix-up attacks can be found in <xref
-	  target="arXiv.1601.01229"/> and <xref target="arXiv.1508.04324v2"/>. 
-        -->
 	  </section>
 	  
 	  <section title="Code Injection" anchor="code_injection">
