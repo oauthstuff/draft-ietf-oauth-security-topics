@@ -423,16 +423,19 @@ Host: server.example.com]]></artwork>
 	   </t>  
 	   </section>
 	  </section> 
-	   <section title="Authorization Code or State Leakage via Referrer Headers">
-	     <t>Authorization codes or values of <spanx style="verb">state</spanx> can 
-	     unintentionally be disclosed to attackers through the referrer header if an 
-	     OAuth client, as a result of a successful authorization request, renders a 
-	     page that
+	   <section title="Code or State Leakage from Client or AS via Referrer Headers">
+	     <t>Authorization codes or values of <spanx style="verb">state</spanx> can unintentionally
+	     be disclosed to attackers through the referrer header, by leaking either  from a client's
+	     web site or from an AS's web site.
+         </t>
+         <t>
+           Leakage from OAuth client: This requires that the client, as a result of a successful
+           authorization request, renders a page that
              </t>
              <t>
              <list style="symbols">
-               <t>contains links to other pages under the attacker's control (ads, faq, ...) 
-               and a user clicks on such a link, or</t>
+               <t>contains links to other pages under the attacker's control (ads, faq, ...) and a
+               user clicks on such a link, or</t>
                <t>includes third-party content (iframes, images, etc.) for example if 
                the page contains user-generated content (blog).</t>
              </list>
@@ -443,27 +446,37 @@ Host: server.example.com]]></artwork>
              and can extract <spanx style="verb">code</spanx> or 
              <spanx style="verb">state</spanx>.
              </t>
-             <t>In a similar way, an attacker can learn <spanx style="verb">state</spanx> if the
-             authorization endpoint at the authorization server contains links or third-party
-             content as above.</t>
-             <t>An attacker that learns a valid code through a referrer header can perform the same
-             attacks as described in Section <xref target="insufficient_uri_validation_acg"/>. If
-             the attacker learns <spanx style="verb">state</spanx>, the CSRF protection achieved by
-             using <spanx style="verb">state</spanx> (see Section <xref
-             target="csrf_countermeasures"/>) is lost.</t>
+             <t>Leakage from AS: In a similar way, an attacker can learn <spanx
+             style="verb">state</spanx> if the authorization endpoint at the authorization server
+             contains links or third-party content as above.</t>
+             <t>Consequences: An attacker that learns a valid code through a referrer header can
+             perform the same attacks as described in Section <xref
+             target="insufficient_uri_validation_acg"/>. If the attacker learns <spanx
+             style="verb">state</spanx>, the CSRF protection achieved by using <spanx
+             style="verb">state</spanx> is lost, resulting in CSRF attacks as described in <xref
+             target="RFC6819"/>, Section 4.4.1.8..
+             </t>
              
 	   <section title="Proposed Countermeasures">
 	     <t>The page rendered as a result of the OAuth authorization response and the 
-	     authorization endpoint SHOULD therefore not include third-party resources or 
+	     authorization endpoint SHOULD not include third-party resources or 
 	     links to external sites.</t>
          <t>The following measures further reduce the chances of a successful attack:</t>
 	     <t>
 	       <list style="symbols">
-             <t>Authorization codes and <spanx style="verb">state</spanx> SHOULD be invalidated
-             after their first use. For example, in the above scenario, if the AS invalidated the
-             code after the legitimate client redeemed it, the attacker would fail exchanging this
-             code later. The <spanx style="verb">state</spanx> value SHOULD be expired after its first
-             use at the redirection endpoint.</t>
+             <t>Authorization codes SHOULD be invalidated by the AS after their first use at the
+             token endpoint. For example, if an AS invalidated the code after the legitimate client
+             redeemed it, the attacker would fail exchanging this code later. (This does not
+             mitigate the attack if the attacker manages to exchange the code for a token before the
+             legitimate client does so.)</t>
+             <t>The <spanx style="verb">state</spanx> value SHOULD be invalidated by the client
+             after its first use at the redirection endpoint. If this is implemented, and an
+             attacker receives a token through the referrer header from the client's web site, the
+             <spanx style="verb">state</spanx> was already used, invalidated by the client and
+             cannot be used again by the attacker. (This does not help if the <spanx
+             style="verb">state</spanx> leaks from the AS's web site, since then the <spanx
+             style="verb">state</spanx> has not been used at the redirection endpoint at the client
+             yet.)</t>
 	         <t>Bind authorization code to a confidential client or PKCE challenge.
 	         In this case, the attacker lacks the secret to request the code exchange.</t>
                  <t>Suppress the referrer header by adding the attribute 
