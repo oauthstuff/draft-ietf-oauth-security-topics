@@ -35,7 +35,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="bcp" docName="draft-ietf-oauth-security-topics-05"
+<rfc category="bcp" docName="draft-ietf-oauth-security-topics-06"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -1082,20 +1082,25 @@ Pragma: no-cache
 <section anchor="Open.Redirection" title="Open Redirection">
 <section title="Authorization Server as Open Redirector">
 	<t>Attackers could try to utilize a user's trust in the authorization 
-	server (and its URL in particular) for performing phishing attacks.  
-	The attacker could send an authorization request with an invalid 
-	combination of <spanx style="verb">client_id</spanx> and <spanx style="verb">redirect_uri</spanx>. <xref target="RFC6749"/>, 
-	section 4.1.2.1, already states that the AS MUST NOT automatically 
-	redirect the user agent in this case to prevent open redirection.</t>
-	<t>But as described in <xref target="I-D.ietf-oauth-closing-redirectors"/>, 
-	the attacker could also attempt to register a client and intentionally
-	send an  erroneous authorization request, e.g. by using an invalid scope
-	value. According to <xref target="RFC6749"/>, the AS would send the user
-	agent to the <spanx style="verb">redirect_uri</spanx> with an <spanx style="verb">invalid_request</spanx> 
-	error response. This is dangerous because the authorization server would 
-	serve as an open redirector. Therefore this draft recommends that every
-	invalid authorization request MUST NOT automatically redirect the user 
-	agent to the client's redirect URI.</t>
+	server (and its URL in particular) for performing phishing attacks.</t>
+	<t><xref target="RFC6749"/>, section 4.1.2.1, already prevents open redirects 
+	by stating the AS MUST NOT automatically redirect the user agent in case of 
+	an invalid combination of client_id and redirect_uri.</t>
+	<t>However, as described in <xref target="I-D.ietf-oauth-closing-redirectors"/>, an
+	attacker could also utilize a correctly registered redirect URI to 
+	perform phishing attacks. It could for example register a client
+	via dynamic client <xref target="RFC7591"/> 
+	registration and intentionally send an 
+	erroneous authorization request, e.g. by using an invalid 
+	scope value, to cause the AS to automatically redirect the user
+	agent to its phishing site.</t>
+	<t>The AS MUST take precautions to prevent this threat. 
+	Based on its risk assessment the AS needs to decide whether 
+	it can trust the redirect URI or not and SHOULD only automatically 
+	redirect the user agent, if it trusts the redirect URI. If not, it MAY
+	inform the user that it is about to redirect her to the another site 
+	and rely on the user to decide or MAY just inform the user about the 
+	error.</t>
 </section>
 <section title="Clients as Open Redirector">
 	<t>Client MUST not expose URLs which could be utilized as open redirector.
@@ -1354,6 +1359,9 @@ Pragma: no-cache
     
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
+      <t>-06 <list style="symbols">
+      	  <t>reworked section 3.8.1</t>
+        </list></t> 
       <t>-05 <list style="symbols">
       	  <t>Completed sections on code leakage via referrer header, attacks in 
       	  browser, mix-up, and CSRF</t>
