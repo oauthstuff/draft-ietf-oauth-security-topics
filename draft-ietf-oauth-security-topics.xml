@@ -623,7 +623,7 @@ Host: server.example.com]]></artwork>
       </section>
       <section title="Countermeasures">
         <t>In scenarios where an OAuth client interacts with multiple authorization servers, clients
-        must prevent mix-up attacks.</t>
+        MUST prevent mix-up attacks.</t>
         <t>Potential countermeasures:
 	<list style="symbols">
 	  <t>Configure authorization servers to return an AS identitifier (<spanx
@@ -631,9 +631,9 @@ Host: server.example.com]]></artwork>
 	  or token was issued in the authorization response. This enables clients to compare this
 	  data to their own client id and the <spanx style="verb">iss</spanx> identifier of the AS
 	  it believed it sent the user agent to. This mitigation is discussed in detail in <xref
-	  target="I-D.ietf-oauth-mix-up-mitigation"/>. (In OpenID Connect, if an ID token is
+	  target="I-D.ietf-oauth-mix-up-mitigation"/>. In OpenID Connect, if an ID token is
 	  returned in the authorization response, it carries client id and issuer. It can be used
-	  for this mitigation.)</t>
+	  for this mitigation.</t>
 	  <t>As can be seen in the preconditions of the attacks above, clients can prevent mix-up
 	  attack by (1) using AS-specific redirect URIs with exact redirect URI matching, (2)
 	  storing, for each authorization request, the intended AS, and (3) comparing the intended
@@ -1343,7 +1343,7 @@ Pragma: no-cache
 
       <reference anchor="oauth_security_jcs_14">
         <front>
-          <title></title>
+          <title>Discovering concrete attacks on website authorization by formal analysis</title>
 	      <author fullname="Chetan Bansal" surname="Bansal" initials="C."><organization/></author>
           <author fullname="Karthikeyan Bhargavan" surname="Bhargavan" initials="K."><organization/></author>
           <author fullname="Antoine Delignat-Lavaud" surname="Delignat-Lavaud" initials="A."><organization/></author>
