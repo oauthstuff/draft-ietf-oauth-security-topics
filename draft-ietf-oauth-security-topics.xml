@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 		This template is for creating an Internet Draft using xml2rfc, which
 		is available here: http://xml.resource.org.
@@ -105,7 +105,7 @@
 		-->
 
     <abstract>
-      <t>This document describes best current security practices for OAuth 2.0..
+      <t>This document describes best current security practices for OAuth 2.0.
       It updates and extends the OAuth 2.0 Security Threat Model to incorporate
       practical experiences gathered since OAuth 2.0 was published and cover
       new threats relevant due to the broader application of OAuth 2.0.</t>
@@ -140,7 +140,7 @@
 	  </t>
 	  <t>OAuth initially assumed a static relationship between client, authorization 
 	  server and resource servers. The URLs of AS and RS were known to the client
-	  at deployment time and built an anchor for the trust relationsship among those
+	  at deployment time and built an anchor for the trust relationship among those
 	  parties. The validation whether the client talks to a legitimate server was based on 
 	  TLS server authentication (see <xref target="RFC6819"/>, Section 4.5.4).
 	  With the increasing adoption of OAuth, this simple model dissolved and, in
@@ -173,8 +173,8 @@
     <t>Authorization servers shall utilize exact matching of client redirect URIs against 
     pre-registered URIs. This measure contributes to the prevention of leakage of 
     authorization codes and access tokens (depending on the grant type). It also helps
-    to detect mix up attacks.</t>
-	<t>Clients shall avoid any redirects or forwards, which can be parameterized by 
+    to detect mix-up attacks.</t>
+	<t>Clients shall avoid any redirects or forwards which can be parameterized by 
 	URI query parameters, in order to provide a further layer of defence against 
 	token leakage. If there is a need for this kind of redirects, clients are advised 
 	to implement appropriate counter measures against open redirection, e.g. as described
@@ -213,7 +213,7 @@
     </section>
     
     <section title="Token Replay Prevention">
-    <t>Authorization servers shall use TLS-based methods for sender constraint access 
+    <t>Authorization servers shall use TLS-based methods for sender constrained access 
     tokens as described in  section <xref target="pop_tokens"/>, such as token 
     binding <xref target="I-D.ietf-oauth-token-binding"></xref> or Mutual TLS for 
     OAuth 2.0 <xref target="I-D.ietf-oauth-mtls"></xref>. It is also recommend to use
@@ -247,11 +247,11 @@
 	  handle URL fragments.</t>
 	  </list>
 	  </t>
-	  <section title="Attacks on Authorization Code Grant">
+	  <section title="Attacks on Authorization Code Grant" anchor="insufficient_uri_validation_acg">
 	  <t>For a public client using the grant type code, an attack 
 	  would look as follows: </t>
 	  <t>Let's assume the redirect URL pattern "https://*.example.com/*" had been registered 
-	  for the client "s6BhdRkqt3". This pattern allows redirect URIs from any 
+	  for the client "s6BhdRkqt3". This pattern allows redirect URIs pointing to any 
 	  host residing  in the domain example.com. So if an attacker manages to 
 	  establish a host or subdomain in "example.com" he can impersonate the 
 	  legitimate client. Assume the attacker sets up the host 
@@ -388,7 +388,7 @@ Host: server.example.com]]></artwork>
 	   <t>This would cause the following impacts:
 	    <list style="symbols">
 		<t>This change will require all OAuth clients to maintain the transaction state (and XSRF tokens) 
-		in the "state" parameter. This is a normative change to RFC 6749 since section 3.1.2.2 allows for 
+		in the "state" parameter. This is a normative change to RFC 6749 since Section 3.1.2.2 allows for 
 		dynamic URI query parameters in the redirect URI. In order to assess the practical impact, the 
 		working group needs to collect data on whether this feature is really used in deployments today.</t> 
 		<t>The 
@@ -423,34 +423,73 @@ Host: server.example.com]]></artwork>
 	   </t>  
 	   </section>
 	  </section> 
-	   <section title="Authorization code leakage via referrer headers">
-	   <t>It is possible authorization codes are unintentionally disclosed to attackers, 
-	   if a OAuth client renders a page containing links to other pages (ads, faq, ...) as result of a 
-	   successful authorization request. </t>
-	   <t>If the user clicks onto one of those links and the target is under the control of an attacker, 
-	   it can get access to the response URL in the referrer header.</t>
-	   <t>It is also possible that an attacker injects cross-domain content somehow into the page, such 
-	   as &lt;img&gt; (e.g if this is a blog web site). The implication is obviously the same: loading this 
-	   content by browser results in leaking referrer with a code.</t> 
+	   <section title="Code or State Leakage from Client or AS via Referrer Headers">
+	     <t>Authorization codes or values of <spanx style="verb">state</spanx> can unintentionally
+	     be disclosed to attackers through the referrer header, by leaking either  from a client's
+	     web site or from an AS's web site.
+         </t>
+         <t>
+           Leakage from OAuth client: This requires that the client, as a result of a successful
+           authorization request, renders a page that
+             </t>
+             <t>
+             <list style="symbols">
+               <t>contains links to other pages under the attacker's control (ads, faq, ...) and a
+               user clicks on such a link, or</t>
+               <t>includes third-party content (iframes, images, etc.) for example if 
+               the page contains user-generated content (blog).</t>
+             </list>
+             </t>
+             <t>
+             As soon as the browser navigates to the attacker's page or loads the 
+             third-party content, the attacker receives the authorization response URL 
+             and can extract <spanx style="verb">code</spanx> or 
+             <spanx style="verb">state</spanx>.
+             </t>
+             <t>Leakage from AS: In a similar way, an attacker can learn <spanx
+             style="verb">state</spanx> if the authorization endpoint at the authorization server
+             contains links or third-party content as above.</t>
+             <t>Consequences: An attacker that learns a valid code through a referrer header can
+             perform the same attacks as described in Section <xref
+             target="insufficient_uri_validation_acg"/>. If the attacker learns <spanx
+             style="verb">state</spanx>, the CSRF protection achieved by using <spanx
+             style="verb">state</spanx> is lost, resulting in CSRF attacks as described in <xref
+             target="RFC6819"/>, Section 4.4.1.8..
+             </t>
+             
 	   <section title="Proposed Countermeasures">
-	   <t>There are some means to prevent leakage as described above:</t>
-	   <t>
-	   	<list style="symbols">
-	   	    <t>Make authorization codes one-time use. For example, if the legitimate client 
-	   	    redeemed and invalidated the code in the above scenario, the 
-	   	    attacker would fail exchanging this code later.</t>
-	   	    <t>Bind authorization code to a confidential client or PKCE challenge.
-	   	    In this case, the attacker lacks the secret to request the code exchange.</t>
-	   		<t>Don't include links to external sites into the page rendered as result 
-	   		of a OAuth authorization response</t>
-	   		<t>Use of the HTML link attribute rel="noreferrer" to suppress referrer header</t>
-	   		<t>Use of the "referrer" meta link attribute to suppress referrer header 
-	   		(see <xref target="webappsec-referrer-policy"/>)</t>
-	   		<t>Use form post response mode instead of redirect for authorization 
-	   		response (see <xref target="oauth-v2-form-post-response-mode"/>)</t>
-	   	</list>
-	   </t>
+	     <t>The page rendered as a result of the OAuth authorization response and the 
+	     authorization endpoint SHOULD not include third-party resources or 
+	     links to external sites.</t>
+         <t>The following measures further reduce the chances of a successful attack:</t>
+	     <t>
+	       <list style="symbols">
+             <t>Authorization codes SHOULD be invalidated by the AS after their first use at the
+             token endpoint. For example, if an AS invalidated the code after the legitimate client
+             redeemed it, the attacker would fail exchanging this code later. (This does not
+             mitigate the attack if the attacker manages to exchange the code for a token before the
+             legitimate client does so.)</t>
+             <t>The <spanx style="verb">state</spanx> value SHOULD be invalidated by the client
+             after its first use at the redirection endpoint. If this is implemented, and an
+             attacker receives a token through the referrer header from the client's web site, the
+             <spanx style="verb">state</spanx> was already used, invalidated by the client and
+             cannot be used again by the attacker. (This does not help if the <spanx
+             style="verb">state</spanx> leaks from the AS's web site, since then the <spanx
+             style="verb">state</spanx> has not been used at the redirection endpoint at the client
+             yet.)</t>
+	         <t>Bind authorization code to a confidential client or PKCE challenge.
+	         In this case, the attacker lacks the secret to request the code exchange.</t>
+                 <t>Suppress the referrer header by adding the attribute 
+                 <spanx style="verb">rel="noreferrer"</spanx> to HTML links or by 
+                 applying an appropriate Referrer Policy <xref target="webappsec-referrer-policy"/> 
+                 to the document (either as part of the "referrer" meta attribute or by 
+                 setting a Referrer-Policy header).</t>
+	         <t>Use form post response mode instead of redirect for authorization 
+                 response (see <xref target="oauth-v2-form-post-response-mode"/>).</t>
+               </list>
+	     </t>
 	   </section>
+           
 	  </section>
 	  <section title="Attacks in the Browser">
 	  <section title="Code in browser history">
@@ -488,23 +527,131 @@ Host: server.example.com]]></artwork>
 	  </section>
 	  
 	  <section title="Mix-Up">
-	  <t>Mix-up is another kind of attack on more dynamic OAuth scenarios (or at least 
-	  scenarios where a OAuth client interacts with multiple authorization servers). The
-	  goal of the attack is to obtain an authorization code or an access token by 
-	  tricking the client into sending those credentials to the attacker (which acts as 
-	  MITM between client and authorization server)</t>
-	  <t>A detailed description of the attack and potential countermeasures is 
-	  given in <xref target="I-D.ietf-oauth-mix-up-mitigation"/>.</t>
-	  <t>Potential mitigations:
-	    <list style="symbols">
-	     <t>Clients use AS-specific redirect URIs and, for every authorization request,
-	     store intended AS and compare intention with actual redirect URI where the
-	     response was received</t>
-	     <t>AS returns client_id and its iss in the response. Client compares 
-		  this data to AS it believed it sent the user agent to.</t>
-		 <t>ID token carries client id and issuer (OpenID Connect specific)</t>
-	    </list>
-	  </t>
+	  <t>Mix-up is an attack on scenarios where an OAuth client interacts with multiple
+	  authorization servers, as is usually the case when dynamic registration is used. The goal
+	  of the attack is to obtain an authorization code or an access token by tricking the client
+	  into sending those credentials to the attacker instead of using them at the respective
+	  endpoint at the authorization/resource server.</t>
+      <section title="Attack Description">
+        <t>For a detailed attack description, refer to <xref target="arXiv.1601.01229"/> and <xref
+        target="I-D.ietf-oauth-mix-up-mitigation"/>. The description here closely follows <xref
+        target="arXiv.1601.01229"/>, with variants of the attack outlined below.</t>
+        <t>Preconditions: For the attack to work, we assume that
+        <list style="format (%d)">
+          <t>the implicit or authorization code grant are used with
+          multiple AS of which one is considered "honest" (H-AS) and
+          one is operated by the attacker (A-AS),</t>
+          <t>the RP stores the AS chosen by the user in a session
+          bound to the user's browser and uses the same redirection
+          endpoint URI for each AS, and</t>
+          <t>the attacker can manipulate the first request/response
+          pair from a user's browser to the client (in which the user
+          selects a certain AS and is then redirected by the client to
+          that AS).</t>
+        </list>
+        Some of the attack variants described below require different preconditions.
+        </t>
+        <t>In the following, we assume that the client is registered
+        with H-AS (URI: "https://honest.as.example", client id:
+        7ZGZldHQ) and with A-AS (URI: "https://attacker.example",
+        client id: 666RVZJTA).</t>
+        <t>Attack on the authorization code grant:
+        <list style="format (%d)" counter="counter_mixup_acg">
+          <t>The user selects to start the grant using H-AS (e.g., by clicking on a button at the
+          client's website).</t>
+          <t>The attacker intercepts this request and changes the user's selection to "A-AS".</t>
+          <t>The client stores in the user's session that the user
+          selected "A-AS" and redirects the user to A-AS's
+          authorization endpoint by sending the following response:
+          </t>
+        </list>
+        </t>
+        <t>
+        <figure>
+          <artwork><![CDATA[HTTP/1.1 302 Found
+  Location: https://attacker.example/authorize?response_type=code&client_id=666RVZJTA]]></artwork>
+        </figure>
+        </t>
+        <t>
+        <list style="format (%d)" counter="counter_mixup_acg">
+          <t>Now the attacker intercepts this response and changes the
+          redirection such that the user is being redirected to H-AS.
+          The attacker also replaces the client id of the client at
+          A-AS with the client's id at H-AS, resulting in the following response being sent to the browser:
+          </t>
+        </list>
+        </t>
+        <t>
+          <figure>
+            <artwork><![CDATA[HTTP/1.1 302 Found
+  Location: https://honest.as.example/authorize?response_type=code&client_id=7ZGZldHQ]]></artwork>
+          </figure>
+          </t>
+        <t>
+        <list style="format (%d)" counter="counter_mixup_acg">
+          <t anchor="list_mixup_acg_after_authep">Now, the user authorizes the client to access her
+          resources at H-AS. H-AS issues a code and sends it (via the browser) back to the
+          client.</t>
+          <t>Since the client still assumes that the code was issued by A-AS, it will try to redeem
+          the code at A-AS's token endpoint.</t>
+          <t>The attacker therefore obtains code and can either exchange the code for an access
+          token (for public clients) or perform a code injection attack as described in Section
+          <xref target="code_injection"/>.</t>
+        </list>
+        </t>
+          <t>Note: The attacker can also use this attack to provide false information about the user
+          to the client by answering the request to the token endpoint with some access token which
+          the client will then use to obtain information about the user from A-AS.</t>
+        <t>Variants:
+        <list hangIndent="8" style="hanging">
+          <t hangText="Implicit Grant">
+            In the implicit grant, the attacker receives an access token instead of the code; the
+            rest of the attack works as above.
+          </t>
+          <t hangText="Mix-Up Without Interception">
+            A variant of the above attack works even if the first request/response pair cannot be
+            intercepted (for example, because TLS is used to protect these messages): Here, we
+            assume that the user wants to start the grant using A-AS (and not H-AS). After the
+            client redirected the user to the authorization endpoint at A-AS, the attacker
+            immediately redirects the user to H-AS (changing the client id "7ZGZldHQ"). (A vigilant
+            user might at this point detect that she intended to use A-AS instead of H-AS.) The
+            attack now proceeds exactly as in step <xref format="counter"
+            target="list_mixup_acg_after_authep"/> of the attack description above.  <!-- I think this counter is not working properly! -->
+          </t>
+          <t hangText="Per-AS Redirect URIs">
+            If clients use different redirect URIs for different ASs, do not store the selected AS
+            in the user's session, and ASs do not check the redirect URIs properly, attackers can
+            mount an attack called "Cross-Social Network Request Forgery". We refer to <xref
+            target="oauth_security_jcs_14"/> for details.
+          </t>
+          <t hangText="OpenID Connect">
+            There are several variants that can be used to attack OpenID Connect. They are described
+            in detail in <xref target="arXiv.1704.08539" />, Appendix A, and <xref
+            target="arXiv.1508.04324v2" />, Section 6 ("Malicious Endpoints Attacks").
+          </t>
+        </list>
+        </t>
+      </section>
+      <section title="Countermeasures">
+        <t>In scenarios where an OAuth client interacts with multiple authorization servers, clients
+        MUST prevent mix-up attacks.</t>
+        <t>Potential countermeasures:
+	<list style="symbols">
+	  <t>Configure authorization servers to return an AS identitifier (<spanx
+	  style="verb">iss</spanx>) and the <spanx style="verb">client_id</spanx> for which a code
+	  or token was issued in the authorization response. This enables clients to compare this
+	  data to their own client id and the <spanx style="verb">iss</spanx> identifier of the AS
+	  it believed it sent the user agent to. This mitigation is discussed in detail in <xref
+	  target="I-D.ietf-oauth-mix-up-mitigation"/>. In OpenID Connect, if an ID token is
+	  returned in the authorization response, it carries client id and issuer. It can be used
+	  for this mitigation.</t>
+	  <t>As can be seen in the preconditions of the attacks above, clients can prevent mix-up
+	  attack by (1) using AS-specific redirect URIs with exact redirect URI matching, (2)
+	  storing, for each authorization request, the intended AS, and (3) comparing the intended
+	  AS with the actual redirect URI where the authorization response was received.</t>
+	</list>
+	</t>
+      </section>
 	  </section>
 	  
 	  <section title="Code Injection" anchor="code_injection">
@@ -533,10 +680,10 @@ Host: server.example.com]]></artwork>
 		<t>The attacker injects the stolen authorization code in the response of the 
 		authorization server to the legitimate client.</t>
 		<t>The client sends the code to the authorization server's token endpoint, 
-		along with client id, client secret and actual redirect_uri.</t>
+		along with client id, client secret and actual <spanx style="verb">redirect_uri</spanx>.</t>
 		<t>The authorization server checks the client secret, whether the code was issued 
 		to the particular client and whether the actual redirect URI matches the 
-		redirect_uri parameter (see <xref target="RFC6749"/>).</t>
+		<spanx style="verb">redirect_uri</spanx> parameter (see <xref target="RFC6749"/>).</t>
 		<t>If all checks succeed, the authorization server issues access 
 		and other tokens to the client, so now the attacker is able to impersonate 
 		the legitimate user.</t>
@@ -575,7 +722,7 @@ Host: server.example.com]]></artwork>
 	   redirect URI pattern. This saves the authorization server from storing the link between the 
 	   actual redirect URI and the respective authorization code for every transaction. But this kind of 
 	   check obviously does not fulfill the intent of the spec, since the tampered redirect URI is not 
-	   considered. So any attempt to inject a code obtained using the client_id of a legitimate client 
+	   considered. So any attempt to inject a code obtained using the <spanx style="verb">client_id</spanx> of a legitimate client 
 	   or by utilizing the legitimate client on another device won't be detected in the respective deployments.</t>
        <t>It is also assumed that the requirements defined in <xref target="RFC6749"/>, Section 4.1.3, 
 	   increase client implementation 
@@ -628,8 +775,8 @@ Host: server.example.com]]></artwork>
 		 secure and convenient mechanism (due to its browser integration). As a challenge, 
 		 it requires broad browser support and use with native apps still under 
 		 discussion.</t>
-		 <t hangText="per instance client id/secret">One could use per instance client_id 
-		 and secrets and bind the code to the respective client_id. Unfortunately, 
+		 <t hangText="per instance client id/secret">One could use per instance <spanx style="verb">client_id</spanx> 
+		 and secrets and bind the code to the respective <spanx style="verb">client_id</spanx>. Unfortunately, 
 		 this does not fit into the web application programming model (would need to use 
 		 per user client ids).</t>		 
 		</list>
@@ -656,9 +803,22 @@ Host: server.example.com]]></artwork>
 	   <t>An attacker might attempt to inject a request to the redirect URI of the 
 	   legitimate client on the victim's device, e.g. to cause the client to access 
 	   resources under the attacker's control.</t>
-		<t>Proposed mitigation: use of XSRF tokens (one-time use), which are bound to 
-		the user agent and passed in the state parameter to the authorization server. 
-		For more details see <xref target="owasp_csrf"/>.</t>
+	   <section title="Proposed Countermeasures" anchor="csrf_countermeasures">
+             <t>Standard CSRF defenses should be used to protect the redirection endpoint, for example:</t>
+             <t>
+             <list hangIndent="15" style="hanging">
+               <t hangText="CSRF Tokens">Use of CSRF tokens which are
+               bound to the user agent and passed in the <spanx style="verb">state</spanx>
+               parameter to the authorization server.</t>
+               <t hangText="Origin Header">The Origin header can be
+               used to detect and prevent CSRF attacks. Since this
+               feature, at the time of writing, is not consistently
+               supported by all browsers, CSRF tokens should be used
+               in addition to Origin header checking.</t>
+             </list>
+             </t>
+             <t>For more details see <xref target="owasp_csrf"/>.</t>
+           </section>
 	   </section>
 
 	  <section title="Access Token Leakage at the Resource Server">
@@ -741,7 +901,7 @@ Pragma: no-cache
 	  
 	 <section anchor="pop_tokens" title="Sender Constrained Access Tokens"> 
 
-		 <t>As the name suggests, sender constraint access token scope the applicability 
+		 <t>As the name suggests, sender constrained access token scope the applicability 
 		 of an access token to a certain sender. This sender is obliged to demonstrate 
 		 knowledge of a certain secret as prerequisite for the acceptance of that token 
 		 at a resource server.</t>
@@ -1151,7 +1311,60 @@ Pragma: no-cache
           <date month="November" year="2014"/>
         </front>
         <format target="http://css.csail.mit.edu/6.858/2012/readings/oauth-sso.pdf" type="pdf" />
-      </reference> 
+      </reference>
+
+      <reference anchor="arXiv.1601.01229"
+		 target="http://arxiv.org/abs/1601.01229/">
+	<front>
+	  <title>A Comprehensive Formal Security Analysis of OAuth 2.0</title>
+	  <author fullname="Daniel Fett" surname="Fett" initials="D."><organization/></author>
+	  <author fullname="Ralf Küsters" surname="Küsters" initials="R."><organization/></author>
+	  <author fullname="Guido Schmitz" surname="Schmitz" initials="G."><organization/></author>
+
+	  <date day="6" month="January" year="2016"/>
+	</front>
+	<seriesInfo name="arXiv" value="1601.01229"/>
+      </reference>
+
+      <reference anchor="arXiv.1704.08539"
+		 target="http://arxiv.org/abs/1704.08539/">
+	<front>
+	  <title>The Web SSO Standard OpenID Connect: In-Depth Formal Security Analysis and Security Guidelines</title>
+	  <author fullname="Daniel Fett" surname="Fett" initials="D."><organization/></author>
+	  <author fullname="Ralf Küsters" surname="Küsters" initials="R."><organization/></author>
+	  <author fullname="Guido Schmitz" surname="Schmitz" initials="G."><organization/></author>
+
+	  <date day="27" month="April" year="2017"/>
+	</front>
+	<seriesInfo name="arXiv" value="1704.08539"/>
+      </reference>
+
+      <reference anchor="arXiv.1508.04324v2"
+		 target="http://arxiv.org/abs/1508.04324v2/">
+	<front>
+	  <title>On the security of modern Single Sign-On Protocols: Second-Order Vulnerabilities in OpenID Connect</title>
+	  <author fullname="Vladislav Mladenov" surname="Mladenov" initials="V."><organization/></author>
+	  <author fullname="Christian Mainka" surname="Mainka" initials="C."><organization/></author>
+	  <author fullname="Jörg Schwenk" surname="Schwenk" initials="J."><organization/></author>
+
+	  <date day="7" month="January" year="2016"/>
+	</front>
+	<seriesInfo name="arXiv" value="1508.04324v2"/>
+      </reference>
+
+      <reference anchor="oauth_security_jcs_14">
+        <front>
+          <title>Discovering concrete attacks on website authorization by formal analysis</title>
+	      <author fullname="Chetan Bansal" surname="Bansal" initials="C."><organization/></author>
+          <author fullname="Karthikeyan Bhargavan" surname="Bhargavan" initials="K."><organization/></author>
+          <author fullname="Antoine Delignat-Lavaud" surname="Delignat-Lavaud" initials="A."><organization/></author>
+          <author fullname="Sergio Maffeis" surname="Maffeis" initials="S."><organization/></author>
+          
+	      <date day="23" month="April" year="2014"/>
+        </front>
+        <format target="https://www.doc.ic.ac.uk/~maffeis/papers/jcs14.pdf" type="pdf" />
+      </reference>
+
       
     </references>
     
