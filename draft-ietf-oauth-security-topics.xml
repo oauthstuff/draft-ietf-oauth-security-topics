@@ -527,23 +527,131 @@ Host: server.example.com]]></artwork>
 	  </section>
 	  
 	  <section title="Mix-Up">
-	  <t>Mix-up is another kind of attack on more dynamic OAuth scenarios (or at least 
-	  scenarios where a OAuth client interacts with multiple authorization servers). The
-	  goal of the attack is to obtain an authorization code or an access token by 
-	  tricking the client into sending those credentials to the attacker (which acts as 
-	  MITM between client and authorization server)</t>
-	  <t>A detailed description of the attack and potential countermeasures is 
-	  given in <xref target="I-D.ietf-oauth-mix-up-mitigation"/>.</t>
-	  <t>Potential mitigations:
-	    <list style="symbols">
-	     <t>Clients use AS-specific redirect URIs and, for every authorization request,
-	     store intended AS and compare intention with actual redirect URI where the
-	     response was received</t>
-	     <t>AS returns <spanx style="verb">client_id</spanx> and its <spanx style="verb">iss</spanx> in the response. Client compares 
-		  this data to AS it believed it sent the user agent to.</t>
-		 <t>ID token carries client id and issuer (OpenID Connect specific)</t>
-	    </list>
-	  </t>
+	  <t>Mix-up is an attack on scenarios where an OAuth client interacts with multiple
+	  authorization servers, as is usually the case when dynamic registration is used. The goal
+	  of the attack is to obtain an authorization code or an access token by tricking the client
+	  into sending those credentials to the attacker instead of using them at the respective
+	  endpoint at the authorization/resource server.</t>
+      <section title="Attack Description">
+        <t>For a detailed attack description, refer to <xref target="arXiv.1601.01229"/> and <xref
+        target="I-D.ietf-oauth-mix-up-mitigation"/>. The description here closely follows <xref
+        target="arXiv.1601.01229"/>, with variants of the attack outlined below.</t>
+        <t>Preconditions: For the attack to work, we assume that
+        <list style="format (%d)">
+          <t>the implicit or authorization code grant are used with
+          multiple AS of which one is considered "honest" (H-AS) and
+          one is operated by the attacker (A-AS),</t>
+          <t>the RP stores the AS chosen by the user in a session
+          bound to the user's browser and uses the same redirection
+          endpoint URI for each AS, and</t>
+          <t>the attacker can manipulate the first request/response
+          pair from a user's browser to the client (in which the user
+          selects a certain AS and is then redirected by the client to
+          that AS).</t>
+        </list>
+        Some of the attack variants described below require different preconditions.
+        </t>
+        <t>In the following, we assume that the client is registered
+        with H-AS (URI: "https://honest.as.example", client id:
+        7ZGZldHQ) and with A-AS (URI: "https://attacker.example",
+        client id: 666RVZJTA).</t>
+        <t>Attack on the authorization code grant:
+        <list style="format (%d)" counter="counter_mixup_acg">
+          <t>The user selects to start the grant using H-AS (e.g., by clicking on a button at the
+          client's website).</t>
+          <t>The attacker intercepts this request and changes the user's selection to "A-AS".</t>
+          <t>The client stores in the user's session that the user
+          selected "A-AS" and redirects the user to A-AS's
+          authorization endpoint by sending the following response:
+          </t>
+        </list>
+        </t>
+        <t>
+        <figure>
+          <artwork><![CDATA[HTTP/1.1 302 Found
+  Location: https://attacker.example/authorize?response_type=code&client_id=666RVZJTA]]></artwork>
+        </figure>
+        </t>
+        <t>
+        <list style="format (%d)" counter="counter_mixup_acg">
+          <t>Now the attacker intercepts this response and changes the
+          redirection such that the user is being redirected to H-AS.
+          The attacker also replaces the client id of the client at
+          A-AS with the client's id at H-AS, resulting in the following response being sent to the browser:
+          </t>
+        </list>
+        </t>
+        <t>
+          <figure>
+            <artwork><![CDATA[HTTP/1.1 302 Found
+  Location: https://honest.as.example/authorize?response_type=code&client_id=7ZGZldHQ]]></artwork>
+          </figure>
+          </t>
+        <t>
+        <list style="format (%d)" counter="counter_mixup_acg">
+          <t anchor="list_mixup_acg_after_authep">Now, the user authorizes the client to access her
+          resources at H-AS. H-AS issues a code and sends it (via the browser) back to the
+          client.</t>
+          <t>Since the client still assumes that the code was issued by A-AS, it will try to redeem
+          the code at A-AS's token endpoint.</t>
+          <t>The attacker therefore obtains code and can either exchange the code for an access
+          token (for public clients) or perform a code injection attack as described in Section
+          <xref target="code_injection"/>.</t>
+        </list>
+        </t>
+          <t>Note: The attacker can also use this attack to provide false information about the user
+          to the client by answering the request to the token endpoint with some access token which
+          the client will then use to obtain information about the user from A-AS.</t>
+        <t>Variants:
+        <list hangIndent="8" style="hanging">
+          <t hangText="Implicit Grant">
+            In the implicit grant, the attacker receives an access token instead of the code; the
+            rest of the attack works as above.
+          </t>
+          <t hangText="Mix-Up Without Interception">
+            A variant of the above attack works even if the first request/response pair cannot be
+            intercepted (for example, because TLS is used to protect these messages): Here, we
+            assume that the user wants to start the grant using A-AS (and not H-AS). After the
+            client redirected the user to the authorization endpoint at A-AS, the attacker
+            immediately redirects the user to H-AS (changing the client id "7ZGZldHQ"). (A vigilant
+            user might at this point detect that she intended to use A-AS instead of H-AS.) The
+            attack now proceeds exactly as in step <xref format="counter"
+            target="list_mixup_acg_after_authep"/> of the attack description above.  <!-- I think this counter is not working properly! -->
+          </t>
+          <t hangText="Per-AS Redirect URIs">
+            If clients use different redirect URIs for different ASs, do not store the selected AS
+            in the user's session, and ASs do not check the redirect URIs properly, attackers can
+            mount an attack called "Cross-Social Network Request Forgery". We refer to <xref
+            target="oauth_security_jcs_14"/> for details.
+          </t>
+          <t hangText="OpenID Connect">
+            There are several variants that can be used to attack OpenID Connect. They are described
+            in detail in <xref target="arXiv.1704.08539" />, Appendix A, and <xref
+            target="arXiv.1508.04324v2" />, Section 6 ("Malicious Endpoints Attacks").
+          </t>
+        </list>
+        </t>
+      </section>
+      <section title="Countermeasures">
+        <t>In scenarios where an OAuth client interacts with multiple authorization servers, clients
+        MUST prevent mix-up attacks.</t>
+        <t>Potential countermeasures:
+	<list style="symbols">
+	  <t>Configure authorization servers to return an AS identitifier (<spanx
+	  style="verb">iss</spanx>) and the <spanx style="verb">client_id</spanx> for which a code
+	  or token was issued in the authorization response. This enables clients to compare this
+	  data to their own client id and the <spanx style="verb">iss</spanx> identifier of the AS
+	  it believed it sent the user agent to. This mitigation is discussed in detail in <xref
+	  target="I-D.ietf-oauth-mix-up-mitigation"/>. In OpenID Connect, if an ID token is
+	  returned in the authorization response, it carries client id and issuer. It can be used
+	  for this mitigation.</t>
+	  <t>As can be seen in the preconditions of the attacks above, clients can prevent mix-up
+	  attack by (1) using AS-specific redirect URIs with exact redirect URI matching, (2)
+	  storing, for each authorization request, the intended AS, and (3) comparing the intended
+	  AS with the actual redirect URI where the authorization response was received.</t>
+	</list>
+	</t>
+      </section>
 	  </section>
 	  
 	  <section title="Code Injection" anchor="code_injection">
@@ -1203,7 +1311,60 @@ Pragma: no-cache
           <date month="November" year="2014"/>
         </front>
         <format target="http://css.csail.mit.edu/6.858/2012/readings/oauth-sso.pdf" type="pdf" />
-      </reference> 
+      </reference>
+
+      <reference anchor="arXiv.1601.01229"
+		 target="http://arxiv.org/abs/1601.01229/">
+	<front>
+	  <title>A Comprehensive Formal Security Analysis of OAuth 2.0</title>
+	  <author fullname="Daniel Fett" surname="Fett" initials="D."><organization/></author>
+	  <author fullname="Ralf Küsters" surname="Küsters" initials="R."><organization/></author>
+	  <author fullname="Guido Schmitz" surname="Schmitz" initials="G."><organization/></author>
+
+	  <date day="6" month="January" year="2016"/>
+	</front>
+	<seriesInfo name="arXiv" value="1601.01229"/>
+      </reference>
+
+      <reference anchor="arXiv.1704.08539"
+		 target="http://arxiv.org/abs/1704.08539/">
+	<front>
+	  <title>The Web SSO Standard OpenID Connect: In-Depth Formal Security Analysis and Security Guidelines</title>
+	  <author fullname="Daniel Fett" surname="Fett" initials="D."><organization/></author>
+	  <author fullname="Ralf Küsters" surname="Küsters" initials="R."><organization/></author>
+	  <author fullname="Guido Schmitz" surname="Schmitz" initials="G."><organization/></author>
+
+	  <date day="27" month="April" year="2017"/>
+	</front>
+	<seriesInfo name="arXiv" value="1704.08539"/>
+      </reference>
+
+      <reference anchor="arXiv.1508.04324v2"
+		 target="http://arxiv.org/abs/1508.04324v2/">
+	<front>
+	  <title>On the security of modern Single Sign-On Protocols: Second-Order Vulnerabilities in OpenID Connect</title>
+	  <author fullname="Vladislav Mladenov" surname="Mladenov" initials="V."><organization/></author>
+	  <author fullname="Christian Mainka" surname="Mainka" initials="C."><organization/></author>
+	  <author fullname="Jörg Schwenk" surname="Schwenk" initials="J."><organization/></author>
+
+	  <date day="7" month="January" year="2016"/>
+	</front>
+	<seriesInfo name="arXiv" value="1508.04324v2"/>
+      </reference>
+
+      <reference anchor="oauth_security_jcs_14">
+        <front>
+          <title>Discovering concrete attacks on website authorization by formal analysis</title>
+	      <author fullname="Chetan Bansal" surname="Bansal" initials="C."><organization/></author>
+          <author fullname="Karthikeyan Bhargavan" surname="Bhargavan" initials="K."><organization/></author>
+          <author fullname="Antoine Delignat-Lavaud" surname="Delignat-Lavaud" initials="A."><organization/></author>
+          <author fullname="Sergio Maffeis" surname="Maffeis" initials="S."><organization/></author>
+          
+	      <date day="23" month="April" year="2014"/>
+        </front>
+        <format target="https://www.doc.ic.ac.uk/~maffeis/papers/jcs14.pdf" type="pdf" />
+      </reference>
+
       
     </references>
     
