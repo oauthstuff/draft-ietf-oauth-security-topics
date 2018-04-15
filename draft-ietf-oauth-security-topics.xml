@@ -77,8 +77,15 @@
         <email>isciurus@fb.com</email>
       </address>
     </author>
+    
+    <author fullname="Daniel Fett" initials="D." surname="Fett">
+      <organization>University of Stuttgart</organization>
+      <address>
+        <email>daniel.fett@sec.uni-stuttgart.de</email>
+      </address>
+    </author>
 
-    <date day="18" month="March" year="2018" />
+    <date day="15" month="April" year="2018" />
 
     <!-- Meta-data Declarations -->
 
@@ -645,7 +652,7 @@ Host: server.example.com]]></artwork>
 	  target="I-D.ietf-oauth-mix-up-mitigation"/>. In OpenID Connect, if an ID token is
 	  returned in the authorization response, it carries client id and issuer. It can be used
 	  for this mitigation.</t>
-	  <t>As can be seen in the preconditions of the attacks above, clients can prevent mix-up
+	  <t>As it can be seen in the preconditions of the attacks above, clients can prevent mix-up
 	  attack by (1) using AS-specific redirect URIs with exact redirect URI matching, (2)
 	  storing, for each authorization request, the intended AS, and (3) comparing the intended
 	  AS with the actual redirect URI where the authorization response was received.</t>
@@ -1372,6 +1379,11 @@ Pragma: no-cache
       <t>[[ To be removed from the final specification ]]</t>
       <t>-06 <list style="symbols">
       	  <t>reworked section 3.8.1</t>
+      	  <t>incorporated Phil Hunt's feedback</t>
+      	  <t>reworked section on mix-up</t>
+      	  <t>extended section on code leakage via referrer header to also 
+      	  cover state leakage</t>
+      	  <t>added Daniel Fett as author</t>
         </list></t> 
       <t>-05 <list style="symbols">
       	  <t>Completed sections on code leakage via referrer header, attacks in 
