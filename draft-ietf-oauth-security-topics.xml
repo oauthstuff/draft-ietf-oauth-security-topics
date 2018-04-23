@@ -548,7 +548,7 @@ Host: server.example.com]]></artwork>
           <t>the implicit or authorization code grant are used with
           multiple AS of which one is considered "honest" (H-AS) and
           one is operated by the attacker (A-AS),</t>
-          <t>the RP stores the AS chosen by the user in a session
+          <t>the client stores the AS chosen by the user in a session
           bound to the user's browser and uses the same redirection
           endpoint URI for each AS, and</t>
           <t>the attacker can manipulate the first request/response
@@ -606,9 +606,6 @@ Host: server.example.com]]></artwork>
           <xref target="code_injection"/>.</t>
         </list>
         </t>
-          <t>Note: The attacker can also use this attack to provide false information about the user
-          to the client by answering the request to the token endpoint with some access token which
-          the client will then use to obtain information about the user from A-AS.</t>
         <t>Variants:
         <list hangIndent="8" style="hanging">
           <t hangText="Implicit Grant">
