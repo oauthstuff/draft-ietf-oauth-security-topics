@@ -314,18 +314,18 @@ Host: server.example.com]]></artwork>
 	   <t>Additionally, implicit clients can be subject to a further kind of attacks. 
 	   It utilizes the fact that user agents re-attach fragments to the destination URL 
 	   of a redirect if the location header does not contain a 
-	   fragment (see <xref target="RFC7231"/>, section 9.5). The attack described here 
+	   fragment (see <xref target="RFC7231"/>, Section 9.5). The attack described here 
 	   combines this behavior with the client as an open redirector 
 	   in order to get access to access tokens. This allows circumvention even of 
 	   strict redirect URI patterns (but not strict URL matching!).</t>
 	   <t>Assume the pattern for client "s6BhdRkqt3" is
-	   "https://client.example.com/cb?*", i.e. any parameter is allowed for 
+	   "https://client.example.com/cb?*", i.e., any parameter is allowed for 
 	   redirects to "https://client.example.com/cb". Unfortunately, the client 
 	   exposes an open redirector. This endpoint supports a parameter 
-	   "redirect_to", which takes a target URL and will send the browser to 
-	   this URL using a HTTP 302.</t>
+	   "redirect_to" which takes a target URL and will send the browser to 
+	   this URL using an HTTP Location header redirect 302.</t>
 	  <t>
-	   <list style="format (%d)">
+	   <list style="format (%d)" counter="my_count1">
 	    <t>Same as above, the attacker needs to trick the user into opening a 
 		tampered URL in his browser, which launches a page under the attacker's control, 
 		say "https://www.evil.com".</t>
@@ -362,7 +362,7 @@ Host: server.example.com]]></artwork>
       <t>   	  
 	   <list style="format (%d)" counter="my_count1">
 	    <t>At the example.com, the request arrives at the open redirector. It will read the 
-		redirect parameter and will issue a HTTP 302 to the URL "https://evil.example.com/cb".</t>
+		redirect parameter and will issue an HTTP 302 Location header redirect to the URL "https://evil.example.com/cb".</t>
 	   </list>	   
 	  </t>
 	  <t>
@@ -501,8 +501,11 @@ Host: server.example.com]]></artwork>
 	   </section>
            
 	  </section>
-	  <section title="Attacks in the Browser">
-	  <section title="Code in browser history">
+	  <section title="Attacks through the Browser History">
+            <t>
+              uthorization codes and access tokens can end up in the browser's history of visited URLs, enabling the attacks described in the following.
+            </t>
+	  <section title="Code in Browser History">
 	  <t>When a browser navigates to "client.com/redirection_endpoint?code=abcd" as a result 
 	  of a redirect from a provider's authorization endpoint, the URL including the 
 	  authorization code may end up in the browser's history. An attacker
@@ -510,13 +513,13 @@ Host: server.example.com]]></artwork>
 	  <t>Proposed countermeasures:
 	  	<list style="symbols">
 	  		<t>Authorization code replay prevention as described in 
-	  		<xref target="RFC6819"/>, section 4.4.1.1, and <xref target="code_injection"/></t>
+	  		<xref target="RFC6819"/>, Section 4.4.1.1, and <xref target="code_injection"/></t>
 			<t>Use form post response mode instead of redirect for authorization 
 	  			response (see <xref target="oauth-v2-form-post-response-mode"/>)</t>
 	  	</list>
 	  </t>
 	  </section>
-	  <section title="Access token in browser history">
+	  <section title="Access Token in Browser History">
 	  <t>An access token may end up in the browser history if a a client or just a web 
 	  site, which already has a token, deliberately navigates to a page like 
 	  "provider.com/get_user_profile?access_token=abcdef.". 
@@ -1101,7 +1104,7 @@ Pragma: no-cache
 <section title="Authorization Server as Open Redirector">
 	<t>Attackers could try to utilize a user's trust in the authorization 
 	server (and its URL in particular) for performing phishing attacks.</t>
-	<t><xref target="RFC6749"/>, section 4.1.2.1, already prevents open redirects 
+	<t><xref target="RFC6749"/>, Section 4.1.2.1, already prevents open redirects 
 	by stating the AS MUST NOT automatically redirect the user agent in case of 
 	an invalid combination of client_id and redirect_uri.</t>
 	<t>However, as described in <xref target="I-D.ietf-oauth-closing-redirectors"/>, an
