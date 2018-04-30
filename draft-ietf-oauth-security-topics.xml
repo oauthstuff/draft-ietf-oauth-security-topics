@@ -214,14 +214,14 @@
 	mechanism to protect native apps, this advice applies to all kinds of OAuth clients, 
 	including web applications.</t>
 	<t>Authorization servers shall consider the recommendations given in 
-	<xref target="RFC6819"/>, section 4.4.1.1, on authorization code replay 
+	<xref target="RFC6819"/>, Section 4.4.1.1, on authorization code replay 
 	prevention.</t>
 	
     </section>
     
     <section title="Token Replay Prevention">
     <t>Authorization servers shall use TLS-based methods for sender constrained access 
-    tokens as described in  section <xref target="pop_tokens"/>, such as token 
+    tokens as described in  <xref target="pop_tokens"/>, such as token 
     binding <xref target="I-D.ietf-oauth-token-binding"></xref> or Mutual TLS for 
     OAuth 2.0 <xref target="I-D.ietf-oauth-mtls"></xref>. It is also recommend to use
     end-to-end TLS whenever possible.</t>
@@ -229,7 +229,10 @@
     
    </section>
    
-    <section title="Attacks and Mitigations">
+   <section title="Attacks and Mitigations">
+     <t>
+       This section describes specific attacks on OAuth and potential countermeasures.
+     </t>
 	  <section title="Insufficient redirect URI validation">
 	  <t>Some authorization servers allow clients to register redirect URI 
 	  patterns instead of 
