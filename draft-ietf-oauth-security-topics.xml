@@ -721,12 +721,12 @@ Host: server.example.com]]></artwork>
 	   <list style="symbols">
 	   <t>the redirect URI itself needs to contain a nonce or another kind of one-time use, 
 	   secret data and</t>
-	   <t>the client has bound this data to this particular instance</t>
+	   <t>the client has bound this data to this particular instance.</t>
 	   </list>
 	   </t>
 	   <t>But this approach conflicts with the idea to enforce exact redirect URI matching 
 	   at the authorization endpoint. Moreover, it has been observed that providers very often ignore the 
-	   redirect_uri check requirement at this stage, maybe, because it doesn't seem to be security-critical 
+	   redirect_uri check requirement at this stage, maybe because it doesn't seem to be security-critical 
 	   from reading the spec.</t>
 	   <t>Other providers just pattern match the redirect_uri parameter against the registered 
 	   redirect URI pattern. This saves the authorization server from storing the link between the 
@@ -756,7 +756,7 @@ Host: server.example.com]]></artwork>
 		 ID token, which is issued as part of the code exchange at the token endpoint. If an attacker 
 		 injected an authorization code in the authorization response, the nonce value in the client 
 		 session and the nonce value in the ID token will not match and the attack is detected.
-		 assumption: attacker cannot get hold of the user agent state on the victims device, where he 
+		 The assumption is that an attacker cannot get hold of the user agent state on the victims device, where he 
 		 has stolen the respective authorization code. The main advantage of this option is that Nonce
 		 is an existing feature used in the wild. On the other hand, leveraging Nonce by
 		 the broader OAuth community would require AS and client to adopt ID Tokens.</t>
@@ -776,14 +776,14 @@ Host: server.example.com]]></artwork>
 		 <spanx style="verb">state</spanx>. In contrast to its original intention, the verifier 
 		 check would fail although the client uses its correct verifier but the code is 
 		 associated with a challenge, which does not match. PKCE is a deployed OAuth feature,
-		 even so it is today used to secure native apps, only.</t>
+		 even though it is used today to secure native apps, only.</t>
 		 <t hangText="Token Binding">Token binding 
 		 <xref target="I-D.ietf-oauth-token-binding"/> could also be used. In this case, the 
 		 code would need to be bound to two legs, between user agent and AS and the user 
 		 agent and the client. This requires further data (extension to response) to 
 		 manifest binding id for particular code. Token binding is promising as a 
 		 secure and convenient mechanism (due to its browser integration). As a challenge, 
-		 it requires broad browser support and use with native apps still under 
+		 it requires broad browser support and use with native apps is still under 
 		 discussion.</t>
 		 <t hangText="per instance client id/secret">One could use per instance <spanx style="verb">client_id</spanx> 
 		 and secrets and bind the code to the respective <spanx style="verb">client_id</spanx>. Unfortunately, 
@@ -791,7 +791,7 @@ Host: server.example.com]]></artwork>
 		 per user client ids).</t>		 
 		</list>
 		</t>
-		<t>PKCE seem to be the most obvious solution for OAuth clients as it available and 
+		<t>PKCE seems to be the most obvious solution for OAuth clients as it available and 
 		effectively used today for similar purposes for OAuth native apps whereas 
 		<spanx style="verb">nonce</spanx> is appropriate for OpenId Connect clients.</t>
 		<t>Note on pre-warmed secrets: An attacker can circumvent the countermeasures 
@@ -831,7 +831,8 @@ Host: server.example.com]]></artwork>
            </section>
 	   </section>
 
-	  <section title="Access Token Leakage at the Resource Server">
+	   <section title="Access Token Leakage at the Resource Server">
+             <t>Access tokens can leak from a resource server under certain circumstances.</t>
 	  
 	  <section title="Access Token Phishing by Counterfeit Resource Server">
 	  <t>An attacker may setup his own resource server and trick 
@@ -842,7 +843,7 @@ Host: server.example.com]]></artwork>
 	<t>This attack assumes the client is not bound to a certain
 	resource server (and the respective URL) at development time, but 
 	client instances are configured with an resource server's URL at runtime. 
-	This kind of late binding is typical in situations, where the client
+	This kind of late binding is typical in situations where the client
 	uses a standard API, e.g. for e-Mail, calendar, health, or banking
 	and is configured by an user or administrator for the standard-based 
 	service, this particular user or company uses.</t>
@@ -918,7 +919,7 @@ Pragma: no-cache
 		 
 		 <t>A typical flow looks like this:
 		 <list style="numbers">
-		 <t>The authorization server associates data with the access token, which bind 
+		 <t>The authorization server associates data with the access token which binds 
 		 this particular token to a certain client. The binding can utilize the client 
 		 identity, but in most cases the AS utilizes key material (or data derived from 
 		 the key material) known to the client.</t>
@@ -1100,7 +1101,10 @@ Pragma: no-cache
 	   
 	  </section>
 
-<section anchor="Open.Redirection" title="Open Redirection">
+          <section anchor="Open.Redirection" title="Open Redirection">
+            <t>The following attacks can occur when an AS or client
+            has an open redirector, i.e., a URL which causes an HTTP
+            redirect to an attacker-controlled web site.</t>
 <section title="Authorization Server as Open Redirector">
 	<t>Attackers could try to utilize a user's trust in the authorization 
 	server (and its URL in particular) for performing phishing attacks.</t>
@@ -1125,9 +1129,7 @@ Pragma: no-cache
 </section>
 <section title="Clients as Open Redirector">
 	<t>Client MUST not expose URLs which could be utilized as open redirector.
-	An open redirector is a way to cause the recipient of a
-	HTTP request to issue a redirect to a target URL that is passed as a parameter.
-	Attackers may utilize such a mechanism to produce URLs, which appear to 
+	Attackers may use an open redirector to produce URLs which appear to 
 	point to the client, which might trick users to trust the URL and follow
 	it in her browser. Another abuse case is to produce URLs pointing to the 
 	client and utilize them to impersonate a client with an authorization server.</t>
