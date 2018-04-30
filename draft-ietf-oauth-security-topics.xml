@@ -267,7 +267,7 @@
 	  legitimate client. Assume the attacker sets up the host 
 	  "evil.example.com".</t>
 	  <t>
-	   <list style="format (%d)">
+	   <list style="format (%d)" counter="my_count">
 	    <t>The attacker needs to trick the user into opening a tampered URL 
 	  in his browser, which launches a page under the attacker's control, 
 	  say "https://www.evil.com".</t>
@@ -286,7 +286,7 @@ Host: server.example.com]]></artwork>
 	  </t>
 	  <t>
 	  <list style="format (%d)" counter="my_count">
-	  <t>The authorization validates the redirect URI in order to identify the 
+	  <t>The authorization server validates the redirect URI in order to identify the 
 	  client. Since the pattern allows arbitrary domains host names in 
 	  "example.com", the authorization request is processed under the legitimate 
 	  client's identity. This includes the way the request for user consent is 
