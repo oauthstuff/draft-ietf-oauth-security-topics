@@ -165,9 +165,9 @@
 	  
 	  <t>The remainder of the document is organized as follows: The next section 
 	  summarizes the most important recommendations of the OAuth working group
-	  for every OAuth implementor. Afterwards, a detailed analyses of the threats and 
-	  implementation issues, which can be found in the wild today, is given 
-	  along with a discussion of potential counter measures.</t>
+	  for every OAuth implementor. Afterwards, a detailed analysis of the threats and 
+	  implementation issues which can be found in the wild today is given 
+	  along with a discussion of potential countermeasures.</t>
     </section>
     
     <section anchor="recommendations" title="Recommendations">
@@ -184,12 +184,12 @@
 	<t>Clients shall avoid any redirects or forwards which can be parameterized by 
 	URI query parameters, in order to provide a further layer of defence against 
 	token leakage. If there is a need for this kind of redirects, clients are advised 
-	to implement appropriate counter measures against open redirection, e.g. as described
+	to implement appropriate countermeasures against open redirection, e.g. as described
 	by the <xref target="owasp">OWASP</xref>.</t>
 	<t>Clients shall ensure to only process redirect responses of the OAuth authorization 
 	server they send the respective request to and in the same user agent this request 
 	was initiated in. In particular, clients shall implement appropriate XSRF prevention
-	by utilizing one-time use XSRF tokens carried in the STATE parameter, which are 
+	by utilizing one-time use XSRF tokens carried in the <spanx style="verb">state</spanx> parameter, which are 
 	securely bound to the user agent. Moreover, the client shall memorize which 
 	authorization server it sent an authorization request to and bind this information 
 	to the user agent and ensure any sub-sequent 
@@ -200,7 +200,7 @@
 	mix-up attacks.</t>
 	<t>Note: <xref target="I-D.bradley-oauth-jwt-encoded-state"></xref> gives advice 
 	on how to implement XSRF prevention and AS matching using signed JWTs in the 
-	STATE parameter.</t>
+	<spanx style="verb">state</spanx> parameter.</t>
 	<t>Clients shall use <xref target="RFC7636">PKCE</xref> in order to (with the help 
 	of the authorization server) detect and prevent attempts to inject (replay) 
 	authorization codes 
@@ -395,7 +395,7 @@ Host: server.example.com]]></artwork>
 	   <t>This would cause the following impacts:
 	    <list style="symbols">
 		<t>This change will require all OAuth clients to maintain the transaction state (and XSRF tokens) 
-		in the "state" parameter. This is a normative change to RFC 6749 since Section 3.1.2.2 allows for 
+		in the <spanx style="verb">state</spanx> parameter. This is a normative change to RFC 6749 since Section 3.1.2.2 allows for 
 		dynamic URI query parameters in the redirect URI. In order to assess the practical impact, the 
 		working group needs to collect data on whether this feature is really used in deployments today.</t> 
 		<t>The 
@@ -758,11 +758,11 @@ Host: server.example.com]]></artwork>
 		 as specified in <xref target="RFC6749"/> could be used similarly to
 		  the way as described above. This would require to add a further parameter 
 		  <spanx style="verb">state</spanx> to the code exchange token endpoint request. 
-		 The authorization server would then compares the state value it associated with 
-		 the code and the state value in the parameter. If those values do not match, 
+		 The authorization server would then compares the <spanx style="verb">state</spanx> value it associated with 
+		 the code and the <spanx style="verb">state</spanx> value in the parameter. If those values do not match, 
 		 it is considered an attack and the request fails. The advantage of this approach 
 		 would be to utilize an existing OAuth parameter. But it would also mean to 
-		 re-interpret the purpose of state and to extend the token endpoint request.</t>
+		 re-interpret the purpose of <spanx style="verb">state</spanx> and to extend the token endpoint request.</t>
 		 <t hangText="PKCE">The PKCE parameter <spanx style="verb">challenge</spanx> along  
 		 with the corresponding <spanx style="verb">verifier</spanx> as specified 
 		 in <xref target="RFC7636"/> could be used in the same way 
@@ -894,11 +894,11 @@ Pragma: no-cache
       <xref target="oauth_security_ubc"/> and <xref target="oauth_security_cmu"/>) 
       indicate a large portion 
       of client implementations do not or fail to properly implement security controls,
-      like state checks. So relying on clients to prevent access token
+      like <spanx style="verb">state</spanx> checks. So relying on clients to prevent access token
       phishing is likely to fail as well. Moreover given the ratio of clients to authorization
       and resource servers, it is considered the more viable approach to move as much as 
       possible security-related logic to those entities. Clearly, the client has to
-      contribute to the overall security. But there are alternative counter measures, as
+      contribute to the overall security. But there are alternative countermeasures, as
       described in the next sections, which provide a better balance between the involved
       parties.</t>    
 	  </section>
