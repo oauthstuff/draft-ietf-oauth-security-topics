@@ -136,7 +136,7 @@
 	  continued exploitation 
  	  demonstrates there may be a need for more specific recommendations or that the existing 
 	  mitigations are too difficult to deploy.</t>
-	  <t>Technology has changed, e.g. the way browsers treat fragments in some situations, 
+	  <t>Technology has changed, e.g., the way browsers treat fragments in some situations, 
 	  which may change the implicit grant's underlying security model.</t>
 	  <t>OAuth is used in much more dynamic setups than originally anticipated, creating new 
 	  challenges with respect to security. Those challenges go beyond the original 
@@ -184,7 +184,7 @@
 	<t>Clients shall avoid any redirects or forwards which can be parameterized by 
 	URI query parameters, in order to provide a further layer of defence against 
 	token leakage. If there is a need for this kind of redirects, clients are advised 
-	to implement appropriate countermeasures against open redirection, e.g. as described
+	to implement appropriate countermeasures against open redirection, e.g., as described
 	by the <xref target="owasp">OWASP</xref>.</t>
 	<t>Clients shall ensure to only process redirect responses of the OAuth authorization 
 	server they send the respective request to and in the same user agent this request 
@@ -302,7 +302,7 @@ Host: server.example.com]]></artwork>
 	  <t>Note: This attack will not directly work for confidential clients, since the 
 	  code exchange requires authentication with the legitimate client's 
 	  secret. The attacker will need to utilize the legitimate client to 
-	  redeem the code (e.g. by performing a code injection attack). This kind 
+	  redeem the code (e.g., by performing a code injection attack). This kind 
 	  of injections is covered in 
 	  Section <xref format="title" target="code_injection"/>.</t>
 	   </section>
@@ -423,7 +423,7 @@ Host: server.example.com]]></artwork>
 	   <list style="symbols">
 	   <t>Servers on which callbacks are hosted must not expose open redirectors (see <xref target="Open.Redirection"/>).</t>
 	   <t>Clients may drop fragments via intermediary URLs with "fix fragments" 
-	   (e.g. https://developers.facebook.com/blog/post/552/) to prevent the user agent from appending any unintended fragments.</t>
+	   (see, for example, https://developers.facebook.com/blog/post/552/) to prevent the user agent from appending any unintended fragments.</t>
 	   </list>
 	   </t>
 	   <t>Alternatives to exact redirect URI matching: 
@@ -700,7 +700,7 @@ Host: server.example.com]]></artwork>
 	   </list>
 	   </t>
 	   <t>Obviously, the check in step (5) will fail, if the code was issued to 
-	   another client id, e.g. a client set up by the attacker. The check will also fail 
+	   another client id, e.g., a client set up by the attacker. The check will also fail 
 	   if the authorization code was already redeemed by the legitimate user and was
 	   one-time use only.</t>
 	   <t>An attempt to inject a code obtained via a malware pretending to be the 
@@ -811,7 +811,7 @@ Host: server.example.com]]></artwork>
 	   	  
 	   <section title="Cross Site Request Forgery">
 	   <t>An attacker might attempt to inject a request to the redirect URI of the 
-	   legitimate client on the victim's device, e.g. to cause the client to access 
+	   legitimate client on the victim's device, e.g., to cause the client to access 
 	   resources under the attacker's control.</t>
 	   <section title="Proposed Countermeasures" anchor="csrf_countermeasures">
              <t>Standard CSRF defenses should be used to protect the redirection endpoint, for example:</t>
@@ -844,7 +844,7 @@ Host: server.example.com]]></artwork>
 	resource server (and the respective URL) at development time, but 
 	client instances are configured with an resource server's URL at runtime. 
 	This kind of late binding is typical in situations where the client
-	uses a standard API, e.g. for e-Mail, calendar, health, or banking
+	uses a standard API, e.g., for e-Mail, calendar, health, or banking
 	and is configured by an user or administrator for the standard-based 
 	service, this particular user or company uses.</t>
 	
@@ -932,7 +932,7 @@ Pragma: no-cache
 		 automatically happens during the setup of a TLS connection.</t>
 		 <t>The RS must implement the actual proof of possession check. This is typically 
 		 done on the application level, it may utilize capabilities of the transport 
-		 layer (e.g. TLS). Note: replay prevention is required as well!</t>
+		 layer (e.g., TLS). Note: replay prevention is required as well!</t>
 		 </list>
 		 </t>
 		 	 
@@ -1008,8 +1008,8 @@ Pragma: no-cache
 		 <t>As one advantage, application-level signing allows for end-to-end protection 
 		 including non-repudiation even if the TLS connection is terminated between client 
 		 and resource server. But deployment experiences have revealed challenges 
-		 regarding robustness (e.g. reproduction of the signature base
-		 string including correct URL) as well as state management (e.g. replay prevention).</t>
+		 regarding robustness (e.g., reproduction of the signature base
+		 string including correct URL) as well as state management (e.g., replay prevention).</t>
 		 
 		 <t>This document therefore recommends implementors to consider one of 
 		 TLS-based approaches wherever possible.</t>
@@ -1067,7 +1067,7 @@ Pragma: no-cache
 	   <section title="Compromised Resource Server">
 	   <t>An attacker may compromise a resource server in order to get access
 	   to its resources and other resources of the respective deployment. 
-	   Such a compromise may range from partial access to the system, e.g. its logfiles, 
+	   Such a compromise may range from partial access to the system, e.g., its logfiles, 
 	   to full control of the respective server.</t> 
 	   <t>If the attacker was able to take over full control including shell access
 	   it will be able to circumvent all controls in place and 
@@ -1116,7 +1116,7 @@ Pragma: no-cache
 	perform phishing attacks. It could for example register a client
 	via dynamic client <xref target="RFC7591"/> 
 	registration and intentionally send an 
-	erroneous authorization request, e.g. by using an invalid 
+	erroneous authorization request, e.g., by using an invalid 
 	scope value, to cause the AS to automatically redirect the user
 	agent to its phishing site.</t>
 	<t>The AS MUST take precautions to prevent this threat. 
