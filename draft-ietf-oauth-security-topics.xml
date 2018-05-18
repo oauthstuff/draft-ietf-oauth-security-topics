@@ -762,9 +762,9 @@ Host: server.example.com]]></artwork>
 		 the broader OAuth community would require AS and client to adopt ID Tokens.</t>
 		 <t hangText="Code-bound State">The <spanx style="verb">state</spanx> parameter 
 		 as specified in <xref target="RFC6749"/> could be used similarly to
-		  the way as described above. This would require to add a further parameter 
+		  what is described above. This would require to add a further parameter 
 		  <spanx style="verb">state</spanx> to the code exchange token endpoint request. 
-		 The authorization server would then compares the <spanx style="verb">state</spanx> value it associated with 
+		 The authorization server would then compare the <spanx style="verb">state</spanx> value it associated with 
 		 the code and the <spanx style="verb">state</spanx> value in the parameter. If those values do not match, 
 		 it is considered an attack and the request fails. The advantage of this approach 
 		 would be to utilize an existing OAuth parameter. But it would also mean to 
