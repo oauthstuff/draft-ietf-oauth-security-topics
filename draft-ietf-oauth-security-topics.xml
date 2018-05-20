@@ -114,7 +114,7 @@
     <abstract>
       <t>This document describes best current security practices for OAuth 2.0.
       It updates and extends the OAuth 2.0 Security Threat Model to incorporate
-      practical experiences gathered since OAuth 2.0 was published and cover
+      practical experiences gathered since OAuth 2.0 was published and covers
       new threats relevant due to the broader application of OAuth 2.0.</t>
     </abstract>
   </front>
@@ -171,9 +171,8 @@
     </section>
     
     <section anchor="recommendations" title="Recommendations">
-    <t>This section describes the set of security mechanisms the authors believe should be
-    taken into consideration by the OAuth working group to be recommended to OAuth
-    implementers.</t>
+    <t>This section describes the set of security mechanisms the OAuth working group 
+    recommendeds to OAuth implementers.</t>
 
     <section anchor="rec_redirect" title="Protecting redirect-based flows">
 
@@ -209,7 +208,7 @@
 	Connect clients may use the <spanx style="verb">nonce</spanx> parameter of the 
 	OpenID Connect authentication request as specified in <xref target="OpenID"/>
 	in conjunction with the corresponding ID Token 
-	claim of the for the same purpose.</t>
+	claim for the same purpose.</t>
 	<t>Note: although PKCE so far was recommended as 
 	mechanism to protect native apps, this advice applies to all kinds of OAuth clients, 
 	including web applications.</t>
@@ -223,15 +222,17 @@
     <t>Authorization servers shall use TLS-based methods for sender constrained access 
     tokens as described in  <xref target="pop_tokens"/>, such as token 
     binding <xref target="I-D.ietf-oauth-token-binding"></xref> or Mutual TLS for 
-    OAuth 2.0 <xref target="I-D.ietf-oauth-mtls"></xref>. It is also recommend to use
-    end-to-end TLS whenever possible.</t>
+    OAuth 2.0 <xref target="I-D.ietf-oauth-mtls"></xref> in order to prevent token replay. 
+    It is also recommend to use end-to-end TLS whenever possible.</t>
     </section>
     
    </section>
    
    <section title="Attacks and Mitigations">
      <t>
-       This section describes specific attacks on OAuth and potential countermeasures.
+       This section gives a detailed description of attacks on OAuth implementations,
+       along with potential countermeasures. This section complements and enhances the 
+       description given in <xref target="RFC6819"/>.
      </t>
 	  <section title="Insufficient redirect URI validation">
 	  <t>Some authorization servers allow clients to register redirect URI 
@@ -291,7 +292,7 @@ Host: server.example.com]]></artwork>
 	  "example.com", the authorization request is processed under the legitimate 
 	  client's identity. This includes the way the request for user consent is 
 	  presented to the user. If auto-approval is allowed (which is not 
-	  recommended for public clients according to RFC 6749), the attack can be 
+	  recommended for public clients according to <xref target="RFC6749"/>), the attack can be 
 	  performed even easier.</t>
 	  <t>If the user does not recognize the attack, the code is issued and directly 
 	  sent to the attacker's client.</t>
@@ -395,42 +396,15 @@ Host: server.example.com]]></artwork>
 	   simplify the required logic and configuration by using exact redirect URI matching only.
               This means the authorization server shall compare the two 
 	   URIs using simple string comparison as defined in <xref target="RFC3986"/>, Section 6.2.1..</t>
-	   <t>This would cause the following impacts:
-	    <list style="symbols">
-		<t>This change will require all OAuth clients to maintain the transaction state (and XSRF tokens) 
-		in the <spanx style="verb">state</spanx> parameter. This is a normative change to RFC 6749 since Section 3.1.2.2 allows for 
-		dynamic URI query parameters in the redirect URI. In order to assess the practical impact, the 
-		working group needs to collect data on whether this feature is really used in deployments today.</t> 
-		<t>The 
-		working group may also consider this change as a step towards improved interoperability for OAuth 
-		implementations since RFC 6749 is somewhat vague on redirect URI validation. Notably there are no 
-		rules for pattern matching. One may therefore assume all clients utilizing pattern matching will do so in a 
-		deployment specific way. On the other hand, RFC 6749 already recommends exact matching if the full 
-		URL had been registered.</t>
-		<t>Clients with multiple redirect URIs need to register all of them explicitly. 
-		<vspace/>Note: clients with just a single redirect URI would not even need to send a redirect URI 
-		with the authorization request. Does it make sense to emphasize this option? Would that further 
-		simplify use of the protocol and foster security?</t>
-		<t>Exact redirect matching does not work for native apps utilizing a local web server due to 
-		dynamic port numbers - at least wild cards for port numbers are required.
-		<vspace/>Question: Does redirect uri validation solve any problem for native apps? Effective against 
-		impersonation when used in conjunction with claimed HTTPS redirect URIs only.
-		<vspace/>For Windows token broker exact redirect URI matching is important as the redirect URI encodes the app identity.
-		For custom scheme redirects there is a question however it is probably a useful part of defense in depth.</t>
-		</list>
-	   </t>
 	   <t>Additional recommendations:
 	   <list style="symbols">
 	   <t>Servers on which callbacks are hosted must not expose open redirectors (see <xref target="Open.Redirection"/>).</t>
 	   <t>Clients may drop fragments via intermediary URLs with "fix fragments" 
-	   (see, for example, https://developers.facebook.com/blog/post/552/) to prevent the user agent from appending any unintended fragments.</t>
+	   (see <xref target="fb_fragments"/>) to prevent the user agent from appending any unintended fragments.</t>
 	   </list>
 	   </t>
-	   <t>Alternatives to exact redirect URI matching: 
-	   <list style="symbols"><t>Authenticate clients using digital 
-	   signatures (see <xref target="I-D.ietf-oauth-jwsreq"/>)</t>
-	   </list>	 
-	   </t>  
+	   <t>As an alternative to exact redirect URI matching, the AS could also authenticate clients, e.g., using 
+	   <xref target="I-D.ietf-oauth-jwsreq"/>.</t> 
 	   </section>
 	  </section> 
 	   <section title="Code or State Leakage from Client or AS via Referrer Headers">
@@ -503,7 +477,7 @@ Host: server.example.com]]></artwork>
 	  </section>
 	  <section title="Attacks through the Browser History">
             <t>
-              uthorization codes and access tokens can end up in the browser's history of visited URLs, enabling the attacks described in the following.
+              Authorization codes and access tokens can end up in the browser's history of visited URLs, enabling the attacks described in the following.
             </t>
 	  <section title="Code in Browser History">
 	  <t>When a browser navigates to "client.com/redirection_endpoint?code=abcd" as a result 
@@ -738,14 +712,11 @@ Host: server.example.com]]></artwork>
 	   increase client implementation 
 	   complexity as clients need to memorize or re-construct the correct redirect URI for the call 
 	   to the tokens endpoint.</t>
-	   <t>The authors therefore propose to the working group to drop this feature in favor of more 
-	   effective and (hopefully) simpler approaches to code injection prevention as described in the 
-	   following section.</t>
-	   <section title="Proposed Countermeasures">
-	   <t>The general proposal is to bind every authorization code to a certain 
+	   <t>This document therefore recommends to instead bind every authorization code to a certain 
 	   client instance on a certain device (or in a certain user agent) in the context of a 
-	   certain transaction. 
-	   There are multiple technical solutions to achieve this goal:</t>
+	   certain transaction.</t>
+	   <section title="Proposed Countermeasures">
+	   <t>There are multiple technical solutions to achieve this goal:</t>
 	    <t>
 		<list hangIndent="8" style="hanging">
 		 <t hangText="Nonce">OpenID Connect's existing <spanx style="verb">nonce</spanx> 
@@ -801,10 +772,10 @@ Host: server.example.com]]></artwork>
 		<vspace/>Exact redirect URI matching of authorization requests can prevent the 
 		attacker from using the pre-warmed secret in the faked authorization transaction 
 		on the victim's device. 
-		<vspace/>Unfortunately it does not work for all kinds of OAuth clients. It is 
+		<vspace/>Unfortunately, it does not work for all kinds of OAuth clients. It is 
 		effective for web and JS apps and for native apps with claimed URLs. Attacks on
 		native apps using custom schemes or redirect URIs on localhost cannot be prevented
-		this way, except if the AS enforces one-time use for PKCE verifier or Nonce 
+		this way, except if the AS enforces one-time use for PKCE verifier or <spanx style="verb">nonce</spanx> 
 		values.</t>
 	   </section>
 	   	  </section>
@@ -1244,6 +1215,17 @@ Pragma: no-cache
           <date />
         </front>
       </reference>
+      
+    <reference anchor="fb_fragments" target="https://developers.facebook.com/blog/post/552/">
+        <front>
+          <title>Facebook Developer Blog</title>
+          <author></author>
+          <date />
+        </front>
+      </reference>
+
+      
+      
       
         <reference anchor="owasp_csrf" target="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)_Prevention_Cheat_Sheet">
         <front>
