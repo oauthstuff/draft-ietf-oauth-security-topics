@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="15" month="April" year="2018" />
+    <date day="20" month="May" year="2018" />
 
     <!-- Meta-data Declarations -->
 
@@ -261,17 +261,17 @@
 	  <section title="Attacks on Authorization Code Grant" anchor="insufficient_uri_validation_acg">
 	  <t>For a public client using the grant type code, an attack 
 	  would look as follows: </t>
-	  <t>Let's assume the redirect URL pattern "https://*.example.com/*" had been registered 
+	  <t>Let's assume the redirect URL pattern "https://*.somesite.example/*" had been registered 
 	  for the client "s6BhdRkqt3". This pattern allows redirect URIs pointing to any 
-	  host residing  in the domain example.com. So if an attacker manages to 
-	  establish a host or subdomain in "example.com" he can impersonate the 
+	  host residing  in the domain somesite.example. So if an attacker manages to 
+	  establish a host or subdomain in somesite.example he can impersonate the 
 	  legitimate client. Assume the attacker sets up the host 
-	  "evil.example.com".</t>
+	  "evil.somesite.example".</t>
 	  <t>
 	   <list style="format (%d)" counter="my_count">
 	    <t>The attacker needs to trick the user into opening a tampered URL 
 	  in his browser, which launches a page under the attacker's control, 
-	  say "https://www.evil.com".</t>
+	  say "https://www.evil.example".</t>
 	    <t>This URL initiates an authorization request with the client id 
 	  of a legitimate client to the authorization endpoint. This is the 
 	  example authorization request (line breaks are for display purposes only):
@@ -281,15 +281,15 @@
 	  <t>
 	  	<figure>
           <artwork><![CDATA[GET /authorize?response_type=code&client_id=s6BhdRkqt3&state=xyz
-  &redirect_uri=https%3A%2F%2Fevil.example.com%2Fcb HTTP/1.1
-Host: server.example.com]]></artwork>
+  &redirect_uri=https%3A%2F%2Fevil.somesite.example%2Fcb HTTP/1.1
+Host: server.somesite.example]]></artwork>
         </figure>	
 	  </t>
 	  <t>
 	  <list style="format (%d)" counter="my_count">
 	  <t>The authorization server validates the redirect URI in order to identify the 
 	  client. Since the pattern allows arbitrary domains host names in 
-	  "example.com", the authorization request is processed under the legitimate 
+	  "somesite.example", the authorization request is processed under the legitimate 
 	  client's identity. This includes the way the request for user consent is 
 	  presented to the user. If auto-approval is allowed (which is not 
 	  recommended for public clients according to <xref target="RFC6749"/>), the attack can be 
@@ -320,8 +320,8 @@ Host: server.example.com]]></artwork>
 	   in order to get access to access tokens. This allows circumvention even of 
 	   strict redirect URI patterns (but not strict URL matching!).</t>
 	   <t>Assume the pattern for client "s6BhdRkqt3" is
-	   "https://client.example.com/cb?*", i.e., any parameter is allowed for 
-	   redirects to "https://client.example.com/cb". Unfortunately, the client 
+	   "https://client.somesite.example/cb?*", i.e., any parameter is allowed for 
+	   redirects to "https://client.somesite.example/cb". Unfortunately, the client 
 	   exposes an open redirector. This endpoint supports a parameter 
 	   "redirect_to" which takes a target URL and will send the browser to 
 	   this URL using an HTTP Location header redirect 302.</t>
@@ -329,10 +329,10 @@ Host: server.example.com]]></artwork>
 	   <list style="format (%d)" counter="my_count1">
 	    <t>Same as above, the attacker needs to trick the user into opening a 
 		tampered URL in his browser, which launches a page under the attacker's control, 
-		say "https://www.evil.com".</t>
+		say "https://www.evil.example".</t>
 	    <t>The URL initiates an authorization request, which is very 
 		similar to the attack on the code flow. As differences, it utilizes the 
-		open redirector by encoding "redirect_to=https://client.evil.com" into 
+		open redirector by encoding "redirect_to=https://client.evil.example" into 
 		the redirect URI and it uses the response type "token" (line breaks 
 		are for display purposes only):</t>
 	   </list>	   
@@ -340,9 +340,9 @@ Host: server.example.com]]></artwork>
 	  <t>
 	  	<figure>
           <artwork><![CDATA[GET /authorize?response_type=token&client_id=s6BhdRkqt3&state=xyz
-  &redirect_uri=https%3A%2F%2Fclient.example.com%2Fcb%26redirect_to
-  %253Dhttps%253A%252F%252Fclient.evil.com%252Fcb HTTP/1.1
-Host: server.example.com]]></artwork>
+  &redirect_uri=https%3A%2F%2Fclient.somesite.example%2Fcb%26redirect_to
+  %253Dhttps%253A%252F%252Fclient.evil.example%252Fcb HTTP/1.1
+Host: server.somesite.example]]></artwork>
         </figure>	
 	  </t>
 	  <t>
@@ -355,8 +355,8 @@ Host: server.example.com]]></artwork>
 	  <t>
 	  	<figure>
           <artwork><![CDATA[HTTP/1.1 302 Found
-  Location: https://client.example.com/cb?
-  redirect_to%3Dhttps%3A%2F%2Fclient.evil.com%2Fcb
+  Location: https://client.somesite.example/cb?
+  redirect_to%3Dhttps%3A%2F%2Fclient.evil.example%2Fcb
   #access_token=2YotnFZFEjr1zCsicMWpAA&...]]></artwork>
         </figure>	
 	  </t>	
@@ -369,24 +369,24 @@ Host: server.example.com]]></artwork>
 	  <t>
 	  	<figure>
           <artwork><![CDATA[HTTP/1.1 302 Found
-     Location: https://client.evil.com/cb]]></artwork>
+     Location: https://client.evil.example/cb]]></artwork>
         </figure>	
       </t>
 	  <t>
 	   <list style="format (%d)" counter="my_count1">
-	    <t>Since the redirector at example.com does not include a fragment in the Location header, 
+	    <t>Since the redirector at client.somesite.example does not include a fragment in the Location header, 
 		the user agent will re-attach the original fragment <vspace/>"#access_token=2YotnFZFEjr1zCsicMWpAA&amp;..." 
 		to the URL and will navigate to the following URL:</t>
 	   </list>	  
 	  </t>
 	  <t>
   	  	<figure>
-          <artwork><![CDATA[https://client.evil.com/cb#access_token=2YotnFZFEjr1zCsicMWpAA&...]]></artwork>
+          <artwork><![CDATA[https://client.evil.example/cb#access_token=2YotnFZFEjr1zCsicMWpAA&...]]></artwork>
         </figure>
 	  </t>
 	  <t>
 	   <list style="format (%d)" counter="my_count1">	  
-      <t>The attacker's page at client.evil.com can access the fragment and obtain the access token.</t>
+      <t>The attacker's page at client.evil.example can access the fragment and obtain the access token.</t>
 	   </list>	  
 	  </t>	  
 	   </section>
@@ -836,12 +836,12 @@ Host: server.example.com]]></artwork>
 Content-Type: application/json
 
 {
-  "issuer":"https://server.example.com",
-  "authorization_endpoint":"https://server.example.com/authorize",
+  "issuer":"https://server.somesite.example",
+  "authorization_endpoint":"https://server.somesite.example/authorize",
   “resource_servers”:[
-    “email.example.com”,
-    ”storage.example.com”,
-    ”video.example.com”]
+    “email.somesite.example”,
+    ”storage.somesite.example”,
+    ”video.somesite.example”]
   ...
 }]]></artwork>
         </figure>
@@ -861,7 +861,7 @@ Pragma: no-cache
 
 {
   "access_token":"2YotnFZFEjr1zCsicMWpAA",
-  “access_token_resource_server”:"https://hostedresource.example.com/path1",            
+  “access_token_resource_server”:"https://hostedresource.somesite.example/path1",            
 ...
 }]]></artwork>
         </figure>
@@ -1143,8 +1143,8 @@ Pragma: no-cache
 	</section>
 	
     <section anchor="Acknowledgements" title="Acknowledgements">
-      <t>We would like to thank Jim Manico, Phil Hunt, Nat Sakimura, Christian Mainka, and 
-      Brian Campbell for their valuable feedback.</t>
+      <t>We would like to thank Jim Manico, Phil Hunt, Nat Sakimura, Christian Mainka, 
+      Doug McDorman, and Brian Campbell for their valuable feedback.</t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
@@ -1371,6 +1371,8 @@ Pragma: no-cache
       	  <t>extended section on code leakage via referrer header to also 
       	  cover state leakage</t>
       	  <t>added Daniel Fett as author</t>
+      	  <t>replaced text intended to inform WG discussion by recommendations to implementors</t>
+      	  <t>modified example URLs to conform to RFC 2606</t>
         </list></t> 
       <t>-05 <list style="symbols">
       	  <t>Completed sections on code leakage via referrer header, attacks in 
