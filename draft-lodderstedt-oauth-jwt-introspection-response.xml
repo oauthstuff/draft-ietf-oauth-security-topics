@@ -123,10 +123,11 @@
     <section anchor="Introduction" title="Introduction">
       <t><xref target="RFC7662">OAuth 2.0 Token Introspection</xref> specifies a 
       method for a protected resource to query an OAuth 2.0 authorization server 
-      to determine the active state and meta-information of an OAuth 2.0 token. 
+      to determine the state of an access token and obtain data associated 
+      with this access token. 
       This allows deployments to implement identifier-based access tokens 
       in an interoperable way.</t>
-      <t>The introspection endpoint as specified in <xref target="RFC7662">OAuth 
+      <t>The introspection response as specified in <xref target="RFC7662">OAuth 
       2.0 Token Introspection</xref> is a plain JSON object in 
       "application/json" format.
       However, there are use cases where the resource server needs evidence 
@@ -138,9 +139,25 @@
       by the capability to return responses as JWTs.</t>
     </section>
 
+	<section anchor="jwt_request" title="Requesting a JWT Response">
+	<t>The resource server requests a JWT response by including 
+		an accept header with content type "application/jwt" in the introspection 
+		request as shown in the following example.</t>
+	  <t>
+	  	<figure>
+          <artwork><![CDATA[POST /introspect HTTP/1.1
+Host: server.example.com
+Accept: application/jwt
+Content-Type: application/x-www-form-urlencoded
+Authorization: Bearer 23410913-abewfq.123483
 
+token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
+        </figure>
+	  </t>
+	</section>
+	
     <section anchor="jwt_response" title="JWT Response">
-      <t>The introspection endpoint may respond with a JWT in "application/jwt" format.</t>
+      <t>The introspection endpoint responds with a JWT in "application/jwt" format.</t>
       <t>This JWT may contain all the members describes in Section 2.2. of 
       <xref target="RFC7662"/>.</t>
       <t>The following is a non-normative example response 
@@ -172,19 +189,19 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
           <artwork><![CDATA[{
   "sub": "Z5O3upPC88QrAjx00dis",
   "aud": "https://protected.example.net/resource",
-  "extension_field": "twenty-seven",
   "scope": "read write dolphin",
   "iss": "https://server.example.com/",
   "active": true,
   "exp": 1419356238,
   "iat": 1419350238,
   "client_id": "l238j323ds-23ij4",
-  "username": "jdoe"
+  "given_name": "John",
+  "family_name":"Doe",
+  "birthdate":"1982-02-01"
 }]]></artwork>
         </figure>
 
-	  </t>
-	  
+	  </t>  
 	  
     </section>
     
@@ -192,8 +209,8 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       <t>The authorization server determines what format to use for a particular 
       introspection response. The decision can be based on the mechanisms described 
       in this section.</t>
-      <t>The proposal is to register resource servers as clients and let them determine
-      the response format by utilizing new parameters for dynamic client 
+      <t>The specification assumes to register resource servers as clients and let them 
+      determine the response format by utilizing new parameters for dynamic client 
       registration.</t>
       <t>The new parameters follow the pattern established by the
       <xref target="OpenID.Registration">OpenID Connect
@@ -201,7 +218,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       encryption algorithms for the user info endpoint.</t>
       <t>The following parameters are introduced by this specification: 
 		<list hangIndent="8" style="hanging">
-      	  <t hangText="introspection_response_signed_response_alg"><xref target="RFC7515">JWS</xref> 
+      	  <t hangText="introspection_signed_response_alg"><xref target="RFC7515">JWS</xref> 
       	  <spanx style="verb">alg</spanx> algorithm 
       	  <xref target="RFC7518">JWA</xref> REQUIRED for signing introspection responses. If 
       	  this is specified, the response will be <xref target="RFC7519">JWT</xref> 
@@ -209,7 +226,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       	  if omitted, is for the introspection response to return the Claims as a 
       	  UTF-8 encoded JSON object using the application/json content-type
       	  as defined in <xref target="RFC7662"/>.</t>
-          <t hangText="introspection_response_encrypted_response_alg"> 
+          <t hangText="introspection_encrypted_response_alg"> 
           <xref target="RFC7516">JWE</xref> <spanx style="verb">alg</spanx> algorithm 
           <xref target="RFC7518">JWA</xref> 
           REQUIRED for encrypting introspection responses. 
@@ -217,28 +234,169 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
           signed then encrypted, with the result being a Nested JWT, as defined in 
           <xref target="RFC7519">JWT</xref>. The default, if omitted, is that no 
           encryption is performed.</t>
-          <t hangText="introspection_response_encrypted_response_enc"><xref target="RFC7516">JWE</xref>
+          <t hangText="introspection_encrypted_response_enc"><xref target="RFC7516">JWE</xref>
           <spanx style="verb">enc</spanx> algorithm <xref target="RFC7518">JWA</xref> REQUIRED for encrypting 
           introspection responses. If 
-          <spanx style="verb">introspection_response_encrypted_response_algy</spanx> is specified, the default 
+          <spanx style="verb">introspection_encrypted_response_alg</spanx> is specified, the default 
           for this value is A128CBC-HS256. When 
-          <spanx style="verb">introspection_response_encrypted_response_enc</spanx> is included, 
-          <spanx style="verb">introspection_response_encrypted_response_alg</spanx> MUST also be provided.</t>
+          <spanx style="verb">introspection_encrypted_response_enc</spanx> is included, 
+          <spanx style="verb">introspection_encrypted_response_alg</spanx> MUST also be provided.</t>
         </list>
       </t>
-      <t>Resource servers may register their public encryption keys 
+     <t>Resource servers may register their public encryption keys 
       using the <spanx style="verb">jwks_uri</spanx> or <spanx style="verb">jwks</spanx> 
       metadata parameters.</t>
     </section>    
     
+    <section anchor="server_metadata" title="Authorization Server Metadata">
+      <t>Authorization servers SHOULD publish the algorithms supported for signing and
+      encrypting the introspection response by utilizing the new OAuth Authorization Server 
+      Metadata parameters</t>
+     <t>The following parameters are introduced by this specification: 
+		<list hangIndent="8" style="hanging">
+				
+		<t hangText="introspection_signing_alg_values_supported">
+		OPTIONAL. JSON array containing a list of the <xref target="RFC7515">JWS</xref> signing 
+		algorithms (<spanx style="verb">alg</spanx> values) 
+		<xref target="RFC7518">JWA</xref> supported by the Introspection 
+		Endpoint to sign the response.</t> 
+
+		<t hangText="introspection_encryption_alg_values_supported">
+		OPTIONAL. JSON array containing a list of the <xref target="RFC7516">JWE</xref> 
+		encryption algorithms (<spanx style="verb">alg</spanx> values) 
+		<xref target="RFC7518">JWA</xref> supported by the 
+		Introspection Endpoint to encrypt the response.</t>
+
+		<t hangText="introspection_encryption_enc_values_supported">
+		OPTIONAL. JSON array containing a list of the <xref target="RFC7516">JWE</xref> encryption 
+		algorithms (<spanx style="verb">enc</spanx> values) 
+		<xref target="RFC7518">JWA</xref> supported by the Introspection 
+		Endpoint to encrypt the response.</t>		
+
+        </list>
+      </t>
+    </section>
+    
     <section anchor="Acknowledgements" title="Acknowledgements">
-      <t>We would like to thank ...</t>
+      <t>We would like to thank Petteri Stenius and Neil Madden 
+      for their valuable feedback</t>
     </section>
 
     <!-- Possibly a 'Contributors' section ... -->
 
-    <section anchor="IANA" title="IANA Considerations">
-      <t>TBD</t>
+    <section anchor="IANA" title="IANA Considerations">  
+      
+      <section anchor="DynRegReg" title="OAuth Dynamic Client Registration Metadata Registration">
+        <t>
+          This specification requests registration of the following client metadata definitions
+          in the IANA "OAuth Dynamic Client Registration Metadata" registry
+          <xref target="IANA.OAuth.Parameters"/>
+          established by <xref target="RFC7591"/>:
+        </t>
+
+        <section anchor="DynRegContents" title="Registry Contents">
+          <t>
+            <list style="symbols">
+              <t>
+                Client Metadata Name: <spanx style="verb">introspection_signed_response_alg</spanx>
+              </t>
+              <t>
+                Client Metadata Description:
+                String value indicating the client's desired introspection response 
+                signing algorithm.
+              </t>
+              <t>
+                Change Controller: IESG
+              </t>
+              <t>
+                Specification Document(s): <xref target="client_metadata"/> of [[ this specification ]]
+              </t>
+            </list>
+          </t>
+          <t>
+            <list style="symbols">
+              <t>
+                Client Metadata Name: <spanx style="verb">introspection_encrypted_response_alg</spanx>
+              </t>
+              <t>
+                Client Metadata Description:
+                String value specifying the desired introspection response 
+                encryption algorithm (alg value).
+              </t>
+              <t>
+                Change Controller: IESG
+              </t>
+              <t>
+                Specification Document(s): <xref target="client_metadata"/> of [[ this specification ]]
+              </t>
+            </list>
+          </t>
+          <t>
+            <list style="symbols">
+              <t>
+                Client Metadata Name: <spanx style="verb">introspection_encrypted_response_enc</spanx>
+              </t>
+              <t>
+                Client Metadata Description:
+                    String value specifying the desired introspection response 
+                encryption algorithm (enc value).
+              </t>
+              <t>
+                Change Controller: IESG
+              </t>
+              <t>
+                Specification Document(s): <xref target="client_metadata"/> of [[ this specification ]]
+              </t>
+            </list>
+          </t>
+
+        </section>
+      </section>
+      
+      <section anchor="ietf-oauth-discoveryIANA" title="OAuth Authorization Server Metadata Registration">
+      <t>
+        This specification requests registration of the following value
+        in the IANA "OAuth Authorization Server Metadata" registry
+        <xref target="IANA.OAuth.Parameters"/> established by <xref target="I-D.ietf-oauth-discovery"/>.
+      </t>
+        <section title="Registry Contents">
+          <t>
+            <list style='symbols'>
+              <t>Metadata Name: <spanx style="verb">introspection_signing_alg_values_supported</spanx></t>
+              <t>Metadata Description: JSON array containing a list of algorithms supported 
+              by the authorization server for introspection response signing.</t>
+              <t>Change Controller: IESG</t>
+              <t>Specification Document(s): <xref target="server_metadata"/> of [[ this specification ]]</t>             
+            </list>
+          </t>
+          <t>
+            <list style='symbols'>
+              <t>Metadata Name: <spanx style="verb">introspection_encryption_alg_values_supported</spanx></t>
+              <t>Metadata Description: JSON array containing a list of algorithms supported 
+              by the authorization server for introspection response encryption (alg value).</t>
+              <t>Change Controller: IESG</t>
+              <t>Specification Document(s): <xref target="server_metadata"/> of [[ this specification ]]</t>             
+            </list>
+          </t>
+          <t>
+            <list style='symbols'>
+              <t>Metadata Name: <spanx style="verb">introspection_encryption_enc_values_supported</spanx></t>
+              <t>Metadata Description: JSON array containing a list of algorithms supported 
+              by the authorization server for introspection response encryption (enc value).</t>
+              <t>Change Controller: IESG</t>
+              <t>Specification Document(s): <xref target="server_metadata"/> of [[ this specification ]]</t>             
+            </list>
+          </t>
+        </section>
+      </section>     
+      
+    <section anchor="ietf-oauth-introspectionIANA" title="OAuth Token Introspection Response">
+      <t>
+        TBD: add all OpenID Connect standard claims. 
+      </t>
+      </section>     
+
+
     </section>
 
     <section anchor="Security" title="Security Considerations">
@@ -264,6 +422,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       
       <?rfc include="reference.RFC.7515"?>
       <?rfc include="reference.RFC.7516"?>
+  <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-discovery-06.xml'?>
       
        <reference anchor="OpenID.Registration" target="https://openid.net/specs/openid-connect-registration-1_0.html">
         <front>
@@ -284,7 +443,32 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
 
     </references>
 
- <!--   <references title="Informative References">
-    </references> -->
+    <references title="Informative References">
+          <reference anchor="IANA.OAuth.Parameters" target="http://www.iana.org/assignments/oauth-parameters">
+        <front>
+          <title>OAuth Parameters</title>
+          <author>
+            <organization>IANA</organization>
+          </author>
+          <date/>
+        </front>
+      </reference>
+    </references> 
+    
+    <section anchor="History" title="Document History">
+      <t>[[ To be removed from the final specification ]]</t>
+      <t>-01<list style="symbols">
+      	  <t>fixed typos in client meta data field names</t>
+      	  <t>added OAuth Server Metadata parameters to publish algorithms supported 
+      	  for signing and encrypting the introspection response</t>
+      	  <t>added registration of new parameters for OAuth Server Metadata
+      	  and Client Registration</t>
+      	  <t>added explicit request for JWT introspection response</t>
+        </list></t> 
+      <t>-00<list style="symbols">
+          <t>initial version</t>
+        </list></t>  
+        
+    </section>	
   </back>
 </rfc>
