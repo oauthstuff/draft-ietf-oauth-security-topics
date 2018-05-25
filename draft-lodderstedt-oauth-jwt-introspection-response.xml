@@ -149,7 +149,6 @@
 Host: server.example.com
 Accept: application/jwt
 Content-Type: application/x-www-form-urlencoded
-Authorization: Bearer 23410913-abewfq.123483
 
 token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
         </figure>
