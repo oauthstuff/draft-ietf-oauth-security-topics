@@ -123,26 +123,29 @@
     <section anchor="Introduction" title="Introduction">
       <t><xref target="RFC7662">OAuth 2.0 Token Introspection</xref> specifies a 
       method for a protected resource to query an OAuth 2.0 authorization server 
-      to determine the state of an access token and obtain data associated 
-      with this access token. 
+      to determine the state of an access token and obtain data associated with
+      the access token.
       This allows deployments to implement identifier-based access tokens 
       in an interoperable way.</t>
       <t>The introspection response as specified in <xref target="RFC7662">OAuth 
-      2.0 Token Introspection</xref> is a plain JSON object in 
-      "application/json" format.
-      However, there are use cases where the resource server needs evidence 
-      about the fact the AS issued the access token and is liable for its 
-      contents. An example is a resource server using verified person data 
-      to create qualified electronic signatures.</t>
-      <t>In such use cases, it would be useful to return a signed JWT as 
-      introspection response. This draft extends the Token Introspection endpoint
-      by the capability to return responses as JWTs.</t>
+      2.0 Token Introspection</xref> is a plain JSON object.
+      However, there are use cases where the resource server requires stronger
+      assurance that the authorisation server issued the access token,
+      including cases where the authorisation server assumes liability for the
+      token's content. An example is a resource server using verified person
+      data to create qualified electronic signatures.</t>
+      <t>In such use cases, it would be useful to return a signed JWT as the
+      introspection response. This specification extends the Token
+      Introspection endpoint with the capability to return responses as
+      JWTs.</t>
     </section>
 
 	<section anchor="jwt_request" title="Requesting a JWT Response">
-	<t>The resource server requests a JWT response by including 
-		an accept header with content type "application/jwt" in the introspection 
-		request as shown in the following example.</t>
+	<t>A resource server requests to receive a JWT introspection response by
+        including an Accept header with content type "application/jwt" in the
+        introspection request.</t>
+
+      <t>The following is a non-normative example request:</t>
 	  <t>
 	  	<figure>
           <artwork><![CDATA[POST /introspect HTTP/1.1
@@ -156,8 +159,9 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
 	</section>
 	
     <section anchor="jwt_response" title="JWT Response">
-      <t>The introspection endpoint responds with a JWT in "application/jwt" format.</t>
-      <t>This JWT may contain all the members describes in Section 2.2. of 
+      <t>The introspection endpoint responds with a JWT, setting the
+          Content-Type header to "application/jwt".</t>
+      <t>This JWT may contain all the members described in Section 2.2. of
       <xref target="RFC7662"/>.</t>
       <t>The following is a non-normative example response 
       (with line breaks for display purposes only):</t>
@@ -205,30 +209,30 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
     </section>
     
     <section anchor="client_metadata" title="Client Metadata">
-      <t>The authorization server determines what format to use for a particular 
-      introspection response. The decision can be based on the mechanisms described 
-      in this section.</t>
-      <t>The specification assumes to register resource servers as clients and let them 
-      determine the response format by utilizing new parameters for dynamic client 
-      registration.</t>
-      <t>The new parameters follow the pattern established by the
+      <t>The authorization server determines what algorithm to employ to
+      secure the JWT for a particular introspection response. This decision can
+      be based on registered metadata parameters for the resource server,
+      supplied via dynamic client registration with the resource server posing
+      as the client.</t>
+      <t>The parameter names follow the pattern established by
       <xref target="OpenID.Registration">OpenID Connect
-      Dynamic Client registration</xref> specification for configuring signing and 
-      encryption algorithms for the user info endpoint.</t>
-      <t>The following parameters are introduced by this specification: 
+      Dynamic Client Registration</xref> for configuring signing and encryption
+      algorithms for JWT responses at the UserInfo endpoint.</t>
+      <t>The following client metadata parameters are introduced by this
+      specification:
 		<list hangIndent="8" style="hanging">
       	  <t hangText="introspection_signed_response_alg"><xref target="RFC7515">JWS</xref> 
       	  <spanx style="verb">alg</spanx> algorithm 
-      	  <xref target="RFC7518">JWA</xref> REQUIRED for signing introspection responses. If 
-      	  this is specified, the response will be <xref target="RFC7519">JWT</xref> 
-      	  serialized, and signed using JWS. The default, 
-      	  if omitted, is for the introspection response to return the Claims as a 
-      	  UTF-8 encoded JSON object using the application/json content-type
+      	  <xref target="RFC7518">JWA</xref> REQUIRED for signing introspection responses. If
+      	  this is specified, the response will be <xref target="RFC7519">JWT</xref>
+      	  serialized, and signed using JWS. The default,
+      	  if omitted, is for the introspection response to return the Claims as a
+      	  UTF-8 encoded JSON object using the "application/json" content type,
       	  as defined in <xref target="RFC7662"/>.</t>
           <t hangText="introspection_encrypted_response_alg"> 
           <xref target="RFC7516">JWE</xref> <spanx style="verb">alg</spanx> algorithm 
           <xref target="RFC7518">JWA</xref> 
-          REQUIRED for encrypting introspection responses. 
+          REQUIRED for encrypting introspection responses.
           If both signing and encryption are requested, the response will be 
           signed then encrypted, with the result being a Nested JWT, as defined in 
           <xref target="RFC7519">JWT</xref>. The default, if omitted, is that no 
@@ -248,9 +252,9 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
     </section>    
     
     <section anchor="server_metadata" title="Authorization Server Metadata">
-      <t>Authorization servers SHOULD publish the algorithms supported for signing and
-      encrypting the introspection response by utilizing the new OAuth Authorization Server 
-      Metadata parameters</t>
+      <t>Authorization servers SHOULD publish the supported algorithms for
+      signing and encrypting the JWT of an introspection response by utilizing
+      OAuth Authorization Server Metadata parameters.</t>
      <t>The following parameters are introduced by this specification: 
 		<list hangIndent="8" style="hanging">
 				
@@ -278,7 +282,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
     
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>We would like to thank Petteri Stenius and Neil Madden 
-      for their valuable feedback</t>
+      for their valuable feedback.</t>
     </section>
 
     <!-- Possibly a 'Contributors' section ... -->
@@ -421,7 +425,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       
       <?rfc include="reference.RFC.7515"?>
       <?rfc include="reference.RFC.7516"?>
-  <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-discovery-06.xml'?>
+      <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-discovery-10.xml"?>
       
        <reference anchor="OpenID.Registration" target="https://openid.net/specs/openid-connect-registration-1_0.html">
         <front>
