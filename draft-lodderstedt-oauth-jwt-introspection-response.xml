@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-lodderstedt-oauth-jwt-introspection-response-00"
+<rfc category="std" docName="draft-lodderstedt-oauth-jwt-introspection-response-01"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="15" month="March" year="2018" />
+    <date day="27" month="May" year="2018" />
 
     <!-- Meta-data Declarations -->
 
@@ -201,7 +201,10 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
         </figure>
 
 	  </t>  
-	  
+	  <t>Every JWT introspection response MUST contain the claims 
+	  <spanx style="verb">iss</spanx> and <spanx style="verb">aud</spanx> in order to 
+	  prevent misuse of the JWT as ID Token or access token 
+	  (see <xref target="Cross-JWT_Confusion"/>).</t>
     </section>
     
     <section anchor="client_metadata" title="Client Metadata">
@@ -278,7 +281,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
     
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>We would like to thank Petteri Stenius and Neil Madden 
-      for their valuable feedback</t>
+      for their valuable feedback.</t>
     </section>
 
     <!-- Possibly a 'Contributors' section ... -->
@@ -399,8 +402,33 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
     </section>
 
     <section anchor="Security" title="Security Considerations">
-      <t>TBD</t>
+     <section anchor="Cross-JWT_Confusion" title="Cross-JWT Confusion">
+      <t>JWT introspection responses and OpenID Connect ID Tokens are 
+      syntactically more or less equivalent. An attacker could therefore
+      try to misuse an JWT obtained from an introspection response
+      to impersonate the user whose claims are included in this JWT
+      at a OpenID Connect RP. 
+      
+      Such an attack is treated and prevented like any other token substitution 
+      attack. The AS MUST include the claims <spanx style="verb">iss</spanx> and 
+      <spanx style="verb">aud</spanx> into every JWT introspection response. This 
+      allows every well behaving OpenID Connect RP to detect substitution by 
+      checking the <spanx style="verb">iss</spanx> and 
+      <spanx style="verb">aud</spanx> claims as described in Section 3.1.3.7. of 
+      <xref target="OpenID.Core"/>. RPs should also use and check the 
+      <spanx style="verb">nonce</spanx> parameter and claim to prevent 
+      token and code replay.</t>
+      
+      <t>Resource servers utilizing JWTs to represent structured access 
+      tokens could be susceptible to replay attacks as well. Resource servers
+      should therefore apply proper counter measures against replay as 
+      described in <xref target="I-D.ietf-oauth-security-topics"/>, 
+      section 2.2.</t>
+      <t>JWT Confusion and other attacks on JWTs are discussed in detail 
+      in <xref target="I-D.ietf-oauth-jwt-bcp"/>.</t>
+     </section>
     </section>
+    
   </middle>
 
   <!--  *****BACK MATTER ***** -->
@@ -422,6 +450,8 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       <?rfc include="reference.RFC.7515"?>
       <?rfc include="reference.RFC.7516"?>
   <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-discovery-06.xml'?>
+  <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-jwt-bcp-03.xml'?>
+   <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-security-topics-06.xml'?>
       
        <reference anchor="OpenID.Registration" target="https://openid.net/specs/openid-connect-registration-1_0.html">
         <front>
@@ -435,6 +465,29 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
           </author>
           <author fullname="Mike Jones">
             <organization>Microsoft</organization>
+          </author>
+          <date day="8" month="Nov" year="2014"/>
+        </front>
+      </reference>
+      
+       <reference anchor="OpenID.Core" target="http://openid.net/specs/openid-connect-core-1_0.html">
+        <front>
+          <title>OpenID Connect Core 1.0 incorporating errata set 1</title>
+
+		  <author fullname="Nat Sakimura">
+            <organization>NRI</organization>
+          </author>
+          <author fullname="John Bradley">
+            <organization>Ping Identity</organization>
+          </author>
+          <author fullname="Mike Jones">
+            <organization>Microsoft</organization>
+          </author>
+          <author fullname="Breno de Medeiros">
+            <organization>Google</organization>
+          </author>
+          <author fullname="Chuck Mortimore">
+            <organization>Salesforce</organization>
           </author>
           <date day="8" month="Nov" year="2014"/>
         </front>
@@ -463,6 +516,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       	  <t>added registration of new parameters for OAuth Server Metadata
       	  and Client Registration</t>
       	  <t>added explicit request for JWT introspection response</t>
+      	  <t>made iss and aud claims mandatory in introspection response</t>
         </list></t> 
       <t>-00<list style="symbols">
           <t>initial version</t>
