@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="27" month="May" year="2018" />
+    <date day="28" month="May" year="2018" />
 
     <!-- Meta-data Declarations -->
 
@@ -161,7 +161,11 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
     <section anchor="jwt_response" title="JWT Response">
       <t>The introspection endpoint responds with a JWT, setting the
           Content-Type header to "application/jwt".</t>
-      <t>This JWT may contain all the members described in Section 2.2. of
+      <t>This JWT MUST contain the claims 
+	  <spanx style="verb">iss</spanx> and <spanx style="verb">aud</spanx> in order to 
+	  prevent misuse of the JWT as ID or access token 
+	  (see <xref target="Cross-JWT_Confusion"/>).</t>
+      <t>This JWT may furthermore contain all other claims described in Section 2.2. of
       <xref target="RFC7662"/>.</t>
       <t>The following is a non-normative example response 
       (with line breaks for display purposes only):</t>
@@ -205,10 +209,6 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
         </figure>
 
 	  </t>  
-	  <t>Every JWT introspection response MUST contain the claims 
-	  <spanx style="verb">iss</spanx> and <spanx style="verb">aud</spanx> in order to 
-	  prevent misuse of the JWT as ID Token or access token 
-	  (see <xref target="Cross-JWT_Confusion"/>).</t>
     </section>
     
     <section anchor="client_metadata" title="Client Metadata">
@@ -521,6 +521,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       	  and Client Registration</t>
       	  <t>added explicit request for JWT introspection response</t>
       	  <t>made iss and aud claims mandatory in introspection response</t>
+      	  <t>Stylistic and clarifying edits, updates references</t>
         </list></t> 
       <t>-00<list style="symbols">
           <t>initial version</t>
