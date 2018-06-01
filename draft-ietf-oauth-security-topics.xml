@@ -363,7 +363,7 @@ Host: server.somesite.example]]></artwork>
       <t>   	  
 	   <list style="format (%d)" counter="my_count1">
 	    <t>At example.com, the request arrives at the open redirector. It will read the 
-		redirect parameter and will issue an HTTP 303 Location header redirect to the URL "https://evil.example.com/cb".</t>
+		redirect parameter and will issue an HTTP 303 Location header redirect to the URL "https://client.evil.example/cb".</t>
 	   </list>	   
 	  </t>
 	  <t>
@@ -480,7 +480,7 @@ Host: server.somesite.example]]></artwork>
               Authorization codes and access tokens can end up in the browser's history of visited URLs, enabling the attacks described in the following.
             </t>
 	  <section title="Code in Browser History">
-	  <t>When a browser navigates to "client.example.com/redirection_endpoint?code=abcd" as a result 
+	  <t>When a browser navigates to "client.example/redirection_endpoint?code=abcd" as a result 
 	  of a redirect from a provider's authorization endpoint, the URL including the 
 	  authorization code may end up in the browser's history. An attacker
 	  with access to the device could obtain the code and try to replay it.</t>
@@ -501,7 +501,7 @@ Host: server.somesite.example]]></artwork>
 	  tokens via a header, but in practice web sites often just pass access token in 
 	  query parameters.</t>
 	  <t>In case of implicit grant, a URL like 
-	  "client.example.com/redirection_endpoint#access_token=abcdef" may also end up in the browser 
+	  "client.example/redirection_endpoint#access_token=abcdef" may also end up in the browser 
 	  history as a result of a redirect from a provider's authorization endpoint.</t>
 	  <t>Proposed countermeasures:
 	  	<list style="symbols">
