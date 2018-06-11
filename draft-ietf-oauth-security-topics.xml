@@ -324,7 +324,7 @@ Host: server.somesite.example]]></artwork>
 	   redirects to "https://client.somesite.example/cb". Unfortunately, the client 
 	   exposes an open redirector. This endpoint supports a parameter 
 	   "redirect_to" which takes a target URL and will send the browser to 
-	   this URL using an HTTP Location header redirect 302.</t>
+	   this URL using an HTTP Location header redirect 303.</t>
 	  <t>
 	   <list style="format (%d)" counter="my_count1">
 	    <t>Same as above, the attacker needs to trick the user into opening a 
@@ -348,13 +348,13 @@ Host: server.somesite.example]]></artwork>
 	  <t>
 	   <list style="format (%d)" counter="my_count1">
 	    <t>Since the redirect URI matches the registered pattern, the authorization server 
-		allows the request and sends the resulting access token with a 302 redirect (some 
+		allows the request and sends the resulting access token with a 303 redirect (some 
 		response parameters are omitted for better readability)</t>
 	   </list>	   
 	  </t>
 	  <t>
 	  	<figure>
-          <artwork><![CDATA[HTTP/1.1 302 Found
+          <artwork><![CDATA[HTTP/1.1 303 See Other
   Location: https://client.somesite.example/cb?
   redirect_to%3Dhttps%3A%2F%2Fclient.evil.example%2Fcb
   #access_token=2YotnFZFEjr1zCsicMWpAA&...]]></artwork>
@@ -362,13 +362,13 @@ Host: server.somesite.example]]></artwork>
 	  </t>	
       <t>   	  
 	   <list style="format (%d)" counter="my_count1">
-	    <t>At the example.com, the request arrives at the open redirector. It will read the 
-		redirect parameter and will issue an HTTP 302 Location header redirect to the URL "https://evil.example.com/cb".</t>
+	    <t>At example.com, the request arrives at the open redirector. It will read the 
+		redirect parameter and will issue an HTTP 303 Location header redirect to the URL "https://client.evil.example/cb".</t>
 	   </list>	   
 	  </t>
 	  <t>
 	  	<figure>
-          <artwork><![CDATA[HTTP/1.1 302 Found
+          <artwork><![CDATA[HTTP/1.1 303 See Other
      Location: https://client.evil.example/cb]]></artwork>
         </figure>	
       </t>
@@ -480,7 +480,7 @@ Host: server.somesite.example]]></artwork>
               Authorization codes and access tokens can end up in the browser's history of visited URLs, enabling the attacks described in the following.
             </t>
 	  <section title="Code in Browser History">
-	  <t>When a browser navigates to "client.com/redirection_endpoint?code=abcd" as a result 
+	  <t>When a browser navigates to "client.example/redirection_endpoint?code=abcd" as a result 
 	  of a redirect from a provider's authorization endpoint, the URL including the 
 	  authorization code may end up in the browser's history. An attacker
 	  with access to the device could obtain the code and try to replay it.</t>
@@ -501,7 +501,7 @@ Host: server.somesite.example]]></artwork>
 	  tokens via a header, but in practice web sites often just pass access token in 
 	  query parameters.</t>
 	  <t>In case of implicit grant, a URL like 
-	  "client.com/redirection_endpoint#access_token=abcdef" may also end up in the browser 
+	  "client.example/redirection_endpoint#access_token=abcdef" may also end up in the browser 
 	  history as a result of a redirect from a provider's authorization endpoint.</t>
 	  <t>Proposed countermeasures:
 	  	<list style="symbols">
@@ -555,7 +555,7 @@ Host: server.somesite.example]]></artwork>
         </t>
         <t>
         <figure>
-          <artwork><![CDATA[HTTP/1.1 302 Found
+          <artwork><![CDATA[HTTP/1.1 303 See Other
   Location: https://attacker.example/authorize?response_type=code&client_id=666RVZJTA]]></artwork>
         </figure>
         </t>
@@ -570,7 +570,7 @@ Host: server.somesite.example]]></artwork>
         </t>
         <t>
           <figure>
-            <artwork><![CDATA[HTTP/1.1 302 Found
+            <artwork><![CDATA[HTTP/1.1 303 See Other
   Location: https://honest.as.example/authorize?response_type=code&client_id=7ZGZldHQ]]></artwork>
           </figure>
           </t>
@@ -1078,41 +1078,65 @@ Pragma: no-cache
             <t>The following attacks can occur when an AS or client
             has an open redirector, i.e., a URL which causes an HTTP
             redirect to an attacker-controlled web site.</t>
-<section title="Authorization Server as Open Redirector">
-	<t>Attackers could try to utilize a user's trust in the authorization 
-	server (and its URL in particular) for performing phishing attacks.</t>
-	<t><xref target="RFC6749"/>, Section 4.1.2.1, already prevents open redirects 
-	by stating the AS MUST NOT automatically redirect the user agent in case of 
-	an invalid combination of client_id and redirect_uri.</t>
-	<t>However, as described in <xref target="I-D.ietf-oauth-closing-redirectors"/>, an
-	attacker could also utilize a correctly registered redirect URI to 
-	perform phishing attacks. It could for example register a client
-	via dynamic client <xref target="RFC7591"/> 
-	registration and intentionally send an 
-	erroneous authorization request, e.g., by using an invalid 
-	scope value, to cause the AS to automatically redirect the user
-	agent to its phishing site.</t>
-	<t>The AS MUST take precautions to prevent this threat. 
-	Based on its risk assessment the AS needs to decide whether 
-	it can trust the redirect URI or not and SHOULD only automatically 
-	redirect the user agent, if it trusts the redirect URI. If not, it MAY
-	inform the user that it is about to redirect her to the another site 
-	and rely on the user to decide or MAY just inform the user about the 
-	error.</t>
-</section>
-<section title="Clients as Open Redirector">
-	<t>Client MUST NOT expose URLs which could be utilized as open redirector.
-	Attackers may use an open redirector to produce URLs which appear to 
-	point to the client, which might trick users to trust the URL and follow
-	it in her browser. Another abuse case is to produce URLs pointing to the 
-	client and utilize them to impersonate a client with an authorization server.</t>
-	<t>In order to prevent open redirection, clients should only expose such a 
-	function, if the target URLs are whitelisted or if the origin of a request 
-	can be authenticated.</t>
-</section>
-</section>
+            
+            <section title="Authorization Server as Open Redirector">
+	      <t>Attackers could try to utilize a user's trust in the authorization 
+	      server (and its URL in particular) for performing phishing attacks.</t>
+	      <t><xref target="RFC6749"/>, Section 4.1.2.1, already prevents open redirects 
+	      by stating the AS MUST NOT automatically redirect the user agent in case of 
+	      an invalid combination of client_id and redirect_uri.</t>
+	      <t>However, as described in <xref target="I-D.ietf-oauth-closing-redirectors"/>, an
+	      attacker could also utilize a correctly registered redirect URI to 
+	      perform phishing attacks. It could for example register a client
+	      via dynamic client <xref target="RFC7591"/> 
+	      registration and intentionally send an 
+	      erroneous authorization request, e.g., by using an invalid 
+	      scope value, to cause the AS to automatically redirect the user
+	      agent to its phishing site.</t>
+	      <t>The AS MUST take precautions to prevent this threat. 
+	      Based on its risk assessment the AS needs to decide whether 
+	      it can trust the redirect URI or not and SHOULD only automatically 
+	      redirect the user agent, if it trusts the redirect URI. If not, it MAY
+	      inform the user that it is about to redirect her to the another site 
+	      and rely on the user to decide or MAY just inform the user about the 
+	      error.</t>
+            </section>
+            <section title="Clients as Open Redirector">
+	      <t>Client MUST NOT expose URLs which could be utilized as open redirector.
+	      Attackers may use an open redirector to produce URLs which appear to 
+	      point to the client, which might trick users to trust the URL and follow
+	      it in her browser. Another abuse case is to produce URLs pointing to the 
+	      client and utilize them to impersonate a client with an authorization server.</t>
+	      <t>In order to prevent open redirection, clients should only expose such a 
+	      function, if the target URLs are whitelisted or if the origin of a request 
+	      can be authenticated.</t>
+            </section>
+          </section>
+
+          <section title="307 Redirect">
+            <t>At the authorization endpoint, a typical protocol flow is that the AS prompts the
+            user to enter her credentials in a form that is then submitted (using the HTTP POST
+            method) back to the authorization server. The AS checks the credentials and, if
+            successful, redirects the user agent to the client's redirection endpoint.</t>
+            <t>In <xref target="RFC6749"/>, the HTTP status code 302 is used for this purpose, but
+            "any other method available via the user-agent to accomplish this redirection is
+            allowed". However, when the status code 307 is used for redirection, the user agent will
+            send the form data (user credentials) via HTTP POST to the client since this status code
+            does not require the user agent to rewrite the POST request to a GET request (and
+            thereby dropping the form data in the POST request body). If the relying party is
+            malicious, it can use the credentials to impersonate the user at the AS.</t>
+            <t>In the HTTP standard <xref target="RFC6749"/>, only the status code 303 unambigiously
+            enforces rewriting the HTTP POST request to an HTTP GET request. For all other status
+            codes, including the popular 302, user agents can opt not to rewrite POST to GET
+            requests and therefore to reveal the user credentials to the client. (In practice,
+            however, most user agents will only show this behaviour for 307 redirects.)</t>
+            <t>AS which redirect a request that potentially contains user credentials therefore MUST
+            not use the HTTP 307 status code for redirection. If an HTTP redirection (and not, for
+            example, JavaScript) is used for such a request, AS SHOULD use HTTP status code 303 "See
+            Other".</t>
+          </section>
 	
- <section title="TLS Terminating Reverse Proxies">
+          <section title="TLS Terminating Reverse Proxies">
 	   <t>A common deployment architecture for HTTP applications is to 
 	   have the application server sitting behind a reverse proxy, which terminates
 	   the TLS connection and dispatches the incoming requests to the respective 
