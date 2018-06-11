@@ -35,7 +35,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="bcp" docName="draft-ietf-oauth-security-topics-06"
+<rfc category="bcp" docName="draft-ietf-oauth-security-topics-07"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="20" month="May" year="2018" />
+    <date day="11" month="June" year="2018" />
 
     <!-- Meta-data Declarations -->
 
@@ -497,7 +497,7 @@ Host: server.somesite.example]]></artwork>
 	  <t>An access token may end up in the browser history if a a client or just a web 
 	  site, which already has a token, deliberately navigates to a page like 
 	  "provider.com/get_user_profile?access_token=abcdef.". 
-	  Actually <xref target="RFC6750"/>discourages this practice and asks to transfer 
+	  Actually <xref target="RFC6750"/> discourages this practice and asks to transfer 
 	  tokens via a header, but in practice web sites often just pass access token in 
 	  query parameters.</t>
 	  <t>In case of implicit grant, a URL like 
@@ -837,7 +837,8 @@ Content-Type: application/json
 
 {
   "issuer":"https://server.somesite.example",
-  "authorization_endpoint":"https://server.somesite.example/authorize",
+  "authorization_endpoint":
+    "https://server.somesite.example/authorize",
   “resource_servers”:[
     “email.somesite.example”,
     ”storage.somesite.example”,
@@ -861,7 +862,8 @@ Pragma: no-cache
 
 {
   "access_token":"2YotnFZFEjr1zCsicMWpAA",
-  “access_token_resource_server”:"https://hostedresource.somesite.example/path1",            
+  “access_token_resource_server”:
+    "https://hostedresource.somesite.example/path1",            
 ...
 }]]></artwork>
         </figure>
@@ -1076,6 +1078,7 @@ Pragma: no-cache
             <t>The following attacks can occur when an AS or client
             has an open redirector, i.e., a URL which causes an HTTP
             redirect to an attacker-controlled web site.</t>
+            
             <section title="Authorization Server as Open Redirector">
 	      <t>Attackers could try to utilize a user's trust in the authorization 
 	      server (and its URL in particular) for performing phishing attacks.</t>
@@ -1099,7 +1102,7 @@ Pragma: no-cache
 	      error.</t>
             </section>
             <section title="Clients as Open Redirector">
-	      <t>Client MUST not expose URLs which could be utilized as open redirector.
+	      <t>Client MUST NOT expose URLs which could be utilized as open redirector.
 	      Attackers may use an open redirector to produce URLs which appear to 
 	      point to the client, which might trick users to trust the URL and follow
 	      it in her browser. Another abuse case is to produce URLs pointing to the 
@@ -1132,7 +1135,6 @@ Pragma: no-cache
             example, JavaScript) is used for such a request, AS SHOULD use HTTP status code 303 "See
             Other".</t>
           </section>
-
 	
           <section title="TLS Terminating Reverse Proxies">
 	   <t>A common deployment architecture for HTTP applications is to 
@@ -1183,6 +1185,8 @@ Pragma: no-cache
 
   <back>
     <references title="Normative References">
+    
+    <?rfc include="reference.RFC.2119"?>
       <?rfc include="reference.RFC.3986"?>
       <?rfc include="reference.RFC.6749"?>
       <?rfc include="reference.RFC.6750"?>
@@ -1201,9 +1205,10 @@ Pragma: no-cache
     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-tokbind-https.xml'?>
     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-pop-key-distribution'?>
     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.campbell-oauth-resource-indicators'?>
-     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-jwsreq'?> 
-     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-mix-up-mitigation'?> 
+    <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-jwsreq'?> 
+    <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-mix-up-mitigation'?> 
     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-closing-redirectors'?>     
+    
      
     <?rfc include="reference.RFC.7800"?>
     
@@ -1388,6 +1393,10 @@ Pragma: no-cache
     
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
+      <t>-07 <list style="symbols">
+      	  <t>incorporated findings of Doug McDorman</t>
+        </list> 
+      </t>
       <t>-06 <list style="symbols">
       	  <t>reworked section 3.8.1</t>
       	  <t>incorporated Phil Hunt's feedback</t>
