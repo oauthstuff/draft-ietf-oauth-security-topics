@@ -1395,6 +1395,7 @@ Pragma: no-cache
       <t>[[ To be removed from the final specification ]]</t>
       <t>-07 <list style="symbols">
       	  <t>incorporated findings of Doug McDorman</t>
+      	  <t>added section on HTTP status codes for redirects</t>
         </list> 
       </t>
       <t>-06 <list style="symbols">
