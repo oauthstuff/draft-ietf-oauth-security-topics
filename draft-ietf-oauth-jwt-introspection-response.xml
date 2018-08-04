@@ -127,18 +127,17 @@
       the access token.
       This allows deployments to implement identifier-based access tokens 
       in an interoperable way.</t>
-      <t>The introspection response as specified in <xref target="RFC7662">OAuth 
-      2.0 Token Introspection</xref> is a plain JSON object.
+      <t>The introspection response, as specified in <xref target="RFC7662">OAuth
+      2.0 Token Introspection</xref>, is a plain JSON object.
       However, there are use cases where the resource server requires stronger
-      assurance that the authorisation server issued the access token,
-      including cases where the authorisation server assumes liability for the
+      assurance that the authorization server issued the access token,
+      including cases where the authorization server assumes liability for the
       token's content. An example is a resource server using verified person
       data to create certificates, which in turn are used to create qualified 
       electronic signatures.</t>
-      <t>In such use cases, it would be useful, and sometime is even required, to 
-      return a signed JWT as the
-      introspection response. This specification extends the Token
-      Introspection endpoint with the capability to return responses as
+      <t>In such use cases it may be useful or even required to return a
+      signed JWT as the introspection response. This specification extends the
+      token introspection endpoint with the capability to return responses as
       JWTs.</t>
     </section>
 
@@ -211,17 +210,16 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
         </figure>
 
 	  </t>  
-	  <t>Depending on the resource server specific policy, 
-	  the JWT is either signed or signed and encrypted. If the JWT is signed and 
-	  encrypted, the response will be signed then encrypted, with the result 
-	  being a Nested JWT, as defined in <xref target="RFC7519">JWT</xref>.</t>
-	  <t>Note: If the resource server specific policy requires  
-	  encryption and the authorization server receives an unauthenticated request
-	  containing an Accept header with content type "application/json", it MUST refuse 
-	  to serve the request and return an HTTP status code 400. This behavior shall 
-	  prevent down grading attacks where an attacker 
-	  gets to known token data meant to be released to the legitimate recipient
-	  only (which is in position of the decryption key).</t> 
+	  <t>Depending on the specific resource server policy the JWT is either
+      signed, or signed and encrypted. If the JWT is signed and encrypted it
+      MUST be a Nested JWT, as defined in <xref target="RFC7519">JWT</xref>.</t>
+	  <t>Note: If the resource server policy requires a signed and encrypted
+      response and the authorization server receives an unauthenticated request
+	  containing an Accept header with content type "application/json", it MUST
+      refuse to serve the request and return an HTTP status code 400. This is
+      done to prevent downgrading attacks to obtain token data intended for
+      release to legitimate recipients only (which possess a decryption
+      key).</t>
     </section>
     
     <section anchor="client_metadata" title="Client Metadata">
@@ -296,43 +294,44 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
     <section anchor="Security" title="Security Considerations">
      <section anchor="Cross-JWT_Confusion" title="Cross-JWT Confusion">
       <t>JWT introspection responses and OpenID Connect ID Tokens are 
-      syntactically more or less equivalent. An attacker could therefore
-      try to misuse an JWT obtained from an introspection response
-      to impersonate the user whose claims are included in this JWT
-      at a OpenID Connect RP. 
+      syntactically similar. An attacker could therefore attempt to impersonate
+      an end-user at a OpenID Connect Relying Party by passing the JWT as an ID
+      token.</t>
       
-      Such an attack is treated and prevented like any other token substitution 
-      attack. The AS MUST include the claims <spanx style="verb">iss</spanx> and 
-      <spanx style="verb">aud</spanx> into every JWT introspection response. This 
-      allows every well behaving OpenID Connect RP to detect substitution by 
-      checking the <spanx style="verb">iss</spanx> and 
+      <t>Such an attack can be prevented like any other token substitution
+      attack. The authorization server MUST include the claims
+      <spanx style="verb">iss</spanx> and <spanx style="verb">aud</spanx> in
+      each JWT introspection response. This allows a correctly implemented
+      OpenID Connect Relying Party to detect substitution by checking the
+      <spanx style="verb">iss</spanx> and
       <spanx style="verb">aud</spanx> claims as described in Section 3.1.3.7. of 
-      <xref target="OpenID.Core"/>. RPs should also use and check the 
-      <spanx style="verb">nonce</spanx> parameter and claim to prevent 
+      <xref target="OpenID.Core"/>. Relying Parties SHOULD also use and check
+      the <spanx style="verb">nonce</spanx> parameter and claim to prevent
       token and code replay.</t>
       
       <t>Resource servers utilizing JWTs to represent structured access 
-      tokens could be susceptible to replay attacks as well. Resource servers
+      tokens could be susceptible to replay attacks. Resource servers
       should therefore apply proper counter measures against replay as 
       described in <xref target="I-D.ietf-oauth-security-topics"/>, 
       section 2.2.</t>
-      <t>JWT Confusion and other attacks on JWTs are discussed in detail 
-      in <xref target="I-D.ietf-oauth-jwt-bcp"/>.</t>
+      <t>JWT Confusion and other attacks involving JWTs are discussed in
+      <xref target="I-D.ietf-oauth-jwt-bcp"/>.</t>
            </section>
+
       <section anchor="token_data_leakage" title="Token Data Leakage">
-      <t>If the authorization server supports unauthenticated requests, an 
-      attacker could get access to token data required to be kept confidential. 
-      This attack can be prevented by either authenticating any request 
-      to the Token Introspection endpoint or by setting up the respective recipient 
-      for encrypted responses.</t>
-      <t>In the latter case, confidentiality is ensured by the
-      fact the legitimate recipient is able to decrypt the response, only. 
+      <t>If the authorization server supports unauthenticated requests an
+      attacker could potentially retrieve token data which must be kept
+      confidential. This attack can be prevented by either authenticating any
+      request to the Token Introspection endpoint or by setting up the
+      respective recipient for encrypted responses.</t>
+      <t>In the latter case, confidentiality is ensured by the fact that only
+      the legitimate recipient is able to decrypt the response.
       An attacker could try to circumvent this measure by requesting a plain 
-      JSON response, using an Accept header with content type set 
-      to "application/json" instead of "application/jwt". To cope with this attack 
-      angle, the authorization server MUST not server a request with the context 
-      type "application/json", if the respective resource server is set up for 
-      encryption (see also <xref target="jwt_response"/>).</t>
+      JSON response, using an Accept header with the content type set
+      to "application/json" instead of "application/jwt". To prevent this
+      attack the authorization server MUST not serve requests with content type
+      "application/json" if the resource server is set up to receive encrypted
+      responses (see also <xref target="jwt_response"/>).</t>
       </section>
 
     </section>
