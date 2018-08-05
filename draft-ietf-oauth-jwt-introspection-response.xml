@@ -272,20 +272,20 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
 		<t hangText="introspection_signing_alg_values_supported">
 		OPTIONAL. JSON array containing a list of the <xref target="RFC7515">JWS</xref> signing 
 		algorithms (<spanx style="verb">alg</spanx> values) 
-		<xref target="RFC7518">JWA</xref> supported by the Introspection 
-		Endpoint to sign the response.</t> 
+		<xref target="RFC7518">JWA</xref> supported by the introspection
+		endpoint to sign the response.</t>
 
 		<t hangText="introspection_encryption_alg_values_supported">
 		OPTIONAL. JSON array containing a list of the <xref target="RFC7516">JWE</xref> 
 		encryption algorithms (<spanx style="verb">alg</spanx> values) 
 		<xref target="RFC7518">JWA</xref> supported by the 
-		Introspection Endpoint to encrypt the response.</t>
+		introspection endpoint to encrypt the response.</t>
 
 		<t hangText="introspection_encryption_enc_values_supported">
 		OPTIONAL. JSON array containing a list of the <xref target="RFC7516">JWE</xref> encryption 
 		algorithms (<spanx style="verb">enc</spanx> values) 
-		<xref target="RFC7518">JWA</xref> supported by the Introspection 
-		Endpoint to encrypt the response.</t>		
+		<xref target="RFC7518">JWA</xref> supported by the introspection
+		endpoint to encrypt the response.</t>
 
         </list>
       </t>
@@ -295,17 +295,17 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
      <section anchor="Cross-JWT_Confusion" title="Cross-JWT Confusion">
       <t>JWT introspection responses and OpenID Connect ID Tokens are 
       syntactically similar. An attacker could therefore attempt to impersonate
-      an end-user at a OpenID Connect Relying Party by passing the JWT as an ID
+      an end-user at a OpenID Connect relying party by passing the JWT as an ID
       token.</t>
       
       <t>Such an attack can be prevented like any other token substitution
       attack. The authorization server MUST include the claims
       <spanx style="verb">iss</spanx> and <spanx style="verb">aud</spanx> in
       each JWT introspection response. This allows a correctly implemented
-      OpenID Connect Relying Party to detect substitution by checking the
+      OpenID Connect relying party to detect substitution by checking the
       <spanx style="verb">iss</spanx> and
       <spanx style="verb">aud</spanx> claims as described in Section 3.1.3.7. of 
-      <xref target="OpenID.Core"/>. Relying Parties SHOULD also use and check
+      <xref target="OpenID.Core"/>. Relying parties SHOULD also use and check
       the <spanx style="verb">nonce</spanx> parameter and claim to prevent
       token and code replay.</t>
       
@@ -322,7 +322,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       <t>If the authorization server supports unauthenticated requests an
       attacker could potentially retrieve token data which must be kept
       confidential. This attack can be prevented by either authenticating any
-      request to the Token Introspection endpoint or by setting up the
+      request to the token introspection endpoint or by setting up the
       respective recipient for encrypted responses.</t>
       <t>In the latter case, confidentiality is ensured by the fact that only
       the legitimate recipient is able to decrypt the response.
