@@ -265,7 +265,8 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
     <section anchor="server_metadata" title="Authorization Server Metadata">
       <t>Authorization servers SHOULD publish the supported algorithms for
       signing and encrypting the JWT of an introspection response by utilizing
-      OAuth Authorization Server Metadata parameters.</t>
+      <xref target="RFC8414">OAuth 2.0 Authorization Server Metadata</xref>
+      parameters.</t>
      <t>The following parameters are introduced by this specification: 
 		<list hangIndent="8" style="hanging">
 				
@@ -465,19 +466,14 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
   <back>
     <references title="Normative References">
       <?rfc include="reference.RFC.2119"?>
-
       <?rfc include="reference.RFC.2246"?>
-      
       <?rfc include="reference.RFC.7519"?>
-      
       <?rfc include="reference.RFC.7591"?>
-
       <?rfc include="reference.RFC.7662"?>
-      
       <?rfc include="reference.RFC.7518"?>
-      
       <?rfc include="reference.RFC.7515"?>
       <?rfc include="reference.RFC.7516"?>
+      <?rfc include="reference.RFC.8414"?>
       <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-discovery-10.xml"?>
       <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-jwt-bcp-03.xml'?>
       <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-security-topics-06.xml'?>
