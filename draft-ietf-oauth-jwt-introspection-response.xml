@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="04" month="August" year="2018" />
+    <date day="05" month="August" year="2018" />
 
     <!-- Meta-data Declarations -->
 
@@ -218,7 +218,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
 	  containing an Accept header with content type "application/json", it MUST
       refuse to serve the request and return an HTTP status code 400. This is
       done to prevent downgrading attacks to obtain token data intended for
-      release to legitimate recipients only (which possess a decryption
+      release to legitimate recipients only (which possess the respective decryption
       key).</t>
     </section>
     
@@ -227,7 +227,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       secure the JWT for a particular introspection response. This decision can
       be based on registered metadata parameters for the resource server,
       supplied via dynamic client registration with the resource server posing
-      as the client.</t>
+      as the client, as defined by this draft.</t>
       <t>The parameter names follow the pattern established by
       <xref target="OpenID.Registration">OpenID Connect
       Dynamic Client Registration</xref> for configuring signing and encryption
@@ -302,7 +302,10 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       <t>Such an attack can be prevented like any other token substitution
       attack. The authorization server MUST include the claims
       <spanx style="verb">iss</spanx> and <spanx style="verb">aud</spanx> in
-      each JWT introspection response. This allows a correctly implemented
+      each JWT introspection response, with the <spanx style="verb">iss</spanx> 
+      value set to the authorization server's issuer URL and the 
+      <spanx style="verb">aud</spanx> value set
+      to the resource server's identifier. This allows a correctly implemented
       OpenID Connect relying party to detect substitution by checking the
       <spanx style="verb">iss</spanx> and
       <spanx style="verb">aud</spanx> claims as described in Section 3.1.3.7. of 
@@ -338,7 +341,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
     </section>
     
     <section anchor="Acknowledgements" title="Acknowledgements">
-      <t>We would like to thank Petteri Stenius, Neil Madden, Filip Skokan, any Tony 
+      <t>We would like to thank Petteri Stenius, Neil Madden, Filip Skokan, and Tony 
       Nadalin for their valuable feedback.</t>
     </section>
 
