@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-oauth-jwt-introspection-response-00"
+<rfc category="std" docName="draft-ietf-oauth-jwt-introspection-response-01"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="05" month="August" year="2018" />
+    <date day="17" month="August" year="2018" />
 
     <!-- Meta-data Declarations -->
 
@@ -166,8 +166,9 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
 	  <spanx style="verb">iss</spanx> and <spanx style="verb">aud</spanx> in order to 
 	  prevent misuse of the JWT as ID or access token 
 	  (see <xref target="Cross-JWT_Confusion"/>).</t>
-      <t>This JWT may furthermore contain all other claims described in Section 2.2. of
-      <xref target="RFC7662"/>.</t>
+      <t>This JWT MAY furthermore contain all other claims described in Section 2.2. of
+      <xref target="RFC7662"/> and beyond (e.g. as defined in 
+      <xref target="OpenID.Core"/>).</t>
       <t>The following is a non-normative example response 
       (with line breaks for display purposes only):</t>
 	  <t>
@@ -215,11 +216,11 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       MUST be a Nested JWT, as defined in <xref target="RFC7519">JWT</xref>.</t>
 	  <t>Note: If the resource server policy requires a signed and encrypted
       response and the authorization server receives an unauthenticated request
-	  containing an Accept header with content type "application/json", it MUST
+	  containing an Accept header with content type other than "application/jwt", it MUST
       refuse to serve the request and return an HTTP status code 400. This is
       done to prevent downgrading attacks to obtain token data intended for
-      release to legitimate recipients only (which possess the respective decryption
-      key).</t>
+      release to legitimate recipients only 
+      (see <xref target="token_data_leakage"/>).</t>
     </section>
     
     <section anchor="client_metadata" title="Client Metadata">
@@ -239,7 +240,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       	  <spanx style="verb">alg</spanx> algorithm 
       	  <xref target="RFC7518">JWA</xref> REQUIRED for signing introspection responses. If
       	  this is specified, the response will be signed using JWS and the 
-      	  configured algorithm. The default, if omitted, is RSA SHA-256.</t>
+      	  configured algorithm. The default, if omitted, is <spanx style="verb">RS256</spanx>.</t>
           <t hangText="introspection_encrypted_response_alg"> 
           <xref target="RFC7516">JWE</xref> <spanx style="verb">alg</spanx> algorithm 
           <xref target="RFC7518">JWA</xref> 
@@ -332,10 +333,10 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       the legitimate recipient is able to decrypt the response.
       An attacker could try to circumvent this measure by requesting a plain 
       JSON response, using an Accept header with the content type set
-      to "application/json" instead of "application/jwt". To prevent this
+      to, for example, "application/json" instead of "application/jwt". To prevent this
       attack the authorization server MUST not serve requests with content type
-      "application/json" if the resource server is set up to receive encrypted
-      responses (see also <xref target="jwt_response"/>).</t>
+      other than "application/jwt" if the resource server is set up to receive 
+      encrypted responses (see also <xref target="jwt_response"/>).</t>
       </section>
 
     </section>
@@ -537,6 +538,13 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
     
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
+	  <t>-01<list style="symbols">
+          <t>adapted wording to preclude any accept header except "application/jwt" if 
+          encrypted responses are required</t>
+          <t>use registered alg value RS256 for default signing algorithm</t>
+          <t>added text on claims in the token introspection response</t>
+        </list>
+      </t>        
 	  <t>-00<list style="symbols">
           <t>initial version of the WG draft</t>   
           <t>defined default signing algorithm</t>
