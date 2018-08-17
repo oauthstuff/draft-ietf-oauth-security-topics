@@ -302,7 +302,7 @@ Host: server.somesite.example]]></artwork>
 	  </t>
 	  <t>Note: This attack will not directly work for confidential clients, since the 
 	  code exchange requires authentication with the legitimate client's 
-	  secret. The attacker will need to utilize the legitimate client to 
+	  secret. The attacker will need to impersonate or utilize the legitimate client to 
 	  redeem the code (e.g., by performing a code injection attack). This kind 
 	  of injections is covered in 
 	  Section <xref format="title" target="code_injection"/>.</t>
