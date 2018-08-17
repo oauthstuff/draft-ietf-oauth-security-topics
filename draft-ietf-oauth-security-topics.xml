@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="11" month="June" year="2018" />
+    <date day="17" month="August" year="2018" />
 
     <!-- Meta-data Declarations -->
 
@@ -158,7 +158,7 @@
 	  as e-Mail or OpenID Connect) or serves as a frontend to a particular tenant in a 
 	  multi-tenancy.
 	  Extensions of OAuth, such as <xref target="RFC7591"/> and 
-	  <xref target="I-D.ietf-oauth-discovery"/> were developed in order to support
+	  <xref target="RFC8414"/> were developed in order to support
 	  the usage of OAuth in dynamic scenarios.
 	  As a challenge to the community, such usage scenarios open up new attack angles, 
 	  which are discussed in this document.</t>	  
@@ -218,12 +218,42 @@
 	
     </section>
     
-    <section title="Token Replay Prevention">
-    <t>Authorization servers shall use TLS-based methods for sender constrained access 
+    <section anchor="token_replay_prevention" title="Token Replay Prevention">
+    <t>Authorization servers SHOULD use TLS-based methods for sender constrained access 
     tokens as described in  <xref target="pop_tokens"/>, such as token 
     binding <xref target="I-D.ietf-oauth-token-binding"></xref> or Mutual TLS for 
     OAuth 2.0 <xref target="I-D.ietf-oauth-mtls"></xref> in order to prevent token replay. 
     It is also recommend to use end-to-end TLS whenever possible.</t>
+    </section>
+    
+    <section title="Access Token Privilege Restriction">
+    <t>The privileges associated with an access token SHOULD be restricted to the
+    minimum required for the particular application or use case. This prevents
+    clients from exceeding the privileges authorized by the resource owner. It also
+    prevents users from exceeding their privileges authorized by the respective
+    security policy. Privilege restrictions also limit the impact of token leakage
+    although more effective counter-measures are described in 
+    <xref target="token_replay_prevention"></xref>.</t>
+    <t>In particular, access tokens SHOULD be restricted to a certain resource servers, 
+    preferable to a single resource server. To put this into effect, the authorization server
+    associates the access token with certain resource servers and every resource server 
+    is obliged to verify for every request, whether the access token sent with that request 
+    was meant to be used for that particular resource server.  If not, the resource server 
+    MUST refuse to serve the respective request. Clients and authorization servers MAY 
+    utilize the parameters 
+    <spanx style="verb">scope</spanx> or <spanx style="verb">resource</spanx> as 
+    specified in <xref target="RFC6749"/> and 
+    <xref target="I-D.ietf-oauth-resource-indicators"/>, respectively, to determine
+    the resource server they want to access.</t>
+    <t>Additionally, access tokens SHOULD be restricted to certain resources and actions
+    on resource servers or resources. To put this into effect, the authorization server 
+    associates the access token with the respective resource and actions and every resource 
+    server is obliged to verify for every request, whether the access token sent with that 
+    request was meant to be used for that particular action on the particular resource.  
+    If not, the resource server must refuse to serve the respective request.  
+    Clients and authorization servers MAY utilize the 
+    parameter <spanx style="verb">scope</spanx> as specified in <xref target="RFC6749"/> 
+    to determine those resources and/or actions.</t>
     </section>
     
    </section>
@@ -1012,7 +1042,7 @@ Pragma: no-cache
 		unknown resource server URLs.</t>
 		<t>The client needs to tell the authorization server, at which URL it will
 		use the access token it is requesting. It could use the mechanism proposed
-		<xref target="I-D.campbell-oauth-resource-indicators"></xref> or
+		<xref target="I-D.ietf-oauth-resource-indicators"></xref> or
 		encode the information in the scope value.</t>
 		<t>Instead of the URL, it is also possible to utilize the fingerprint of
 		the resource server's X.509 certificate as audience value. This variant would
@@ -1170,7 +1200,7 @@ Pragma: no-cache
 	
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>We would like to thank Jim Manico, Phil Hunt, Nat Sakimura, Christian Mainka, 
-      Doug McDorman, and Brian Campbell for their valuable feedback.</t>
+      Doug McDorman, Johan Peeters, and Brian Campbell for their valuable feedback.</t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
@@ -1196,15 +1226,15 @@ Pragma: no-cache
     </references>
     <references title="Informative References">
     <?rfc include="reference.RFC.7636"?>       
-    <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.bradley-oauth-jwt-encoded-state.xml'?>    
-    <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-discovery.xml'?>    
+    <?rfc include="reference.RFC.8414"?>    
+    <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.bradley-oauth-jwt-encoded-state.xml'?>       
     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-token-binding.xml'?>
     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-mtls.xml'?>
     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-signed-http-request.xml'?>
     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.sakimura-oauth-jpop.xml'?>
     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-tokbind-https.xml'?>
     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-pop-key-distribution'?>
-    <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.campbell-oauth-resource-indicators'?>
+    <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-resource-indicators'?>
     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-jwsreq'?> 
     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-mix-up-mitigation'?> 
     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-closing-redirectors'?>     
@@ -1396,6 +1426,8 @@ Pragma: no-cache
       <t>-07 <list style="symbols">
       	  <t>incorporated findings of Doug McDorman</t>
       	  <t>added section on HTTP status codes for redirects</t>
+      	  <t>added new section on access token privilege restriction
+      	  based on comments from Johan Peeters</t>
         </list> 
       </t>
       <t>-06 <list style="symbols">
