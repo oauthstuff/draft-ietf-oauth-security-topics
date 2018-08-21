@@ -234,8 +234,8 @@
     security policy. Privilege restrictions also limit the impact of token leakage
     although more effective counter-measures are described in 
     <xref target="token_replay_prevention"></xref>.</t>
-    <t>In particular, access tokens SHOULD be restricted to a certain resource servers, 
-    preferable to a single resource server. To put this into effect, the authorization server
+    <t>In particular, access tokens SHOULD be restricted to certain resource servers, 
+    preferably to a single resource server. To put this into effect, the authorization server
     associates the access token with certain resource servers and every resource server 
     is obliged to verify for every request, whether the access token sent with that request 
     was meant to be used for that particular resource server.  If not, the resource server 
