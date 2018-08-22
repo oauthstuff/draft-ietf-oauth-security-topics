@@ -334,7 +334,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       An attacker could try to circumvent this measure by requesting a plain 
       JSON response, using an Accept header with the content type set
       to, for example, "application/json" instead of "application/jwt". To prevent this
-      attack the authorization server MUST not serve requests with content type
+      attack the authorization server MUST NOT serve requests with content type
       other than "application/jwt" if the resource server is set up to receive 
       encrypted responses (see also <xref target="jwt_response"/>).</t>
       </section>
