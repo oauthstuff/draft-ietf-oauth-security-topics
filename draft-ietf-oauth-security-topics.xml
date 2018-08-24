@@ -130,7 +130,7 @@
 	  deployments, the following challenges could be observed:
 	  <list style="symbols">
 	  <t>OAuth implementations are being attacked through known implementation 
-	  weaknesses and anti-patterns (XSRF, referrer header). Although most of these
+	  weaknesses and anti-patterns (CSRF, referrer header). Although most of these
 	  threats are discussed in the 
 	  <xref target="RFC6819">OAuth 2.0 Threat Model and Security Considerations</xref>, 
 	  continued exploitation 
@@ -187,8 +187,8 @@
 	by the <xref target="owasp">OWASP</xref>.</t>
 	<t>Clients shall ensure to only process redirect responses of the OAuth authorization 
 	server they send the respective request to and in the same user agent this request 
-	was initiated in. In particular, clients shall implement appropriate XSRF prevention
-	by utilizing one-time use XSRF tokens carried in the <spanx style="verb">state</spanx> parameter, which are 
+	was initiated in. In particular, clients shall implement appropriate CSRF prevention
+	by utilizing one-time use CSRF tokens carried in the <spanx style="verb">state</spanx> parameter, which are 
 	securely bound to the user agent. Moreover, the client shall memorize which 
 	authorization server it sent an authorization request to and bind this information 
 	to the user agent and ensure any sub-sequent 
@@ -198,7 +198,7 @@
 	mentioned information regarding the AS the client sent the request to helps to detect
 	mix-up attacks.</t>
 	<t>Note: <xref target="I-D.bradley-oauth-jwt-encoded-state"></xref> gives advice 
-	on how to implement XSRF prevention and AS matching using signed JWTs in the 
+	on how to implement CSRF prevention and AS matching using signed JWTs in the 
 	<spanx style="verb">state</spanx> parameter.</t>
 	<t>Clients shall use <xref target="RFC7636">PKCE</xref> in order to (with the help 
 	of the authorization server) detect and prevent attempts to inject (replay) 
