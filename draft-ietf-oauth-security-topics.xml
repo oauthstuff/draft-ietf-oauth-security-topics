@@ -174,7 +174,7 @@
     <t>This section describes the set of security mechanisms the OAuth working group 
     recommendeds to OAuth implementers.</t>
 
-    <section anchor="rec_redirect" title="Protecting redirect-based flows">
+    <section anchor="rec_redirect" title="Protecting Redirect-Based Flows">
 
     <t>Authorization servers shall utilize exact matching of client redirect URIs against 
     pre-registered URIs. This measure contributes to the prevention of leakage of 
@@ -264,7 +264,7 @@
        along with potential countermeasures. This section complements and enhances the 
        description given in <xref target="RFC6819"/>.
      </t>
-	  <section title="Insufficient redirect URI validation">
+	  <section title="Insufficient Redirect URI Validation">
 	  <t>Some authorization servers allow clients to register redirect URI 
 	  patterns instead of 
 	  complete redirect URIs. In those cases, the authorization server, 
