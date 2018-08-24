@@ -204,13 +204,13 @@
 	of the authorization server) detect and prevent attempts to inject (replay) 
 	authorization codes 
 	into the authorization response. The PKCE challenges must be transaction-specific and 
-	securely bound to the user agent, in which the transaction was started. OpenID
+	securely bound to the user agent in which the transaction was started. OpenID
 	Connect clients may use the <spanx style="verb">nonce</spanx> parameter of the 
 	OpenID Connect authentication request as specified in <xref target="OpenID"/>
 	in conjunction with the corresponding ID Token 
 	claim for the same purpose.</t>
 	<t>Note: although PKCE so far was recommended as 
-	mechanism to protect native apps, this advice applies to all kinds of OAuth clients, 
+	a mechanism to protect native apps, this advice applies to all kinds of OAuth clients, 
 	including web applications.</t>
 	<t>Authorization servers shall consider the recommendations given in 
 	<xref target="RFC6819"/>, Section 4.4.1.1, on authorization code replay 
@@ -223,7 +223,7 @@
     tokens as described in  <xref target="pop_tokens"/>, such as token 
     binding <xref target="I-D.ietf-oauth-token-binding"></xref> or Mutual TLS for 
     OAuth 2.0 <xref target="I-D.ietf-oauth-mtls"></xref> in order to prevent token replay. 
-    It is also recommend to use end-to-end TLS whenever possible.</t>
+    It is also recommended to use end-to-end TLS whenever possible.</t>
     </section>
     
     <section title="Access Token Privilege Restriction">
