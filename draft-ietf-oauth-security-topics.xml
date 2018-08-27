@@ -1022,7 +1022,7 @@ Pragma: no-cache
 		<t>An audience restriction essentially restricts the resource server a 
 		particular access token can be used at. The authorization server associates
 		the access token with a certain resource server and every resource server
-		is obliged to verify for every request, whether the access token send with
+		is obliged to verify for every request, whether the access token sent with
 		that request was meant to be used at the particular resource server. If
 		not, the resource server must refuse to serve the respective request. In
 		the general case, audience restrictions limit the impact of a token 
