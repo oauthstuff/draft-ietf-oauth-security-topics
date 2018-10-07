@@ -35,7 +35,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="bcp" docName="draft-ietf-oauth-security-topics-07"
+<rfc category="bcp" docName="draft-ietf-oauth-security-topics-08"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="24" month="August" year="2018" />
+    <date day="07" month="October" year="2018" />
 
     <!-- Meta-data Declarations -->
 
@@ -176,46 +176,61 @@
 
     <section anchor="rec_redirect" title="Protecting Redirect-Based Flows">
 
-    <t>Authorization servers shall utilize exact matching of client redirect URIs against 
+    <t>Authorization servers SHALL utilize exact matching of client redirect URIs against 
     pre-registered URIs. This measure contributes to the prevention of leakage of 
     authorization codes and access tokens (depending on the grant type). It also helps
     to detect mix-up attacks.</t>
-	<t>Clients shall avoid any redirects or forwards which can be parameterized by 
+	<t>Clients SHALL avoid any redirects or forwards which can be parameterized by 
 	URI query parameters, in order to provide a further layer of defence against 
 	token leakage. If there is a need for this kind of redirects, clients are advised 
 	to implement appropriate countermeasures against open redirection, e.g., as described
 	by the <xref target="owasp">OWASP</xref>.</t>
-	<t>Clients shall ensure to only process redirect responses of the OAuth authorization 
+	<t>Clients SHALL ensure to only process redirect responses of the OAuth authorization 
 	server they send the respective request to and in the same user agent this request 
-	was initiated in. In particular, clients shall implement appropriate CSRF prevention
-	by utilizing one-time use CSRF tokens carried in the <spanx style="verb">state</spanx> parameter, which are 
-	securely bound to the user agent. Moreover, the client shall memorize which 
+	was initiated in. In particular, clients SHALL implement appropriate CSRF prevention
+	by utilizing one-time use CSRF tokens carried in the 
+	<spanx style="verb">state</spanx> parameter, which are 
+	securely bound to the user agent. Moreover, the client SHALL memorize which 
 	authorization server it sent an authorization request to and bind this information 
 	to the user agent and ensure any sub-sequent 
 	messages are sent to the same authorization server. Furthermore, clients 
-	should use AS-specific redirect URIs as a means to 
+	SHOULD use AS-specific redirect URIs as a means to 
 	identify the AS a particular response came from. Matching this with the before 
 	mentioned information regarding the AS the client sent the request to helps to detect
 	mix-up attacks.</t>
 	<t>Note: <xref target="I-D.bradley-oauth-jwt-encoded-state"></xref> gives advice 
 	on how to implement CSRF prevention and AS matching using signed JWTs in the 
 	<spanx style="verb">state</spanx> parameter.</t>
-	<t>Clients shall use <xref target="RFC7636">PKCE</xref> in order to (with the help 
+	<section title="Authorization Code Grant">
+	<t>Clients utilizing the authorization grant type SHALL use 
+	<xref target="RFC7636">PKCE</xref> in order to (with the help 
 	of the authorization server) detect and prevent attempts to inject (replay) 
 	authorization codes 
 	into the authorization response. The PKCE challenges must be transaction-specific and 
 	securely bound to the user agent in which the transaction was started. OpenID
-	Connect clients may use the <spanx style="verb">nonce</spanx> parameter of the 
+	Connect clients MAY use the <spanx style="verb">nonce</spanx> parameter of the 
 	OpenID Connect authentication request as specified in <xref target="OpenID"/>
 	in conjunction with the corresponding ID Token 
 	claim for the same purpose.</t>
 	<t>Note: although PKCE so far was recommended as 
 	a mechanism to protect native apps, this advice applies to all kinds of OAuth clients, 
 	including web applications.</t>
-	<t>Authorization servers shall consider the recommendations given in 
+	<t>Authorization servers SHALL consider the recommendations given in 
 	<xref target="RFC6819"/>, Section 4.4.1.1, on authorization code replay 
 	prevention.</t>
-	
+	</section>
+	<section title="Implicit Grant">
+	<t>Clients utilizing the implicit grant SHALL either use  
+	<xref target="I-D.ietf-oauth-token-binding"></xref> in order to allow the 
+	RS to detect and prevent attempts to inject (replay) access tokens 
+	or consider use of alternative grant types supporting injection detection, such as
+	<list style="symbols">
+	<t>Authorization code grant type in conjunction with PKCE as specified above</t>
+	<t>OpenID Connect with response type "token id_token" and the 
+	<spanx style="verb">nonce</spanx> parameter</t>
+	</list>
+	</t>
+	</section>
     </section>
     
     <section anchor="token_replay_prevention" title="Token Replay Prevention">
@@ -1237,8 +1252,7 @@ Pragma: no-cache
     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-resource-indicators'?>
     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-jwsreq'?> 
     <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-mix-up-mitigation'?> 
-    <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-closing-redirectors'?>     
-    
+    <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-oauth-closing-redirectors'?>   
      
     <?rfc include="reference.RFC.7800"?>
     
@@ -1423,6 +1437,11 @@ Pragma: no-cache
     
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
+      <t>-08 <list style="symbols">
+      	  <t>added recommendations re implicit and token injection</t>
+      	  <t>uppercased key words in Section 2 according to RFC 2119</t>
+        </list> 
+      </t>
       <t>-07 <list style="symbols">
       	  <t>incorporated findings of Doug McDorman</t>
       	  <t>added section on HTTP status codes for redirects</t>
