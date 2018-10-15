@@ -1439,7 +1439,7 @@ Pragma: no-cache
       <t>[[ To be removed from the final specification ]]</t>
       <t>-08 <list style="symbols">
       	  <t>added recommendations re implicit and token injection</t>
-      	  <t>uppercased key words in Section 2 according with RFC 2119</t>
+      	  <t>uppercased key words in Section 2 according to RFC 2119</t>
         </list> 
       </t>
       <t>-07 <list style="symbols">
