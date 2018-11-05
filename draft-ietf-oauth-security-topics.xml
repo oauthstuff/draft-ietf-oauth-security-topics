@@ -35,7 +35,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="bcp" docName="draft-ietf-oauth-security-topics-08"
+<rfc category="bcp" docName="draft-ietf-oauth-security-topics-09"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -56,7 +56,7 @@
 
     <author fullname="Torsten Lodderstedt" initials="T." role="editor"
             surname="Lodderstedt">
-      <organization>YES.com AG</organization>
+      <organization>yes.com</organization>
 
       <address>
         <email>torsten@lodderstedt.net</email>
@@ -79,13 +79,13 @@
     </author>
     
     <author fullname="Daniel Fett" initials="D." surname="Fett">
-      <organization>YES.com AG</organization>
+      <organization>yes.com</organization>
       <address>
         <email>mail@danielfett.de</email>
       </address>
     </author>
 
-    <date day="15" month="October" year="2018" />
+    <date day="05" month="November" year="2018" />
 
     <!-- Meta-data Declarations -->
 
@@ -220,16 +220,12 @@
 	prevention.</t>
 	</section>
 	<section title="Implicit Grant">
-	<t>Clients utilizing the implicit grant SHALL either use  
-	<xref target="I-D.ietf-oauth-token-binding"></xref> in order to allow the 
-	RS to detect and prevent attempts to inject (replay) access tokens 
-	or consider use of alternative grant types supporting injection detection, such as
-	<list style="symbols">
-	<t>Authorization code grant type in conjunction with PKCE as specified above</t>
-	<t>OpenID Connect with response type "token id_token" and the 
-	<spanx style="verb">nonce</spanx> parameter</t>
-	</list>
-	</t>
+	<t>Clients SHOULD NOT use the response type "token" (aka implicit grant) in order
+        to avoid issues regarding malicoius token reuse.
+    Clients SHOULD instead use the response type "code" (aka authorization code
+    grant type) as specified above.</t>
+	<t>OpenID Connect clients MAY also use response type "token id_token" in combination
+    with the <spanx style="verb">nonce</spanx> parameter.</t>
 	</section>
     </section>
     
@@ -1437,6 +1433,10 @@ Pragma: no-cache
     
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
+      <t>-09 <list style="symbols">
+        <t>changed text to recommend not to use implicit but code</t>
+      </list>
+      </t>
       <t>-08 <list style="symbols">
       	  <t>added recommendations re implicit and token injection</t>
       	  <t>uppercased key words in Section 2 according to RFC 2119</t>
