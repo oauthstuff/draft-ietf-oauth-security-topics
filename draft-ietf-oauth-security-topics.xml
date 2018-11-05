@@ -201,7 +201,7 @@
 	<t>Note: <xref target="I-D.bradley-oauth-jwt-encoded-state"></xref> gives advice 
 	on how to implement CSRF prevention and AS matching using signed JWTs in the 
 	<spanx style="verb">state</spanx> parameter.</t>
-	<section title="Authorization Code Grant">
+	<section anchor="ac" title="Authorization Code Grant">
 	<t>Clients utilizing the authorization grant type SHALL use 
 	<xref target="RFC7636">PKCE</xref> in order to (with the help 
 	of the authorization server) detect and prevent attempts to inject (replay) 
@@ -220,12 +220,13 @@
 	prevention.</t>
 	</section>
 	<section title="Implicit Grant">
-	<t>Clients SHOULD NOT use the response type "token" (aka implicit grant) in order
-        to avoid issues regarding malicoius token reuse.
-    Clients SHOULD instead use the response type "code" (aka authorization code
-    grant type) as specified above.</t>
-	<t>OpenID Connect clients MAY also use response type "token id_token" in combination
-    with the <spanx style="verb">nonce</spanx> parameter.</t>
+        <t>In order to avoid issues regarding access token leakage and malicious
+            access token reuse, Clients SHOULD NOT use any response type causing
+            the authorization server to issue an access token in the
+            authorization response. Examples include the response type "token"
+            (aka implicit grant).</t>
+    <t>Clients SHOULD instead use the response type "code" (aka authorization code
+    grant type) as specified in <xref target="ac"/>.</t>
 	</section>
     </section>
     
