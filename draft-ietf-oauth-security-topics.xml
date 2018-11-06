@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="05" month="November" year="2018" />
+    <date day="06" month="November" year="2018" />
 
     <!-- Meta-data Declarations -->
 
@@ -220,11 +220,17 @@
 	prevention.</t>
 	</section>
 	<section title="Implicit Grant">
-        <t>In order to avoid issues regarding access token leakage and malicious
-            access token reuse, Clients SHOULD NOT use any response type causing
-            the authorization server to issue an access token in the
-            authorization response. Examples include the response type "token"
-            (aka implicit grant).</t>
+        <t>The implicit grant (response type "token") and other response types causing
+            the authorization server
+        to issue access tokens in the authorization response are vulerable to
+        access token leakage and access token replay as decribed in Sections
+        <xref target="insufficient_uri_validation"/>,
+            <xref target="credential_leakage_referrer"/>,
+            <xref target="browser_history"/>, and <xref target="access_token_injection"/>.</t>
+        <t>In order to avoid these issues,
+            Clients SHOULD NOT use the implicit grant and any other response
+            type causing the authorization server to issue an access token in the
+            authorization response.</t>
     <t>Clients SHOULD instead use the response type "code" (aka authorization code
     grant type) as specified in <xref target="ac"/>.</t>
 	</section>
@@ -276,7 +282,7 @@
        along with potential countermeasures. This section complements and enhances the 
        description given in <xref target="RFC6819"/>.
      </t>
-	  <section title="Insufficient Redirect URI Validation">
+	  <section anchor="insufficient_uri_validation" title="Insufficient Redirect URI Validation">
 	  <t>Some authorization servers allow clients to register redirect URI 
 	  patterns instead of 
 	  complete redirect URIs. In those cases, the authorization server, 
@@ -443,19 +449,24 @@ Host: server.somesite.example]]></artwork>
 	   <t>Servers on which callbacks are hosted must not expose open redirectors (see <xref target="Open.Redirection"/>).</t>
 	   <t>Clients may drop fragments via intermediary URLs with "fix fragments" 
 	   (see <xref target="fb_fragments"/>) to prevent the user agent from appending any unintended fragments.</t>
+       <t>Clients may use authorization code instead of response types causing access token issuance at the
+           authorization endpoint. This offers countermeaures against reuse of leaked credentials through
+       the exchange process with the authorization server and and token replay through certificate binding
+       of the access tokens.</t>
 	   </list>
 	   </t>
 	   <t>As an alternative to exact redirect URI matching, the AS could also authenticate clients, e.g., using 
 	   <xref target="I-D.ietf-oauth-jwsreq"/>.</t> 
 	   </section>
 	  </section> 
-	   <section title="Code or State Leakage from Client or AS via Referrer Headers">
-	     <t>Authorization codes or values of <spanx style="verb">state</spanx> can unintentionally
-	     be disclosed to attackers through the referrer header, by leaking either  from a client's
-	     web site or from an AS's web site.
+	   <section anchor="credential_leakage_referrer" title="Credential Leakage via Referrer Headers">
+	     <t>Authorization codes, Access Tokens or values of <spanx style="verb">state</spanx> can
+             unintentionally be disclosed to attackers through the referrer header, by leaking either
+             from a client's web site or from an AS's web site.
          </t>
+         <section title="Leakage from the OAuth client">
          <t>
-           Leakage from OAuth client: This requires that the client, as a result of a successful
+           This requires that the client, as a result of a successful
            authorization request, renders a page that
              </t>
              <t>
@@ -469,19 +480,26 @@ Host: server.somesite.example]]></artwork>
              <t>
              As soon as the browser navigates to the attacker's page or loads the 
              third-party content, the attacker receives the authorization response URL 
-             and can extract <spanx style="verb">code</spanx> or 
-             <spanx style="verb">state</spanx>.
+             and can extract <spanx style="verb">code</spanx>, <spanx style="verb">access token</spanx>,
+             or <spanx style="verb">state</spanx>.
              </t>
-             <t>Leakage from AS: In a similar way, an attacker can learn <spanx
+        </section>
+        <section title="Leakage from the Authorization Server">
+            <t>In a similar way, an attacker can learn <spanx
              style="verb">state</spanx> if the authorization endpoint at the authorization server
              contains links or third-party content as above.</t>
-             <t>Consequences: An attacker that learns a valid code through a referrer header can
-             perform the same attacks as described in Section <xref
-             target="insufficient_uri_validation_acg"/>. If the attacker learns <spanx
+        </section>
+        <section title="Consequences">
+             <t>An attacker that learns a valid code or access token through a
+                 referrer header can perform the attacks as described in Section <xref
+                 target="insufficient_uri_validation_acg"/>, <xref
+                 target="code_injection"/>, and <xref
+                 target="access_token_injection"/>. If the attacker learns <spanx
              style="verb">state</spanx>, the CSRF protection achieved by using <spanx
              style="verb">state</spanx> is lost, resulting in CSRF attacks as described in <xref
              target="RFC6819"/>, Section 4.4.1.8..
              </t>
+       </section>
              
 	   <section title="Proposed Countermeasures">
 	     <t>The page rendered as a result of the OAuth authorization response and the 
@@ -510,14 +528,18 @@ Host: server.somesite.example]]></artwork>
                  applying an appropriate Referrer Policy <xref target="webappsec-referrer-policy"/> 
                  to the document (either as part of the "referrer" meta attribute or by 
                  setting a Referrer-Policy header).</t>
-	         <t>Use form post response mode instead of redirect for authorization 
-                 response (see <xref target="oauth-v2-form-post-response-mode"/>).</t>
+             <t>Use authorization code instead of response types causing access token issuance
+                 from the authorization endpoint. This provides countermeasures against
+                 leakage on the OAuth protocol level through the code exchange process with
+                 the authorization server.</t>
+	         <t>Additionally, one might use the form post response mode instead of redirect
+                 for authorization response (see <xref target="oauth-v2-form-post-response-mode"/>).</t>
                </list>
 	     </t>
 	   </section>
            
 	  </section>
-	  <section title="Attacks through the Browser History">
+       <section anchor="browser_history" title="Attacks through the Browser History">
             <t>
               Authorization codes and access tokens can end up in the browser's history of visited URLs, enabling the attacks described in the following.
             </t>
@@ -680,7 +702,7 @@ Host: server.somesite.example]]></artwork>
       </section>
 	  </section>
 	  
-	  <section title="Code Injection" anchor="code_injection">
+	  <section anchor="code_injection" title="Authorization Code Injection">
 	  <t>In such an attack, the adversary attempts to inject a stolen authorization 
 	  code into a legitimate client on a device under his control. In the simplest 
 	  case, the attacker would want to use the code in his own client. But there
@@ -821,7 +843,31 @@ Host: server.somesite.example]]></artwork>
 		values.</t>
 	   </section>
 	   	  </section>
-	   	  
+      
+       <section anchor="access_token_injection" title="Access Token Injection">
+           <t>In such an attack, the adversary attempts to inject a stolen access token
+               into a legitimate client on a device under his control. This
+           will typically happen, if the wants to utilize a leaked token to impersonate
+           a user in a certain client.</t>
+           <t>To conduct the attack, the adversary starts a OAuth flow with the client
+               and modifies the authorization response by replacing the access token
+               issued by the authorization server or directly makes up an authorization
+               server response including the leaked access token. Since the response includes
+               the state value generated by the client for this particular transaction,
+               the client does not treat the response as an CSRF and will use the
+               access token injected by the attacker.</t>
+           <section title="Proposed Countermeasures">
+               <t>There is no way to detect such an injection
+                   attack on the OAuth protocol level, since the token is issued without
+                   any binding to the transaction
+                   or the particular user agent.</t>
+               <t>The recommendation is therefore to use the authorization code
+                   grant type instead of relying on response types issuing acess tokens
+               at the authorization endpoint. Code injection can be detected using one of
+               the countermeasures discussed in Section <xref target="code_injection"/>.</t>
+           </section>
+       </section>
+       
 	   <section title="Cross Site Request Forgery">
 	   <t>An attacker might attempt to inject a request to the redirect URI of the 
 	   legitimate client on the victim's device, e.g., to cause the client to access 
@@ -1436,6 +1482,9 @@ Pragma: no-cache
       <t>[[ To be removed from the final specification ]]</t>
       <t>-09 <list style="symbols">
         <t>changed text to recommend not to use implicit but code</t>
+        <t>added section on access token injection</t>
+        <t>reworked sections 3.1 through 3.3 to be more specific on
+        implicit grant issues</t>
       </list>
       </t>
       <t>-08 <list style="symbols">
