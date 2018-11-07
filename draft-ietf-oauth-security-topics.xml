@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="06" month="November" year="2018" />
+    <date day="07" month="November" year="2018" />
 
     <!-- Meta-data Declarations -->
 
@@ -223,7 +223,7 @@
         <t>The implicit grant (response type "token") and other response types causing
             the authorization server
         to issue access tokens in the authorization response are vulerable to
-        access token leakage and access token replay as decribed in Sections
+        access token leakage and access token replay as decribed in
         <xref target="insufficient_uri_validation"/>,
             <xref target="credential_leakage_referrer"/>,
             <xref target="browser_history"/>, and <xref target="access_token_injection"/>.</t>
@@ -232,7 +232,9 @@
             type causing the authorization server to issue an access token in the
             authorization response.</t>
     <t>Clients SHOULD instead use the response type "code" (aka authorization code
-    grant type) as specified in <xref target="ac"/>.</t>
+    grant type) as specified in <xref target="ac"/> or any other response type that
+        does not cause the authorization server to issue access tokens in the
+        authorization response.</t>
 	</section>
     </section>
     
@@ -447,11 +449,11 @@ Host: server.somesite.example]]></artwork>
 	   <t>Additional recommendations:
 	   <list style="symbols">
 	   <t>Servers on which callbacks are hosted must not expose open redirectors (see <xref target="Open.Redirection"/>).</t>
-	   <t>Clients may drop fragments via intermediary URLs with "fix fragments" 
+	   <t>Clients MAY drop fragments via intermediary URLs with "fix fragments"
 	   (see <xref target="fb_fragments"/>) to prevent the user agent from appending any unintended fragments.</t>
-       <t>Clients may use authorization code instead of response types causing access token issuance at the
-           authorization endpoint. This offers countermeaures against reuse of leaked credentials through
-       the exchange process with the authorization server and and token replay through certificate binding
+       <t>Clients SHOULD use the authorization code response type instead of response types causing access token issuance at the
+           authorization endpoint. This offers countermeasures against reuse of leaked credentials through
+       the exchange process with the authorization server and token replay through certificate binding
        of the access tokens.</t>
 	   </list>
 	   </t>
@@ -460,9 +462,12 @@ Host: server.somesite.example]]></artwork>
 	   </section>
 	  </section> 
 	   <section anchor="credential_leakage_referrer" title="Credential Leakage via Referrer Headers">
-	     <t>Authorization codes, Access Tokens or values of <spanx style="verb">state</spanx> can
+	     <t>Authorization codes or values of <spanx style="verb">state</spanx> can
              unintentionally be disclosed to attackers through the referrer header, by leaking either
-             from a client's web site or from an AS's web site.
+             from a client's web site or from an AS's web site. Note: even if specified otherwise in
+             <xref target="RFC2616"/>, section 14.36, the same may happen to access tokens conveyed in
+             URI fragments due to browser implementation issues as illustrated by
+             <xref target="bug.chromium">Chromium Issue 168213</xref>.
          </t>
          <section title="Leakage from the OAuth client">
          <t>
@@ -491,7 +496,7 @@ Host: server.somesite.example]]></artwork>
         </section>
         <section title="Consequences">
              <t>An attacker that learns a valid code or access token through a
-                 referrer header can perform the attacks as described in Section <xref
+                 referrer header can perform the attacks as described in <xref
                  target="insufficient_uri_validation_acg"/>, <xref
                  target="code_injection"/>, and <xref
                  target="access_token_injection"/>. If the attacker learns <spanx
@@ -646,7 +651,7 @@ Host: server.somesite.example]]></artwork>
           <t>Since the client still assumes that the code was issued by A-AS, it will try to redeem
           the code at A-AS's token endpoint.</t>
           <t>The attacker therefore obtains code and can either exchange the code for an access
-          token (for public clients) or perform a code injection attack as described in Section
+          token (for public clients) or perform a code injection attack as described in
           <xref target="code_injection"/>.</t>
         </list>
         </t>
@@ -846,15 +851,15 @@ Host: server.somesite.example]]></artwork>
       
        <section anchor="access_token_injection" title="Access Token Injection">
            <t>In such an attack, the adversary attempts to inject a stolen access token
-               into a legitimate client on a device under his control. This
-           will typically happen, if the wants to utilize a leaked token to impersonate
+               into a legitimate client on a device under his control. This will typically
+               happen if the attacker wants to utilize a leaked access token to impersonate
            a user in a certain client.</t>
-           <t>To conduct the attack, the adversary starts a OAuth flow with the client
+           <t>To conduct the attack, the adversary starts an OAuth flow with the client
                and modifies the authorization response by replacing the access token
                issued by the authorization server or directly makes up an authorization
                server response including the leaked access token. Since the response includes
                the state value generated by the client for this particular transaction,
-               the client does not treat the response as an CSRF and will use the
+               the client does not treat the response as a CSRF and will use the
                access token injected by the attacker.</t>
            <section title="Proposed Countermeasures">
                <t>There is no way to detect such an injection
@@ -864,7 +869,7 @@ Host: server.somesite.example]]></artwork>
                <t>The recommendation is therefore to use the authorization code
                    grant type instead of relying on response types issuing acess tokens
                at the authorization endpoint. Code injection can be detected using one of
-               the countermeasures discussed in Section <xref target="code_injection"/>.</t>
+               the countermeasures discussed in <xref target="code_injection"/>.</t>
            </section>
        </section>
        
@@ -1282,7 +1287,9 @@ Pragma: no-cache
 	  <?rfc include="reference.RFC.7231"?>
 	  <?rfc include="reference.RFC.7591"?>
     </references>
+    
     <references title="Informative References">
+         <?rfc include="reference.RFC.2616"?>
     <?rfc include="reference.RFC.7636"?>       
     <?rfc include="reference.RFC.8414"?>    
     <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.bradley-oauth-jwt-encoded-state.xml'?>       
@@ -1475,6 +1482,15 @@ Pragma: no-cache
         <format target="https://www.doc.ic.ac.uk/~maffeis/papers/jcs14.pdf" type="pdf" />
       </reference>
 
+      <reference anchor="bug.chromium" target="https://bugs.chromium.org/p/chromium/issues/detail?id=168213/">
+      <front>
+      <title>Referer header includes URL fragment when opening link using New Tab</title>
+      
+      <author></author>
+      
+      <date />
+      </front>
+      </reference>
       
     </references>
     
