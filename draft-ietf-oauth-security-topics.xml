@@ -187,25 +187,20 @@
 	codes and access tokens. If there is a strong need for this kind of redirects, clients 
 	are advised to implement appropriate countermeasures against open redirection, 
 	e.g., as described by the <xref target="owasp">OWASP</xref>.</t>
-	<t>Clients MUST only process redirect responses of the OAuth authorization 
-	server they send the respective request to and from the same user agent this authorization request 
-	was initiated with. Clients MUST prevent CSRF and ensure that each authorization response is only
-        accepted once. To achieve these goals, the following measures MUST be taken:
-          <list style="symbols">
-            <t>Clients MUST implement appropriate measures against CSRF and authorization response replay.
-	One-time use CSRF tokens carried in the <spanx style="verb">state</spanx> parameter, 
-	which are securely bound to the user agent, SHOULD be used for that purpose.
-            </t>
-            <t>Clients MUST memorize which authorization server they sent an authorization request 
-	to and bind this information to the user agent and ensure any sub-sequent 
-	messages are sent to the same authorization server.
-        Clients 
-	SHOULD use AS-specific redirect URIs as a means to 
-	identify the AS a particular response came from. Matching this with the aforementioned
-        information regarding the AS the client sent the request to helps to detect
-	    mix-up attacks.</t>
-          </list>
-        </t>
+	
+	<t>Clients MUST prevent CSRF and ensure that each authorization response is only
+        accepted once. One-time use CSRF tokens carried in the 
+        <spanx style="verb">state</spanx> parameter, which are securely bound to the 
+        user agent, SHOULD be used for that purpose.</t>
+        
+	<t>In order to prevent mix-up attacks, clients MUST only process redirect responses 
+	of the OAuth authorization server they send the respective request to and from the 
+	same user agent this authorization request was initiated with. Clients MUST memorize 
+	which authorization server they sent an authorization request to and bind this 
+	information to the user agent and ensure any sub-sequent messages are sent to the 
+	same authorization server. Clients SHOULD use AS-specific redirect URIs as a means 
+	to identify the AS a particular response came from.</t>
+ 
 	<t>Note: <xref target="I-D.bradley-oauth-jwt-encoded-state"></xref> gives advice 
 	on how to implement CSRF prevention and AS matching using signed JWTs in the 
 	<spanx style="verb">state</spanx> parameter.</t>
