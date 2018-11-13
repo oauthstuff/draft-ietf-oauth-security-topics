@@ -35,7 +35,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="bcp" docName="draft-ietf-oauth-security-topics-09"
+<rfc category="bcp" docName="draft-ietf-oauth-security-topics-10"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="07" month="November" year="2018" />
+    <date day="13" month="November" year="2018" />
 
     <!-- Meta-data Declarations -->
 
@@ -103,6 +103,8 @@
     <keyword>security</keyword>
 
     <keyword>oauth2</keyword>
+    
+    <keyword>best current practice</keyword>
 
     <!--
 			Keywords will be incorporated into HTML output files in a meta tag
@@ -112,7 +114,7 @@
 		-->
 
     <abstract>
-      <t>This document describes best current security practices for OAuth 2.0.
+      <t>This document describes best current security practice for OAuth 2.0.
       It updates and extends the OAuth 2.0 Security Threat Model to incorporate
       practical experiences gathered since OAuth 2.0 was published and covers
       new threats relevant due to the broader application of OAuth 2.0.</t>
@@ -176,24 +178,23 @@
 
     <section anchor="rec_redirect" title="Protecting Redirect-Based Flows">
 
-    <t>Authorization servers SHALL utilize exact matching of client redirect URIs against 
+    <t>Authorization servers MUST utilize exact matching of client redirect URIs against 
     pre-registered URIs. This measure contributes to the prevention of leakage of 
     authorization codes and access tokens (depending on the grant type). It also helps
     to detect mix-up attacks.</t>
-	<t>Clients SHALL avoid any redirects or forwards which can be parameterized by 
-	URI query parameters, in order to provide a further layer of defence against 
-	token leakage. If there is a need for this kind of redirects, clients are advised 
-	to implement appropriate countermeasures against open redirection, e.g., as described
-	by the <xref target="owasp">OWASP</xref>.</t>
-	<t>Clients SHALL ensure to only process redirect responses of the OAuth authorization 
+	<t>Clients SHOULD avoid forwarding the user’s browser to a value from a uri 
+	query parameter since such a function could be utilized to exfiltrate authorization 
+	codes and access tokens. If there is a strong need for this kind of redirects, clients 
+	are advised to implement appropriate countermeasures against open redirection, 
+	e.g., as described by the <xref target="owasp">OWASP</xref>.</t>
+	<t>Clients MUST only process redirect responses of the OAuth authorization 
 	server they send the respective request to and in the same user agent this request 
-	was initiated in. In particular, clients SHALL implement appropriate CSRF prevention
-	by utilizing one-time use CSRF tokens carried in the 
-	<spanx style="verb">state</spanx> parameter, which are 
-	securely bound to the user agent. Moreover, the client SHALL memorize which 
-	authorization server it sent an authorization request to and bind this information 
-	to the user agent and ensure any sub-sequent 
-	messages are sent to the same authorization server. Furthermore, clients 
+	was initiated in. In particular, clients MUST implement appropriate CSRF prevention.
+	One-time use CSRF tokens carried in the <spanx style="verb">state</spanx> parameter, 
+	which are securely bound to the user agent, SHOULD be used for that purpose. Moreover, 
+	the client MUST memorize which authorization server it sent an authorization request 
+	to and bind this information to the user agent and ensure any sub-sequent 
+	messages are sent to the same authorization server. Clients 
 	SHOULD use AS-specific redirect URIs as a means to 
 	identify the AS a particular response came from. Matching this with the before 
 	mentioned information regarding the AS the client sent the request to helps to detect
@@ -202,7 +203,7 @@
 	on how to implement CSRF prevention and AS matching using signed JWTs in the 
 	<spanx style="verb">state</spanx> parameter.</t>
 	<section anchor="ac" title="Authorization Code Grant">
-	<t>Clients utilizing the authorization grant type SHALL use 
+	<t>Clients utilizing the authorization grant type MUST use 
 	<xref target="RFC7636">PKCE</xref> in order to (with the help 
 	of the authorization server) detect and prevent attempts to inject (replay) 
 	authorization codes 
@@ -215,26 +216,29 @@
 	<t>Note: although PKCE so far was recommended as 
 	a mechanism to protect native apps, this advice applies to all kinds of OAuth clients, 
 	including web applications.</t>
-	<t>Authorization servers SHALL consider the recommendations given in 
+	<t>Authorization servers MUST bind authorization codes to a certain client and 
+	authenticate it using an appropriate mechanism (e.g. client credentials or PKCE).</t>
+	<t>Authorization SHOULD furthermore consider the recommendations given in 
 	<xref target="RFC6819"/>, Section 4.4.1.1, on authorization code replay 
 	prevention.</t>
 	</section>
 	<section title="Implicit Grant">
-        <t>The implicit grant (response type "token") and other response types causing
-            the authorization server
-        to issue access tokens in the authorization response are vulerable to
-        access token leakage and access token replay as decribed in
-        <xref target="insufficient_uri_validation"/>,
-            <xref target="credential_leakage_referrer"/>,
-            <xref target="browser_history"/>, and <xref target="access_token_injection"/>.</t>
-        <t>In order to avoid these issues,
-            Clients SHOULD NOT use the implicit grant and any other response
-            type causing the authorization server to issue an access token in the
-            authorization response.</t>
+    <t>The implicit grant (response type "token") and other response types causing
+    the authorization server to issue access tokens in the authorization response 
+    are vulnerable to access token leakage and access token replay as described in
+    <xref target="insufficient_uri_validation"/>,
+    <xref target="credential_leakage_referrer"/>,
+    <xref target="browser_history"/>, and <xref target="access_token_injection"/>.</t>
+    <t>Moreover, no viable mechanism exists to cryptographically bind access tokens issued 
+    in the authorization response to a certain client as it is recommended 
+    in <xref target="token_replay_prevention"/>. This makes replay detection 
+    for such access tokens at resource servers impossible.</t>
+    <t>In order to avoid these issues, Clients SHOULD NOT use the implicit grant and 
+    any other response type causing the authorization server to issue an access token in 
+    the authorization response.</t>
     <t>Clients SHOULD instead use the response type "code" (aka authorization code
     grant type) as specified in <xref target="ac"/> or any other response type that
-        does not cause the authorization server to issue access tokens in the
-        authorization response.</t>
+    causes the authorization server to issue access tokens in the token response.</t>
 	</section>
     </section>
     
@@ -444,7 +448,7 @@ Host: server.somesite.example]]></artwork>
 	   <t>The complexity of implementing and managing pattern matching correctly 
 		obviously causes security issues. This document therefore proposes to 
 	   simplify the required logic and configuration by using exact redirect URI matching only.
-              This means the authorization server shall compare the two 
+       This means the authorization server must compare the two 
 	   URIs using simple string comparison as defined in <xref target="RFC3986"/>, Section 6.2.1..</t>
 	   <t>Additional recommendations:
 	   <list style="symbols">
@@ -513,6 +517,8 @@ Host: server.somesite.example]]></artwork>
          <t>The following measures further reduce the chances of a successful attack:</t>
 	     <t>
 	       <list style="symbols">
+	       	         <t>Bind authorization code to a confidential client or PKCE challenge.
+	         In this case, the attacker lacks the secret to request the code exchange.</t>
              <t>Authorization codes SHOULD be invalidated by the AS after their first use at the
              token endpoint. For example, if an AS invalidated the code after the legitimate client
              redeemed it, the attacker would fail exchanging this code later. (This does not
@@ -526,8 +532,6 @@ Host: server.somesite.example]]></artwork>
              style="verb">state</spanx> leaks from the AS's web site, since then the <spanx
              style="verb">state</spanx> has not been used at the redirection endpoint at the client
              yet.)</t>
-	         <t>Bind authorization code to a confidential client or PKCE challenge.
-	         In this case, the attacker lacks the secret to request the code exchange.</t>
                  <t>Suppress the referrer header by adding the attribute 
                  <spanx style="verb">rel="noreferrer"</spanx> to HTML links or by 
                  applying an appropriate Referrer Policy <xref target="webappsec-referrer-policy"/> 
@@ -1148,7 +1152,7 @@ Pragma: no-cache
 	   such breaches on OAuth-related parts of the ecosystem, which is the replay of 
 	   captured access tokens on the compromised resource server and other resource 
 	   servers of the respective deployment.</t>
-	   <t>The following measures shall be taken into account by implementors in order 
+	   <t>The following measures should be taken into account by implementors in order 
 	   to cope with access token replay:</t>
 	   <t>
 	   <list style="symbols">
@@ -1263,7 +1267,8 @@ Pragma: no-cache
 	
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>We would like to thank Jim Manico, Phil Hunt, Nat Sakimura, Christian Mainka, 
-      Doug McDorman, Johan Peeters, and Brian Campbell for their valuable feedback.</t>
+      Doug McDorman, Johan Peeters, Joseph Heenan, and Brian Campbell for their 
+      valuable feedback.</t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
@@ -1496,6 +1501,16 @@ Pragma: no-cache
     
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
+      <t>-10 <list style="symbols">
+        <t>incorporated feedback by Joseph Heenan</t>
+        <t>changed occurrences of SHALL to MUST</t>
+        <t>added text on lack of token/cert binding support
+        tokens issued in the authorization response as
+        justification to not recommend issuing tokens there at all</t>
+        <t>added requirement to authenticate clients during 
+        code exchange (PKCE or client credential) to 2.1.1.</t>
+      </list>
+      </t>      
       <t>-09 <list style="symbols">
         <t>changed text to recommend not to use implicit but code</t>
         <t>added section on access token injection</t>
