@@ -188,11 +188,11 @@
 	are advised to implement appropriate countermeasures against open redirection, 
 	e.g., as described by the <xref target="owasp">OWASP</xref>.</t>
 	<t>Clients MUST only process redirect responses of the OAuth authorization 
-	server they send the respective request to and in the same user agent this request 
-	was initiated in. Clients MUST further ensure that each authorization response is only
+	server they send the respective request to and from the same user agent this authorization request 
+	was initiated with. Clients MUST prevent CSRF and ensure that each authorization response is only
         accepted once. To achieve these goals, the following measures MUST be taken:
           <list style="symbols">
-            <t>Clients MUST implement appropriate CSRF and authorization response replay prevention.
+            <t>Clients MUST implement appropriate measures against CSRF and authorization response replay.
 	One-time use CSRF tokens carried in the <spanx style="verb">state</spanx> parameter, 
 	which are securely bound to the user agent, SHOULD be used for that purpose.
             </t>
