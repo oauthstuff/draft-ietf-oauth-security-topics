@@ -220,7 +220,7 @@
 	including web applications.</t>
 	<t>Authorization servers MUST bind authorization codes to a certain client and 
 	authenticate it using an appropriate mechanism (e.g. client credentials or PKCE).</t>
-	<t>Authorization SHOULD furthermore consider the recommendations given in 
+	<t>Authorization servers SHOULD furthermore consider the recommendations given in 
 	<xref target="RFC6819"/>, Section 4.4.1.1, on authorization code replay 
 	prevention.</t>
 	</section>
@@ -235,7 +235,7 @@
     in the authorization response to a certain client as it is recommended 
     in <xref target="token_replay_prevention"/>. This makes replay detection 
     for such access tokens at resource servers impossible.</t>
-    <t>In order to avoid these issues, Clients SHOULD NOT use the implicit grant and 
+    <t>In order to avoid these issues, Clients SHOULD NOT use the implicit grant or 
     any other response type causing the authorization server to issue an access token in 
     the authorization response.</t>
     <t>Clients SHOULD instead use the response type "code" (aka authorization code
