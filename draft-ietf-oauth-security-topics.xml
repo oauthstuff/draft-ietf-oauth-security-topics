@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="13" month="November" year="2018" />
+    <date day="19" month="November" year="2018" />
 
     <!-- Meta-data Declarations -->
 
@@ -240,7 +240,10 @@
     the authorization response.</t>
     <t>Clients SHOULD instead use the response type "code" (aka authorization code
     grant type) as specified in <xref target="ac"/> or any other response type that
-    causes the authorization server to issue access tokens in the token response.</t>
+    causes the authorization server to issue access tokens in the token response.
+    This allows the authorization server to detect replay attempts and 
+    generally reduces the attack surface since access tokens are not exposed in URLs. It 
+    also allows the authorization server to sender-constrain the issued tokens.</t>
 	</section>
     </section>
     
@@ -1321,10 +1324,10 @@ Pragma: no-cache
     	one of them will present an invalidated refresh token, which will inform the 
     	authorization server of the breach. The authorization server cannot determine 
     	which party submitted the invalid refresh token, but it can revoke the active 
-    	refresh token. This stops the attack at the cost of forcing the legit to 
+    	refresh token. This stops the attack at the cost of forcing the legit client to 
     	obtain a fresh authorization grant.</t>
-    	<t>Sender constrained refresh tokens: the authorization server SHOULD 
-    	cryptographically bind the refresh token to a certain client instance by utilizing 
+    	<t>Sender constrained refresh tokens: the authorization server cryptographically 
+    	binds the refresh token to a certain client instance by utilizing 
     	<xref target="I-D.ietf-oauth-token-binding"/> or 
     	<xref target="I-D.ietf-oauth-mtls"/>.</t>
     	</list>
@@ -1588,6 +1591,7 @@ Pragma: no-cache
         <t>added requirement to authenticate clients during 
         code exchange (PKCE or client credential) to 2.1.1.</t>
         <t>added section on refresh tokens</t>
+        <t>editorial enhancements to 2.1.2 based on feedback</t>
       </list>
       </t>      
       <t>-09 <list style="symbols">
