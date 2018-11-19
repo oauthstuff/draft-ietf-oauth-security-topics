@@ -1264,13 +1264,89 @@ Pragma: no-cache
 	   proxy and application server must therefore be protected against tapping and 
 	   injection (including replay prevention).</t>
 	  </section>
+	  
+	  <section title="Refresh Token Protection">
+	
+		<t>Refresh tokens are a convenient and UX-friendly way to obtain new access
+		tokens after the expiration of older access tokens. Refresh tokens also add
+		to the security of OAuth since they allow the authorization server to issue
+		access tokens with a short lifetime and reduced scope thus reducing the 
+		potential impact of access token leakage.</t>
+		<t>Refresh tokens themself are an attractive target for attackers since 
+		they represent the overall grant a resource owner delegated to a certain client.
+		If an attacker is able to exfiltrate and successfully replay a refresh token, it 
+		will be able to mint access tokens and use them to access resource servers
+		on behalf of the resource server.</t>
+		
+		<t><xref target="RFC6749"/> already provides robust base protection by 
+		requiring
+		<list style="symbols">
+		 <t>confidentiality of the refresh tokens in transit and storage,</t>
+		 <t>the transmission of refresh tokens over TLS-protected connections between 
+		 authorization server and client,</t>
+		 <t>the authorization server to maintain and check the binding of a refresh token 
+		 to a certain client_id,</t>
+		 <t>authentication of this client_id during token refresh, if possible, and</t>
+		 <t>that refresh tokens cannot be generated, modified, or guessed.</t>
+	    </list>
+	    </t>
+	    <t>
+	    <xref target="RFC6749"/> also lays the foundation for further (implementation
+	    specific) security measures, such as refresh token expiration and revocation 
+	    as well as refresh token rotation by defining respective error codes and 
+	    response behavior.</t>
+	    
+	    
+	    <t>This draft gives recommendations beyond the scope of <xref target="RFC6749"/>
+	    and clarifications.</t>
+    	<t>Authorization servers SHALL determine based on their risk assessment whether 
+    	to issue refresh tokens to a certain client. If the authorization server decides
+    	not to issue refresh tokens, the client may refresh access tokens by utilizing 
+    	other grant types, such as the authorization code grant type. In such a case,
+    	the authorization server may utilize cookies and persistents grants to optimize
+    	the user experience.</t>
+    	<t>If refresh tokens are issued, those refresh tokens MUST be bound to the scope 
+    	and resource servers as consented by the resource owner. This is to prevent
+    	privilege escalation by the legit client and reduce the impact of refresh tokens
+    	leakage.</t>
+    	
+    	<t>Authorization server SHALL utilize one of the methods listed below to detect 
+    	refresh token replay for public clients:
+    	<list style="symbols">
+    	<t>Refresh token rotation: the authorization issues a new refresh token 
+    	with every access token refresh response.  The previous refresh token is 
+    	invalidated but information about the relationship is retained by the 
+    	authorization server.  If a refresh token is 
+    	compromised and subsequently used by both the attacker and the legitimate client, 
+    	one of them will present an invalidated refresh token, which will inform the 
+    	authorization server of the breach. The authorization server cannot determine 
+    	which party submitted the invalid refresh token, but it can revoke the active 
+    	refresh token. This stops the attack at the cost of forcing the legit to 
+    	obtain a fresh authorization grant.</t>
+    	<t>Sender constrained refresh tokens: the authorization server SHOULD 
+    	cryptographically bind the refresh token to a certain client instance by utilizing 
+    	<xref target="I-D.ietf-oauth-token-binding"/> or 
+    	<xref target="I-D.ietf-oauth-mtls"/>.</t>
+    	</list>
+    	</t>
+    	
+    	<t>Authorization servers may revoke refresh tokens automatically in case of 
+    	a security event, such as: 
+    	<list style="symbols">
+    	<t>password change</t>
+    	<t>logout at the authorization server</t>
+    	</list>
+    	</t>
+    	<t>Refresh tokens should expire if the client has been inactive for some time.</t>
+    	
+    </section>
 	
 	</section>
 	
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>We would like to thank Jim Manico, Phil Hunt, Nat Sakimura, Christian Mainka, 
-      Doug McDorman, Johan Peeters, Joseph Heenan, and Brian Campbell for their 
-      valuable feedback.</t>
+      Doug McDorman, Johan Peeters, Joseph Heenan, Brock Allen, and 
+      Brian Campbell for their valuable feedback.</t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
@@ -1511,6 +1587,7 @@ Pragma: no-cache
         justification to not recommend issuing tokens there at all</t>
         <t>added requirement to authenticate clients during 
         code exchange (PKCE or client credential) to 2.1.1.</t>
+        <t>added section on refresh tokens</t>
       </list>
       </t>      
       <t>-09 <list style="symbols">
