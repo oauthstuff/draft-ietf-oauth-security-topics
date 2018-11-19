@@ -1302,7 +1302,9 @@ Pragma: no-cache
     	<t>Authorization servers SHALL determine based on their risk assessment whether 
     	to issue refresh tokens to a certain client. If the authorization server decides
     	not to issue refresh tokens, the client may refresh access tokens by utilizing 
-    	other grant types, such as the authorization code grant type. </t>
+    	other grant types, such as the authorization code grant type. In such a case,
+    	the authorization server may utilize cookies and persistents grants to optimize
+    	the user experience.</t>
     	<t>If refresh tokens are issued, those refresh tokens MUST be bound to the scope 
     	and resource servers as consented by the resource owner. This is to prevent
     	privilege escalation by the legit client and reduce the impact of refresh tokens
@@ -1321,8 +1323,8 @@ Pragma: no-cache
     	which party submitted the invalid refresh token, but it can revoke the active 
     	refresh token. This stops the attack at the cost of forcing the legit to 
     	obtain a fresh authorization grant.</t>
-    	<t>Sender constraint refresh tokens: the authorization server may cryptographically 
-    	bind the refresh token to a certain client instance by utilizing 
+    	<t>Sender constrained refresh tokens: the authorization server SHOULD 
+    	cryptographically bind the refresh token to a certain client instance by utilizing 
     	<xref target="I-D.ietf-oauth-token-binding"/> or 
     	<xref target="I-D.ietf-oauth-mtls"/>.</t>
     	</list>
