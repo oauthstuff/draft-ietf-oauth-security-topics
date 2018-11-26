@@ -35,7 +35,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="bcp" docName="draft-ietf-oauth-security-topics-10"
+<rfc category="bcp" docName="draft-ietf-oauth-security-topics-11"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -1582,6 +1582,10 @@ Pragma: no-cache
     
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
+      <t>-11 <list style="symbols">
+        <t></t>
+      </list>
+      </t>
       <t>-10 <list style="symbols">
         <t>incorporated feedback by Joseph Heenan</t>
         <t>changed occurrences of SHALL to MUST</t>
