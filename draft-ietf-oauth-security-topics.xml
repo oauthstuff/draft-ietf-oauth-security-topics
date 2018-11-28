@@ -1340,7 +1340,12 @@ Pragma: no-cache
     	<t>logout at the authorization server</t>
     	</list>
     	</t>
-    	<t>Refresh tokens should expire if the client has been inactive for some time.</t>
+    	
+    	<t>Refresh tokens should expire if the client has been inactive for some time, 
+    	i.e. the refresh token has not been used to obtain fresh access tokens for 
+    	some time. The expiration time is at the discretion of the authorization server. 
+    	It might be a global value or determined based on the client policy or
+    	the grant associated with the refresh token (and its sensitivity).</t>
     	
     </section>
 	
@@ -1583,7 +1588,7 @@ Pragma: no-cache
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
       <t>-11 <list style="symbols">
-        <t></t>
+        <t>more text on refresh token inactivity</t>
       </list>
       </t>
       <t>-10 <list style="symbols">
