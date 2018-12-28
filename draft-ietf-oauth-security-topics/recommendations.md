@@ -76,18 +76,23 @@ tokens issued in the authorization response to a certain client as it
 is recommended in (#token_replay_prevention). This makes replay
 detection for such access tokens at resource servers impossible.
     
-In order to avoid these issues, Clients SHOULD NOT use the implicit grant or 
-any other response type causing the authorization server to issue an access token in 
-the authorization response.
+In order to avoid these issues, clients SHOULD NOT use the implicit
+grant (response type "token") or any other response type issuing
+access tokens in the authorization response, such as "token id\_token"
+and "code token id\_token", unless the issued access tokens are
+sender-constrained and access token injection in the authorization
+response is prevented. 
+ 
+A sender constrained access token scopes the applicability of an access
+token to a certain sender. This sender is obliged to demonstrate knowledge
+of a certain secret as prerequisite for the acceptance of that token at
+the recipient (e.g., a resource server).
 
 Clients SHOULD instead use the response type "code" (aka authorization code
 grant type) as specified in (#ac) or any other response type that
 causes the authorization server to issue access tokens in the token response.
 This allows the authorization server to detect replay attempts and 
-generally reduces the attack surface since access tokens are not exposed in URLs. It 
-also allows the authorization server to sender-constrain the issued tokens.
-
-
+generally reduces the attack surface since access tokens are not exposed in URLs. It also allows the authorization server to sender-constrain the issued tokens.
 
 ## Token Replay Prevention {#token_replay_prevention}
 

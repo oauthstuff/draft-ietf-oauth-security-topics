@@ -1056,7 +1056,7 @@ error codes and response behavior.
 This draft gives recommendations beyond the scope of [@!RFC6749] and
 clarifications.
     
-Authorization servers SHALL determine based on their risk assessment
+Authorization servers MUST determine based on their risk assessment
 whether to issue refresh tokens to a certain client. If the
 authorization server decides not to issue refresh tokens, the client
 may refresh access tokens by utilizing other grant types, such as the
@@ -1069,10 +1069,13 @@ the scope and resource servers as consented by the resource owner.
 This is to prevent privilege escalation by the legit client and reduce
 the impact of refresh tokens leakage.
     
-    
-Authorization server SHALL utilize one of the methods listed below to
+Authorization server MUST utilize one of the methods listed below to
 detect refresh token replay for public clients:
     
+  * Sender constrained refresh tokens: the authorization server cryptographically 
+    binds the refresh token to a certain client instance by utilizing 
+    [@!I-D.ietf-oauth-token-binding] or 
+    [@!I-D.ietf-oauth-mtls].
   * Refresh token rotation: the authorization issues a new refresh
     token with every access token refresh response. The previous
     refresh token is invalidated but information about the
@@ -1084,12 +1087,8 @@ detect refresh token replay for public clients:
     submitted the invalid refresh token, but it can revoke the active
     refresh token. This stops the attack at the cost of forcing the
     legit client to obtain a fresh authorization grant.
-  * Sender constrained refresh tokens: the authorization server cryptographically 
-    binds the refresh token to a certain client instance by utilizing 
-    [@!I-D.ietf-oauth-token-binding] or 
-    [@!I-D.ietf-oauth-mtls].
     
-    
+    Implementation note: refresh tokens belonging to the same grant may share a common id. If any of those refresh tokens is used at the authorization server, the authorization server uses this common id to look up the currently active refresh token and can revoke it.   
     
 Authorization servers may revoke refresh tokens automatically in case of 
 a security event, such as: 
@@ -1097,5 +1096,8 @@ a security event, such as:
   * password change
   * logout at the authorization server
     
-Refresh tokens should expire if the client has been inactive for some time.
+Refresh tokens SHOULD expire if the client has been inactive for some time,i.e. the refresh token has not been used to obtain fresh access tokens for 
+some time. The expiration time is at the discretion of the authorization server. 
+It might be a global value or determined based on the client policy or
+the grant associated with the refresh token (and its sensitivity).
     
