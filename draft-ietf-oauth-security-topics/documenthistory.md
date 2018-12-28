@@ -5,7 +5,7 @@
    -11
    
    * Adapted section 2.1.2 to outcome of consensus call
-   * more text on refresh token inactivity and implementation note on refres token replay detection via refresh token rotation
+   * more text on refresh token inactivity and implementation note on refresh token replay detection via refresh token rotation
 
    -10
    
