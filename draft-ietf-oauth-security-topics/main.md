@@ -1,16 +1,18 @@
 %%%
 title = "OAuth 2.0 Security Best Current Practice"
+docName = "draft-ietf-oauth-security-topics-11"
+ipr = "trust200902"
 area = "Security"
 workgroup = "Web Authorization Protocol"
 keyword = ["security", "oauth2", "best current practice"]
+
+date = 2018-12-28T00:00:00Z
 
 [seriesInfo]
 name = "Internet-Draft"
 value = "draft-ietf-oauth-security-topics-11"
 stream = "IETF"
 status = "bcp"
-
-date = 2018-12-20T00:00:00Z
 
 [[author]]
 initials="T."
@@ -44,7 +46,6 @@ organization="yes.com"
     [author.address]
     email = "mail@danielfett.de"
 %%%
-
 
 .# Abstract 
 
