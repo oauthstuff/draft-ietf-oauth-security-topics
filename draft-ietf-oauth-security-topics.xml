@@ -35,7 +35,8 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="bcp" docName="draft-ietf-oauth-security-topics-11"
+<rfc category="bcp" 
+	 docName="draft-ietf-oauth-security-topics-11"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -1297,12 +1298,11 @@ Pragma: no-cache
 	    <xref target="RFC6749"/> also lays the foundation for further (implementation
 	    specific) security measures, such as refresh token expiration and revocation 
 	    as well as refresh token rotation by defining respective error codes and 
-	    response behavior.</t>
-	    
+	    response behavior.</t> 
 	    
 	    <t>This draft gives recommendations beyond the scope of <xref target="RFC6749"/>
 	    and clarifications.</t>
-    	<t>Authorization servers SHALL determine based on their risk assessment whether 
+    	<t>Authorization servers MUST determine based on their risk assessment whether 
     	to issue refresh tokens to a certain client. If the authorization server decides
     	not to issue refresh tokens, the client may refresh access tokens by utilizing 
     	other grant types, such as the authorization code grant type. In such a case,
@@ -1313,7 +1313,7 @@ Pragma: no-cache
     	privilege escalation by the legit client and reduce the impact of refresh tokens
     	leakage.</t>
     	
-    	<t>Authorization server SHALL utilize one of the methods listed below to detect 
+    	<t>Authorization server MUST utilize one of the methods listed below to detect 
     	refresh token replay for public clients:
     	<list style="symbols">
     	<t>Refresh token rotation: the authorization issues a new refresh token 
@@ -1340,7 +1340,12 @@ Pragma: no-cache
     	<t>logout at the authorization server</t>
     	</list>
     	</t>
-    	<t>Refresh tokens should expire if the client has been inactive for some time.</t>
+    	
+    	<t>Refresh tokens SHOULD expire if the client has been inactive for some time, 
+    	i.e. the refresh token has not been used to obtain fresh access tokens for 
+    	some time. The expiration time is at the discretion of the authorization server. 
+    	It might be a global value or determined based on the client policy or
+    	the grant associated with the refresh token (and its sensitivity).</t>
     	
     </section>
 	
@@ -1348,7 +1353,7 @@ Pragma: no-cache
 	
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>We would like to thank Jim Manico, Phil Hunt, Nat Sakimura, Christian Mainka, 
-      Doug McDorman, Johan Peeters, Joseph Heenan, Brock Allen, and 
+      Doug McDorman, Johan Peeters, Joseph Heenan, Brock Allen, Aaron Parecki, and 
       Brian Campbell for their valuable feedback.</t>
     </section>
 
@@ -1583,7 +1588,7 @@ Pragma: no-cache
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
       <t>-11 <list style="symbols">
-        <t></t>
+        <t>more text on refresh token inactivity</t>
       </list>
       </t>
       <t>-10 <list style="symbols">
