@@ -36,11 +36,11 @@ even strong attacker model that implies the following attacks:
   * (T4) The contents of the authorization request can leak, in the
     same manner, to an attacker.
     
-Protection against these further threats cannot be achieved by every
-deployment. For example, if confidentiality of the state value is
-needed for a secure operation of OAuth (see
-XXXXX-LinkToStatePKCEDiscussion-XXXX), this confidentiality is broken
-by both assumptions. 
+Protection against T3 and T4 cannot be achieved by every deployment.
+For example, if confidentiality of the state value is needed for a
+secure operation of OAuth (see XXXXX-LinkToStatePKCEDiscussion-XXXX),
+this confidentiality is broken by both assumptions. Nonetheless,
+implementors should try to protect against T3 and T4.
     
 <!-- Check if we can/want to include leakage of the auth request here. Could be doable. -->
 
