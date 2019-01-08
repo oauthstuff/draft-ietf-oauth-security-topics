@@ -1,6 +1,6 @@
 %%%
 title = "OAuth 2.0 Security Best Current Practice"
-docName = "draft-ietf-oauth-security-topics-11"
+abbrev = "oauth-security-topics"
 ipr = "trust200902"
 area = "Security"
 workgroup = "Web Authorization Protocol"

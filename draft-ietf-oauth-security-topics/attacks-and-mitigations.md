@@ -38,37 +38,36 @@ redirect URIs pointing to any host residing in the domain
 somesite.example. So if an attacker manages to establish a host or
 subdomain in somesite.example he can impersonate the legitimate
 client. Assume the attacker sets up the host "evil.somesite.example".
-  
- 1. The attacker needs to trick the user into opening a tampered URL
-    in his browser, which launches a page under the attacker's
-    control, say "https://www.evil.example".
 
-    This URL initiates an authorization request with the client id of
-    a legitimate client to the authorization endpoint. This is the
-    example authorization request (line breaks are for display
-    purposes only):
+The attack can then be conducted as follows:
+
+First, the attacker needs to trick the user into opening a tampered
+URL in his browser, which launches a page under the attacker's
+control, say "https://www.evil.example".
+
+This URL initiates an authorization request with the client id of a
+legitimate client to the authorization endpoint. This is the example
+authorization request (line breaks are for display purposes only):
     
-        GET /authorize?response_type=code&client_id=s6BhdRkqt3&state=xyz
-             &redirect_uri=https%3A%2F%2Fevil.somesite.example%2Fcb HTTP/1.1
-        Host: server.somesite.example
+    GET /authorize?response_type=code&client_id=s6BhdRkqt3&state=xyz
+         &redirect_uri=https%3A%2F%2Fevil.somesite.example%2Fcb HTTP/1.1
+    Host: server.somesite.example
   
- 2. The authorization server validates the redirect URI in order to
-    identify the client. Since the pattern allows arbitrary domains
-    host names in "somesite.example", the authorization request is
-    processed under the legitimate client's identity. This includes
-    the way the request for user consent is presented to the user. If
-    auto-approval is allowed (which is not recommended for public
-    clients according to [@!RFC6749]), the attack can be performed
-    even easier.
+Afterwards, the authorization server validates the redirect URI in
+order to identify the client. Since the pattern allows arbitrary
+domains host names in "somesite.example", the authorization request is
+processed under the legitimate client's identity. This includes the
+way the request for user consent is presented to the user. If
+auto-approval is allowed (which is not recommended for public clients
+according to [@!RFC6749]), the attack can be performed even easier.
   
-    If the user does not recognize the attack, the code is issued and
-    directly sent to the attacker's client.
+If the user does not recognize the attack, the code is issued and
+directly sent to the attacker's client.
   
-    Since the attacker impersonated a public client, it can directly
-    exchange the code for tokens at the respective token endpoint.
+Since the attacker impersonated a public client, it can directly
+exchange the code for tokens at the respective token endpoint.
 
-  
-  
+ 
 Note: This attack will not directly work for confidential clients,
 since the code exchange requires authentication with the legitimate
 client's secret. The attacker will need to impersonate or utilize the
@@ -84,7 +83,7 @@ his control, he will directly get access to the fragment carrying the
 access token.
    
 Additionally, implicit clients can be subject to a further kind of
-attacks. It utilizes the fact that user agents re-attach fragments to
+attack. It utilizes the fact that user agents re-attach fragments to
 the destination URL of a redirect if the location header does not
 contain a fragment (see [@!RFC7231], Section 9.5). The attack
 described here combines this behavior with the client as an open
@@ -98,48 +97,51 @@ for redirects to `https://client.somesite.example/cb`. Unfortunately,
 the client exposes an open redirector. This endpoint supports a
 parameter "redirect_to" which takes a target URL and will send the
 browser to this URL using an HTTP Location header redirect 303.
-  
- 1. Same as above, the attacker needs to trick the user into opening a
-    tampered URL in his browser, which launches a page under the
-    attacker's control, say `https://www.evil.example`.
- 2. The URL initiates an authorization request, which is very similar
-    to the attack on the code flow. As differences, it utilizes the
-    open redirector by encoding
-    `redirect_to=https://client.evil.example` into the redirect URI
-    and it uses the response type "token" (line breaks are for display
-    purposes only):
-  
-        GET /authorize?response_type=token&client_id=s6BhdRkqt3&state=xyz
-            &redirect_uri=https%3A%2F%2Fclient.somesite.example%2Fcb%26redirect_to
-             %253Dhttps%253A%252F%252Fclient.evil.example%252Fcb HTTP/1.1
-        Host: server.somesite.example
- 3. Since the redirect URI matches the registered pattern, the
-    authorization server allows the request and sends the resulting
-    access token with a 303 redirect (some response parameters are
-    omitted for better readability)
 
-        HTTP/1.1 303 See Other
-        Location: https://client.somesite.example/cb?
-                  redirect_to%3Dhttps%3A%2F%2Fclient.evil.example%2Fcb
-                  #access_token=2YotnFZFEjr1zCsicMWpAA&...
-     
- 4. At example.com, the request arrives at the open redirector. It
-    will read the redirect parameter and will issue an HTTP 303
-    Location header redirect to the URL
-    `https://client.evil.example/cb`.
+The attack can now be conducted as follows:
   
-        HTTP/1.1 303 See Other
-        Location: https://client.evil.example/cb
- 5. Since the redirector at client.somesite.example does not include a
-    fragment in the Location header, the user agent will re-attach the
-    original fragment
-    `#access_token=2YotnFZFEjr1zCsicMWpAA&amp;...` to the URL
-    and will navigate to the following URL:
+First, and as above, the attacker needs to trick the user into opening
+a tampered URL in his browser, which launches a page under the
+attacker's control, say `https://www.evil.example`.
     
-         https://client.evil.example/cb#access_token=2YotnFZFEjr1zCsicMWpAA&...
+Afterwards, the website initiates an authorization request, which is
+very similar to the one in the attack on the code flow. Different to
+above, it utilizes the open redirector by encoding
+`redirect_to=https://client.evil.example` into the redirect URI and it
+uses the response type "token" (line breaks are for display purposes
+only):
   
- 6. The attacker's page at client.evil.example can access the fragment
-    and obtain the access token.
+    GET /authorize?response_type=token&client_id=s6BhdRkqt3&state=xyz
+        &redirect_uri=https%3A%2F%2Fclient.somesite.example%2Fcb%26redirect_to
+         %253Dhttps%253A%252F%252Fclient.evil.example%252Fcb HTTP/1.1
+    Host: server.somesite.example
+        
+Now, since the redirect URI matches the registered pattern, the
+authorization server allows the request and sends the resulting access
+token with a 303 redirect (some response parameters are omitted for
+better readability)
+
+    HTTP/1.1 303 See Other
+    Location: https://client.somesite.example/cb?
+              redirect_to%3Dhttps%3A%2F%2Fclient.evil.example%2Fcb
+              #access_token=2YotnFZFEjr1zCsicMWpAA&...
+     
+At example.com, the request arrives at the open redirector. It will
+read the redirect parameter and will issue an HTTP 303 Location header
+redirect to the URL `https://client.evil.example/cb`.
+  
+    HTTP/1.1 303 See Other
+    Location: https://client.evil.example/cb
+        
+Since the redirector at client.somesite.example does not include a
+fragment in the Location header, the user agent will re-attach the
+original fragment `#access_token=2YotnFZFEjr1zCsicMWpAA&amp;...` to
+the URL and will navigate to the following URL:
+    
+    https://client.evil.example/cb#access_token=2YotnFZFEjr1zCsicMWpAA&...`.
+  
+The attacker's page at `client.evil.example` can now access the
+fragment and obtain the access token.
     
    
 ### Proposed Countermeasures
@@ -335,20 +337,13 @@ Attack on the authorization code grant:
     selection to "A-AS".
  3. The client stores in the user's session that the user selected
     "A-AS" and redirects the user to A-AS's authorization endpoint by
-    sending the following response:
-   
-        HTTP/1.1 303 See Other
-        Location: https://attacker.example/authorize?response_type=code&client_id=666RVZJTA
-  
+    sending the response code `303 See Other` with a Location header
+    containing the URL
+    `https://attacker.example/authorize?response_type=code&client_id=666RVZJTA`.
  4. Now the attacker intercepts this response and changes the
     redirection such that the user is being redirected to H-AS. The
     attacker also replaces the client id of the client at A-AS with
-    the client's id at H-AS, resulting in the following response being
-    sent to the browser:
-  
-        HTTP/1.1 303 See Other
-        Location: https://honest.as.example/authorize?response_type=code&client_id=7ZGZldHQ
-  
+    the client's id at H-AS. Therefore, the browser receives a redirection (`303 See Other`) with a Location header pointing to `https://honest.as.example/authorize?response_type=code&client_id=7ZGZldHQ`
  5. Now, the user authorizes the client to access her resources at
     H-AS. H-AS issues a code and sends it (via the browser) back to
     the client.
@@ -376,8 +371,7 @@ Variants:
     vigilant user might at this point detect that she intended to use
     A-AS instead of H-AS.) The attack now proceeds exactly as in step
     <xref format="counter" target="list_mixup_acg_after_authep"/> of
-    the attack description above. <!-- I think this counter is not
-    working properly! -->
+    the attack description above.
   * **Per-AS Redirect URIs**: If clients use different redirect URIs
     for different ASs, do not store the selected AS in the user's
     session, and ASs do not check the redirect URIs properly,
