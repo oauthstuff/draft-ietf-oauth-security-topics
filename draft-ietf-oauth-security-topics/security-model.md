@@ -1,5 +1,11 @@
 # The OAuth 2.0 Threat Model
 
+In [RFC6819], a threat model was laid out that described the
+capabilities of attackers against which OAuth deployments must defend.
+In the following, this threat model is updated to account for the
+potentially dynamic relationships between parties, to include new
+threats, and to make it more clearly defined.
+
 OAuth 2.0 aims to ensure that the authorization of a user (with a user
 agent) U at an authorization server AS and the subsequent usage of the
 access token at the resource server RS is protected at least against
@@ -17,8 +23,9 @@ the following threats:
     
   * (T2) Network Attackers that additionally have full control over
     the network over which protocol participants communicate. They can
-    read, manipulate, and spoof messages, unless these messages are
-    properly protected by cryptographic methods (e.g., TLS).
+    eavesdrop on, manipulate, and spoof messages, escept when these
+    are properly protected by cryptographic methods (e.g., TLS).
+    Network attacker can also block specific messages.
 
 These threats conform to the threat model that was used in formal
 analysis efforts for OAuth [@!arXiv.1601.01229]. Previous attacks on

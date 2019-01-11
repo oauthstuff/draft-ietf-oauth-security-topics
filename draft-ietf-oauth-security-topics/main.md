@@ -45,6 +45,7 @@ fullname="Daniel Fett"
 organization="yes.com"
     [author.address]
     email = "mail@danielfett.de"
+    
 %%%
 
 .# Abstract 
