@@ -545,7 +545,7 @@ There are multiple technical solutions to achieve this goal:
     `client_id` and secrets and bind the code to the respective
     `client_id`. Unfortunately, this does not fit into the web
     application programming model (would need to use per user client
-    ids). </list>
+    ids).
 
 PKCE seems to be the most obvious solution for OAuth clients as it
 available and effectively used today for similar purposes for OAuth
