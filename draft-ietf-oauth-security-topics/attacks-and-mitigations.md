@@ -62,13 +62,12 @@ auto-approval is allowed (which is not recommended for public clients
 according to [@!RFC6749]), the attack can be performed even easier.
   
 If the user does not recognize the attack, the code is issued and
-directly sent to the attacker's client.
+immediately sent to the attacker's client.
   
-Since the attacker impersonated a public client, it can directly
+Since the attacker impersonated a public client, it can
 exchange the code for tokens at the respective token endpoint.
-
  
-Note: This attack will not directly work for confidential clients,
+Note: This attack will not work as easily for confidential clients,
 since the code exchange requires authentication with the legitimate
 client's secret. The attacker will need to impersonate or utilize the
 legitimate client to redeem the code (e.g., by performing a code
