@@ -19,20 +19,20 @@ in the wild, which utilized flaws in the pattern matching
 implementation or concrete configurations. Such a flaw effectively
 breaks client identification or authentication (depending on grant and
 client type) and allows the attacker to obtain an authorization code
-or access token, either: 
+or access token, either:
   
   * by directly sending the user agent to a URI under the attackers
-    control or
+    control, or
   * by exposing the OAuth credentials to an attacker by utilizing an
     open redirector at the client in conjunction with the way user
     agents handle URL fragments.
   
-### Attacks on Authorization Code Grant {#insufficient_uri_validation_acg}
+### Redirect URI Validation Attacks on Authorization Code Grant {#insufficient_uri_validation_acg}
   
 For a public client using the grant type code, an attack would look as
 follows:
   
-Let's assume the redirect URL pattern "https://*.somesite.example/*"
+Let's assume the redirect URL pattern "https://\*.somesite.example/\*"
 had been registered for the client "s6BhdRkqt3". This pattern allows
 redirect URIs pointing to any host residing in the domain
 somesite.example. So if an attacker manages to establish a host or
@@ -75,7 +75,7 @@ legitimate client to redeem the code (e.g., by performing a code
 injection attack). This kind of injections is covered in
 (#code_injection).
    
-### Attacks on Implicit Grant
+### Redirect URI Validation Attacks on Implicit Grant
    
 The attack described above works for the implicit grant as well. If
 the attacker is able to send the authorization response to a URI under
