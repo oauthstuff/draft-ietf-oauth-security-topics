@@ -44,9 +44,9 @@ community, such usage scenarios open up new attack angles,
 which are discussed in this document.
 	  
 The remainder of the document is organized as follows: The next
-section summarizes the most important recommendations of the OAuth
-working group for every OAuth implementor. Afterwards, a detailed
-analysis of the threats and implementation issues which can be found
-in the wild today is given along with a discussion of potential
-countermeasures.
+section updates the OAuth threat model. Afterwards, the most important
+recommendations of the OAuth working group for every OAuth implementor
+are summarized. Subsequently, a detailed analysis of the threats and
+implementation issues which can be found in the wild today is given
+along with a discussion of potential countermeasures.
     

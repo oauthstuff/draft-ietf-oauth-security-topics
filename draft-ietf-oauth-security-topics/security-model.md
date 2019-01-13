@@ -1,10 +1,11 @@
-# The OAuth 2.0 Threat Model
+# The Updated OAuth 2.0 Threat Model
 
 In [RFC6819], a threat model was laid out that described the
 capabilities of attackers against which OAuth deployments must defend.
 In the following, this threat model is updated to account for the
-potentially dynamic relationships between parties, to include new
-threats, and to make it more clearly defined.
+potentially dynamic relationships involving multiple parties (as
+described above), to include new threats, and to make it more clearly
+defined.
 
 OAuth 2.0 aims to ensure that the authorization of a user (with a user
 agent) U at an authorization server AS and the subsequent usage of the
@@ -20,7 +21,6 @@ the following threats:
     Web attackers may, in particular, operate OAuth clients that are
     registered at AS, and operate their own authorization and resource
     servers that can be used (in parallel) by U.
-    
   * (T2) Network Attackers that additionally have full control over
     the network over which protocol participants communicate. They can
     eavesdrop on, manipulate, and spoof messages, escept when these
@@ -30,7 +30,7 @@ the following threats:
 These threats conform to the threat model that was used in formal
 analysis efforts for OAuth [@!arXiv.1601.01229]. Previous attacks on
 OAuth have shown that, ideally, OAuth deployments protect against an
-even strong attacker model that implies the following attacks:
+even strong attacker model that entails the following threats:
 
 <!-- the following cannot always be assumed: PKCE CC Attack -->
   * (T3) The contents of the authorization response can leak to an
@@ -47,7 +47,7 @@ Protection against T3 and T4 cannot be achieved by every deployment.
 For example, if confidentiality of the state value is needed for a
 secure operation of OAuth (see XXXXX-LinkToStatePKCEDiscussion-XXXX),
 this confidentiality is broken by both assumptions. Nonetheless,
-implementors should try to protect against T3 and T4.
+implementors should try to protect against T3 and T4 as far as possible.
     
 <!-- Check if we can/want to include leakage of the auth request here. Could be doable. -->
-
+<!-- Check if we want to discuss main properties here? -->
