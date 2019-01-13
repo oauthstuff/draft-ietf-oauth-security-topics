@@ -87,7 +87,7 @@ the destination URL of a redirect if the location header does not
 contain a fragment (see [@!RFC7231], Section 9.5). The attack
 described here combines this behavior with the client as an open
 redirector in order to get access to access tokens. This allows
-circumvention even of strict redirect URI patterns (but not strict URL
+circumvention even of very narrow redirect URI patterns (but not strict URL
 matching!).
    
 Assume the pattern for client "s6BhdRkqt3" is
@@ -155,7 +155,7 @@ Section 6.2.1..
 Additional recommendations:
 
   * Servers on which callbacks are hosted must not expose open
-    redirectors (see (#Open.Redirection)).
+    redirectors (see (#open_redirection)).
   * Clients MAY drop fragments via intermediary URLs with "fix
     fragments" (see [@!fb_fragments]) to prevent the user agent from
     appending any unintended fragments.
@@ -176,20 +176,20 @@ authenticate clients, e.g., using [@!I-D.ietf-oauth-jwsreq].
 Authorization codes or values of `state` can unintentionally be
 disclosed to attackers through the referrer header, by leaking either
 from a client's web site or from an AS's web site. Note: even if
-specified otherwise in [@!RFC2616], section 14.36, the same may happen
+specified otherwise in [@!RFC2616], Section 14.36, the same may happen
 to access tokens conveyed in URI fragments due to browser
 implementation issues as illustrated by Chromium Issue 168213
 [@!bug.chromium].
  
-### Leakage from the OAuth client
+### Leakage from the OAuth Client
  
-This requires that the client, as a result of a successful
+Leakage from the OAuth client requires that the client, as a result of a successful
 authorization request, renders a page that
  
   * contains links to other pages under the attacker's control (ads,
     faq, ...) and a user clicks on such a link, or
-  * includes third-party content (iframes, images, etc.) for example
-   if the page contains user-generated content (blog).
+  * includes third-party content (iframes, images, etc.), for example
+    if the page contains user-generated content (blog).
  
 As soon as the browser navigates to the attacker's page or loads the
 third-party content, the attacker receives the authorization response
@@ -233,8 +233,8 @@ The following measures further reduce the chances of a successful attack:
     an attacker receives a token through the referrer header from the
     client's web site, the `state` was already used, invalidated by
     the client and cannot be used again by the attacker. (This does
-    not help if the <spanx style="verb">state</spanx> leaks from the
-    AS's web site, since then the <spanx style="verb">state</spanx>
+    not help if the `state` leaks from the
+    AS's web site, since then the `state`
     has not been used at the redirection endpoint at the client yet.)
   * Suppress the referrer header by adding the attribute
     `rel="noreferrer"` to HTML links or by applying an appropriate
@@ -419,9 +419,10 @@ possible or intended. Examples are:
     attacker is unable to obtain the required client credentials to
     redeem the code himself.
   * The authorization or resource servers are limited to certain
-    networks, the attackers is unable to access directly.
+    networks that the attacker is unable to access directly.
    
-How does an attack look like?
+### Attack Description
+What does an attack look like?
    
  1. The attacker obtains an authorization code by performing any of
     the attacks described above.
@@ -440,8 +441,8 @@ How does an attack look like?
     other tokens to the client, so now the attacker is able to
     impersonate the legitimate user.
    
-   
-Obviously, the check in step (5.) will fail, if the code was issued to
+### Discussion   
+Obviously, the check in step (5.) will fail if the code was issued to
 another client id, e.g., a client set up by the attacker. The check
 will also fail if the authorization code was already redeemed by the
 legitimate user and was one-time use only.
@@ -452,7 +453,7 @@ server stored the complete redirect URI used in the authorization
 request and compares it with the redirect_uri parameter.
    
 [@!RFC6749], Section 4.1.3, requires the AS to "... ensure that the
-"redirect_uri" parameter is present if the "redirect_uri" parameter
+"redirect\_uri" parameter is present if the "redirect\_uri" parameter
 was included in the initial authorization request as described in
 Section 4.1.1, and if included ensure that their values are
 identical.". In the attack scenario described above, the legitimate
@@ -902,7 +903,7 @@ order to cope with access token replay:
     may be used to prevent replay of captured access tokens on other resource
  servers.
 
-## Open Redirection {#Open.Redirection}
+## Open Redirection {#open_redirection}
 
 The following attacks can occur when an AS or client
 has an open redirector, i.e., a URL which causes an HTTP
