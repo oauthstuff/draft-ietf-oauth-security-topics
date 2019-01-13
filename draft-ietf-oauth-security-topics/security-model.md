@@ -21,6 +21,13 @@ the following threats:
     Web attackers may, in particular, operate OAuth clients that are
     registered at AS, and operate their own authorization and resource
     servers that can be used (in parallel) by U.
+    
+    It must also be assumed that web attackers can lure the user to
+    open arbitrary attacker-chosen URIs at any time. This can be
+    achieved through many ways, for example, by injecting malicious
+    advertisements into advertisement networks, or by sending
+    legit-looking emails.
+    
   * (T2) Network Attackers that additionally have full control over
     the network over which protocol participants communicate. They can
     eavesdrop on, manipulate, and spoof messages, escept when these
