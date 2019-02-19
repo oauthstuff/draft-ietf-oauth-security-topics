@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-oauth-jwt-introspection-response-01"
+<rfc category="std" docName="draft-ietf-oauth-jwt-introspection-response-02"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -65,7 +65,7 @@
 
     <author fullname="Torsten Lodderstedt" initials="T." role="editor"
             surname="Lodderstedt">
-      <organization>YES.com AG</organization>
+      <organization>yes.com AG</organization>
 
       <address>
         <email>torsten@lodderstedt.net</email>
@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="22" month="August" year="2018" />
+    <date day="19" month="February" year="2019" />
 
     <!-- Meta-data Declarations -->
 
@@ -421,7 +421,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       <t>
         This specification requests registration of the following value
         in the IANA "OAuth Authorization Server Metadata" registry
-        <xref target="IANA.OAuth.Parameters"/> established by <xref target="I-D.ietf-oauth-discovery"/>.
+        <xref target="IANA.OAuth.Parameters"/> established by <xref target="RFC8414"/>.
       </t>
         <section title="Registry Contents">
           <t>
@@ -478,9 +478,8 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       <?rfc include="reference.RFC.7515"?>
       <?rfc include="reference.RFC.7516"?>
       <?rfc include="reference.RFC.8414"?>
-      <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-discovery-10.xml"?>
-      <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-jwt-bcp-03.xml'?>
-      <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-security-topics-06.xml'?>
+      <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-jwt-bcp-04.xml'?>
+      <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-security-topics-11.xml'?>
       
        <reference anchor="OpenID.Registration" target="https://openid.net/specs/openid-connect-registration-1_0.html">
         <front>
@@ -538,6 +537,10 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
     
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
+	  <t>-02<list style="symbols">
+          <t>updated references</t>
+        </list>
+      </t> 
 	  <t>-01<list style="symbols">
           <t>adapted wording to preclude any accept header except "application/jwt" if 
           encrypted responses are required</t>
