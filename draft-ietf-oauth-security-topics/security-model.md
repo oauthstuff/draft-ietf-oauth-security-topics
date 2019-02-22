@@ -49,12 +49,17 @@ even strong attacker model that entails the following threats:
     operating systems.
   * (T4) The contents of the authorization request can leak, in the
     same manner, to an attacker.
+  * (T5) An access token may be sent to an attacker-controlled
+    resource server (for example, due to a misconfiguration or if an
+    access token is valid for multiple resource servers of which one
+    is compromised).
     
-Protection against T3 and T4 cannot be achieved by every deployment.
-For example, if confidentiality of the state value is needed for a
-secure operation of OAuth (see XXXXX-LinkToStatePKCEDiscussion-XXXX),
-this confidentiality is broken by both assumptions. Nonetheless,
-implementors should try to protect against T3 and T4 as far as possible.
+Protection against T3, T4, and T5 cannot be achieved by every
+deployment. For example, if confidentiality of the state value is
+needed for a secure operation of OAuth (see
+XXXXX-LinkToStatePKCEDiscussion-XXXX), this confidentiality is broken
+by both assumptions. Nonetheless, implementors should try to protect
+against T3, T4, and T5 as far as possible.
     
 <!-- Check if we can/want to include leakage of the auth request here. Could be doable. -->
 <!-- Check if we want to discuss main properties here? -->
