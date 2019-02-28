@@ -2,6 +2,10 @@
 
    [[ To be removed from the final specification ]]
    
+   -12
+   
+   * Added updated threat model
+   
    -11
    
    * Adapted section 2.1.2 to outcome of consensus call
