@@ -25,7 +25,7 @@ for that purpose.
         
 
 In order to prevent mix-up attacks, clients MUST only process redirect
-responses of the OAuth authorization server they send the respective
+responses of the OAuth authorization server they sent the respective
 request to and from the same user agent this authorization request was
 initiated with. Clients MUST memorize which authorization server they
 sent an authorization request to and bind this information to the user
