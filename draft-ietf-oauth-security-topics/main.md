@@ -10,7 +10,7 @@ date = 2018-12-28T00:00:00Z
 
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-ietf-oauth-security-topics-11"
+value = "draft-ietf-oauth-security-topics-12"
 stream = "IETF"
 status = "bcp"
 
