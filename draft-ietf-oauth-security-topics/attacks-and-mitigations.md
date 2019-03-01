@@ -156,7 +156,7 @@ Section 6.2.1..
 Additional recommendations:
 
   * Servers on which callbacks are hosted must not expose open
-    redirectors (see (#Open.Redirection)).
+    redirectors (see (#open_redirection)).
   * Clients MAY drop fragments via intermediary URLs with "fix
     fragments" (see [@!fb_fragments]) to prevent the user agent from
     appending any unintended fragments.
@@ -234,8 +234,8 @@ The following measures further reduce the chances of a successful attack:
     an attacker receives a token through the referrer header from the
     client's web site, the `state` was already used, invalidated by
     the client and cannot be used again by the attacker. (This does
-    not help if the <spanx style="verb">state</spanx> leaks from the
-    AS's web site, since then the <spanx style="verb">state</spanx>
+    not help if the `state` leaks from the
+    AS's web site, since then the `state`
     has not been used at the redirection endpoint at the client yet.)
   * Suppress the referrer header by adding the attribute
     `rel="noreferrer"` to HTML links or by applying an appropriate
@@ -422,7 +422,7 @@ possible or intended. Examples are:
   * The authorization or resource servers are limited to certain
     networks, the attackers is unable to access directly.
    
-How does an attack look like?
+The attack works as follows:
    
  1. The attacker obtains an authorization code by performing any of
     the attacks described above.
@@ -442,7 +442,7 @@ How does an attack look like?
     impersonate the legitimate user.
    
    
-Obviously, the check in step (5.) will fail, if the code was issued to
+Obviously, the check in step (5.) will fail if the code was issued to
 another client id, e.g., a client set up by the attacker. The check
 will also fail if the authorization code was already redeemed by the
 legitimate user and was one-time use only.
@@ -453,7 +453,7 @@ server stored the complete redirect URI used in the authorization
 request and compares it with the redirect_uri parameter.
    
 [@!RFC6749], Section 4.1.3, requires the AS to "... ensure that the
-"redirect_uri" parameter is present if the "redirect_uri" parameter
+`redirect_uri` parameter is present if the `redirect_uri` parameter
 was included in the initial authorization request as described in
 Section 4.1.1, and if included ensure that their values are
 identical.". In the attack scenario described above, the legitimate
@@ -463,7 +463,7 @@ redirect URI used by the attacker (otherwise, the redirect would not
 land at the attackers page). So the authorization server would detect
 the attack and refuse to exchange the code.
    
-Note: this check could also detect attempt to inject a code, which had
+Note: this check could also detect attempts to inject a code which had
 been obtained from another instance of the same client on another
 device, if certain conditions are fulfilled: 
 
@@ -473,11 +473,11 @@ device, if certain conditions are fulfilled:
    
 But this approach conflicts with the idea to enforce exact redirect
 URI matching at the authorization endpoint. Moreover, it has been
-observed that providers very often ignore the redirect_uri check
+observed that providers very often ignore the `redirect_uri` check
 requirement at this stage, maybe because it doesn't seem to be
-security-critical from reading the spec.
+security-critical from reading the specification.
    
-Other providers just pattern match the redirect_uri parameter against
+Other providers just pattern match the `redirect_uri` parameter against
 the registered redirect URI pattern. This saves the authorization
 server from storing the link between the actual redirect URI and the
 respective authorization code for every transaction. But this kind of
@@ -500,22 +500,23 @@ user agent) in the context of a certain transaction.
    
 There are multiple technical solutions to achieve this goal:
 
-  * **Nonce**: OpenID Connect's existing `nonce` parameter could be
-    used for this purpose. The nonce value is one-time use and created
-    by the client. The client is supposed to bind it to the user agent
-    session and sends it with the initial request to the OpenId
-    Provider (OP). The OP associates the nonce to the authorization
-    code and attests this binding in the ID token, which is issued as
-    part of the code exchange at the token endpoint. If an attacker
-    injected an authorization code in the authorization response, the
-    nonce value in the client session and the nonce value in the ID
-    token will not match and the attack is detected. The assumption is
-    that an attacker cannot get hold of the user agent state on the
-    victims device, where he has stolen the respective authorization
-    code. The main advantage of this option is that Nonce is an
-    existing feature used in the wild. On the other hand, leveraging
-    Nonce by the broader OAuth community would require AS and client
-    to adopt ID Tokens.
+  * **Nonce**: OpenID Connect's existing `nonce` parameter can be used
+    for the purpose of detecting authorization code injection attacks.
+    The `nonce` value is one-time use and created by the client. The
+    client is supposed to bind it to the user agent session and sends
+    it with the initial request to the OpenId Provider (OP). The OP
+    binds `nonce` to the authorization code and attests this
+    binding in the ID token, which is issued as part of the code
+    exchange at the token endpoint. If an attacker injected an
+    authorization code in the authorization response, the nonce value
+    in the client session and the nonce value in the ID token will not
+    match and the attack is detected. The assumption is that an
+    attacker cannot get hold of the user agent state on the victim's
+    device, where he has stolen the respective authorization code. The
+    main advantage of this option is that `nonce` is an existing feature
+    used in the wild. On the other hand, leveraging `nonce` by the
+    broader OAuth community would require AS and clients to adopt ID
+    Tokens.
   * **Code-bound State**: The `state` parameter as specified in
     [@!RFC6749] could be used similarly to what is described above.
     This would require to add a further parameter `state` to the code
@@ -526,13 +527,13 @@ There are multiple technical solutions to achieve this goal:
     this approach would be to utilize an existing OAuth parameter. But
     it would also mean to re-interpret the purpose of `state` and to
     extend the token endpoint request.
-  * **PKCE**: The PKCE parameter `challenge` along with the
-    corresponding `verifier` as specified in [@!RFC7636] could be used
+  * **PKCE**: The PKCE parameter `code_challenge` along with the
+    corresponding `cide_verifier` as specified in [@!RFC7636] could be used
     in the same way as `nonce` or `state`. In contrast to its original
     intention, the verifier check would fail although the client uses
     its correct verifier but the code is associated with a challenge,
     which does not match. PKCE is a deployed OAuth feature, even
-    though it is used today to secure native apps, only.
+    though it is used today to secure native apps only.
   * **Token Binding**: Token binding [@!I-D.ietf-oauth-token-binding]
     could also be used. In this case, the code would need to be bound
     to two legs, between user agent and AS and the user agent and the
@@ -541,11 +542,11 @@ There are multiple technical solutions to achieve this goal:
     promising as a secure and convenient mechanism (due to its browser
     integration). As a challenge, it requires broad browser support
     and use with native apps is still under discussion.
-  * **per instance client id/secret**: One could use per instance
+  * **Per-instance client id/secret**: One could use per instance
     `client_id` and secrets and bind the code to the respective
     `client_id`. Unfortunately, this does not fit into the web
-    application programming model (would need to use per user client
-    ids). </list>
+    application programming model (would need to use per-user client
+    IDs).
 
 PKCE seems to be the most obvious solution for OAuth clients as it
 available and effectively used today for similar purposes for OAuth
@@ -903,7 +904,7 @@ order to cope with access token replay:
     may be used to prevent replay of captured access tokens on other resource
  servers.
 
-## Open Redirection {#Open.Redirection}
+## Open Redirection {#open_redirection}
 
 The following attacks can occur when an AS or client
 has an open redirector, i.e., a URL which causes an HTTP
