@@ -222,12 +222,17 @@ The following measures further reduce the chances of a successful attack:
   * Bind authorization code to a confidential client or PKCE
     challenge. In this case, the attacker lacks the secret to request
     the code exchange.
-  * Authorization codes SHOULD be invalidated by the AS after their
-    first use at the token endpoint. For example, if an AS invalidated
-    the code after the legitimate client redeemed it, the attacker
-    would fail exchanging this code later. (This does not mitigate the
-    attack if the attacker manages to exchange the code for a token
-    before the legitimate client does so.)
+  * As described in [@!RFC6749], Section 4.1.2., authorization codes
+    MUST be invalidated by the AS after their first use at the token
+    endpoint. For example, if an AS invalidated the code after the
+    legitimate client redeemed it, the attacker would fail exchanging
+    this code later. 
+    
+    This does not mitigate the attack if the attacker manages to
+    exchange the code for a token before the legitimate client does
+    so. Therefore, [@!RFC6749] further recommends that, when an
+    attempt is made to redeem a code twice, the AS SHOULD revoke all
+    tokens issued previously based on that code.
   * The `state` value SHOULD be invalidated by the client after its
     first use at the redirection endpoint. If this is implemented, and
     an attacker receives a token through the referrer header from the
