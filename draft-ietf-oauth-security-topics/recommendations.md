@@ -1,7 +1,7 @@
 # Recommendations {#recommendations}
     
 This section describes the set of security mechanisms the OAuth
-working group recommendeds to OAuth implementers.
+working group recommends to OAuth implementers.
 
 ## Protecting Redirect-Based Flows {#rec_redirect}
 

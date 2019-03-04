@@ -12,12 +12,11 @@ agent) at an authorization server (AS) and the subsequent usage of the
 access token at the resource server (RS) is protected at least against
 the following threats:
 
-  * (T1) Web Attackers that control an arbitrary number of
-    network endpoints (except for RO, AS, and RS). 
-    Web attackers may
-    set up web sites that are visited by the RO, operate their own user
-    agents, participate in the protocol using other user identifiers
-    (except for the one of the RO), etc.
+  * (T1) Web Attackers that control an arbitrary number of network
+    endpoints (except for RO, AS, and RS). Web attackers may set up
+    web sites that are visited by the RO, operate their own user
+    agents, participate in the protocol using their own user
+    credentials, etc.
     
     Web attackers may, in particular, operate OAuth clients that are
     registered at AS, and operate their own authorization and resource
@@ -38,24 +37,29 @@ the following threats:
 These threats conform to the threat model that was used in formal
 analysis efforts for OAuth [@!arXiv.1601.01229]. Previous attacks on
 OAuth have shown that, ideally, OAuth deployments protect against an
-even strong attacker model that entails the following threats:
+even strong attacker model that is described by the following threats:
 
-<!-- the following cannot always be assumed: PKCE CC Attack --> 
   * (T3) The contents of the authorization response can leak to an
     attacker (the attacker can read, but not modify the responses).
-    Examples for corresponding attacks range from open redirector attacks,
-    problems existing on mobile operating systems (where different apps can
-    register themselves on the same URI), so-called mix-up attacks, 
-    where the client is tricked into sending credentials to a attacker-   controlled AS, and the fact that URLs are
-    often stored/logged by browsers (history), proxy servers, and
+    
+    Examples for such attacks include open redirector
+    attacks, problems existing on mobile operating systems (where
+    different apps can register themselves on the same URI), so-called
+    mix-up attacks, where the client is tricked into sending
+    credentials to a attacker-controlled AS, and the fact that URLs
+    are often stored/logged by browsers (history), proxy servers, and
     operating systems.
   * (T4) The contents of the authorization request can leak, in the
     same manner, to an attacker.
   * (T5) An access token may be sent to an attacker-controlled
-    resource server (for example, due to a misconfiguration or if an RO is tricked into using a attacker-controlled RS).
-  * (T6) An attacker, acting as RO, can replay tokens or authorization codes obtained by any of the attacks described above at the client or RS.
+    resource server (for example, due to a misconfiguration or if an
+    RO is tricked into using a attacker-controlled RS).
     
-This document discusses this additional threats in detail and recommends suitable mitigations.
+Note that in this threat model, an attacker can be a RP or act as one
+(see T1). For example, an attacker can use his own browser to replay
+tokens or authorization codes obtained by any of the attacks described
+above at the client or RS.
     
-<!-- Check if we can/want to include leakage of the auth request here. Could be doable. -->
-<!-- Check if we want to discuss main properties here? -->
+This document discusses these additional threats in detail and
+recommends suitable mitigations.
+    
