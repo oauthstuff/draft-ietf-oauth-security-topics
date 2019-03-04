@@ -15,7 +15,7 @@ from a query parameter since such a function could be utilized to
 exfiltrate authorization codes and access tokens. If there is a strong
 need for this kind of redirects, clients are advised to implement
 appropriate countermeasures against open redirection, e.g., as
-described by the OWASP [@!owasp].
+described by the OWASP [@owasp].
 
 
 Clients MUST prevent CSRF and ensure that each authorization response
@@ -34,7 +34,7 @@ authorization server. Clients SHOULD use AS-specific redirect URIs as
 a means to identify the AS a particular response came from.
  
 
-Note: [@!I-D.bradley-oauth-jwt-encoded-state] gives advice on how to
+Note: [@I-D.bradley-oauth-jwt-encoded-state] gives advice on how to
 implement CSRF prevention and AS matching using signed JWTs in the
 `state` parameter. 
 
@@ -102,8 +102,8 @@ generally reduces the attack surface since access tokens are not exposed in URLs
 
 Authorization servers SHOULD use TLS-based methods for
 sender-constrained access tokens as described in (#pop_tokens), such
-as token binding [@!I-D.ietf-oauth-token-binding] or Mutual TLS for
-OAuth 2.0 [@!I-D.ietf-oauth-mtls] in order to prevent token replay.
+as token binding [@I-D.ietf-oauth-token-binding] or Mutual TLS for
+OAuth 2.0 [@I-D.ietf-oauth-mtls] in order to prevent token replay.
 Refresh tokens MUST be sender-constrained or use refresh token
 rotation as described in (#refresh_token_protection). It is also
 recommended to use end-to-end TLS whenever possible.
@@ -118,17 +118,17 @@ security policy. Privilege restrictions also limit the impact of token leakage
 although more effective counter-measures are described in 
 (#token_replay_prevention).
 
-In particular, access tokens SHOULD be restricted to certain resource servers, 
-preferably to a single resource server. To put this into effect, the authorization server
-associates the access token with certain resource servers and every resource server 
-is obliged to verify for every request, whether the access token sent with that request 
-was meant to be used for that particular resource server.  If not, the resource server 
-MUST refuse to serve the respective request. Clients and authorization servers MAY 
-utilize the parameters 
-`scope` or `resource` as 
-specified in [@!RFC6749] and 
-[@!I-D.ietf-oauth-resource-indicators], respectively, to determine
-the resource server they want to access.
+In particular, access tokens SHOULD be restricted to certain resource
+servers, preferably to a single resource server. To put this into
+effect, the authorization server associates the access token with
+certain resource servers and every resource server is obliged to
+verify for every request, whether the access token sent with that
+request was meant to be used for that particular resource server. If
+not, the resource server MUST refuse to serve the respective request.
+Clients and authorization servers MAY utilize the parameters `scope`
+or `resource` as specified in [@!RFC6749] and
+[@I-D.ietf-oauth-resource-indicators], respectively, to determine the
+resource server they want to access.
 
 Additionally, access tokens SHOULD be restricted to certain resources
 and actions on resource servers or resources. To put this into effect,

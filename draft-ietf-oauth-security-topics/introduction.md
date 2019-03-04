@@ -43,7 +43,7 @@ of a particular deployment on the other side. This way the same client
 could be used to access services of different providers (in case of
 standard APIs, such as e-Mail or OpenID Connect) or serves as a
 frontend to a particular tenant in a multi-tenancy. Extensions of
-OAuth, such as [@!RFC7591] and [@!RFC8414] were developed in order to
+OAuth, such as [@RFC7591] and [@RFC8414] were developed in order to
 support the usage of OAuth in dynamic scenarios. As a challenge to the
 community, such usage scenarios open up new attack angles, 
 which are discussed in this document.

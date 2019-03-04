@@ -137,7 +137,7 @@ fragment in the Location header, the user agent will re-attach the
 original fragment `#access_token=2YotnFZFEjr1zCsicMWpAA&amp;...` to
 the URL and will navigate to the following URL:
     
-    https://client.evil.example/cb#access_token=2YotnFZFEjr1zCsicMWpAA&...`.
+    https://client.evil.example/cb#access_token=2YotnFZFEjr1zCsicMWpAA&...
   
 The attacker's page at `client.evil.example` can now access the
 fragment and obtain the access token.
@@ -157,7 +157,7 @@ Additional recommendations:
   * Servers on which callbacks are hosted must not expose open
     redirectors (see (#open_redirection)).
   * Clients MAY drop fragments via intermediary URLs with "fix
-    fragments" (see [@!fb_fragments]) to prevent the user agent from
+    fragments" (see [@fb_fragments]) to prevent the user agent from
     appending any unintended fragments.
   * Clients SHOULD use the authorization code response type instead of
     response types causing access token issuance at the authorization
@@ -168,7 +168,7 @@ Additional recommendations:
    
    
 As an alternative to exact redirect URI matching, the AS could also
-authenticate clients, e.g., using [@!I-D.ietf-oauth-jwsreq].
+authenticate clients, e.g., using [@I-D.ietf-oauth-jwsreq].
    
    
 ## Credential Leakage via Referrer Headers {#credential_leakage_referrer}
@@ -176,10 +176,10 @@ authenticate clients, e.g., using [@!I-D.ietf-oauth-jwsreq].
 Authorization codes or values of `state` can unintentionally be
 disclosed to attackers through the referrer header, by leaking either
 from a client's web site or from an AS's web site. Note: even if
-specified otherwise in [@!RFC2616], Section 14.36, the same may happen
+specified otherwise in [@RFC2616], Section 14.36, the same may happen
 to access tokens conveyed in URI fragments due to browser
 implementation issues as illustrated by Chromium Issue 168213
-[@!bug.chromium].
+[@bug.chromium].
  
 ### Leakage from the OAuth Client
  
@@ -243,7 +243,7 @@ The following measures further reduce the chances of a successful attack:
     has not been used at the redirection endpoint at the client yet.)
   * Suppress the referrer header by adding the attribute
     `rel="noreferrer"` to HTML links or by applying an appropriate
-    Referrer Policy [@!webappsec-referrer-policy] to the document
+    Referrer Policy [@webappsec-referrer-policy] to the document
     (either as part of the "referrer" meta attribute or by setting a
     Referrer-Policy header).
   * Use authorization code instead of response types causing access
@@ -308,9 +308,9 @@ respective endpoint at the authorization/resource server.
 
 ### Attack Description
 
-For a detailed attack description, refer to [@!arXiv.1601.01229] and
-[@!I-D.ietf-oauth-mix-up-mitigation]. The description here closely
-follows [@!arXiv.1601.01229], with variants of the attack outlined
+For a detailed attack description, refer to [@arXiv.1601.01229] and
+[@I-D.ietf-oauth-mix-up-mitigation]. The description here closely
+follows [@arXiv.1601.01229], with variants of the attack outlined
 below.
 
 Preconditions: For the attack to work, we assume that 
@@ -380,10 +380,10 @@ Variants:
     for different ASs, do not store the selected AS in the user's
     session, and ASs do not check the redirect URIs properly,
     attackers can mount an attack called "Cross-Social Network Request
-    Forgery". Refer to [@!oauth_security_jcs_14] for details.
+    Forgery". Refer to [@oauth_security_jcs_14] for details.
   * **OpenID Connect**: There are several variants that can be used to
     attack OpenID Connect. They are described in detail in
-    [@!arXiv.1704.08539], Appendix A, and [@!arXiv.1508.04324v2],
+    [@arXiv.1704.08539], Appendix A, and [@arXiv.1508.04324v2],
     Section 6 ("Malicious Endpoints Attacks").
   
 ### Countermeasures
@@ -398,7 +398,7 @@ Potential countermeasures:
     in the authorization response. This enables clients to compare
     this data to their own client id and the `iss` identifier of the
     AS it believed it sent the user agent to. This mitigation is
-    discussed in detail in [@!I-D.ietf-oauth-mix-up-mitigation]. In
+    discussed in detail in [@I-D.ietf-oauth-mix-up-mitigation]. In
     OpenID Connect, if an ID token is returned in the authorization
     response, it carries client id and issuer. It can be used for this
     mitigation.
@@ -539,7 +539,7 @@ There are multiple technical solutions to achieve this goal:
     its correct verifier but the code is associated with a challenge,
     which does not match. PKCE is a deployed OAuth feature, even
     though it is used today to secure native apps only.
-  * **Token Binding**: Token binding [@!I-D.ietf-oauth-token-binding]
+  * **Token Binding**: Token binding [@I-D.ietf-oauth-token-binding]
     could also be used. In this case, the code would need to be bound
     to two legs, between user agent and AS and the user agent and the
     client. This requires further data (extension to response) to
@@ -619,7 +619,7 @@ endpoint, for example:
    is not consistently supported by all browsers, CSRF tokens should
    be used in addition to Origin header checking.
  
-For more details see [@!owasp_csrf].
+For more details see [@owasp_csrf].
    
 ## Access Token Leakage at the Resource Server
  
@@ -656,17 +656,18 @@ In the simplest form, this would require the AS to publish a list of
 its known resource servers, illustrated in the following example using
 a metadata parameter `resource_servers`:
   
-HTTP/1.1 200 OK
-Content-Type: application/json
+    HTTP/1.1 200 OK
+    Content-Type: application/json
 
     {
       "issuer":"https://server.somesite.example",
       "authorization_endpoint":
-    "https://server.somesite.example/authorize",
-      “resource_servers”:[
-    “email.somesite.example”,
-    ”storage.somesite.example”,
-    ”video.somesite.example”]
+        "https://server.somesite.example/authorize",
+      "resource_servers":[
+        "email.somesite.example",
+        "storage.somesite.example",
+        "video.somesite.example"
+      ]
       ...
     } 
   
@@ -682,8 +683,8 @@ token response, illustrated by the example return parameter
     
     {
       "access_token":"2YotnFZFEjr1zCsicMWpAA",
-      “access_token_resource_server”:
-    "https://hostedresource.somesite.example/path1",
+      "access_token_resource_server":
+        "https://hostedresource.somesite.example/path1",
     ...
     }
 
@@ -691,7 +692,7 @@ token response, illustrated by the example return parameter
 This mitigation strategy would rely on the client to enforce the
 security policy and to only send access tokens to legitimate
 destinations. Results of OAuth related security research (see for
-example [@!oauth_security_ubc] and [@!oauth_security_cmu]) indicate a
+example [@oauth_security_ubc] and [@oauth_security_cmu]) indicate a
 large portion of client implementations do not or fail to properly
 implement security controls, like `state` checks. So relying on
 clients to prevent access token phishing is likely to fail as well.
@@ -736,7 +737,7 @@ A typical flow looks like this:
 There exists several proposals to demonstrate the proof of possession
  in the scope of the OAuth working group:
  
-  * **OAuth Token Binding** ([@!I-D.ietf-oauth-token-binding]): In this approach, an access
+  * **OAuth Token Binding** ([@I-D.ietf-oauth-token-binding]): In this approach, an access
     token is, via the so-called token binding id, bound to key
     material representing a long term association between a client and
     a certain TLS host. Negotiation of the key material and proof of
@@ -749,10 +750,10 @@ There exists several proposals to demonstrate the proof of possession
     token binding id of associated with the access token match. Since
     all crypto-related functions are covered by the TLS stack, this
     approach is very client developer friendly. As a prerequisite,
-    token binding as described in [@!I-D.ietf-tokbind-https]
+    token binding as described in [@I-D.ietf-tokbind-https]
     (including federated token bindings) must be supported on all ends
     (client, authorization server, resource server).
-  * **OAuth Mutual TLS** ([@!I-D.ietf-oauth-mtls]): The approach as
+  * **OAuth Mutual TLS** ([@I-D.ietf-oauth-mtls]): The approach as
     specified in this document allows the use of mutual TLS (mTLS) for both
     client authentication and sender-constrained access tokens. For
     the purpose of sender-constrained access tokens, the client is
@@ -763,19 +764,19 @@ There exists several proposals to demonstrate the proof of possession
     tokens. The resource server in the same way obtains the public key
     from the TLS stack and compares its fingerprint with the
     fingerprint associated with the access token.
-  * **Signed HTTP Requests** ([@!I-D.ietf-oauth-signed-http-request]):
-    This approach utilizes [@!I-D.ietf-oauth-pop-key-distribution] and
+  * **Signed HTTP Requests** ([@I-D.ietf-oauth-signed-http-request]):
+    This approach utilizes [@I-D.ietf-oauth-pop-key-distribution] and
     represents the elements of the signature in a JSON object. The
     signature is built using JWS. The mechanism has built-in support
     for signing of HTTP method, query parameters and headers. It also
     incorporates a timestamp as basis for replay prevention.
-  * **JWT Pop Tokens** ([@!I-D.sakimura-oauth-jpop]): This draft
+  * **JWT Pop Tokens** ([@I-D.sakimura-oauth-jpop]): This draft
     describes different ways to constrain access token usage, namely
     TLS or request signing. Note: Since the authors of this draft
-    contributed the TLS-related proposal to [@!I-D.ietf-oauth-mtls],
+    contributed the TLS-related proposal to [@I-D.ietf-oauth-mtls],
     this document only considers the request signing part. For request
     signing, the draft utilizes
-    [@!I-D.ietf-oauth-pop-key-distribution] and [@!RFC7800]. The
+    [@I-D.ietf-oauth-pop-key-distribution] and [@RFC7800]. The
     signature data is represented in a JWT and JWS is used for
     signing. Replay prevention is provided by building the signature
     over a server-provided nonce, client-provided nonce and a nonce
@@ -794,12 +795,12 @@ certificates. Use of self-signed certificates, which is supported by
 the draft, significantly reduces the complexity of this task.
 Furthermore, OAuth Token Binding allows to use different
 key pairs for different resource servers, which is a privacy benefit.
-On the other hand, [@!I-D.ietf-oauth-mtls] only requires widely
+On the other hand, [@I-D.ietf-oauth-mtls] only requires widely
 deployed TLS features, which means it might be easier to adopt in the
 short term.
  
 Application level signing approaches, like
-[@!I-D.ietf-oauth-signed-http-request] and [@!I-D.sakimura-oauth-jpop]
+[@I-D.ietf-oauth-signed-http-request] and [@I-D.sakimura-oauth-jpop]
 have been debated for a long time in the OAuth working group without a
 clear outcome.
  
@@ -844,7 +845,7 @@ access tokens for unknown resource server URLs.
 
 The client needs to tell the authorization server, at which URL it
 will use the access token it is requesting. It could use the mechanism
-proposed [@!I-D.ietf-oauth-resource-indicators] or encode the
+proposed [@I-D.ietf-oauth-resource-indicators] or encode the
 information in the scope value.
 
 Instead of the URL, it is also possible to utilize the fingerprint of
@@ -858,9 +859,9 @@ Audience restriction seems easy to use since it does not require any
 crypto on the client side. But since every access token is bound to a
 certain resource server, the client also needs to obtain different
 RS-specific access tokens, if it wants to access several resource
-services. [@!I-D.ietf-oauth-token-binding] has the same property,
+services. [@I-D.ietf-oauth-token-binding] has the same property,
 since different token binding ids must be associated with the access
-token. [@!I-D.ietf-oauth-mtls] on the other hand allows a client to
+token. [@I-D.ietf-oauth-mtls] on the other hand allows a client to
 use the access token at multiple resource servers.
  
 It shall be noted that audience restrictions, or generally speaking an
@@ -923,10 +924,10 @@ server (and its URL in particular) for performing phishing attacks.
 stating the AS MUST NOT automatically redirect the user agent in case
 of an invalid combination of client_id and redirect_uri.
   
-However, as described in [@!I-D.ietf-oauth-closing-redirectors], an
+However, as described in [@I-D.ietf-oauth-closing-redirectors], an
 attacker could also utilize a correctly registered redirect URI to
 perform phishing attacks. It could for example register a client via
-dynamic client [@!RFC7591] registration and intentionally send an
+dynamic client registration [@RFC7591] and intentionally send an
 erroneous authorization request, e.g., by using an invalid scope
 value, to cause the AS to automatically redirect the user agent to its
 phishing site.
@@ -1072,8 +1073,8 @@ detect refresh token replay for public clients:
     
   * **Sender-constrained refresh tokens:** the authorization server
     cryptographically binds the refresh token to a certain client
-    instance by utilizing [@!I-D.ietf-oauth-token-binding] or
-    [@!I-D.ietf-oauth-mtls].
+    instance by utilizing [@I-D.ietf-oauth-token-binding] or
+    [@I-D.ietf-oauth-mtls].
   * **Refresh token rotation:** the authorization server issues a new
     refresh token with every access token refresh response. The
     previous refresh token is invalidated but information about the

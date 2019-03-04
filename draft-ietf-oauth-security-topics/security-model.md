@@ -1,6 +1,6 @@
 # The Updated OAuth 2.0 Threat Model
 
-In [RFC6819], a threat model was laid out that described the
+In [@RFC6819], a threat model was laid out that described the
 capabilities of attackers against which OAuth deployments must defend.
 In the following, this threat model is updated to account for the
 potentially dynamic relationships involving multiple parties (as
@@ -35,7 +35,7 @@ the following threats:
     Network attacker can also block specific messages.
     
 These threats conform to the threat model that was used in formal
-analysis efforts for OAuth [@!arXiv.1601.01229]. Previous attacks on
+analysis efforts for OAuth [@arXiv.1601.01229]. Previous attacks on
 OAuth have shown that, ideally, OAuth deployments protect against an
 even strong attacker model that is described by the following threats:
 
