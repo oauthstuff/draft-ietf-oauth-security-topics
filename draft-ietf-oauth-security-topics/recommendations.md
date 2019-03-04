@@ -96,11 +96,13 @@ generally reduces the attack surface since access tokens are not exposed in URLs
 
 ## Token Replay Prevention {#token_replay_prevention}
 
-Authorization servers SHOULD use TLS-based methods for sender constrained access 
-tokens as described in  (#pop_tokens), such as token 
-binding [@!I-D.ietf-oauth-token-binding] or Mutual TLS for 
-OAuth 2.0 [@!I-D.ietf-oauth-mtls] in order to prevent token replay. 
-It is also recommended to use end-to-end TLS whenever possible.
+Authorization servers SHOULD use TLS-based methods for
+sender-constrained access tokens as described in (#pop_tokens), such
+as token binding [@!I-D.ietf-oauth-token-binding] or Mutual TLS for
+OAuth 2.0 [@!I-D.ietf-oauth-mtls] in order to prevent token replay.
+Refresh tokens MUST be sender-constrained or use refresh token
+rotation as described in (#refresh_token_protection). It is also
+recommended to use end-to-end TLS whenever possible.
 
 ## Access Token Privilege Restriction
 

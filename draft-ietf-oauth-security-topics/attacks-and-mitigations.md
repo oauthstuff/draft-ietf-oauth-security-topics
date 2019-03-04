@@ -1020,7 +1020,7 @@ therefore be protected against tapping and injection (including replay
 prevention).
   
   
-## Refresh Token Protection
+## Refresh Token Protection {#refresh_token_protection}
 
 
 Refresh tokens are a convenient and UX-friendly way to obtain new access
@@ -1029,22 +1029,21 @@ to the security of OAuth since they allow the authorization server to issue
 access tokens with a short lifetime and reduced scope thus reducing the 
 potential impact of access token leakage.
 
-Refresh tokens themself are an attractive target for attackers since 
-they represent the overall grant a resource owner delegated to a certain client.
-If an attacker is able to exfiltrate and successfully replay a refresh token, it 
-will be able to mint access tokens and use them to access resource servers
-on behalf of the resource server.
+Refresh tokens are an attractive target for attackers since they
+represent the overall grant a resource owner delegated to a certain
+client. If an attacker is able to exfiltrate and successfully replay a
+refresh token, the attacker will be able to mint access tokens and use
+them to access resource servers on behalf of the resource owner.
 
 
-[@!RFC6749] already provides robust base protection by 
-requiring
+[@!RFC6749] already provides a robust baseline protection by requiring
 
   * confidentiality of the refresh tokens in transit and storage,
   * the transmission of refresh tokens over TLS-protected connections between 
     authorization server and client,
   * the authorization server to maintain and check the binding of a refresh token 
-    to a certain client_id,
-  * authentication of this client_id during token refresh, if possible, and
+    to a certain client (i.e., `client_id`),
+  * authentication of this client during token refresh, if possible, and
   * that refresh tokens cannot be generated, modified, or guessed.
 
 [@!RFC6749] also lays the foundation for further (implementation
@@ -1061,24 +1060,24 @@ whether to issue refresh tokens to a certain client. If the
 authorization server decides not to issue refresh tokens, the client
 may refresh access tokens by utilizing other grant types, such as the
 authorization code grant type. In such a case, the authorization
-server may utilize cookies and persistents grants to optimize the user
+server may utilize cookies and persistent grants to optimize the user
 experience.
     
 If refresh tokens are issued, those refresh tokens MUST be bound to
 the scope and resource servers as consented by the resource owner.
 This is to prevent privilege escalation by the legit client and reduce
-the impact of refresh tokens leakage.
+the impact of refresh token leakage.
     
-Authorization server MUST utilize one of the methods listed below to
+Authorization server MUST utilize one of these methods to
 detect refresh token replay for public clients:
     
-  * Sender constrained refresh tokens: the authorization server cryptographically 
-    binds the refresh token to a certain client instance by utilizing 
-    [@!I-D.ietf-oauth-token-binding] or 
+  * **Sender-constrained refresh tokens:** the authorization server
+    cryptographically binds the refresh token to a certain client
+    instance by utilizing [@!I-D.ietf-oauth-token-binding] or
     [@!I-D.ietf-oauth-mtls].
-  * Refresh token rotation: the authorization issues a new refresh
-    token with every access token refresh response. The previous
-    refresh token is invalidated but information about the
+  * **Refresh token rotation:** the authorization server issues a new
+    refresh token with every access token refresh response. The
+    previous refresh token is invalidated but information about the
     relationship is retained by the authorization server. If a refresh
     token is compromised and subsequently used by both the attacker
     and the legitimate client, one of them will present an invalidated
@@ -1088,16 +1087,22 @@ detect refresh token replay for public clients:
     refresh token. This stops the attack at the cost of forcing the
     legit client to obtain a fresh authorization grant.
     
-    Implementation note: refresh tokens belonging to the same grant may share a common id. If any of those refresh tokens is used at the authorization server, the authorization server uses this common id to look up the currently active refresh token and can revoke it.   
+    Implementation note: refresh tokens belonging to the same grant
+    may share a common id. If any of those refresh tokens is used at
+    the authorization server, the authorization server uses this
+    common id to look up the currently active refresh token and can
+    revoke it.
     
-Authorization servers may revoke refresh tokens automatically in case of 
-a security event, such as: 
+Authorization servers may revoke refresh tokens automatically in case
+of a security event, such as:
  
   * password change
   * logout at the authorization server
     
-Refresh tokens SHOULD expire if the client has been inactive for some time,i.e. the refresh token has not been used to obtain fresh access tokens for 
-some time. The expiration time is at the discretion of the authorization server. 
-It might be a global value or determined based on the client policy or
-the grant associated with the refresh token (and its sensitivity).
+Refresh tokens SHOULD expire if the client has been inactive for some
+time, i.e., the refresh token has not been used to obtain fresh access
+tokens for some time. The expiration time is at the discretion of the
+authorization server. It might be a global value or determined based
+on the client policy or the grant associated with the refresh token
+(and its sensitivity).
     
