@@ -19,20 +19,20 @@ in the wild, which utilized flaws in the pattern matching
 implementation or concrete configurations. Such a flaw effectively
 breaks client identification or authentication (depending on grant and
 client type) and allows the attacker to obtain an authorization code
-or access token, either: 
+or access token, either:
   
   * by directly sending the user agent to a URI under the attackers
-    control or
+    control, or
   * by exposing the OAuth credentials to an attacker by utilizing an
     open redirector at the client in conjunction with the way user
     agents handle URL fragments.
   
-### Attacks on Authorization Code Grant {#insufficient_uri_validation_acg}
+### Redirect URI Validation Attacks on Authorization Code Grant {#insufficient_uri_validation_acg}
   
 For a public client using the grant type code, an attack would look as
 follows:
   
-Let's assume the redirect URL pattern "https://*.somesite.example/*"
+Let's assume the redirect URL pattern "https://\*.somesite.example/\*"
 had been registered for the client "s6BhdRkqt3". This pattern allows
 redirect URIs pointing to any host residing in the domain
 somesite.example. So if an attacker manages to establish a host or
@@ -62,20 +62,19 @@ auto-approval is allowed (which is not recommended for public clients
 according to [@!RFC6749]), the attack can be performed even easier.
   
 If the user does not recognize the attack, the code is issued and
-directly sent to the attacker's client.
+immediately sent to the attacker's client.
   
-Since the attacker impersonated a public client, it can directly
+Since the attacker impersonated a public client, it can
 exchange the code for tokens at the respective token endpoint.
-
  
-Note: This attack will not directly work for confidential clients,
+Note: This attack will not work as easily for confidential clients,
 since the code exchange requires authentication with the legitimate
 client's secret. The attacker will need to impersonate or utilize the
 legitimate client to redeem the code (e.g., by performing a code
 injection attack). This kind of injections is covered in
 (#code_injection).
    
-### Attacks on Implicit Grant
+### Redirect URI Validation Attacks on Implicit Grant
    
 The attack described above works for the implicit grant as well. If
 the attacker is able to send the authorization response to a URI under
@@ -88,7 +87,7 @@ the destination URL of a redirect if the location header does not
 contain a fragment (see [@!RFC7231], Section 9.5). The attack
 described here combines this behavior with the client as an open
 redirector in order to get access to access tokens. This allows
-circumvention even of strict redirect URI patterns (but not strict URL
+circumvention even of very narrow redirect URI patterns (but not strict URL
 matching!).
    
 Assume the pattern for client "s6BhdRkqt3" is
@@ -177,20 +176,20 @@ authenticate clients, e.g., using [@!I-D.ietf-oauth-jwsreq].
 Authorization codes or values of `state` can unintentionally be
 disclosed to attackers through the referrer header, by leaking either
 from a client's web site or from an AS's web site. Note: even if
-specified otherwise in [@!RFC2616], section 14.36, the same may happen
+specified otherwise in [@!RFC2616], Section 14.36, the same may happen
 to access tokens conveyed in URI fragments due to browser
 implementation issues as illustrated by Chromium Issue 168213
 [@!bug.chromium].
  
-### Leakage from the OAuth client
+### Leakage from the OAuth Client
  
-This requires that the client, as a result of a successful
+Leakage from the OAuth client requires that the client, as a result of a successful
 authorization request, renders a page that
  
   * contains links to other pages under the attacker's control (ads,
     faq, ...) and a user clicks on such a link, or
-  * includes third-party content (iframes, images, etc.) for example
-   if the page contains user-generated content (blog).
+  * includes third-party content (iframes, images, etc.), for example
+    if the page contains user-generated content (blog).
  
 As soon as the browser navigates to the attacker's page or loads the
 third-party content, the attacker receives the authorization response
@@ -420,8 +419,9 @@ possible or intended. Examples are:
     attacker is unable to obtain the required client credentials to
     redeem the code himself.
   * The authorization or resource servers are limited to certain
-    networks, the attackers is unable to access directly.
+    networks that the attacker is unable to access directly.
    
+### Attack Description
 The attack works as follows:
    
  1. The attacker obtains an authorization code by performing any of
@@ -441,7 +441,7 @@ The attack works as follows:
     other tokens to the client, so now the attacker is able to
     impersonate the legitimate user.
    
-   
+### Discussion   
 Obviously, the check in step (5.) will fail if the code was issued to
 another client id, e.g., a client set up by the attacker. The check
 will also fail if the authorization code was already redeemed by the
