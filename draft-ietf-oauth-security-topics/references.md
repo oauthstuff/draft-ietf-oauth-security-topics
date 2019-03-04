@@ -1,18 +1,4 @@
 
-<reference anchor='pandoc' target='http://johnmacfarlane.net/pandoc/'>
-    <front>
-        <title>Pandoc, a universal document converter</title>
-        <author initials='J.' surname='MacFarlane' fullname='John MacFarlane'>
-            <organization>University of California, Berkeley</organization>
-            <address>
-                <email>jgm@berkeley.edu</email>
-                <uri>http://johnmacfarlane.net/</uri>
-            </address>
-        </author>
-        <date year='2006'/>
-    </front>
-</reference>
-
 <reference anchor="OpenID" target="http://openid.net/specs/openid-connect-core-1_0.html">
   <front>
     <title>OpenID Connect Core 1.0 incorporating errata set 1</title>
