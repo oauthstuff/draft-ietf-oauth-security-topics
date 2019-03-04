@@ -14,12 +14,12 @@ This approach allows clients to encode transaction state into
 additional redirect URI parameters or to register just a single
 pattern for multiple redirect URIs. As a downside, it turned out to be
 more complex to implement and error prone to manage than exact
-redirect URI matching. Several successful attacks have been observed
-in the wild, which utilized flaws in the pattern matching
-implementation or concrete configurations. Such a flaw effectively
-breaks client identification or authentication (depending on grant and
-client type) and allows the attacker to obtain an authorization code
-or access token, either:
+redirect URI matching. Several successful attacks, utilizing flaws in
+the pattern matching implementation or concrete configurations, have
+been observed in the wild. Insufficient validation of the redirect URI
+effectively breaks client identification or authentication (depending
+on grant and client type) and allows the attacker to obtain an
+authorization code or access token, either
   
   * by directly sending the user agent to a URI under the attackers
     control, or
