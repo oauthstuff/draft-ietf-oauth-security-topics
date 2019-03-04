@@ -25,6 +25,11 @@ deployments, the following challenges could be observed:
 	[@!RFC6749], and [@!RFC6819].
 	  
 	  
+Moreover, OAuth is being adopted in use cases with higher security 
+requirements than considered initially, such as Open Banking, eHealth, 
+eGovernment, and Electronic Signatures. Those use cases call for 
+stricter guidelines and additional protection. 
+
 OAuth initially assumed a static relationship between client,
 authorization server and resource servers. The URLs of AS and RS were
 known to the client at deployment time and built an anchor for the
@@ -44,9 +49,9 @@ community, such usage scenarios open up new attack angles,
 which are discussed in this document.
 	  
 The remainder of the document is organized as follows: The next
-section summarizes the most important recommendations of the OAuth
-working group for every OAuth implementor. Afterwards, a detailed
-analysis of the threats and implementation issues which can be found
-in the wild today is given along with a discussion of potential
-countermeasures.
+section updates the OAuth threat model. Afterwards, the most important
+recommendations of the OAuth working group for every OAuth implementor
+are summarized. Subsequently, a detailed analysis of the threats and
+implementation issues which can be found in the wild today is given
+along with a discussion of potential countermeasures.
     
