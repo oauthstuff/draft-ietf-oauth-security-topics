@@ -38,6 +38,10 @@ Note: [@!I-D.bradley-oauth-jwt-encoded-state] gives advice on how to
 implement CSRF prevention and AS matching using signed JWTs in the
 `state` parameter. 
 
+AS which redirect a request that potentially contains user credentials
+MUST avoid forwarding these user credentials accidentally (see
+(#redirect_307)).
+
 ### Authorization Code Grant {#ac}
 
 Clients utilizing the authorization grant type MUST use PKCE

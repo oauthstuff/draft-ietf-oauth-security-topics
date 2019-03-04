@@ -952,7 +952,7 @@ In order to prevent open redirection, clients should only expose such
 a function, if the target URLs are whitelisted or if the origin of a
 request can be authenticated.
 
-## 307 Redirect {#the-307-redirect}
+## 307 Redirect  {#redirect_307}
 
 At the authorization endpoint, a typical protocol flow is that the AS
 prompts the user to enter her credentials in a form that is then
