@@ -43,7 +43,7 @@ The attack can then be conducted as follows:
 
 First, the attacker needs to trick the user into opening a tampered
 URL in his browser, which launches a page under the attacker's
-control, say "https://www.evil.example".
+control, say "https://www.evil.example". (See Threat T1.)
 
 This URL initiates an authorization request with the client id of a
 legitimate client to the authorization endpoint. This is the example
@@ -323,7 +323,7 @@ Preconditions: For the attack to work, we assume that
     each AS, and
   * the attacker can manipulate the first request/response pair from a
     user's browser to the client (in which the user selects a certain
-    AS and is then redirected by the client to that AS). 
+    AS and is then redirected by the client to that AS), as in Threat T2. 
     
 Some of the attack variants described below require different
 preconditions.
@@ -533,7 +533,7 @@ There are multiple technical solutions to achieve this goal:
     it would also mean to re-interpret the purpose of `state` and to
     extend the token endpoint request.
   * **PKCE**: The PKCE parameter `code_challenge` along with the
-    corresponding `cide_verifier` as specified in [@!RFC7636] could be used
+    corresponding `code_verifier` as specified in [@!RFC7636] could be used
     in the same way as `nonce` or `state`. In contrast to its original
     intention, the verifier check would fail although the client uses
     its correct verifier but the code is associated with a challenge,
@@ -629,18 +629,18 @@ circumstances.
 ### Access Token Phishing by Counterfeit Resource Server
   
 An attacker may setup his own resource server and trick a client into
-sending access tokens to it, which are valid for other resource
-servers. If the client sends a valid access token to this counterfeit
-resource server, the attacker in turn may use that token to access
-other services on behalf of the resource owner.
+sending access tokens to it that are valid for other resource servers
+(see Threats T1 and T5). If the client sends a valid access token to
+this counterfeit resource server, the attacker in turn may use that
+token to access other services on behalf of the resource owner.
 
-This attack assumes the client is not bound to a certain resource
-server (and the respective URL) at development time, but client
-instances are configured with an resource server's URL at runtime.
-This kind of late binding is typical in situations where the client
-uses a standard API, e.g., for e-Mail, calendar, health, or banking
-and is configured by an user or administrator for the standard-based
-service, this particular user or company uses.
+This attack assumes the client is not bound to one specific resource
+server (and its URL) at development time, but client instances are
+provided with the resource server URL at runtime. This kind of late
+binding is typical in situations where the client uses a service
+implementing a standardized API (e.g., for e-Mail, calendar, health,
+or banking) and where the client is configured by a user or
+administrator for a service which this user or company uses.
 
      
 There are several potential mitigation strategies, which will be
@@ -691,7 +691,7 @@ token response, illustrated by the example return parameter
 This mitigation strategy would rely on the client to enforce the
 security policy and to only send access tokens to legitimate
 destinations. Results of OAuth related security research (see for
-example [#@!oauth_security_ubc] and [#!oauth_security_cmu]) indicate a
+example [@!oauth_security_ubc] and [@!oauth_security_cmu]) indicate a
 large portion of client implementations do not or fail to properly
 implement security controls, like `state` checks. So relying on
 clients to prevent access token phishing is likely to fail as well.
@@ -703,10 +703,10 @@ countermeasures, as described in the next sections, which provide a
 better balance between the involved parties.
   
   
-#### Sender Constrained Access Tokens {#pop_tokens} 
+#### Sender-Constrained Access Tokens {#pop_tokens} 
 
  
-As the name suggests, sender constrained access token scope the
+As the name suggests, sender-constrained access token scope the
 applicability of an access token to a certain sender. This sender is
 obliged to demonstrate knowledge of a certain secret as prerequisite
 for the acceptance of that token at a resource server.
@@ -736,8 +736,8 @@ A typical flow looks like this:
 There exists several proposals to demonstrate the proof of possession
  in the scope of the OAuth working group:
  
-  * [@!I-D.ietf-oauth-token-binding]: In this approach, an access
-    tokens is, via the so-called token binding id, bound to key
+  * **OAuth Token Binding** ([@!I-D.ietf-oauth-token-binding]): In this approach, an access
+    token is, via the so-called token binding id, bound to key
     material representing a long term association between a client and
     a certain TLS host. Negotiation of the key material and proof of
     possession in the context of a TLS handshake is taken care of by
@@ -752,48 +752,47 @@ There exists several proposals to demonstrate the proof of possession
     token binding as described in [@!I-D.ietf-tokbind-https]
     (including federated token bindings) must be supported on all ends
     (client, authorization server, resource server).
-  * [@!I-D.ietf-oauth-mtls]: The approach as specified in this
-    document allow use of mutual TLS for both client authentication
-    and sender constraint access tokens. For the purpose of sender
-    constraint access tokens, the client is identified towards the
-    resource server by the fingerprint of its public key. During
-    processing of an access token request, the authorization server
-    obtains the client's public key from the TLS stack and associates
-    its fingerprint with the respective access tokens. The resource
-    server in the same way obtains the public key from the TLS stack
-    and compares its fingerprint with the fingerprint associated with
-    the access token.
-  * [@!I-D.ietf-oauth-signed-http-request] specifies an approach to
-    sign HTTP requests. It utilizes
-    [@!I-D.ietf-oauth-pop-key-distribution] and represents the
-    elements of the signature in a JSON object. The signature is built
-    using JWS. The mechanism has built-in support for signing of HTTP
-    method, query parameters and headers. It also incorporates a
-    timestamp as basis for replay prevention.
-  * [@!I-D.sakimura-oauth-jpop]: this draft describes different ways
-    to constrain access token usage, namely TLS or request signing.
-    Note: Since the authors of this draft contributed the TLS-related
-    proposal to [@!I-D.ietf-oauth-mtls], this document only considers
-    the request signing part. For request signing, the draft utilizes
+  * **OAuth Mutual TLS** ([@!I-D.ietf-oauth-mtls]): The approach as
+    specified in this document allows the use of mutual TLS (mTLS) for both
+    client authentication and sender-constrained access tokens. For
+    the purpose of sender-constrained access tokens, the client is
+    identified towards the resource server by the fingerprint of its
+    public key. During processing of an access token request, the
+    authorization server obtains the client's public key from the TLS
+    stack and associates its fingerprint with the respective access
+    tokens. The resource server in the same way obtains the public key
+    from the TLS stack and compares its fingerprint with the
+    fingerprint associated with the access token.
+  * **Signed HTTP Requests** ([@!I-D.ietf-oauth-signed-http-request]):
+    This approach utilizes [@!I-D.ietf-oauth-pop-key-distribution] and
+    represents the elements of the signature in a JSON object. The
+    signature is built using JWS. The mechanism has built-in support
+    for signing of HTTP method, query parameters and headers. It also
+    incorporates a timestamp as basis for replay prevention.
+  * **JWT Pop Tokens** ([@!I-D.sakimura-oauth-jpop]): This draft
+    describes different ways to constrain access token usage, namely
+    TLS or request signing. Note: Since the authors of this draft
+    contributed the TLS-related proposal to [@!I-D.ietf-oauth-mtls],
+    this document only considers the request signing part. For request
+    signing, the draft utilizes
     [@!I-D.ietf-oauth-pop-key-distribution] and [@!RFC7800]. The
     signature data is represented in a JWT and JWS is used for
     signing. Replay prevention is provided by building the signature
     over a server-provided nonce, client-provided nonce and a nonce
     counter.
  
-[@!I-D.ietf-oauth-mtls] and [@!I-D.ietf-oauth-token-binding] are built
+Mutual TLS and OAuth Token Binding are built
 on top of TLS and this way continue the successful OAuth 2.0
 philosophy to leverage TLS to secure OAuth wherever possible. Both
 mechanisms allow prevention of access token leakage in a fairly client
 developer friendly way.
  
-There are some differences between both approaches: To start with, in
-[@!I-D.ietf-oauth-token-binding] all key material is automatically
-managed by the TLS stack whereas [@!I-D.ietf-oauth-mtls] requires the
+There are some differences between both approaches: To start with, for OAuth Token Binding, all key material is automatically
+managed by the TLS stack whereas mTLS requires the
 developer to create and maintain the key pairs and respective
 certificates. Use of self-signed certificates, which is supported by
-the draft, significantly reduce the complexity of this task.
-Furthermore, [@!I-D.ietf-oauth-token-binding] allows to use different
+the draft, significantly reduces the complexity of this task.
+Furthermore, OAuth Token Binding allows to use different
 key pairs for different resource servers, which is a privacy benefit.
 On the other hand, [@!I-D.ietf-oauth-mtls] only requires widely
 deployed TLS features, which means it might be easier to adopt in the
@@ -812,7 +811,7 @@ experiences have revealed challenges regarding robustness (e.g.,
 reproduction of the signature base string including correct URL) as
 well as state management (e.g., replay prevention).
  
- This document therefore recommends implementors to consider one of 
+ This document therefore recommends implementors to consider one of
 TLS-based approaches wherever possible.
 
 
@@ -901,7 +900,7 @@ order to cope with access token replay:
   * The resource server must treat access tokens like any other
     credentials. It is considered good practice to not log them and
     not to store them in plain text.
-  * Sender constraint access tokens as described in (#pop_tokens) will
+  * Sender-constrained access tokens as described in (#pop_tokens) will
     prevent the attacker from replaying the access tokens on other
     resource servers. Depending on the severity of the penetration, it
     will also prevent replay on the compromised system.
