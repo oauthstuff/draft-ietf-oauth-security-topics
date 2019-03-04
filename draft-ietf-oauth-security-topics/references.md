@@ -2,19 +2,19 @@
 <reference anchor="OpenID" target="http://openid.net/specs/openid-connect-core-1_0.html">
   <front>
     <title>OpenID Connect Core 1.0 incorporating errata set 1</title>
-    <author fullname="Nat Sakimura">
+    <author initials="N." surname="Sakimura" fullname="Nat Sakimura">
       <organization>NRI</organization>
     </author>
-    <author fullname="John Bradley">
+    <author initials="J." surname="Bradley" fullname="John Bradley">
       <organization>Ping Identity</organization>
     </author>
-    <author fullname="Mike Jones">
+    <author initials="M." surname="Jones" fullname="Mike Jones">
       <organization>Microsoft</organization>
     </author>
-    <author fullname="Breno de Medeiros">
+    <author initials="B." surname="de Medeiros" fullname="Breno de Medeiros">
       <organization>Google</organization>
     </author>
-    <author fullname="Chuck Mortimore">
+    <author initials="C." surname="Mortimore" fullname="Chuck Mortimore">
       <organization>Salesforce</organization>
     </author>
    <date day="8" month="Nov" year="2014"/>
@@ -48,10 +48,10 @@
 <reference anchor="webappsec-referrer-policy" target="https://w3c.github.io/webappsec-referrer-policy">
   <front>
     <title>Referrer Policy</title>
-    <author fullname="Jochen Eisinger">
+    <author initials="J." surname="Eisinger">
       <organization>Google Inc.</organization>
     </author>
-    <author fullname="Emily Stark">
+    <author initials="E." surname="Stark">
       <organization>Google Inc.</organization>
     </author>
     <date day="20" month="April" year="2017"/>
@@ -61,10 +61,10 @@
 <reference anchor="oauth-v2-form-post-response-mode" target="http://openid.net/specs/oauth-v2-form-post-response-mode-1_0.html">
   <front>
     <title>OAuth 2.0 Form Post Response Mode</title>
-    <author fullname="Mike Jones">
+    <author initials="M." surname="Jones" fullname="Mike Jones">
       <organization>Microsoft</organization>
     </author>
-    <author fullname="Brian Campbell">
+    <author initials="B." surname="Campbell" fullname="Brian Campbell">
       <organization>Ping Identity</organization>
     </author>
     <date day="27" month="April" year="2015"/>
@@ -75,10 +75,10 @@
 <reference anchor="oauth_security_ubc" target="http://passwordresearch.com/papers/paper267.html">
   <front>
     <title>The Devil is in the (Implementation) Details: An Empirical Analysis of OAuth SSO Systems</title>
-    <author fullname="San-Tsai Sun">
+    <author  initials="S.-T." surname="Sun" fullname="San-Tsai Sun">
       <organization abbrev="UBC">University of British Columbia</organization>
     </author>
-    <author fullname="Konstantin Beznosov">
+    <author  initials="K." surname="Beznosov" fullname="Konstantin Beznosov">
       <organization abbrev="UBC">University of British Columbia</organization>
     </author>
     <date month="October" year="2012"/>
@@ -89,24 +89,24 @@
 <reference anchor="oauth_security_cmu">
   <front>
     <title>OAuth Demystified for Mobile Application Developers</title>
-    <author fullname="Eric Chen">
+    <author  initials="E." surname="Chen" fullname="Eric Chen">
       <organization abbrev="CMU">Carnegie Mellon University</organization>
     </author>
-    <author fullname="Yutong Pei">
+    <author initials="Y." surname="Pei" fullname="Yutong Pei">
       <organization abbrev="CMU">Carnegie Mellon University</organization>
     </author>
-     <author fullname="Shuo Chen">
+     <author initials="S." surname="Chen" fullname="Shuo Chen">
       <organization abbrev="MR">Microsoft Research</organization>
     </author>
-    <author fullname="Yuan Tian">
+    <author initials="Y." surname="Tian" fullname="Yuan Tian">
       <organization abbrev="CMU">Carnegie Mellon University</organization>
     </author>          
-    <author fullname="Robert Kotcher">
+    <author initials="R." surname="Kotcher" fullname="Robert Kotcher">
       <organization abbrev="CMU">Carnegie Mellon University</organization>
     </author>
-    <author fullname="Patrick Tague">
+    <author initials="P." surname="Tague" fullname="Patrick Tague">
       <organization abbrev="CMU">Carnegie Mellon University</organization>
-    </author>        
+    </author>
     <date month="November" year="2014"/>
   </front>
   <format target="http://css.csail.mit.edu/6.858/2012/readings/oauth-sso.pdf" type="pdf" />
