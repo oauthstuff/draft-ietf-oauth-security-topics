@@ -150,7 +150,7 @@ obviously causes security issues. This document therefore proposes to
 simplify the required logic and configuration by using exact redirect
 URI matching only. This means the authorization server must compare
 the two URIs using simple string comparison as defined in [@!RFC3986],
-Section 6.2.1..
+Section 6.2.1.
    
 Additional recommendations:
 
@@ -209,7 +209,7 @@ referrer header can perform the attacks as described in
 (#insufficient_uri_validation_acg), (#code_injection), and
 (#access_token_injection). If the attacker learns `state`, the CSRF
 protection achieved by using `state` is lost, resulting in CSRF
-attacks as described in [@!RFC6819], Section 4.4.1.8..
+attacks as described in [@!RFC6819], Section 4.4.1.8.
  
 ### Proposed Countermeasures
  
@@ -222,7 +222,7 @@ The following measures further reduce the chances of a successful attack:
   * Bind authorization code to a confidential client or PKCE
     challenge. In this case, the attacker lacks the secret to request
     the code exchange.
-  * As described in [@!RFC6749], Section 4.1.2., authorization codes
+  * As described in [@!RFC6749], Section 4.1.2, authorization codes
     MUST be invalidated by the AS after their first use at the token
     endpoint. For example, if an AS invalidated the code after the
     legitimate client redeemed it, the attacker would fail exchanging

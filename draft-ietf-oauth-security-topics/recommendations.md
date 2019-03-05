@@ -49,18 +49,16 @@ Clients utilizing the authorization grant type MUST use PKCE
 detect and prevent attempts to inject (replay) authorization codes
 into the authorization response. The PKCE challenges must be
 transaction-specific and securely bound to the user agent in which the
-transaction was started. OpenID Connect clients MAY use the `nonce`
-parameter of the OpenID Connect authentication request as specified in
-[@!OpenID] in conjunction with the corresponding ID Token claim for
-the same purpose.
+transaction was started and the respective client. OpenID Connect
+clients MAY use the `nonce` parameter of the OpenID Connect
+authentication request as specified in [@!OpenID] in conjunction with
+the corresponding ID Token claim for the same purpose.
 
 Note: although PKCE so far was recommended as a mechanism to protect
 native apps, this advice applies to all kinds of OAuth clients,
 including web applications.
 
-Authorization servers MUST bind authorization codes to a certain
-client and authenticate it using an appropriate mechanism (e.g. client
-credentials or PKCE).
+Authorization servers SHOULD use client authentication if possible.
 
 Authorization servers SHOULD furthermore consider the recommendations
 given in [@!RFC6819], Section 4.4.1.1, on authorization code replay
