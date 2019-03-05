@@ -32,18 +32,18 @@ authorization code or access token, either
 For a public client using the grant type code, an attack would look as
 follows:
   
-Let's assume the redirect URL pattern "https://\*.somesite.example/\*"
+Let's assume the redirect URL pattern `https://*.somesite.example/*`
 had been registered for the client "s6BhdRkqt3". This pattern allows
 redirect URIs pointing to any host residing in the domain
 somesite.example. So if an attacker manages to establish a host or
 subdomain in somesite.example he can impersonate the legitimate
-client. Assume the attacker sets up the host "evil.somesite.example".
+client. Assume the attacker sets up the host `evil.somesite.example`.
 
 The attack can then be conducted as follows:
 
 First, the attacker needs to trick the user into opening a tampered
 URL in his browser, which launches a page under the attacker's
-control, say "https://www.evil.example". (See Threat T1.)
+control, say `https://www.evil.example`. (See Threat T1.)
 
 This URL initiates an authorization request with the client id of a
 legitimate client to the authorization endpoint. This is the example
@@ -94,7 +94,7 @@ Assume the pattern for client "s6BhdRkqt3" is
 `https://client.somesite.example/cb?*`, i.e., any parameter is allowed
 for redirects to `https://client.somesite.example/cb`. Unfortunately,
 the client exposes an open redirector. This endpoint supports a
-parameter "redirect_to" which takes a target URL and will send the
+parameter `redirect_to` which takes a target URL and will send the
 browser to this URL using an HTTP Location header redirect 303.
 
 The attack can now be conducted as follows:
@@ -313,7 +313,7 @@ For a detailed attack description, refer to [@arXiv.1601.01229] and
 follows [@arXiv.1601.01229], with variants of the attack outlined
 below.
 
-Preconditions: For the attack to work, we assume that 
+Preconditions: For the attack to work, we assume that
 
   * the implicit or authorization code grant are used with multiple AS
     of which one is considered "honest" (H-AS) and one is operated by
@@ -328,10 +328,9 @@ Preconditions: For the attack to work, we assume that
 Some of the attack variants described below require different
 preconditions.
 
-In the following, we assume that the client is registered
-with H-AS (URI: "https://honest.as.example", client id:
-7ZGZldHQ) and with A-AS (URI: "https://attacker.example",
-client id: 666RVZJTA).
+In the following, we assume that the client is registered with H-AS
+(URI: `https://honest.as.example`, client id: `7ZGZldHQ`) and with
+A-AS (URI: `https://attacker.example`, client id: `666RVZJTA`).
 
 Attack on the authorization code grant:
 
@@ -347,7 +346,9 @@ Attack on the authorization code grant:
  4. Now the attacker intercepts this response and changes the
     redirection such that the user is being redirected to H-AS. The
     attacker also replaces the client id of the client at A-AS with
-    the client's id at H-AS. Therefore, the browser receives a redirection (`303 See Other`) with a Location header pointing to `https://honest.as.example/authorize?response_type=code&client_id=7ZGZldHQ`
+    the client's id at H-AS. Therefore, the browser receives a
+    redirection (`303 See Other`) with a Location header pointing to
+    `https://honest.as.example/authorize?response_type=code&client_id=7ZGZldHQ`
  5. Now, the user authorizes the client to access her resources at
     H-AS. H-AS issues a code and sends it (via the browser) back to
     the client.
@@ -369,13 +370,12 @@ Variants:
     works even if the first request/response pair cannot be
     intercepted (for example, because TLS is used to protect these
     messages): Here, we assume that the user wants to start the grant
-    using A-AS (and not H-AS). After the client redirected the user to
-    the authorization endpoint at A-AS, the attacker immediately
-    redirects the user to H-AS (changing the client id "7ZGZldHQ"). (A
-    vigilant user might at this point detect that she intended to use
-    A-AS instead of H-AS.) The attack now proceeds exactly as in step
-    <xref format="counter" target="list_mixup_acg_after_authep"/> of
-    the attack description above.
+    using A-AS (and not H-AS, see Threat T1). After the client
+    redirected the user to the authorization endpoint at A-AS, the
+    attacker immediately redirects the user to H-AS (changing the
+    client id to `7ZGZldHQ`). (A vigilant user might at this point
+    detect that she intended to use A-AS instead of H-AS.) The attack
+    now proceeds exactly as in Steps 3ff. of the attack description above.
   * **Per-AS Redirect URIs**: If clients use different redirect URIs
     for different ASs, do not store the selected AS in the user's
     session, and ASs do not check the redirect URIs properly,
