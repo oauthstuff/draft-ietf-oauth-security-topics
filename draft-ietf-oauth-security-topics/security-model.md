@@ -59,7 +59,7 @@ even strong attacker model that is described as follows:
     attacker-controlled resource server due to a misconfiguration, or
     an RO is social-engineered into using a attacker-controlled RS.
     
-Note that in this attacker model, an attacker can be an client or act as one
+Note that in this attacker model, an attacker can be a RO or act as one
 (see A1). For example, an attacker can use his own browser to replay
 tokens or authorization codes obtained by any of the attacks described
 above at the client or RS.
