@@ -43,7 +43,7 @@ The attack can then be conducted as follows:
 
 First, the attacker needs to trick the user into opening a tampered
 URL in his browser, which launches a page under the attacker's
-control, say `https://www.evil.example`. (See Threat T1.)
+control, say `https://www.evil.example`. (See Attacker A1.)
 
 This URL initiates an authorization request with the client id of a
 legitimate client to the authorization endpoint. This is the example
@@ -323,7 +323,7 @@ Preconditions: For the attack to work, we assume that
     each AS, and
   * the attacker can manipulate the first request/response pair from a
     user's browser to the client (in which the user selects a certain
-    AS and is then redirected by the client to that AS), as in Threat T2. 
+    AS and is then redirected by the client to that AS), as in Attacker A2. 
     
 Some of the attack variants described below require different
 preconditions.
@@ -370,7 +370,7 @@ Variants:
     works even if the first request/response pair cannot be
     intercepted (for example, because TLS is used to protect these
     messages): Here, we assume that the user wants to start the grant
-    using A-AS (and not H-AS, see Threat T1). After the client
+    using A-AS (and not H-AS, see Attacker A1). After the client
     redirected the user to the authorization endpoint at A-AS, the
     attacker immediately redirects the user to H-AS (changing the
     client id to `7ZGZldHQ`). (A vigilant user might at this point
@@ -630,7 +630,7 @@ circumstances.
   
 An attacker may setup his own resource server and trick a client into
 sending access tokens to it that are valid for other resource servers
-(see Threats T1 and T5). If the client sends a valid access token to
+(see Attackers A1 and A5). If the client sends a valid access token to
 this counterfeit resource server, the attacker in turn may use that
 token to access other services on behalf of the resource owner.
 
