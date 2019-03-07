@@ -49,7 +49,7 @@ This URL initiates an authorization request with the client id of a
 legitimate client to the authorization endpoint. This is the example
 authorization request (line breaks are for display purposes only):
     
-    GET /authorize?response_type=code&client_id=s6BhdRkqt3&state=xyz
+    GET /authorize?response_type=code&client_id=s6BhdRkqt3&state=9ad67f13
          &redirect_uri=https%3A%2F%2Fevil.somesite.example%2Fcb HTTP/1.1
     Host: server.somesite.example
   
@@ -110,7 +110,7 @@ above, it utilizes the open redirector by encoding
 uses the response type "token" (line breaks are for display purposes
 only):
   
-    GET /authorize?response_type=token&client_id=s6BhdRkqt3&state=xyz
+    GET /authorize?response_type=token&client_id=s6BhdRkqt3&state=9ad67f13
         &redirect_uri=https%3A%2F%2Fclient.somesite.example%2Fcb%26redirect_to
          %253Dhttps%253A%252F%252Fclient.evil.example%252Fcb HTTP/1.1
     Host: server.somesite.example
