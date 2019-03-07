@@ -4,7 +4,7 @@
    
    -12
    
-   * Added updated threat model
+   * Added updated attacker model
    
    -11
    
