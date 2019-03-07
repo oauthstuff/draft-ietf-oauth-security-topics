@@ -1,7 +1,7 @@
 # Introduction {#Introduction}
-      
-It's been a while since OAuth has been published in [@!RFC6749] and
-[@!RFC6750]. Since publication, OAuth 2.0 has gotten massive traction
+
+Since its publication in [@!RFC6749] and
+[@!RFC6750], OAuth 2.0 has gotten massive traction
 in the market and became the standard for API protection and, as
 foundation of OpenID Connect [@!OpenID], identity providing. While
 OAuth was used in a variety of scenarios and different kinds of
