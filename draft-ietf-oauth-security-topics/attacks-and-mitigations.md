@@ -178,7 +178,7 @@ authenticate clients, e.g., using [@I-D.ietf-oauth-jwsreq].
 Authorization codes or values of `state` can unintentionally be
 disclosed to attackers through the referrer header, by leaking either
 from a client's web site or from an AS's web site. Note: even if
-specified otherwise in [@RFC2616], Section 14.36, the same may happen
+specified otherwise in [@RFC7231], Section 5.5.2, the same may happen
 to access tokens conveyed in URI fragments due to browser
 implementation issues as illustrated by Chromium Issue 168213
 [@bug.chromium].
@@ -216,7 +216,7 @@ attacks as described in [@!RFC6819], Section 4.4.1.8.
 ### Proposed Countermeasures
  
 The page rendered as a result of the OAuth authorization response and
-the authorization endpoint SHOULD not include third-party resources or
+the authorization endpoint SHOULD NOT include third-party resources or
 links to external sites.
  
 The following measures further reduce the chances of a successful attack:
@@ -752,7 +752,7 @@ There exists several proposals to demonstrate the proof of possession
     token binding id of associated with the access token match. Since
     all crypto-related functions are covered by the TLS stack, this
     approach is very client developer friendly. As a prerequisite,
-    token binding as described in [@I-D.ietf-tokbind-https]
+    token binding as described in [@RFC8473]
     (including federated token bindings) must be supported on all ends
     (client, authorization server, resource server).
   * **OAuth Mutual TLS** ([@I-D.ietf-oauth-mtls]): The approach as
@@ -980,7 +980,7 @@ reveal the user credentials to the client. (In practice, however, most
 user agents will only show this behaviour for 307 redirects.)
 
 AS which redirect a request that potentially contains user credentials
-therefore MUST not use the HTTP 307 status code for redirection. If an
+therefore MUST NOT use the HTTP 307 status code for redirection. If an
 HTTP redirection (and not, for example, JavaScript) is used for such a
 request, AS SHOULD use HTTP status code 303 "See Other".
   

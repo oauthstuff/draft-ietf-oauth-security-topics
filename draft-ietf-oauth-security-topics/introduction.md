@@ -48,10 +48,19 @@ support the usage of OAuth in dynamic scenarios. As a challenge to the
 community, such usage scenarios open up new attack angles, 
 which are discussed in this document.
 	  
+## Structure
+
 The remainder of the document is organized as follows: The next
-section updates the OAuth threat model. Afterwards, the most important
+section updates the OAuth attacker model. Afterwards, the most important
 recommendations of the OAuth working group for every OAuth implementor
 are summarized. Subsequently, a detailed analysis of the threats and
 implementation issues which can be found in the wild today is given
 along with a discussion of potential countermeasures.
-    
+
+## Conventions and Terminology
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+"MAY", and "OPTIONAL" in this document are to be interpreted as
+described in BCP 14 [@RFC2119] [@RFC8174] when, and only when, they
+appear in all capitals, as shown here.
