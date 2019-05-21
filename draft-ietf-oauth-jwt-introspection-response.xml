@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="US-ASCII"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 		This template is for creating an Internet Draft using xml2rfc, which
 		is available here: http://xml.resource.org.
@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-oauth-jwt-introspection-response-02"
+<rfc category="std" docName="draft-ietf-oauth-jwt-introspection-response-03"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="19" month="February" year="2019" />
+    <date day="21" month="May" year="2019" />
 
     <!-- Meta-data Declarations -->
 
@@ -419,7 +419,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       
       <section anchor="ietf-oauth-discoveryIANA" title="OAuth Authorization Server Metadata Registration">
       <t>
-        This specification requests registration of the following value
+        This specification requests registration of the following values
         in the IANA "OAuth Authorization Server Metadata" registry
         <xref target="IANA.OAuth.Parameters"/> established by <xref target="RFC8414"/>.
       </t>
@@ -455,9 +455,217 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       </section>     
       
     <section anchor="ietf-oauth-introspectionIANA" title="OAuth Token Introspection Response">
-      <t>
-        TBD: add all OpenID Connect standard claims. 
+     <t>
+        This specification requests registration of the following claim values as defined 
+        in <xref target="OpenID.Core"/>, Section 5.1, in the IANA "OAuth Token Introspection 
+        Response" registry.
+        <xref target="IANA.OAuth.Parameters"/> established by <xref target="RFC8414"/>.
       </t>
+        <section title="Registry Contents">
+          <t>
+            <list style='symbols'>
+              <t>Name: <spanx style="verb">name</spanx></t>
+              <t>Description: End-User's full name in displayable form including all name 
+              parts, possibly including titles and suffixes, ordered according to the 
+              End-User's locale and preferences.</t>
+              <t>Change Controller: IESG</t>
+              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
+            </list>
+          </t>
+          <t>
+            <list style='symbols'>
+              <t>Name: <spanx style="verb">given_name</spanx></t>
+              <t>Description: Given name(s) or first name(s) of the End-User. 
+              Note that in some cultures, people can have multiple given names; all can 
+              be present, with the names being separated by space characters.</t>
+              <t>Change Controller: IESG</t>
+              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
+            </list>
+          </t>
+          <t>
+            <list style='symbols'>
+              <t>Name: <spanx style="verb">family_name</spanx></t>
+              <t>Description: Surname(s) or last name(s) of the End-User. Note that in 
+              some cultures, people can have multiple family names or no family name; all 
+              can be present, with the names being separated by space characters.</t>
+              <t>Change Controller: IESG</t>
+              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
+            </list>
+          </t>
+          <t>
+            <list style='symbols'>
+              <t>Name: <spanx style="verb">middle_name</spanx></t>
+              <t>Description: Middle name(s) of the End-User. Note that in some cultures, 
+              people can have multiple middle names; all can be present, with the names 
+              being separated by space characters. Also note that in some cultures, 
+              middle names are not used.</t>
+              <t>Change Controller: IESG</t>
+              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
+            </list>
+          </t>
+          <t>
+            <list style='symbols'>
+              <t>Name: <spanx style="verb">nickname</spanx></t>
+              <t>Description: Casual name of the End-User that may or may not be the same 
+              as the given_name. For instance, a nickname value of Mike might be returned 
+              alongside a given_name value of Michael.</t>
+              <t>Change Controller: IESG</t>
+              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
+            </list>
+          </t>
+          <t>
+            <list style='symbols'>
+              <t>Name: <spanx style="verb">preferred_username</spanx></t>
+              <t>Description: Shorthand name by which the End-User wishes to be referred 
+              to at the RP, such as janedoe or j.doe. This value MAY be any valid JSON 
+              string including special characters such as @, /, or whitespace.</t>
+              <t>Change Controller: IESG</t>
+              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
+            </list>
+          </t>
+          <t>
+            <list style='symbols'>
+              <t>Name: <spanx style="verb">profile</spanx></t>
+              <t>Description:URL of the End-User's profile page. The contents of this Web 
+              page SHOULD be about the End-User.</t>
+              <t>Change Controller: IESG</t>
+              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
+            </list>
+          </t>
+          <t>
+            <list style='symbols'>
+              <t>Name: <spanx style="verb">picture</spanx></t>
+              <t>Description: URL of the End-User's profile picture. This URL MUST refer 
+              to an image file (for example, a PNG, JPEG, or GIF image file), rather than 
+              to a Web page containing an image. Note that this URL SHOULD specifically 
+              reference a profile photo of the End-User suitable for displaying when 
+              describing the End-User, rather than an arbitrary photo taken by the 
+              End-User.</t>
+              <t>Change Controller: IESG</t>
+              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
+            </list>
+          </t>
+          <t>
+            <list style='symbols'>
+              <t>Name: <spanx style="verb">website</spanx></t>
+              <t>Description: URL of the End-User's Web page or blog. This Web page SHOULD 
+              contain information published by the End-User or an organization that the 
+              End-User is affiliated with.</t>
+              <t>Change Controller: IESG</t>
+              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
+            </list>
+          </t>
+          <t>
+            <list style='symbols'>
+              <t>Name: <spanx style="verb">email</spanx></t>
+              <t>Description: End-User's preferred e-mail address. Its value MUST conform 
+              to the RFC 5322 [RFC5322] addr-spec syntax. </t>
+              <t>Change Controller: IESG</t>
+              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
+            </list>
+          </t>
+          <t>
+            <list style='symbols'>
+              <t>Name: <spanx style="verb">email_verified</spanx></t>
+              <t>Description: True if the End-User's e-mail address has been verified; 
+              otherwise false. When this Claim Value is true, this means that the OP took 
+              affirmative steps to ensure that this e-mail address was controlled by the 
+              End-User at the time the verification was performed. The means by which an 
+              e-mail address is verified is context-specific, and dependent upon the 
+              trust framework or contractual agreements within which the parties are 
+              operating. </t>
+              <t>Change Controller: IESG</t>
+              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
+            </list>
+          </t>
+          <t>
+            <list style='symbols'>
+              <t>Name: <spanx style="verb">gender</spanx></t>
+              <t>Description:End-User's gender. Values defined by this specification are 
+              female and male. Other values MAY be used when neither of the defined 
+              values are applicable. </t>
+              <t>Change Controller: IESG</t>
+              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
+            </list>
+          </t>
+          <t>
+            <list style='symbols'>
+              <t>Name: <spanx style="verb">birthdate</spanx></t>
+              <t>Description:Time the End-User's information was last updated. Its value 
+              is a JSON number representing the number of seconds from 1970-01-01T0:0:0Z 
+              as measured in UTC until the date/time.</t>
+              <t>Change Controller: IESG</t>
+              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
+            </list>
+          </t>
+          <t>
+            <list style='symbols'>
+              <t>Name: <spanx style="verb">zoneinfo</spanx></t>
+              <t>Description: String from zoneinfo [zoneinfo] time zone database 
+              representing the End-User's time zone. For example, Europe/Paris or 
+              America/Los_Angeles. </t>
+              <t>Change Controller: IESG</t>
+              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
+            </list>
+          </t>
+          <t>
+            <list style='symbols'>
+              <t>Name: <spanx style="verb">locale</spanx></t>
+              <t>Description: Time the End-User's information was last updated. Its value 
+              is a JSON number representing the number of seconds from 1970-01-01T0:0:0Z 
+              as measured in UTC until the date/time.</t>
+              <t>Change Controller: IESG</t>
+              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
+            </list>
+          </t>
+          <t>
+            <list style='symbols'>
+              <t>Name: <spanx style="verb">phone_number</spanx></t>
+              <t>Description: End-User's preferred telephone number. E.164 [E.164] is 
+              RECOMMENDED as the format of this Claim, for example, +1 (425) 555-1212 or 
+              +56 (2) 687 2400. If the phone number contains an extension, it is 
+              RECOMMENDED that the extension be represented using the RFC 3966 [RFC3966] 
+              extension syntax, for example, +1 (604) 555-1234;ext=5678. </t>
+              <t>Change Controller: IESG</t>
+              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
+            </list>
+          </t>
+          <t>
+            <list style='symbols'>
+              <t>Name: <spanx style="verb">phone_number_verified</spanx></t>
+              <t>Description: True if the End-User's phone number has been verified; 
+              otherwise false. When this Claim Value is true, this means that the OP 
+              took affirmative steps to ensure that this phone number was controlled by 
+              the End-User at the time the verification was performed. The means by which 
+              a phone number is verified is context-specific, and dependent upon the 
+              trust framework or contractual agreements within which the parties are 
+              operating. When true, the phone_number Claim MUST be in E.164 format and 
+              any extensions MUST be represented in RFC 3966 format. </t>
+              <t>Change Controller: IESG</t>
+              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
+            </list>
+          </t>
+          <t>
+            <list style='symbols'>
+              <t>Name: <spanx style="verb">address</spanx></t>
+              <t>Description: End-User's preferred postal address. The value of the 
+              address member is a JSON [RFC4627] structure containing some or all of 
+              the members defined in <xref target="OpenID.Core"/>,Section 5.1.1. </t>
+              <t>Change Controller: IESG</t>
+              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
+            </list>
+          </t>
+          <t>
+            <list style='symbols'>
+              <t>Name: <spanx style="verb">updated_at</spanx></t>
+              <t>Description: Time the End-User's information was last updated. Its value 
+              is a JSON number representing the number of seconds from 
+              1970-01-01T0:0:0Z as measured in UTC until the date/time. </t>
+              <t>Change Controller: IESG</t>
+              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
+            </list>
+          </t>
+        </section>
       </section>     
 
 
@@ -537,6 +745,11 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
     
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
+	  <t>-03<list style="symbols">
+          <t>added registration for OpenID Connect Standard Claims to 
+          OAuth Token Introspection Response registry</t>
+        </list>
+      </t> 
 	  <t>-02<list style="symbols">
           <t>updated references</t>
         </list>
