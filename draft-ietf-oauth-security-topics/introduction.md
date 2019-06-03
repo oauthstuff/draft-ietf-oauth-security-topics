@@ -22,7 +22,7 @@ deployments, the following challenges could be observed:
   * OAuth is used in much more dynamic setups than originally
 	anticipated, creating new challenges with respect to security.
 	Those challenges go beyond the original scope of [@!RFC6749],
-	[@!RFC6749], and [@!RFC6819].
+	[@!RFC6750], and [@!RFC6819].
 	  
 	  
 Moreover, OAuth is being adopted in use cases with higher security 
