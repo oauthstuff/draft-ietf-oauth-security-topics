@@ -281,7 +281,7 @@ Proposed countermeasures:
   
 ### Access Token in Browser History
   
-An access token may end up in the browser history if a a client or
+An access token may end up in the browser history if a client or
 just a web site, which already has a token, deliberately navigates to
 a page like "provider.com/get_user_profile?access_token=abcdef.".
 Actually [@!RFC6750] discourages this practice and asks to transfer
@@ -555,7 +555,7 @@ There are multiple technical solutions to achieve this goal:
     application programming model (would need to use per-user client
     IDs).
 
-PKCE seems to be the most obvious solution for OAuth clients as it
+PKCE seems to be the most obvious solution for OAuth clients as it is
 available and effectively used today for similar purposes for OAuth
 native apps whereas `nonce` is appropriate for OpenId Connect clients.
 
@@ -729,7 +729,7 @@ A typical flow looks like this:
     X.509 Certificates can be used in which case the distribution
     happens explicitly during the enrollment process. Or the key
     material is created and distributed at the TLS layer, in which
-    case it might automatically happens during the setup of a TLS
+    case it might automatically happen during the setup of a TLS
     connection.
  3. The RS must implement the actual proof of possession check. This
     is typically done on the application level, it may utilize
@@ -746,7 +746,7 @@ There exists several proposals to demonstrate the proof of possession
     possession in the context of a TLS handshake is taken care of by
     the TLS stack. The client needs to determine the token binding id
     of the target resource server and pass this data to the access
-    token request. The authorization server than associates the access
+    token request. The authorization server then associates the access
     token with this id. The resource server checks on every invocation
     that the token binding id of the active TLS connection and the
     token binding id of associated with the access token match. Since
@@ -828,7 +828,7 @@ access token sent with that request was meant to be used at the
 particular resource server. If not, the resource server must refuse to
 serve the respective request. In the general case, audience
 restrictions limit the impact of a token leakage. In the case of a
-counterfeit resource server, it may (as described see below) also
+counterfeit resource server, it may (as described below) also
 prevent abuse of the phished access token at the legitimate resource
 server.
 
@@ -1013,7 +1013,7 @@ whitelist useless. A reverse proxy must therefore sanitize any inbound
 requests to ensure the authenticity and integrity of all header values
 relevant for the security of the application servers.
    
-If an attacker would be able to get access to the internal network
+If an attacker was able to get access to the internal network
 between proxy and application server, it could also try to circumvent
 security controls in place. It is therefore important to ensure the
 authenticity of the communicating entities. Furthermore, the

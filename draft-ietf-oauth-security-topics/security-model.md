@@ -37,7 +37,7 @@ protected at least against the following attackers:
 These attackers conform to the attacker model that was used in formal
 analysis efforts for OAuth [@arXiv.1601.01229]. Previous attacks on
 OAuth have shown that OAuth deployments should protect against an
-even strong attacker model that is described as follows:
+even stronger attacker model that is described as follows:
 
   * (A3) Attackers that can read, but not modify, the contents of the
     authorization response (i.e., the authorization response can leak
