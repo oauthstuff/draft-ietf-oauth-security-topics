@@ -1108,3 +1108,27 @@ authorization server. It might be a global value or determined based
 on the client policy or the grant associated with the refresh token
 (and its sensitivity).
     
+
+
+## Client Impersonating Resource Owner
+   
+Resource servers may make access control decisions based on the
+identity of the resource owner as communicated in the `sub` claim
+returned by the authorization server in a token introspection response
+[@!RFC7662] or other mechanism. If a client is able to choose its own
+`client_id` during registration with the authorization server, then
+there is a risk that it can register with the same `sub` value as a
+privileged user. A subsequent access token obtained under the client
+credentials grant may be mistaken as an access token authorized by the
+privileged user if the resource server does not perform additional
+checks.
+
+### Proposed Countermeasures {#client_impersonating_countermeasures}
+
+Authorization servers SHOULD NOT allow clients to influence their
+`client_id` or `sub` value or any other claim that might cause
+confusion with a genuine resource owner. Where this cannot be avoided,
+authorization servers MUST provide another means for the resource
+server to distinguish between access tokens authorized by a resource
+owner from access tokens authorized by the client itself.
+
