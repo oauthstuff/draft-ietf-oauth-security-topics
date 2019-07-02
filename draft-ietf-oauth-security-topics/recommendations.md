@@ -139,4 +139,12 @@ the respective request. Clients and authorization servers MAY utilize
 the parameter `scope` as specified in [@!RFC6749] to determine those
 resources and/or actions.
 
+## Resource Owner Password Credentials Grant
+
+The resource owner password credentials grant MUST NOT be used. This
+grant type insecurely exposes the credentials of the resource owner to
+the client. As a secondary issue, it is not easily adaptable to
+two-factor authentication, authentication with cryptographic
+credentials (WebCrypto, WebAuthn), and user authentication processes
+that require multiple steps.
 

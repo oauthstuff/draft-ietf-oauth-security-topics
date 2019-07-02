@@ -2,6 +2,12 @@
 
    [[ To be removed from the final specification ]]
    
+   -13
+   
+   * Discourage use of Resource Owner Password Credentials Grant
+   * Added text on client impersonating resource owner
+   * 
+   
    -12
    
    * Added updated attacker model
