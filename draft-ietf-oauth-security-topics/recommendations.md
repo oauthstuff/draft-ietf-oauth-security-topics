@@ -42,6 +42,7 @@ AS which redirect a request that potentially contains user credentials
 MUST avoid forwarding these user credentials accidentally (see
 (#redirect_307)).
 
+
 ### Authorization Code Grant {#ac}
 
 Clients utilizing the authorization grant type MUST use PKCE
@@ -148,3 +149,37 @@ two-factor authentication, authentication with cryptographic
 credentials (WebCrypto, WebAuthn), and user authentication processes
 that require multiple steps.
 
+## PKCE Considerations
+
+The PKCE code challenge method `plain` SHOULD NOT be used. Instead, a
+code challenge method that does not expose the PKCE verifier in the
+authorization request SHOULD be used. (Otherwise, the attacker A4 can
+trivially break the security provided by PKCE.) Currently, `S256` is
+the only such code challenge method.
+
+If PKCE [@RFC7636] is used by the client and the authorization server
+supports PKCE, clients MAY opt to not use `state` for protection
+against Cross-Site Request Forgery, as such protection is provided by
+PKCE. In this case, `state` MAY be used again for its original
+purpose, namely transporting data about the application state of the
+client (see (#csrf_countermeasures)).
+
+AS SHOULD provide a way to detect their support for PKCE. To this end,
+they SHOULD either (a) publish, in their AS metadata ([!@RFC8418]), the
+element `code_challenge_methods_supported` containing the supported
+PKCE challenge methods (which can be used by the client to detect PKCE
+support) or (b) provide a deployment-specific way to ensure or determine PKCE
+support by the AS.
+
+
+## Other Recommendations
+
+It is RECOMMENDED to use asymmetric (public key based) methods for
+client authentication such as MTLS [I-D.draft-ietf-oauth-mtls] or
+private_key_jwt [OIDC]. In comparison to client authentication with
+shared secrets, these methods are more robust against a number of
+attacks, for example if an authorization server becomes compromised.
+
+Authorization servers SHOULD NOT allow clients to influence their
+`client_id` or `sub` value or any other claim that might cause
+confusion with a genuine resource owner (see (#client_impersonating)).

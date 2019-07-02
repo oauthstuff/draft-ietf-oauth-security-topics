@@ -6,7 +6,10 @@
    
    * Discourage use of Resource Owner Password Credentials Grant
    * Added text on client impersonating resource owner
-   * 
+   * Recommend asymmetric methods for client authentication
+   * Discourage use of PKCE mode "plain"
+   * PKCE may replace state for CSRF protection
+   * AS SHOULD publish PKCE support
    
    -12
    

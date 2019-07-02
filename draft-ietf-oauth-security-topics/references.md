@@ -122,7 +122,7 @@
   <date day="6" month="January" year="2016"/>
 </front>
 <seriesInfo name="arXiv" value="1601.01229"/>
-  </reference>
+</reference>
 
 <reference anchor="arXiv.1704.08539"
      target="http://arxiv.org/abs/1704.08539/">
@@ -134,7 +134,19 @@
   <date day="27" month="April" year="2017"/>
 </front>
 <seriesInfo name="arXiv" value="1704.08539"/>
-  </reference>
+</reference>
+
+<reference anchor="arXiv.1901.11520"
+   target="http://arxiv.org/abs/1901.11520/">
+<front>
+  <title>An Extensive Formal Security Analysis of the OpenID Financial-grade API</title>
+  <author fullname="Daniel Fett" surname="Fett" initials="D."><organization/></author>
+  <author fullname="Pedram Hosseyni" surname="Hosseyni" initials="P."><organization/></author>
+  <author fullname="Ralf Küsters" surname="Küsters" initials="R."><organization/></author>
+  <date day="31" month="January" year="2019"/>
+</front>
+<seriesInfo name="arXiv" value="1901.11520"/>
+</reference>
 
 <reference anchor="arXiv.1508.04324v2"
      target="http://arxiv.org/abs/1508.04324v2/">

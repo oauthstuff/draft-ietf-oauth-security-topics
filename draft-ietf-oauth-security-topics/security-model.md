@@ -65,7 +65,9 @@ tokens or authorization codes obtained by any of the attacks described
 above at the client or RS.
     
 This document discusses the additional threats resulting from these
-attackers in detail and recommends suitable mitigations.
+attackers in detail and recommends suitable mitigations. Attacks in an
+even stronger attacker model are discussed, for example, in
+[@arXiv.1901.11520].
     
 This is a minimal attacker model. Implementers MUST take into account
 all possible attackers in the environment in which their OAuth

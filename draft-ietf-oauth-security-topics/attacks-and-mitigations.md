@@ -427,13 +427,17 @@ possible or intended. Examples are:
     redeem the code himself.
   * The authorization or resource servers are limited to certain
     networks that the attacker is unable to access directly.
+    
+In the following attack description and discussion, we assume the
+presence of a web or network attacker, but not of an attacker with
+advanced capabilities (A3-A5).
    
 ### Attack Description
 The attack works as follows:
    
  1. The attacker obtains an authorization code by performing any of
     the attacks described above.
- 2. It performs a regular OAuth authorization process with the
+ 2. He performs a regular OAuth authorization process with the
     legitimate client on his device.
  3. The attacker injects the stolen authorization code in the response
     of the authorization server to the legitimate client.
@@ -454,10 +458,10 @@ another client id, e.g., a client set up by the attacker. The check
 will also fail if the authorization code was already redeemed by the
 legitimate user and was one-time use only.
    
-An attempt to inject a code obtained via a malware pretending to be
-the legitimate client should also be detected, if the authorization
-server stored the complete redirect URI used in the authorization
-request and compares it with the redirect_uri parameter.
+An attempt to inject a code obtained via a manipulated redirect URI
+should also be detected if the authorization server stored the
+complete redirect URI used in the authorization request and compares
+it with the `redirect_uri` parameter.
    
 [@!RFC6749], Section 4.1.3, requires the AS to "... ensure that the
 `redirect_uri` parameter is present if the `redirect_uri` parameter
@@ -600,7 +604,34 @@ type instead of relying on response types issuing acess tokens at the
 authorization endpoint. Code injection can be detected using one of
 the countermeasures discussed in (#code_injection).
    
-   
+## PKCE Chosen Challenge Attack
+
+One advantage of PKCE is the protection against the misuse of leaked
+authorization codes. An attacker that gets access to an authorization
+code cannot use that authorization code unless he also learns the
+respective PKCE verifier.
+
+In the PKCE Chosen Challenge Attack (see [@arXiv.1901.11520] for
+details), an attacker with the capabilities of A1 and A3 impersonates
+an honest public client and circumvents the protection provided by PKCE.
+
+In short, the attack works as follows:
+
+  * The attacker starts an authorization code flow. He uses the honest
+    client's `client_id` and a redirection URI of the honest client.
+    In this flow, the attacker also chooses a PKCE verifier `X` and
+    sends the PKCE challenge `hash(X)` in the authorization request to
+    the AS.
+  * The user is tricked into believing that the authorization flow was
+    started by the honest client and authorizes the client.
+  * The authorization response is sent from the AS, via the user's
+    browser, to the honest client. The authorization response,
+    containing the authorization code, leaks to the attacker (see
+    attacker model A3).
+  * The attacker is now able to exchange the code at the token
+    endpoint of the AS, using `X` as the PKCE verifier.
+
+
    
 ## Cross Site Request Forgery
    
@@ -610,16 +641,28 @@ client to access resources under the attacker's control.
 
 ### Proposed Countermeasures {#csrf_countermeasures}
  
-Standard CSRF defenses should be used to protect the redirection
-endpoint, for example:
+Use of CSRF tokens which are bound to the user agent and passed in the
+`state` parameter to the authorization server as described in [!@RFC6819].
+Alternatively, PKCE provides CSRF protection. 
+
+It is important to note that:
+
+ * Clients MUST ensure that the AS supports PKCE before using PKCE for
+   CSRF protection. If an authorization server does not support PKCE,
+   `state` MUST be used for CSRF protection.
+
+ * If `state` is used for carrying application state, and integrity of
+   its contents is a concern, clients MUST protect state against
+   tampering and swapping. This can be achieved by binding the
+   contents of state to the browser session and/or signed/encrypted
+   state values [@I-D.bradley-oauth-jwt-encoded-state].
  
-  * **CSRF Tokens**: Use of CSRF tokens which are bound to the user
-   agent and passed in the `state` parameter to the authorization
-   server. 
-  * **Origin Header**: The Origin header can be used to detect and
-   prevent CSRF attacks. Since this feature, at the time of writing,
-   is not consistently supported by all browsers, CSRF tokens should
-   be used in addition to Origin header checking.
+The recommendation therefore is that AS publish their PKCE support
+either in AS metadata according to [@!RFC8418] or provide a
+deployment-specific way to ensure or determine PKCE support.
+
+Additionally, standard CSRF defenses MAY be used to protect the
+redirection endpoint, for example the Origin header.
  
 For more details see [@owasp_csrf].
    
@@ -1110,7 +1153,7 @@ on the client policy or the grant associated with the refresh token
     
 
 
-## Client Impersonating Resource Owner
+## Client Impersonating Resource Owner {#client_impersonating}
    
 Resource servers may make access control decisions based on the
 identity of the resource owner as communicated in the `sub` claim
