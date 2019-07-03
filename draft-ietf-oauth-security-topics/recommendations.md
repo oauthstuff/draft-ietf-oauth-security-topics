@@ -15,15 +15,19 @@ from a query parameter since such a function could be utilized to
 exfiltrate authorization codes and access tokens. If there is a strong
 need for this kind of redirects, clients are advised to implement
 appropriate countermeasures against open redirection, e.g., as
-described by the OWASP [@owasp].
+described by OWASP [@owasp].
 
 
-Clients MUST prevent CSRF and ensure that each authorization response
-is only accepted once. One-time use CSRF tokens carried in the `state`
-parameter, which are securely bound to the user agent, SHOULD be used
-for that purpose.
+Clients MUST prevent CSRF. One-time use CSRF tokens carried in the
+`state` parameter, which are securely bound to the user agent, SHOULD
+be used for that purpose. If PKCE [@RFC7636] is used by the client and
+the authorization server supports PKCE, clients MAY opt to not use
+`state` for CSRF protection, as such protection is provided by PKCE.
+In this case, `state` MAY be used again for its original purpose,
+namely transporting data about the application state of the client
+(see (#csrf_countermeasures)).
         
-
+        
 In order to prevent mix-up attacks, clients MUST only process redirect
 responses of the OAuth authorization server they sent the respective
 request to and from the same user agent this authorization request was
@@ -59,6 +63,19 @@ Note: although PKCE so far was recommended as a mechanism to protect
 native apps, this advice applies to all kinds of OAuth clients,
 including web applications.
 
+The PKCE code challenge method `plain` SHOULD NOT be used. Instead, a
+code challenge method that does not expose the PKCE verifier in the
+authorization request SHOULD be used. (Otherwise, the attacker A4 can
+trivially break the security provided by PKCE.) Currently, `S256` is
+the only such code challenge method.
+
+AS SHOULD provide a way to detect their support for PKCE. To this end,
+they SHOULD either (a) publish, in their AS metadata ([!@RFC8418]), the
+element `code_challenge_methods_supported` containing the supported
+PKCE challenge methods (which can be used by the client to detect PKCE
+support) or (b) provide a deployment-specific way to ensure or determine PKCE
+support by the AS.
+
 Authorization servers SHOULD use client authentication if possible.
 
 Authorization servers SHOULD furthermore consider the recommendations
@@ -86,7 +103,7 @@ and "code token id\_token", unless the issued access tokens are
 sender-constrained and access token injection in the authorization
 response is prevented. 
  
-A sender constrained access token scopes the applicability of an access
+A sender-constrained access token scopes the applicability of an access
 token to a certain sender. This sender is obliged to demonstrate knowledge
 of a certain secret as prerequisite for the acceptance of that token at
 the recipient (e.g., a resource server).
@@ -148,28 +165,6 @@ the client. As a secondary issue, it is not easily adaptable to
 two-factor authentication, authentication with cryptographic
 credentials (WebCrypto, WebAuthn), and user authentication processes
 that require multiple steps.
-
-## PKCE Considerations
-
-The PKCE code challenge method `plain` SHOULD NOT be used. Instead, a
-code challenge method that does not expose the PKCE verifier in the
-authorization request SHOULD be used. (Otherwise, the attacker A4 can
-trivially break the security provided by PKCE.) Currently, `S256` is
-the only such code challenge method.
-
-If PKCE [@RFC7636] is used by the client and the authorization server
-supports PKCE, clients MAY opt to not use `state` for protection
-against Cross-Site Request Forgery, as such protection is provided by
-PKCE. In this case, `state` MAY be used again for its original
-purpose, namely transporting data about the application state of the
-client (see (#csrf_countermeasures)).
-
-AS SHOULD provide a way to detect their support for PKCE. To this end,
-they SHOULD either (a) publish, in their AS metadata ([!@RFC8418]), the
-element `code_challenge_methods_supported` containing the supported
-PKCE challenge methods (which can be used by the client to detect PKCE
-support) or (b) provide a deployment-specific way to ensure or determine PKCE
-support by the AS.
 
 
 ## Other Recommendations
