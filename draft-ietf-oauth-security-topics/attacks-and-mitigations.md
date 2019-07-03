@@ -779,7 +779,7 @@ A typical flow looks like this:
     capabilities of the transport layer (e.g., TLS). Note: replay
     prevention is required as well!
  
-There exists several proposals to demonstrate the proof of possession
+There exist several proposals to demonstrate the proof of possession
  in the scope of the OAuth working group:
  
   * **OAuth Token Binding** ([@I-D.ietf-oauth-token-binding]): In this approach, an access

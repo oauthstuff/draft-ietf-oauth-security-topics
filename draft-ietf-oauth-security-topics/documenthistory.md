@@ -10,6 +10,7 @@
    * Discourage use of PKCE mode "plain"
    * PKCE may replace state for CSRF protection
    * AS SHOULD publish PKCE support
+   * Cleaned up discussion on auth code injection
    
    -12
    
