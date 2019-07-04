@@ -63,11 +63,12 @@ Note: although PKCE so far was recommended as a mechanism to protect
 native apps, this advice applies to all kinds of OAuth clients,
 including web applications.
 
-The PKCE code challenge method `plain` SHOULD NOT be used. Instead, a
-code challenge method that does not expose the PKCE verifier in the
-authorization request SHOULD be used. (Otherwise, the attacker A4 can
-trivially break the security provided by PKCE.) Currently, `S256` is
-the only such code challenge method.
+Clients SHOULD use PKCE code challenge methods that do not expose the
+PKCE verifier in the authorization request. (Otherwise, the attacker
+A4 can trivially break the security provided by PKCE.) Currently,
+`S256` is the only such method.
+
+AS MUST support PKCE [!@RFC7636].
 
 AS SHOULD provide a way to detect their support for PKCE. To this end,
 they SHOULD either (a) publish, in their AS metadata ([!@RFC8418]), the
@@ -75,8 +76,6 @@ element `code_challenge_methods_supported` containing the supported
 PKCE challenge methods (which can be used by the client to detect PKCE
 support) or (b) provide a deployment-specific way to ensure or determine PKCE
 support by the AS.
-
-Authorization servers SHOULD use client authentication if possible.
 
 Authorization servers SHOULD furthermore consider the recommendations
 given in [@!RFC6819], Section 4.4.1.1, on authorization code replay
@@ -161,19 +160,31 @@ resources and/or actions.
 
 The resource owner password credentials grant MUST NOT be used. This
 grant type insecurely exposes the credentials of the resource owner to
-the client. As a secondary issue, it is not easily adaptable to
+the client. Even if the client is benign, this results in an increased
+attack surface (credentials can leak in more places than just the AS)
+and users are trained to enter their credentials in places other than
+the AS.
+
+Furthermore, adapting the resource owner password credentials grant to
 two-factor authentication, authentication with cryptographic
-credentials (WebCrypto, WebAuthn), and user authentication processes
-that require multiple steps.
+credentials, and authentication processes that require multiple steps
+can be hard or impossible (WebCrypto, WebAuthn).
 
 
-## Other Recommendations
+## Client Authentication
+Authorization servers SHOULD use client authentication if possible.
 
 It is RECOMMENDED to use asymmetric (public key based) methods for
 client authentication such as MTLS [I-D.draft-ietf-oauth-mtls] or
-private_key_jwt [OIDC]. In comparison to client authentication with
-shared secrets, these methods are more robust against a number of
-attacks, for example if an authorization server becomes compromised.
+`private_key_jwt` [OIDC]. When asymmetric methods for client
+authentication are used, authorization servers do not need to store
+sensitive symmetric keys, making these methods more robust against a
+number of attacks. Additionally, these methods enable non-repudation
+and work well with sender-constrained access tokens (without requiring
+additional keys to be distributed).
+
+
+## Other Recommendations
 
 Authorization servers SHOULD NOT allow clients to influence their
 `client_id` or `sub` value or any other claim that might cause

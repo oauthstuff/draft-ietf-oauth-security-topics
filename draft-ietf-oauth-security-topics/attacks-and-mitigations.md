@@ -452,7 +452,7 @@ The attack works as follows:
     other tokens to the client, so now the attacker is able to
     impersonate the legitimate user.
    
-### Discussion   
+### Discussion
 Obviously, the check in step (5.) will fail if the code was issued to
 another client id, e.g., a client set up by the attacker. The check
 will also fail if the authorization code was already redeemed by the
