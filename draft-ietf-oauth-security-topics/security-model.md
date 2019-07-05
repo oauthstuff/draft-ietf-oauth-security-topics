@@ -32,7 +32,7 @@ protected at least against the following attackers:
     the network over which protocol participants communicate. They can
     eavesdrop on, manipulate, and spoof messages, except when these
     are properly protected by cryptographic methods (e.g., TLS).
-    Network attacker can also block arbitrary messages.
+    Network attackers can also block arbitrary messages.
     
 These attackers conform to the attacker model that was used in formal
 analysis efforts for OAuth [@arXiv.1601.01229]. Previous attacks on
