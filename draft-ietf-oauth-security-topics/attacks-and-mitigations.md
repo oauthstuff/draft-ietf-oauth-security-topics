@@ -55,7 +55,7 @@ authorization request (line breaks are for display purposes only):
   
 Afterwards, the authorization server validates the redirect URI in
 order to identify the client. Since the pattern allows arbitrary
-domains host names in "somesite.example", the authorization request is
+host names in "somesite.example", the authorization request is
 processed under the legitimate client's identity. This includes the
 way the request for user consent is presented to the user. If
 auto-approval is allowed (which is not recommended for public clients
@@ -604,6 +604,7 @@ type instead of relying on response types issuing acess tokens at the
 authorization endpoint. Code injection can be detected using one of
 the countermeasures discussed in (#code_injection).
    
+<!--
 ## PKCE Chosen Challenge Attack
 
 One advantage of PKCE is the protection against the misuse of leaked
@@ -630,7 +631,7 @@ In short, the attack works as follows:
     attacker model A3).
   * The attacker is now able to exchange the code at the token
     endpoint of the AS, using `X` as the PKCE verifier.
-
+-->
 
    
 ## Cross Site Request Forgery
