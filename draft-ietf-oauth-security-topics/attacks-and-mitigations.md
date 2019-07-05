@@ -1028,21 +1028,21 @@ HTTP redirection (and not, for example, JavaScript) is used for such a
 request, AS SHOULD use HTTP status code 303 "See Other".
   
 
-## TLS Terminating Reverse Proxies
+## TLS Terminating Reverse Proxies {#tls_terminating}
    
 A common deployment architecture for HTTP applications is to have the
-application server sitting behind a reverse proxy, which terminates
+application server sitting behind a reverse proxy which terminates
 the TLS connection and dispatches the incoming requests to the
 respective application server nodes.
    
 This section highlights some attack angles of this deployment
-architecture, which are relevant to OAuth, and give recommendations
+architecture which are relevant to OAuth, and gives recommendations
 for security controls.
    
 In some situations, the reverse proxy needs to pass security-related
 data to the upstream application servers for further processing.
 Examples include the IP address of the request originator, token
-binding ids and authenticated TLS client certificates.
+binding ids, and authenticated TLS client certificates.
    
 If the reverse proxy would pass through any header sent from the
 outside, an attacker could try to directly send the faked header
@@ -1056,13 +1056,13 @@ whitelist useless. A reverse proxy must therefore sanitize any inbound
 requests to ensure the authenticity and integrity of all header values
 relevant for the security of the application servers.
    
-If an attacker was able to get access to the internal network
-between proxy and application server, it could also try to circumvent
-security controls in place. It is therefore important to ensure the
+If an attacker was able to get access to the internal network between
+proxy and application server, he could also try to circumvent security
+controls in place. It is therefore important to ensure the
 authenticity of the communicating entities. Furthermore, the
 communication link between reverse proxy and application server must
-therefore be protected against tapping and injection (including replay
-prevention).
+therefore be protected against eavesdropping, injection, and replay of
+messages.
   
   
 ## Refresh Token Protection {#refresh_token_protection}
