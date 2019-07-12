@@ -70,9 +70,9 @@ exchange the code for tokens at the respective token endpoint.
 Note: This attack will not work as easily for confidential clients,
 since the code exchange requires authentication with the legitimate
 client's secret. The attacker will need to impersonate or utilize the
-legitimate client to redeem the code (e.g., by performing a code
-injection attack). This kind of injections is covered in
-(#code_injection).
+legitimate client to redeem the code (e.g., by performing an
+authorization code injection attack). This kind of injections is
+covered in (#code_injection).
    
 ### Redirect URI Validation Attacks on Implicit Grant
    
@@ -262,7 +262,7 @@ Authorization codes and access tokens can end up in the browser's
 history of visited URLs, enabling the attacks described in the
 following.
 
-### Code in Browser History
+### Authorization Code in Browser History
   
 When a browser navigates to
 `client.example/redirection_endpoint?code=abcd` as a result of a
@@ -359,8 +359,9 @@ Attack on the authorization code grant:
     it will try to redeem the code at A-AS's token endpoint.
   
  7. The attacker therefore obtains code and can either exchange the
-    code for an access token (for public clients) or perform a code
-    injection attack as described in (#code_injection).
+    code for an access token (for public clients) or perform an
+    authorization code injection attack as described in
+    (#code_injection).
 
 
 Variants:
@@ -415,9 +416,9 @@ Potential countermeasures:
   
 In such an attack, the adversary attempts to inject a stolen
 authorization code into a legitimate client on a device under his
-control. In the simplest case, the attacker would want to use the code
-in his own client. But there are situations where this might not be
-possible or intended. Examples are: 
+control. In the simplest case, the attacker would want to use the
+authorization code in his own client. But there are situations where
+this might not be possible or intended. Examples are:
    
   * The attacker wants to access certain functions in this particular
     client. As an example, the attacker wants to impersonate his
@@ -474,9 +475,9 @@ redirect URI used by the attacker (otherwise, the redirect would not
 land at the attackers page). So the authorization server would detect
 the attack and refuse to exchange the code.
    
-Note: this check could also detect attempts to inject a code which had
-been obtained from another instance of the same client on another
-device, if certain conditions are fulfilled: 
+Note: this check could also detect attempts to inject an authorization
+code which had been obtained from another instance of the same client
+on another device, if certain conditions are fulfilled:
 
   * the redirect URI itself needs to contain a nonce or another kind
     of one-time use, secret data and
@@ -488,15 +489,15 @@ observed that providers very often ignore the `redirect_uri` check
 requirement at this stage, maybe because it doesn't seem to be
 security-critical from reading the specification.
    
-Other providers just pattern match the `redirect_uri` parameter against
-the registered redirect URI pattern. This saves the authorization
-server from storing the link between the actual redirect URI and the
-respective authorization code for every transaction. But this kind of
-check obviously does not fulfill the intent of the spec, since the
-tampered redirect URI is not considered. So any attempt to inject a
-code obtained using the `client_id` of a legitimate client or by
-utilizing the legitimate client on another device won't be detected in
-the respective deployments.
+Other providers just pattern match the `redirect_uri` parameter
+against the registered redirect URI pattern. This saves the
+authorization server from storing the link between the actual redirect
+URI and the respective authorization code for every transaction. But
+this kind of check obviously does not fulfill the intent of the spec,
+since the tampered redirect URI is not considered. So any attempt to
+inject an authorization code obtained using the `client_id` of a
+legitimate client or by utilizing the legitimate client on another
+device won't be detected in the respective deployments.
    
 It is also assumed that the requirements defined in [@!RFC6749],
 Section 4.1.3, increase client implementation complexity as clients
@@ -601,8 +602,8 @@ transaction or the particular user agent.
    
 The recommendation is therefore to use the authorization code grant
 type instead of relying on response types issuing acess tokens at the
-authorization endpoint. Code injection can be detected using one of
-the countermeasures discussed in (#code_injection).
+authorization endpoint. Authorization code injection can be detected
+using one of the countermeasures discussed in (#code_injection).
    
 <!--
 ## PKCE Chosen Challenge Attack
