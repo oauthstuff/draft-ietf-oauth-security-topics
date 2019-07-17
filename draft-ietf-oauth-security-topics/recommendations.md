@@ -68,10 +68,10 @@ PKCE verifier in the authorization request. (Otherwise, the attacker
 A4 can trivially break the security provided by PKCE.) Currently,
 `S256` is the only such method.
 
-AS MUST support PKCE [!@RFC7636].
+AS MUST support PKCE [@!RFC7636].
 
 AS SHOULD provide a way to detect their support for PKCE. To this end,
-they SHOULD either (a) publish, in their AS metadata ([!@RFC8418]), the
+they SHOULD either (a) publish, in their AS metadata ([@!RFC8418]), the
 element `code_challenge_methods_supported` containing the supported
 PKCE challenge methods (which can be used by the client to detect PKCE
 support) or (b) provide a deployment-specific way to ensure or determine PKCE
