@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="21" month="May" year="2019" />
+    <date day="22" month="Jul" year="2019" />
 
     <!-- Meta-data Declarations -->
 
@@ -235,26 +235,28 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       <t>The following client metadata parameters are introduced by this
       specification:
 		<list hangIndent="8" style="hanging">
-      	  <t hangText="introspection_signed_response_alg">REQUIRED <xref target="RFC7515">JWS</xref> 
+      	  <t hangText="introspection_signed_response_alg">OPTIONAL. 
+      	  <xref target="RFC7515">JWS</xref> 
       	  algorithm (<spanx style="verb">alg</spanx> value) as defined in 
       	  <xref target="RFC7518">JWA</xref> for signing introspection responses. If
       	  this is specified, the response will be signed using JWS and the 
       	  configured algorithm. The default, if omitted, is <spanx style="verb">RS256</spanx>.</t>
-          <t hangText="introspection_encrypted_response_alg">REQUIRED 
+          <t hangText="introspection_encrypted_response_alg">OPTIONAL.
           <xref target="RFC7516">JWE</xref> algorithm (<spanx style="verb">alg</spanx> value) 
           as defined in <xref target="RFC7518">JWA</xref> for encrypting introspection responses.
-          The default, if omitted, is that no encryption is performed.  If both signing and 
+          
+          If this is specified, the response will be encrypted using JWE and the 
+          configured algorithm. The default, if
+           omitted, is that no encryption is performed.
+          
+          If both signing and 
           encryption are requested, the response will be 
           signed then encrypted, with the result being a Nested JWT, as defined in 
           <xref target="RFC7519">JWT</xref>.</t>
-          <t hangText="introspection_encrypted_response_enc">REQUIRED
+          <t hangText="introspection_encrypted_response_enc">OPTIONAL.
           <xref target="RFC7516">JWE</xref> algorithm (<spanx style="verb">enc</spanx> value) 
-          as defined in <xref target="RFC7518">JWA</xref> for authenticated encrypting introspection 
-          responses. If 
-          <spanx style="verb">introspection_encrypted_response_alg</spanx> is specified, 
-          the default for this value is <spanx style="verb">A128CBC-HS256</spanx>. 
-          <spanx style="verb">introspection_encrypted_response_enc</spanx> MUST NOT be 
-          provided without also providing 
+          as defined in <xref target="RFC7518">JWA</xref> for authenticated encryption of introspection responses. The default, if omitted, is <spanx style="verb">A128CBC-HS256</spanx>.
+          Note: This parameter MUST NOT be specified without setting 
           <spanx style="verb">introspection_encrypted_response_alg</spanx>.</t>
         </list>
       </t>
