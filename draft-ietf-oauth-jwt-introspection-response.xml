@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-oauth-jwt-introspection-response-03"
+<rfc category="std" docName="draft-ietf-oauth-jwt-introspection-response-04"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="21" month="May" year="2019" />
+    <date day="22" month="Jul" year="2019" />
 
     <!-- Meta-data Declarations -->
 
@@ -166,9 +166,8 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
 	  <spanx style="verb">iss</spanx> and <spanx style="verb">aud</spanx> in order to 
 	  prevent misuse of the JWT as ID or access token 
 	  (see <xref target="Cross-JWT_Confusion"/>).</t>
-      <t>This JWT MAY furthermore contain all other claims described in Section 2.2. of
-      <xref target="RFC7662"/> and beyond (e.g. as defined in 
-      <xref target="OpenID.Core"/>).</t>
+      <t>This JWT MAY furthermore contain all claims defined in the "OAuth Token 
+      Introspection Response" registry established by <xref target="RFC7662"/>.</t>
       <t>The following is a non-normative example response 
       (with line breaks for display purposes only):</t>
 	  <t>
@@ -236,26 +235,29 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       <t>The following client metadata parameters are introduced by this
       specification:
 		<list hangIndent="8" style="hanging">
-      	  <t hangText="introspection_signed_response_alg"><xref target="RFC7515">JWS</xref> 
-      	  <spanx style="verb">alg</spanx> algorithm 
-      	  <xref target="RFC7518">JWA</xref> REQUIRED for signing introspection responses. If
+      	  <t hangText="introspection_signed_response_alg">OPTIONAL. 
+      	  <xref target="RFC7515">JWS</xref> 
+      	  algorithm (<spanx style="verb">alg</spanx> value) as defined in 
+      	  <xref target="RFC7518">JWA</xref> for signing introspection responses. If
       	  this is specified, the response will be signed using JWS and the 
       	  configured algorithm. The default, if omitted, is <spanx style="verb">RS256</spanx>.</t>
-          <t hangText="introspection_encrypted_response_alg"> 
-          <xref target="RFC7516">JWE</xref> <spanx style="verb">alg</spanx> algorithm 
-          <xref target="RFC7518">JWA</xref> 
-          REQUIRED for encrypting introspection responses.
-          If both signing and encryption are requested, the response will be 
+          <t hangText="introspection_encrypted_response_alg">OPTIONAL.
+          <xref target="RFC7516">JWE</xref> algorithm (<spanx style="verb">alg</spanx> value) 
+          as defined in <xref target="RFC7518">JWA</xref> for encrypting introspection responses.
+          
+          If this is specified, the response will be encrypted using JWE and the 
+          configured algorithm. The default, if
+           omitted, is that no encryption is performed.
+          
+          If both signing and 
+          encryption are requested, the response will be 
           signed then encrypted, with the result being a Nested JWT, as defined in 
-          <xref target="RFC7519">JWT</xref>. The default, if omitted, is that no 
-          encryption is performed.</t>
-          <t hangText="introspection_encrypted_response_enc"><xref target="RFC7516">JWE</xref>
-          <spanx style="verb">enc</spanx> algorithm <xref target="RFC7518">JWA</xref> REQUIRED for encrypting 
-          introspection responses. If 
-          <spanx style="verb">introspection_encrypted_response_alg</spanx> is specified, 
-          the default for this value is A128CBC-HS256. When 
-          <spanx style="verb">introspection_encrypted_response_enc</spanx> is included, 
-          <spanx style="verb">introspection_encrypted_response_alg</spanx> MUST also be provided.</t>
+          <xref target="RFC7519">JWT</xref>.</t>
+          <t hangText="introspection_encrypted_response_enc">OPTIONAL.
+          <xref target="RFC7516">JWE</xref> algorithm (<spanx style="verb">enc</spanx> value) 
+          as defined in <xref target="RFC7518">JWA</xref> for authenticated encryption of introspection responses. The default, if omitted, is <spanx style="verb">A128CBC-HS256</spanx>.
+          Note: This parameter MUST NOT be specified without setting 
+          <spanx style="verb">introspection_encrypted_response_alg</spanx>.</t>
         </list>
       </t>
      <t>Resource servers may register their public encryption keys 
@@ -273,19 +275,19 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
 				
 		<t hangText="introspection_signing_alg_values_supported">
 		OPTIONAL. JSON array containing a list of the <xref target="RFC7515">JWS</xref> signing 
-		algorithms (<spanx style="verb">alg</spanx> values) 
+		algorithms (<spanx style="verb">alg</spanx> values) as defined in 
 		<xref target="RFC7518">JWA</xref> supported by the introspection
 		endpoint to sign the response.</t>
 
 		<t hangText="introspection_encryption_alg_values_supported">
 		OPTIONAL. JSON array containing a list of the <xref target="RFC7516">JWE</xref> 
-		encryption algorithms (<spanx style="verb">alg</spanx> values) 
+		encryption algorithms (<spanx style="verb">alg</spanx> values) as defined in
 		<xref target="RFC7518">JWA</xref> supported by the 
 		introspection endpoint to encrypt the response.</t>
 
 		<t hangText="introspection_encryption_enc_values_supported">
 		OPTIONAL. JSON array containing a list of the <xref target="RFC7516">JWE</xref> encryption 
-		algorithms (<spanx style="verb">enc</spanx> values) 
+		algorithms (<spanx style="verb">enc</spanx> values) as defined in
 		<xref target="RFC7518">JWA</xref> supported by the introspection
 		endpoint to encrypt the response.</t>
 
@@ -324,6 +326,8 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
            </section>
 
       <section anchor="token_data_leakage" title="Token Data Leakage">
+      <t>The authorization server MUST use Transport Layer Security (TLS) 1.2 (or higher) 
+      in order to prevent token data leakage.</t>
       <t>If the authorization server supports unauthenticated requests an
       attacker could potentially retrieve token data which must be kept
       confidential. This attack can be prevented by either authenticating any
@@ -337,6 +341,12 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       attack the authorization server MUST NOT serve requests with content type
       other than "application/jwt" if the resource server is set up to receive 
       encrypted responses (see also <xref target="jwt_response"/>).</t>
+      </section>
+      
+      <section title="Data Minimization">
+      <t>The authorisation server determines the token data a resource server is 
+      allowed to see based on the resource server’s client_id and suitable token data, 
+      e.g. the scope value. </t>
       </section>
 
     </section>
@@ -459,7 +469,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
         This specification requests registration of the following claim values as defined 
         in <xref target="OpenID.Core"/>, Section 5.1, in the IANA "OAuth Token Introspection 
         Response" registry.
-        <xref target="IANA.OAuth.Parameters"/> established by <xref target="RFC8414"/>.
+        <xref target="IANA.OAuth.Parameters"/> established by <xref target="RFC7662"/>.
       </t>
         <section title="Registry Contents">
           <t>
