@@ -358,12 +358,14 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       token introspection endpoint to be authenticated. As an alternative or as
       an addition to the authentication, the intended recipients may be set up
       for encrypted responses.</t>
+            </section>
 
       <section anchor="introspection_activity_audit" title="Logging and Audit of Introspection Activity">
       <t>Authorization servers with a policy that requires token introspection
       activity to be logged and audited must require all requests to the token
       introspection endpoint to be authenticated.</t>
-      
+      </section>
+            
       <section title="Data Minimization">
       <t>The authorisation server determines the token data a resource server is 
       allowed to see based on the resource server’s client_id and suitable token data, 
