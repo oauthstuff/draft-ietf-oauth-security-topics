@@ -325,7 +325,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       the <spanx style="verb">nonce</spanx> parameter and claim to prevent
       token and code replay.</t>
       
-      <t>Resource servers utilizing JWTs to represent self-contained access 
+      <t>Resource servers utilizing JWTs to represent self-contained access
       tokens could be susceptible to replay attacks. Resource servers
       should therefore apply proper counter measures against replay as 
       described in <xref target="I-D.ietf-oauth-security-topics"/>, 
@@ -335,13 +335,13 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
            </section>
 
       <section anchor="token_data_leakage" title="Token Data Leakage">
-      <t>The authorization server MUST use Transport Layer Security (TLS) 1.2 
+     <t>The authorization server MUST use Transport Layer Security (TLS) 1.2 
       (or higher) per <xref target="RFC7525"/> in order to prevent token data leakage.</t>
-      <t>If the authorization server supports unauthenticated requests an
-      attacker could potentially retrieve token data which must be kept
-      confidential. This attack can be prevented by either authenticating any
-      request to the token introspection endpoint or by setting up the
-      respective recipient for encrypted responses.</t>
+      <t>To prevent introspection of leaked tokens and to present an additional
+      security layer against token guessing attacks the authorization server
+      may require all requests to the token introspection endpoint to be
+      authenticated. As an alternative or as an addition to the authentication,
+      the intended recipients may be set up for encrypted responses.</t>
       <t>In the latter case, confidentiality is ensured by the fact that only
       the legitimate recipient is able to decrypt the response.
       An attacker could try to circumvent this measure by requesting a plain 
@@ -351,6 +351,18 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       other than "application/jwt" if the resource server is set up to receive 
       encrypted responses (see also <xref target="jwt_response"/>).</t>
       </section>
+
+      <section anchor="confidential_token_data" title="Keeping Token Data Confidential from OAuth Clients">
+      <t>Authorization servers with a policy that requires token data to be
+      kept confidential from OAuth clients must require all requests to the
+      token introspection endpoint to be authenticated. As an alternative or as
+      an addition to the authentication, the intended recipients may be set up
+      for encrypted responses.</t>
+
+      <section anchor="introspection_activity_audit" title="Logging and Audit of Introspection Activity">
+      <t>Authorization servers with a policy that requires token introspection
+      activity to be logged and audited must require all requests to the token
+      introspection endpoint to be authenticated.</t>
       
       <section title="Data Minimization">
       <t>The authorisation server determines the token data a resource server is 
