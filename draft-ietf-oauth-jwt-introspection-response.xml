@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-oauth-jwt-introspection-response-04"
+<rfc category="std" docName="draft-ietf-oauth-jwt-introspection-response-05"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="22" month="Jul" year="2019" />
+    <date day="23" month="Jul" year="2019" />
 
     <!-- Meta-data Declarations -->
 
@@ -139,6 +139,15 @@
       signed JWT as the introspection response. This specification extends the
       token introspection endpoint with the capability to return responses as
       JWTs.</t>
+       <section anchor="RNC" title="Requirements Notation and Conventions">
+<t>
+  The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+  "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL"
+  in this document are to be interpreted as described in
+  BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/>
+  when, and only when, they appear in all capitals, as shown here.
+</t>
+    </section>
     </section>
 
 	<section anchor="jwt_request" title="Requesting a JWT Response">
@@ -326,8 +335,8 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
            </section>
 
       <section anchor="token_data_leakage" title="Token Data Leakage">
-      <t>The authorization server MUST use Transport Layer Security (TLS) 1.2 (or higher) 
-      in order to prevent token data leakage.</t>
+     <t>The authorization server MUST use Transport Layer Security (TLS) 1.2 
+      (or higher) per <xref target="RFC7525"/> in order to prevent token data leakage.</t>
       <t>To prevent introspection of leaked tokens and to present an additional
       security layer against token guessing attacks the authorization server
       may require all requests to the token introspection endpoint to be
@@ -581,7 +590,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
             <list style='symbols'>
               <t>Name: <spanx style="verb">email</spanx></t>
               <t>Description: End-User's preferred e-mail address. Its value MUST conform 
-              to the RFC 5322 [RFC5322] addr-spec syntax. </t>
+              to the <xref target="RFC5322"/> <spanx style="verb">addr-spec</spanx> syntax. </t>
               <t>Change Controller: IESG</t>
               <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
             </list>
@@ -646,7 +655,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
               <t>Description: End-User's preferred telephone number. E.164 [E.164] is 
               RECOMMENDED as the format of this Claim, for example, +1 (425) 555-1212 or 
               +56 (2) 687 2400. If the phone number contains an extension, it is 
-              RECOMMENDED that the extension be represented using the RFC 3966 [RFC3966] 
+              RECOMMENDED that the extension be represented using the <xref target="RFC3966"/> 
               extension syntax, for example, +1 (604) 555-1234;ext=5678. </t>
               <t>Change Controller: IESG</t>
               <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
@@ -662,7 +671,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
               a phone number is verified is context-specific, and dependent upon the 
               trust framework or contractual agreements within which the parties are 
               operating. When true, the phone_number Claim MUST be in E.164 format and 
-              any extensions MUST be represented in RFC 3966 format. </t>
+              any extensions MUST be represented in <xref target="RFC3966"/> format. </t>
               <t>Change Controller: IESG</t>
               <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
             </list>
@@ -671,8 +680,8 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
             <list style='symbols'>
               <t>Name: <spanx style="verb">address</spanx></t>
               <t>Description: End-User's preferred postal address. The value of the 
-              address member is a JSON [RFC4627] structure containing some or all of 
-              the members defined in <xref target="OpenID.Core"/>,Section 5.1.1. </t>
+              address member is a JSON <xref target="RFC7159"/> structure containing some or all of 
+              the members defined in <xref target="OpenID.Core"/>, Section 5.1.1. </t>
               <t>Change Controller: IESG</t>
               <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
             </list>
@@ -700,16 +709,20 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
   <back>
     <references title="Normative References">
       <?rfc include="reference.RFC.2119"?>
-      <?rfc include="reference.RFC.2246"?>
+      <?rfc include="reference.RFC.3966"?>       
+      <?rfc include="reference.RFC.5322"?>
       <?rfc include="reference.RFC.7519"?>
+      <?rfc include="reference.RFC.7525"?>
+      <?rfc include="reference.RFC.7159"?>   
       <?rfc include="reference.RFC.7591"?>
       <?rfc include="reference.RFC.7662"?>
       <?rfc include="reference.RFC.7518"?>
       <?rfc include="reference.RFC.7515"?>
       <?rfc include="reference.RFC.7516"?>
+      <?rfc include="reference.RFC.8174"?>
       <?rfc include="reference.RFC.8414"?>
-      <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-jwt-bcp-04.xml'?>
-      <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-security-topics-11.xml'?>
+      <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-jwt-bcp-06.xml'?>
+      <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-security-topics-13.xml'?>
       
        <reference anchor="OpenID.Registration" target="https://openid.net/specs/openid-connect-registration-1_0.html">
         <front>
@@ -767,6 +780,21 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
     
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
+      
+	  <t>-05<list style="symbols">
+          <t>improved wording for TLS requirement</t>
+          <t>added RFC 2119 boilerplate</t>
+          <t>fixed and updated some references</t>
+        </list>
+      </t> 
+      
+	  <t>-04<list style="symbols">
+          <t>reworked definition of parameters in section 4</t>
+          <t>added text on data minimization to security considerations section</t>
+          <t>added statement regarding TLS to security considerations section</t>
+        </list>
+      </t> 
+      
 	  <t>-03<list style="symbols">
           <t>added registration for OpenID Connect Standard Claims to 
           OAuth Token Introspection Response registry</t>
