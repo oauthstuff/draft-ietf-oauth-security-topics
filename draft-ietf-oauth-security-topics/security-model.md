@@ -35,9 +35,12 @@ protected at least against the following attackers:
     Network attackers can also block arbitrary messages.
     
 These attackers conform to the attacker model that was used in formal
-analysis efforts for OAuth [@arXiv.1601.01229]. Previous attacks on
-OAuth have shown that OAuth deployments SHOULD protect against an
-even stronger attacker model that is described as follows:
+analysis efforts for OAuth [@arXiv.1601.01229]. This is a minimal
+attacker model. Implementers MUST take into account all possible
+attackers in the environment in which their OAuth implementations are
+expected to run. Previous attacks on OAuth have shown that OAuth
+deployments SHOULD in particular consider the following, stronger
+attackers:
 
   * (A3) Attackers that can read, but not modify, the contents of the
     authorization response (i.e., the authorization response can leak
@@ -63,12 +66,9 @@ Note that in this attacker model, an attacker (see A1) can be a RO or
 act as one. For example, an attacker can use his own browser to replay
 tokens or authorization codes obtained by any of the attacks described
 above at the client or RS.
-    
+
 This document discusses the additional threats resulting from these
 attackers in detail and recommends suitable mitigations. Attacks in an
 even stronger attacker model are discussed, for example, in
 [@arXiv.1901.11520].
     
-This is a minimal attacker model. Implementers MUST take into account
-all possible attackers in the environment in which their OAuth
-implementations are expected to run.
