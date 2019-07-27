@@ -107,11 +107,13 @@ token to a certain sender. This sender is obliged to demonstrate knowledge
 of a certain secret as prerequisite for the acceptance of that token at
 the recipient (e.g., a resource server).
 
-Clients SHOULD instead use the response type "code" (aka authorization code
-grant type) as specified in (#ac) or any other response type that
-causes the authorization server to issue access tokens in the token response.
-This allows the authorization server to detect replay attempts and 
-generally reduces the attack surface since access tokens are not exposed in URLs. It also allows the authorization server to sender-constrain the issued tokens.
+Clients SHOULD instead use the response type "code" (aka authorization
+code grant type) as specified in (#ac) or any other response type that
+causes the authorization server to issue access tokens in the token
+response. This allows the authorization server to detect replay
+attempts and generally reduces the attack surface since access tokens
+are not exposed in URLs. It also allows the authorization server to
+sender-constrain the issued tokens.
 
 ## Token Replay Prevention {#token_replay_prevention}
 
