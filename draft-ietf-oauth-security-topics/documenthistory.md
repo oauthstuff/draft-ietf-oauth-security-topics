@@ -2,6 +2,10 @@
 
    [[ To be removed from the final specification ]]
    
+   -14
+   
+   * AS MUST announce PKCE support either in metadata or using deployment-specific ways (before: SHOULD)
+   
    -13
    
    * Discourage use of Resource Owner Password Credentials Grant
