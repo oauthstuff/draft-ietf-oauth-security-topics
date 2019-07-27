@@ -70,12 +70,12 @@ A4 can trivially break the security provided by PKCE.) Currently,
 
 AS MUST support PKCE [@!RFC7636].
 
-AS SHOULD provide a way to detect their support for PKCE. To this end,
-they SHOULD either (a) publish, in their AS metadata ([@!RFC8418]), the
+AS MUST provide a way to detect their support for PKCE. To this end,
+they MUST either (a) publish, in their AS metadata ([@!RFC8418]), the
 element `code_challenge_methods_supported` containing the supported
 PKCE challenge methods (which can be used by the client to detect PKCE
-support) or (b) provide a deployment-specific way to ensure or determine PKCE
-support by the AS.
+support) or (b) provide a deployment-specific way to ensure or
+determine PKCE support by the AS.
 
 Authorization servers SHOULD furthermore consider the recommendations
 given in [@!RFC6819], Section 4.4.1.1, on authorization code replay
