@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-oauth-jwt-introspection-response-05"
+<rfc category="std" docName="draft-ietf-oauth-jwt-introspection-response-06"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="23" month="Jul" year="2019" />
+    <date day="28" month="Aug" year="2019" />
 
     <!-- Meta-data Declarations -->
 
@@ -682,7 +682,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
             <list style='symbols'>
               <t>Name: <spanx style="verb">address</spanx></t>
               <t>Description: End-User's preferred postal address. The value of the 
-              address member is a JSON <xref target="RFC7159"/> structure containing some or all of 
+              address member is a JSON <xref target="RFC8259"/> structure containing some or all of 
               the members defined in <xref target="OpenID.Core"/>, Section 5.1.1. </t>
               <t>Change Controller: IESG</t>
               <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
@@ -715,7 +715,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       <?rfc include="reference.RFC.5322"?>
       <?rfc include="reference.RFC.7519"?>
       <?rfc include="reference.RFC.7525"?>
-      <?rfc include="reference.RFC.7159"?>   
+      <?rfc include="reference.RFC.8259"?>   
       <?rfc include="reference.RFC.7591"?>
       <?rfc include="reference.RFC.7662"?>
       <?rfc include="reference.RFC.7518"?>
@@ -782,6 +782,11 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
     
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
+      
+	  <t>-06<list style="symbols">
+          <t>replaced reference to RFC 7159 with reference to RFC 8259</t>
+        </list>
+      </t> 
       
 	  <t>-05<list style="symbols">
           <t>improved wording for TLS requirement</t>
