@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-oauth-jwt-introspection-response-06"
+<rfc category="std" docName="draft-ietf-oauth-jwt-introspection-response-07"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="28" month="Aug" year="2019" />
+    <date day="29" month="Aug" year="2019" />
 
     <!-- Meta-data Declarations -->
 
@@ -644,9 +644,14 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
           <t>
             <list style='symbols'>
               <t>Name: <spanx style="verb">locale</spanx></t>
-              <t>Description: Time the End-User's information was last updated. Its value 
-              is a JSON number representing the number of seconds from 1970-01-01T0:0:0Z 
-              as measured in UTC until the date/time.</t>
+              <t>Description: End-User's locale, represented as a BCP47 [RFC5646] 
+              language tag. This is typically an ISO 639-1 Alpha-2 <xref target="ISO639-1"/> 
+              language code in lowercase and an ISO 3166-1 Alpha-2 <xref target="ISO3166-1"/>
+              country code in 
+              uppercase, separated by a dash. For example, en-US or fr-CA. As a 
+              compatibility note, some implementations have used an underscore as 
+              the separator rather than a dash, for example, en_US; Relying Parties 
+              MAY choose to accept this locale syntax as well.</t>
               <t>Change Controller: IESG</t>
               <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
             </list>
@@ -654,7 +659,8 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
           <t>
             <list style='symbols'>
               <t>Name: <spanx style="verb">phone_number</spanx></t>
-              <t>Description: End-User's preferred telephone number. E.164 [E.164] is 
+              <t>Description: End-User's preferred telephone number. <xref target="E.164"/>
+              is 
               RECOMMENDED as the format of this Claim, for example, +1 (425) 555-1212 or 
               +56 (2) 687 2400. If the phone number contains an extension, it is 
               RECOMMENDED that the extension be represented using the <xref target="RFC3966"/> 
@@ -672,7 +678,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
               the End-User at the time the verification was performed. The means by which 
               a phone number is verified is context-specific, and dependent upon the 
               trust framework or contractual agreements within which the parties are 
-              operating. When true, the phone_number Claim MUST be in E.164 format and 
+              operating. When true, the phone_number Claim MUST be in <xref target="E.164"/> format and 
               any extensions MUST be represented in <xref target="RFC3966"/> format. </t>
               <t>Change Controller: IESG</t>
               <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
@@ -766,6 +772,40 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
         </front>
       </reference>
 
+<reference anchor="ISO3166-1" target="https://www.iso.org/standard/63545.html">
+	<front>
+	  <title>ISO 3166-1:1997. Codes for the representation of names of
+	  countries and their subdivisions -- Part 1: Country codes</title>
+	  <author fullname="International Organization for Standardization">
+	    <organization abbrev="ISO">International Organization for
+	    Standardization</organization>
+	  </author>
+	  <date year="2013" />
+	</front>
+</reference>
+
+<reference anchor="ISO639-1" target="https://www.iso.org/standard/22109.html">
+	<front>
+	  <title>ISO 639-1:2002 Codes for the representation of names of languages 
+	  -- part 1: Alpha-2 Code</title>
+	  <author fullname="International Organization for Standardization">
+	    <organization abbrev="ISO">International Organization for
+	    Standardization</organization>
+	  </author>
+	  <date year="2002" />
+	</front>
+</reference>
+
+<reference anchor="E.164" target="https://www.itu.int/rec/T-REC-E.164-201011-I/en">
+	<front>
+	  <title>E.164: The international public telecommunication numbering plan</title>
+	  <author fullname="International Organization for Standardization">
+	    <organization abbrev="ITU">International Telecommunication Union</organization>
+	  </author>
+	  <date year="2010" />
+	</front>
+</reference>
+
     </references>
 
     <references title="Informative References">
@@ -782,6 +822,12 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
     
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
+      
+	  <t>-07<list style="symbols">
+          <t>fixed wrong description of "locale"</t>
+          <t>added references for ISO and ITU specifications</t>
+        </list>
+      </t>     
       
 	  <t>-06<list style="symbols">
           <t>replaced reference to RFC 7159 with reference to RFC 8259</t>
