@@ -801,16 +801,16 @@ There exist several proposals to demonstrate the proof of possession
     (including federated token bindings) must be supported on all ends
     (client, authorization server, resource server).
   * **OAuth Mutual TLS** ([@I-D.ietf-oauth-mtls]): The approach as
-    specified in this document allows the use of mutual TLS (mTLS) for
-    both client authentication and sender-constrained access tokens.
-    For the purpose of sender-constrained access tokens, the client is
-    identified towards the resource server by the hash of its
-    certificate. During processing of an access token request, the
-    authorization server obtains the client's certificate from the TLS
-    stack and associates its hash with the respective access tokens.
-    The resource server in the same way obtains the certificate from
-    the TLS stack and compares its hash with the hash associated with
-    the access token.
+    specified in this document allows the use of mutual TLS (mTLS) for both
+    client authentication and sender-constrained access tokens. For
+    the purpose of sender-constrained access tokens, the client is
+    identified towards the resource server by the fingerprint of its
+    public key. During processing of an access token request, the
+    authorization server obtains the client's public key from the TLS
+    stack and associates its fingerprint with the respective access
+    tokens. The resource server in the same way obtains the public key
+    from the TLS stack and compares its fingerprint with the
+    fingerprint associated with the access token.
   * **Signed HTTP Requests** ([@I-D.ietf-oauth-signed-http-request]):
     This approach utilizes [@I-D.ietf-oauth-pop-key-distribution] and
     represents the elements of the signature in a JSON object. The

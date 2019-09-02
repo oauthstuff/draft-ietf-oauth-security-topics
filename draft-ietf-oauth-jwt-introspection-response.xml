@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-oauth-jwt-introspection-response-04"
+<rfc category="std" docName="draft-ietf-oauth-jwt-introspection-response-07"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="22" month="Jul" year="2019" />
+    <date day="29" month="Aug" year="2019" />
 
     <!-- Meta-data Declarations -->
 
@@ -139,6 +139,15 @@
       signed JWT as the introspection response. This specification extends the
       token introspection endpoint with the capability to return responses as
       JWTs.</t>
+       <section anchor="RNC" title="Requirements Notation and Conventions">
+<t>
+  The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+  "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL"
+  in this document are to be interpreted as described in
+  BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/>
+  when, and only when, they appear in all capitals, as shown here.
+</t>
+    </section>
     </section>
 
 	<section anchor="jwt_request" title="Requesting a JWT Response">
@@ -316,7 +325,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       the <spanx style="verb">nonce</spanx> parameter and claim to prevent
       token and code replay.</t>
       
-      <t>Resource servers utilizing JWTs to represent structured access 
+      <t>Resource servers utilizing JWTs to represent self-contained access
       tokens could be susceptible to replay attacks. Resource servers
       should therefore apply proper counter measures against replay as 
       described in <xref target="I-D.ietf-oauth-security-topics"/>, 
@@ -326,13 +335,13 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
            </section>
 
       <section anchor="token_data_leakage" title="Token Data Leakage">
-      <t>The authorization server MUST use Transport Layer Security (TLS) 1.2 (or higher) 
-      in order to prevent token data leakage.</t>
-      <t>If the authorization server supports unauthenticated requests an
-      attacker could potentially retrieve token data which must be kept
-      confidential. This attack can be prevented by either authenticating any
-      request to the token introspection endpoint or by setting up the
-      respective recipient for encrypted responses.</t>
+     <t>The authorization server MUST use Transport Layer Security (TLS) 1.2 
+      (or higher) per <xref target="RFC7525"/> in order to prevent token data leakage.</t>
+      <t>To prevent introspection of leaked tokens and to present an additional
+      security layer against token guessing attacks the authorization server
+      may require all requests to the token introspection endpoint to be
+      authenticated. As an alternative or as an addition to the authentication,
+      the intended recipients may be set up for encrypted responses.</t>
       <t>In the latter case, confidentiality is ensured by the fact that only
       the legitimate recipient is able to decrypt the response.
       An attacker could try to circumvent this measure by requesting a plain 
@@ -342,7 +351,21 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       other than "application/jwt" if the resource server is set up to receive 
       encrypted responses (see also <xref target="jwt_response"/>).</t>
       </section>
-      
+
+      <section anchor="confidential_token_data" title="Keeping Token Data Confidential from OAuth Clients">
+      <t>Authorization servers with a policy that requires token data to be
+      kept confidential from OAuth clients must require all requests to the
+      token introspection endpoint to be authenticated. As an alternative or as
+      an addition to the authentication, the intended recipients may be set up
+      for encrypted responses.</t>
+            </section>
+
+      <section anchor="introspection_activity_audit" title="Logging and Audit of Introspection Activity">
+      <t>Authorization servers with a policy that requires token introspection
+      activity to be logged and audited must require all requests to the token
+      introspection endpoint to be authenticated.</t>
+      </section>
+            
       <section title="Data Minimization">
       <t>The authorisation server determines the token data a resource server is 
       allowed to see based on the resource server’s client_id and suitable token data, 
@@ -569,7 +592,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
             <list style='symbols'>
               <t>Name: <spanx style="verb">email</spanx></t>
               <t>Description: End-User's preferred e-mail address. Its value MUST conform 
-              to the RFC 5322 [RFC5322] addr-spec syntax. </t>
+              to the <xref target="RFC5322"/> <spanx style="verb">addr-spec</spanx> syntax. </t>
               <t>Change Controller: IESG</t>
               <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
             </list>
@@ -621,9 +644,14 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
           <t>
             <list style='symbols'>
               <t>Name: <spanx style="verb">locale</spanx></t>
-              <t>Description: Time the End-User's information was last updated. Its value 
-              is a JSON number representing the number of seconds from 1970-01-01T0:0:0Z 
-              as measured in UTC until the date/time.</t>
+              <t>Description: End-User's locale, represented as a BCP47 [RFC5646] 
+              language tag. This is typically an ISO 639-1 Alpha-2 <xref target="ISO639-1"/> 
+              language code in lowercase and an ISO 3166-1 Alpha-2 <xref target="ISO3166-1"/>
+              country code in 
+              uppercase, separated by a dash. For example, en-US or fr-CA. As a 
+              compatibility note, some implementations have used an underscore as 
+              the separator rather than a dash, for example, en_US; Relying Parties 
+              MAY choose to accept this locale syntax as well.</t>
               <t>Change Controller: IESG</t>
               <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
             </list>
@@ -631,10 +659,11 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
           <t>
             <list style='symbols'>
               <t>Name: <spanx style="verb">phone_number</spanx></t>
-              <t>Description: End-User's preferred telephone number. E.164 [E.164] is 
+              <t>Description: End-User's preferred telephone number. <xref target="E.164"/>
+              is 
               RECOMMENDED as the format of this Claim, for example, +1 (425) 555-1212 or 
               +56 (2) 687 2400. If the phone number contains an extension, it is 
-              RECOMMENDED that the extension be represented using the RFC 3966 [RFC3966] 
+              RECOMMENDED that the extension be represented using the <xref target="RFC3966"/> 
               extension syntax, for example, +1 (604) 555-1234;ext=5678. </t>
               <t>Change Controller: IESG</t>
               <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
@@ -649,8 +678,8 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
               the End-User at the time the verification was performed. The means by which 
               a phone number is verified is context-specific, and dependent upon the 
               trust framework or contractual agreements within which the parties are 
-              operating. When true, the phone_number Claim MUST be in E.164 format and 
-              any extensions MUST be represented in RFC 3966 format. </t>
+              operating. When true, the phone_number Claim MUST be in <xref target="E.164"/> format and 
+              any extensions MUST be represented in <xref target="RFC3966"/> format. </t>
               <t>Change Controller: IESG</t>
               <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
             </list>
@@ -659,8 +688,8 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
             <list style='symbols'>
               <t>Name: <spanx style="verb">address</spanx></t>
               <t>Description: End-User's preferred postal address. The value of the 
-              address member is a JSON [RFC4627] structure containing some or all of 
-              the members defined in <xref target="OpenID.Core"/>,Section 5.1.1. </t>
+              address member is a JSON <xref target="RFC8259"/> structure containing some or all of 
+              the members defined in <xref target="OpenID.Core"/>, Section 5.1.1. </t>
               <t>Change Controller: IESG</t>
               <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
             </list>
@@ -688,16 +717,20 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
   <back>
     <references title="Normative References">
       <?rfc include="reference.RFC.2119"?>
-      <?rfc include="reference.RFC.2246"?>
+      <?rfc include="reference.RFC.3966"?>       
+      <?rfc include="reference.RFC.5322"?>
       <?rfc include="reference.RFC.7519"?>
+      <?rfc include="reference.RFC.7525"?>
+      <?rfc include="reference.RFC.8259"?>   
       <?rfc include="reference.RFC.7591"?>
       <?rfc include="reference.RFC.7662"?>
       <?rfc include="reference.RFC.7518"?>
       <?rfc include="reference.RFC.7515"?>
       <?rfc include="reference.RFC.7516"?>
+      <?rfc include="reference.RFC.8174"?>
       <?rfc include="reference.RFC.8414"?>
-      <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-jwt-bcp-04.xml'?>
-      <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-security-topics-11.xml'?>
+      <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-jwt-bcp-06.xml'?>
+      <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-security-topics-13.xml'?>
       
        <reference anchor="OpenID.Registration" target="https://openid.net/specs/openid-connect-registration-1_0.html">
         <front>
@@ -739,6 +772,40 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
         </front>
       </reference>
 
+<reference anchor="ISO3166-1" target="https://www.iso.org/standard/63545.html">
+	<front>
+	  <title>ISO 3166-1:1997. Codes for the representation of names of
+	  countries and their subdivisions -- Part 1: Country codes</title>
+	  <author fullname="International Organization for Standardization">
+	    <organization abbrev="ISO">International Organization for
+	    Standardization</organization>
+	  </author>
+	  <date year="2013" />
+	</front>
+</reference>
+
+<reference anchor="ISO639-1" target="https://www.iso.org/standard/22109.html">
+	<front>
+	  <title>ISO 639-1:2002 Codes for the representation of names of languages 
+	  -- part 1: Alpha-2 Code</title>
+	  <author fullname="International Organization for Standardization">
+	    <organization abbrev="ISO">International Organization for
+	    Standardization</organization>
+	  </author>
+	  <date year="2002" />
+	</front>
+</reference>
+
+<reference anchor="E.164" target="https://www.itu.int/rec/T-REC-E.164-201011-I/en">
+	<front>
+	  <title>E.164: The international public telecommunication numbering plan</title>
+	  <author fullname="International Organization for Standardization">
+	    <organization abbrev="ITU">International Telecommunication Union</organization>
+	  </author>
+	  <date year="2010" />
+	</front>
+</reference>
+
     </references>
 
     <references title="Informative References">
@@ -755,6 +822,32 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
     
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
+      
+	  <t>-07<list style="symbols">
+          <t>fixed wrong description of "locale"</t>
+          <t>added references for ISO and ITU specifications</t>
+        </list>
+      </t>     
+      
+	  <t>-06<list style="symbols">
+          <t>replaced reference to RFC 7159 with reference to RFC 8259</t>
+        </list>
+      </t> 
+      
+	  <t>-05<list style="symbols">
+          <t>improved wording for TLS requirement</t>
+          <t>added RFC 2119 boilerplate</t>
+          <t>fixed and updated some references</t>
+        </list>
+      </t> 
+      
+	  <t>-04<list style="symbols">
+          <t>reworked definition of parameters in section 4</t>
+          <t>added text on data minimization to security considerations section</t>
+          <t>added statement regarding TLS to security considerations section</t>
+        </list>
+      </t> 
+      
 	  <t>-03<list style="symbols">
           <t>added registration for OpenID Connect Standard Claims to 
           OAuth Token Introspection Response registry</t>
