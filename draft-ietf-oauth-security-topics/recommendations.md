@@ -180,8 +180,8 @@ can be hard or impossible (WebCrypto, WebAuthn).
 Authorization servers SHOULD use client authentication if possible.
 
 It is RECOMMENDED to use asymmetric (public key based) methods for
-client authentication such as MTLS [I-D.draft-ietf-oauth-mtls] or
-`private_key_jwt` [OIDC]. When asymmetric methods for client
+client authentication such as MTLS [@I-D.ietf-oauth-mtls] or
+`private_key_jwt` [@!OpenID]. When asymmetric methods for client
 authentication are used, authorization servers do not need to store
 sensitive symmetric keys, making these methods more robust against a
 number of attacks. Additionally, these methods enable non-repudation
