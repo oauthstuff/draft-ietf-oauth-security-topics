@@ -605,36 +605,6 @@ type instead of relying on response types issuing acess tokens at the
 authorization endpoint. Authorization code injection can be detected
 using one of the countermeasures discussed in (#code_injection).
    
-<!--
-## PKCE Chosen Challenge Attack
-
-One advantage of PKCE is the protection against the misuse of leaked
-authorization codes. An attacker that gets access to an authorization
-code cannot use that authorization code unless he also learns the
-respective PKCE verifier.
-
-In the PKCE Chosen Challenge Attack (see [@arXiv.1901.11520] for
-details), an attacker with the capabilities of A1 and A3 impersonates
-an honest public client and circumvents the protection provided by PKCE.
-
-In short, the attack works as follows:
-
-  * The attacker starts an authorization code flow. He uses the honest
-    client's `client_id` and a redirection URI of the honest client.
-    In this flow, the attacker also chooses a PKCE verifier `X` and
-    sends the PKCE challenge `hash(X)` in the authorization request to
-    the AS.
-  * The user is tricked into believing that the authorization flow was
-    started by the honest client and authorizes the client.
-  * The authorization response is sent from the AS, via the user's
-    browser, to the honest client. The authorization response,
-    containing the authorization code, leaks to the attacker (see
-    attacker model A3).
-  * The attacker is now able to exchange the code at the token
-    endpoint of the AS, using `X` as the PKCE verifier.
--->
-
-   
 ## Cross Site Request Forgery
    
 An attacker might attempt to inject a request to the redirect URI of
