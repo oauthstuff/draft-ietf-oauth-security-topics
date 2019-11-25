@@ -512,59 +512,36 @@ user agent) in the context of a certain transaction.
 
 ### Proposed Countermeasures
    
-There are multiple technical solutions to achieve this goal:
+There are two good technical solutions to achieve this goal:
 
-  * **Nonce**: OpenID Connect's existing `nonce` parameter can be used
-    for the purpose of detecting authorization code injection attacks.
-    The `nonce` value is one-time use and created by the client. The
-    client is supposed to bind it to the user agent session and sends
-    it with the initial request to the OpenId Provider (OP). The OP
-    binds `nonce` to the authorization code and attests this
-    binding in the ID token, which is issued as part of the code
-    exchange at the token endpoint. If an attacker injected an
-    authorization code in the authorization response, the nonce value
-    in the client session and the nonce value in the ID token will not
-    match and the attack is detected. The assumption is that an
-    attacker cannot get hold of the user agent state on the victim's
-    device, where he has stolen the respective authorization code. The
-    main advantage of this option is that `nonce` is an existing feature
-    used in the wild. On the other hand, leveraging `nonce` by the
-    broader OAuth community would require AS and clients to adopt ID
-    Tokens.
-  * **Code-bound State**: The `state` parameter as specified in
-    [@!RFC6749] could be used similarly to what is described above.
-    This would require to add a further parameter `state` to the code
-    exchange token endpoint request. The authorization server would
-    then compare the `state` value it associated with the code and the
-    `state` value in the parameter. If those values do not match, it
-    is considered an attack and the request fails. The advantage of
-    this approach would be to utilize an existing OAuth parameter. But
-    it would also mean to re-interpret the purpose of `state` and to
-    extend the token endpoint request.
   * **PKCE**: The PKCE parameter `code_challenge` along with the
-    corresponding `code_verifier` as specified in [@!RFC7636] could be used
-    in the same way as `nonce` or `state`. In contrast to its original
-    intention, the verifier check would fail although the client uses
-    its correct verifier but the code is associated with a challenge,
-    which does not match. PKCE is a deployed OAuth feature, even
-    though it is used today to secure native apps only.
-  * **Token Binding**: Token binding [@I-D.ietf-oauth-token-binding]
-    could also be used. In this case, the code would need to be bound
-    to two legs, between user agent and AS and the user agent and the
-    client. This requires further data (extension to response) to
-    manifest binding id for particular code. Token binding is
-    promising as a secure and convenient mechanism (due to its browser
-    integration). As a challenge, it requires broad browser support
-    and use with native apps is still under discussion.
-  * **Per-instance client id/secret**: One could use per instance
-    `client_id` and secrets and bind the code to the respective
-    `client_id`. Unfortunately, this does not fit into the web
-    application programming model (would need to use per-user client
-    IDs).
+    corresponding `code_verifier` as specified in [@!RFC7636] can be
+    used as a countermeasure. In contrast to its original intention,
+    the verifier check fails although the client uses its correct
+    verifier but the code is associated with a challenge that does not
+    match. PKCE is a deployed OAuth feature, even though it was
+    originally intended for securing native apps only.
+  * **Nonce**: OpenID Connect's existing `nonce` parameter can be used
+    for the same purpose. The `nonce` value is one-time use and
+    created by the client. The client is supposed to bind it to the
+    user agent session and sends it with the initial request to the
+    OpenId Provider (OP). The OP binds `nonce` to the authorization
+    code and attests this binding in the ID token, which is issued as
+    part of the code exchange at the token endpoint. If an attacker
+    injected an authorization code in the authorization response, the
+    nonce value in the client session and the nonce value in the ID
+    token will not match and the attack is detected. The assumption is
+    that an attacker cannot get hold of the user agent state on the
+    victim's device, where he has stolen the respective authorization
+    code.
+    
+Other solutions, like binding `state` to the code, using token binding
+for the code, or per-instance client credentials are conceivable, but
+lack support and bring new security requirements.
 
-PKCE seems to be the most obvious solution for OAuth clients as it is
-available and effectively used today for similar purposes for OAuth
-native apps whereas `nonce` is appropriate for OpenId Connect clients.
+PKCE is the most obvious solution for OAuth clients as it is available
+and effectively used today for similar purposes for OAuth native apps
+whereas `nonce` is appropriate for OpenId Connect clients.
 
 Note on pre-warmed secrets: An attacker can circumvent the
 countermeasures described above if he is able to create or capture the
