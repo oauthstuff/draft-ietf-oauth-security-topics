@@ -158,9 +158,11 @@ Additional recommendations:
 
   * Servers on which callbacks are hosted must not expose open
     redirectors (see (#open_redirection)).
-  * Clients MAY drop fragments via intermediary URLs with "fix
-    fragments" (see [@fb_fragments]) to prevent the user agent from
-    appending any unintended fragments.
+  * Browsers reattach URL fragments to Location redirection URLs only
+    if the URL in the Location header does not already contain a fragment.
+    Therefore, servers MAY prevent browsers from reattaching fragments
+    to redirection URLs by attaching an arbitrary fragment identifier,
+    for example `#_`, to URLs in Location headers.
   * Clients SHOULD use the authorization code response type instead of
     response types causing access token issuance at the authorization
     endpoint. This offers countermeasures against reuse of leaked
@@ -243,11 +245,12 @@ The following measures further reduce the chances of a successful attack:
     not help if the `state` leaks from the
     AS's web site, since then the `state`
     has not been used at the redirection endpoint at the client yet.)
-  * Suppress the referrer header by adding the attribute
-    `rel="noreferrer"` to HTML links or by applying an appropriate
-    Referrer Policy [@webappsec-referrer-policy] to the document
-    (either as part of the "referrer" meta attribute or by setting a
-    Referrer-Policy header).
+  * Suppress the referrer header by applying an appropriate Referrer
+    Policy [@webappsec-referrer-policy] to the document (either as
+    part of the "referrer" meta attribute or by setting a
+    Referrer-Policy header). For example, the header `Referrer-Policy:
+    no-referrer` in the response completely suppresses the Referer
+    header in all requests originating from the resulting document.
   * Use authorization code instead of response types causing access
     token issuance from the authorization endpoint. This provides
     countermeasures against leakage on the OAuth protocol level
@@ -341,9 +344,8 @@ Attack on the authorization code grant:
  2. The attacker intercepts this request and changes the user's
     selection to "A-AS".
  3. The client stores in the user's session that the user selected
-    "A-AS" and redirects the user to A-AS's authorization endpoint by
-    sending the response code `303 See Other` with a Location header
-    containing the URL
+    "A-AS" and redirects the user to A-AS's authorization endpoint
+    with a Location header containing the URL
     `https://attacker.example/authorize?response_type=code&client_id=666RVZJTA`.
  4. Now the attacker intercepts this response and changes the
     redirection such that the user is being redirected to H-AS. The
@@ -430,7 +432,7 @@ this might not be possible or intended. Examples are:
     networks that the attacker is unable to access directly.
     
 In the following attack description and discussion, we assume the
-presence of a web or network attacker, but not of an attacker with
+presence of a web (A1) or network attacker (A2), but not of an attacker with
 advanced capabilities (A3-A5).
    
 ### Attack Description

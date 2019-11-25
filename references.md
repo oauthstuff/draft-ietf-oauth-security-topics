@@ -29,14 +29,6 @@
   </front>
 </reference>
 
-<reference anchor="fb_fragments" target="https://developers.facebook.com/blog/post/552/">
-  <front>
-    <title>Facebook Developer Blog</title>
-    <author></author>
-    <date />
-  </front>
-</reference>
-
 <reference anchor="owasp_csrf" target="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)_Prevention_Cheat_Sheet">
   <front>
     <title>Cross-Site Request Forgery (CSRF) Prevention Cheat Sheet</title>
