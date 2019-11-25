@@ -21,11 +21,11 @@ described by OWASP [@owasp].
 Clients MUST prevent CSRF. One-time use CSRF tokens carried in the
 `state` parameter, which are securely bound to the user agent, SHOULD
 be used for that purpose. If PKCE [@RFC7636] is used by the client and
-the authorization server supports PKCE, clients MAY opt to not use
-`state` for CSRF protection, as such protection is provided by PKCE.
-In this case, `state` MAY be used again for its original purpose,
-namely transporting data about the application state of the client
-(see (#csrf_countermeasures)).
+the client has ensured that the authorization server supports PKCE,
+the client MAY opt to not use `state` for CSRF protection, as such
+protection is provided by PKCE. In this case, `state` MAY be used
+again for its original purpose, namely transporting data about the
+application state of the client (see (#csrf_countermeasures)).
         
         
 In order to prevent mix-up attacks, clients MUST only process redirect
