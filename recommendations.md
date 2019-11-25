@@ -15,7 +15,7 @@ from a query parameter since such a function could be utilized to
 exfiltrate authorization codes and access tokens. If there is a strong
 need for this kind of redirects, clients are advised to implement
 appropriate countermeasures against open redirection, e.g., as
-described by OWASP [@owasp].
+described by OWASP [@owasp_redir].
 
 
 Clients MUST prevent CSRF. One-time use CSRF tokens carried in the
