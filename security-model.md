@@ -40,7 +40,7 @@ attacker model. Implementers MUST take into account all possible
 attackers in the environment in which their OAuth implementations are
 expected to run. Previous attacks on OAuth have shown that OAuth
 deployments SHOULD in particular consider the following, stronger
-attackers:
+attackers in addition to those listed above:
 
   * (A3) Attackers that can read, but not modify, the contents of the
     authorization response (i.e., the authorization response can leak
@@ -62,6 +62,8 @@ attackers:
     attacker-controlled resource server due to a misconfiguration, or
     an RO is social-engineered into using a attacker-controlled RS.
     
+(A3), (A4) and (A5) typically occur together with either (A1) or (A2).
+
 Note that in this attacker model, an attacker (see A1) can be a RO or
 act as one. For example, an attacker can use his own browser to replay
 tokens or authorization codes obtained by any of the attacks described

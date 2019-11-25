@@ -21,9 +21,9 @@
   </front>
 </reference>
 
-<reference anchor="owasp" target="https://www.owasp.org/">
+<reference anchor="owasp_redir" target="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">
   <front>
-    <title>Open Web Application Security Project Home Page</title>
+    <title>OWASP Cheat Sheet Series - Unvalidated Redirects and Forwards</title>
     <author></author>
     <date />
   </front>
