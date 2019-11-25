@@ -18,14 +18,18 @@ appropriate countermeasures against open redirection, e.g., as
 described by OWASP [@owasp_redir].
 
 
-Clients MUST prevent CSRF. One-time use CSRF tokens carried in the
-`state` parameter, which are securely bound to the user agent, SHOULD
-be used for that purpose. If PKCE [@RFC7636] is used by the client and
-the client has ensured that the authorization server supports PKCE,
-the client MAY opt to not use `state` for CSRF protection, as such
-protection is provided by PKCE. In this case, `state` MAY be used
-again for its original purpose, namely transporting data about the
-application state of the client (see (#csrf_countermeasures)).
+Clients MUST prevent CSRF. (CSRF, in this context, refers to
+redirections to the redirection endpoint that do not originate at the
+authorization server, but a malicious third party. See Section
+4.4.1.8. of [@RFC6819] for details.) One-time use CSRF tokens carried
+in the `state` parameter, which are securely bound to the user agent,
+SHOULD be used for that purpose. If PKCE [@RFC7636] is used by the
+client and the client has ensured that the authorization server
+supports PKCE, the client MAY opt to not use `state` for CSRF
+protection, as such protection is provided by PKCE. In this case,
+`state` MAY be used again for its original purpose, namely
+transporting data about the application state of the client (see
+(#csrf_countermeasures)).
         
         
 In order to prevent mix-up attacks, clients MUST only process redirect

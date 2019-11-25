@@ -14,7 +14,7 @@ Mainka, Doug McDorman, Johan Peeters, Joseph Heenan, Brock Allen,
 Vittorio Bertocci, David Waite, Nov Matake, Tomek Stojecki, Dominick
 Baier, Neil Madden, William Dennis, Dick Hardt, Petteri Stenius,
 Annabelle Richard Backman, Aaron Parecki, George Fletscher, Brian
-Campbell, Konstantin Lapine, and Tim Würtele for their valuable
+Campbell, Konstantin Lapine, Tim Würtele, and Guido Schmitz for their valuable
 feedback.
     
 
