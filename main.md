@@ -34,9 +34,9 @@ organization="Yubico"
 initials="A."
 surname="Labunets"
 fullname="Andrey Labunets"
-organization="Facebook"
+organization=""
     [author.address]
-    email = "isciurus@fb.com"
+    email = "isciurus@gmail.com"
 
 [[author]]
 initials="D."
