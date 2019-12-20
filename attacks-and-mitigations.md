@@ -175,15 +175,15 @@ As an alternative to exact redirect URI matching, the AS could also
 authenticate clients, e.g., using [@I-D.ietf-oauth-jwsreq].
    
    
-## Credential Leakage via Referrer Headers {#credential_leakage_referrer}
+## Credential Leakage via Referer Headers {#credential_leakage_referrer}
  
 Authorization codes or values of `state` can unintentionally be
-disclosed to attackers through the referrer header, by leaking either
-from a client's web site or from an AS's web site. Note: even if
-specified otherwise in [@RFC7231], Section 5.5.2, the same may happen
-to access tokens conveyed in URI fragments due to browser
-implementation issues as illustrated by Chromium Issue 168213
-[@bug.chromium].
+disclosed to attackers through the Referer HTTP header (see
+[@RFC7231], Section 5.5.2), by leaking either from a client's web site
+or from an AS's web site. Note: even if specified otherwise in
+[@RFC7231], Section 5.5.2, the same may happen to access tokens
+conveyed in URI fragments due to browser implementation issues as
+illustrated by Chromium Issue 168213 [@bug.chromium].
  
 ### Leakage from the OAuth Client
  
@@ -209,7 +209,7 @@ content as above.
 ### Consequences
  
 An attacker that learns a valid code or access token through a
-referrer header can perform the attacks as described in
+Referer header can perform the attacks as described in
 (#insufficient_uri_validation_acg), (#code_injection), and
 (#access_token_injection). If the attacker learns `state`, the CSRF
 protection achieved by using `state` is lost, resulting in CSRF
@@ -239,13 +239,13 @@ The following measures further reduce the chances of a successful attack:
     tokens issued previously based on that code.
   * The `state` value SHOULD be invalidated by the client after its
     first use at the redirection endpoint. If this is implemented, and
-    an attacker receives a token through the referrer header from the
+    an attacker receives a token through the Referer header from the
     client's web site, the `state` was already used, invalidated by
     the client and cannot be used again by the attacker. (This does
     not help if the `state` leaks from the
     AS's web site, since then the `state`
     has not been used at the redirection endpoint at the client yet.)
-  * Suppress the referrer header by applying an appropriate Referrer
+  * Suppress the Referer header by applying an appropriate Referrer
     Policy [@webappsec-referrer-policy] to the document (either as
     part of the "referrer" meta attribute or by setting a
     Referrer-Policy header). For example, the header `Referrer-Policy:
@@ -779,7 +779,7 @@ There exist several proposals to demonstrate the proof of possession
     counter.
  
 Mutual TLS and OAuth Token Binding are built
-on top of TLS and this way continue the successful OAuth 2.0
+on top of TLS and this way continue the successful OAuth
 philosophy to leverage TLS to secure OAuth wherever possible. Both
 mechanisms allow prevention of access token leakage in a fairly client
 developer friendly way.
@@ -808,23 +808,23 @@ experiences have revealed challenges regarding robustness (e.g.,
 reproduction of the signature base string including correct URL) as
 well as state management (e.g., replay prevention).
  
- This document therefore recommends implementors to consider one of
+ This document therefore recommends implementers to consider one of
 TLS-based approaches wherever possible.
 
 
 #### Audience Restricted Access Tokens {#aud_restriction} 
 
-An audience restriction essentially restricts the resource server a
-particular access token can be used at. The authorization server
-associates the access token with a certain resource server and every
-resource server is obliged to verify for every request, whether the
-access token sent with that request was meant to be used at the
-particular resource server. If not, the resource server must refuse to
-serve the respective request. In the general case, audience
-restrictions limit the impact of a token leakage. In the case of a
-counterfeit resource server, it may (as described below) also
-prevent abuse of the phished access token at the legitimate resource
-server.
+Audience restriction essentially restricts access tokens to a
+particular resource server. The authorization server associates the
+access token with the particular resource server and the resource
+server SHOULD verify the intended audience. If the access token fails
+the intended audience validation, the resource server must refuse to
+serve the respective request.
+
+In general, audience restrictions limit the impact of token leakage.
+In the case of a counterfeit resource server, it may (as described
+below) also prevent abuse of the phished access token at the
+legitimate resource server.
 
 The audience can basically be expressed using logical names or
 physical addresses (like URLs). In order to prevent phishing, it is
@@ -839,9 +839,9 @@ In deployments where the authorization server knows the URLs of all
 resource servers, the authorization server may just refuse to issue
 access tokens for unknown resource server URLs.
 
-The client needs to tell the authorization server, at which URL it
-will use the access token it is requesting. It could use the mechanism
-proposed [@I-D.ietf-oauth-resource-indicators] or encode the
+The client SHOULD tell the authorization server the intended
+resource server. The proposed mechanism
+[@I-D.ietf-oauth-resource-indicators] could be used or by encoding the
 information in the scope value.
 
 Instead of the URL, it is also possible to utilize the fingerprint of
@@ -851,14 +851,14 @@ resource server's URL by using a valid TLS certificate obtained from a
 different CA. It might also be considered a privacy benefit to hide
 the resource server URL from the authorization server.
  
-Audience restriction seems easy to use since it does not require any
-crypto on the client side. But since every access token is bound to a
-certain resource server, the client also needs to obtain different
-RS-specific access tokens, if it wants to access several resource
-services. [@I-D.ietf-oauth-token-binding] has the same property,
-since different token binding ids must be associated with the access
-token. [@I-D.ietf-oauth-mtls] on the other hand allows a client to
-use the access token at multiple resource servers.
+Audience restriction may seem easier to use since it does not require
+any crypto on the client-side. Still, since every access token is
+bound to a specific resource server, the client also needs to obtain a
+single RS-specific access token when accessing several resource
+servers. [@I-D.ietf-oauth-token-binding] has the same property since
+different token binding ids must be associated with the access token.
+Using [@I-D.ietf-oauth-mtls], on the other hand, allows a client to use
+the access token at multiple resource servers.
  
 It shall be noted that audience restrictions, or generally speaking an
 indication by the client to the authorization server where it wants to
@@ -871,27 +871,23 @@ advantages in deployments using structured access tokens.
   
 ### Compromised Resource Server
    
-An attacker may compromise a resource server in order to get access to
-its resources and other resources of the respective deployment. Such a
-compromise may range from partial access to the system, e.g., its
-logfiles, to full control of the respective server.
+An attacker may compromise a resource server to gain access to the
+resources of the respective deployment. Such a compromise may range
+from partial access to the system, e.g., its log files, to full
+control of the respective server.
    
-If the attacker was able to take over full control including shell
-access it will be able to circumvent all controls in place and access
-resources without access control. It will also get access to access
-tokens, which are sent to the compromised system and which potentially
-are valid for access to other resource servers as well. Even if the
-attacker "only" is able to access logfiles or databases of the server
-system, it may get access to valid access tokens.
+If the attacker were able to gain full control, including shell
+access, it would be able to circumvent all controls and access
+resources. It would also obtain other access tokens held on the
+compromised system, which would potentially be valid to access other
+resource servers.
    
-Preventing server breaches by way of hardening and monitoring server
-systems is considered a standard operational procedure and therefore
-out of scope of this document. This section will focus on the impact
-of such breaches on OAuth-related parts of the ecosystem, which is the
-replay of captured access tokens on the compromised resource server
-and other resource servers of the respective deployment.
+Preventing server breaches by hardening and monitoring server systems
+is considered a standard operational procedure and, therefore, out of
+the scope of this document. This section focuses on the impact of such
+OAuth-related breaches and the replaying of captured access tokens.
    
-The following measures should be taken into account by implementors in
+The following measures should be taken into account by implementers in
 order to cope with access token replay:
    
   * The resource server must treat access tokens like any other
@@ -917,36 +913,35 @@ Attackers could try to utilize a user's trust in the authorization
 server (and its URL in particular) for performing phishing attacks.
   
 [@!RFC6749], Section 4.1.2.1, already prevents open redirects by
-stating the AS MUST NOT automatically redirect the user agent in case
+stating that the AS MUST NOT automatically redirect the user agent in case
 of an invalid combination of client_id and redirect_uri.
   
 However, as described in [@I-D.ietf-oauth-closing-redirectors], an
 attacker could also utilize a correctly registered redirect URI to
-perform phishing attacks. It could for example register a client via
+perform phishing attacks. It could, for example, register a client via
 dynamic client registration [@RFC7591] and intentionally send an
 erroneous authorization request, e.g., by using an invalid scope
-value, to cause the AS to automatically redirect the user agent to its
+value, thus instructing the AS to redirect the user agent to its
 phishing site.
   
 The AS MUST take precautions to prevent this threat. Based on its risk
-assessment the AS needs to decide whether it can trust the redirect
-URI or not and SHOULD only automatically redirect the user agent, if
-it trusts the redirect URI. If not, it MAY inform the user that it is
-about to redirect her to the another site and rely on the user to
-decide or MAY just inform the user about the error.
+assessment, the AS needs to decide whether it can trust the redirect
+URI and SHOULD only automatically redirect the user agent if it trusts
+the redirect URI. If the URI is not trusted, the AS MAY inform the
+user and rely on the user to make the correct decision.
 
 ### Clients as Open Redirector
   
-Client MUST NOT expose URLs which could be utilized as open
-redirector. Attackers may use an open redirector to produce URLs which
-appear to point to the client, which might trick users to trust the
-URL and follow it in her browser. Another abuse case is to produce
+Client MUST NOT expose URLs which could be utilized as an open
+redirector. Attackers may use an open redirector to produce URLs that
+appear to point to the client, which might trick users into trusting the
+URL and follow it in their browser. Another abuse case is to produce
 URLs pointing to the client and utilize them to impersonate a client
 with an authorization server.
   
-In order to prevent open redirection, clients should only expose such
-a function, if the target URLs are whitelisted or if the origin of a
-request can be authenticated.
+In order to prevent open redirection, clients should only redirect if
+the target URLs are whitelisted or if the origin of a request can be
+authenticated.
 
 ## 307 Redirect  {#redirect_307}
 
@@ -1008,11 +1003,11 @@ requests to ensure the authenticity and integrity of all header values
 relevant for the security of the application servers.
    
 If an attacker was able to get access to the internal network between
-proxy and application server, he could also try to circumvent security
-controls in place. It is therefore important to ensure the
-authenticity of the communicating entities. Furthermore, the
-communication link between reverse proxy and application server must
-therefore be protected against eavesdropping, injection, and replay of
+proxy and application server, the attacker could also try to
+circumvent security controls in place. It is, therefore, essential to
+ensure the authenticity of the communicating entities. Furthermore,
+the communication link between reverse proxy and application server
+must be protected against eavesdropping, injection, and replay of
 messages.
   
   
