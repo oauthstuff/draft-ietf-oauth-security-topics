@@ -8,28 +8,29 @@ working group recommends to OAuth implementers.
 Authorization servers MUST utilize exact matching of client redirect
 URIs against pre-registered URIs. This measure contributes to the
 prevention of leakage of authorization codes and access tokens
-(depending on the grant type). It also helps to detect mix-up attacks.
+(depending on the grant type). It also helps to detect mix-up attacks
+(see below).
 
 Clients SHOULD avoid forwarding the user’s browser to a URI obtained
 from a query parameter since such a function could be utilized to
 exfiltrate authorization codes and access tokens. If there is a strong
-need for this kind of redirects, clients are advised to implement
+need for this kind of redirect, clients are advised to implement
 appropriate countermeasures against open redirection, e.g., as
 described by OWASP [@owasp_redir].
 
 
-Clients MUST prevent CSRF. (CSRF, in this context, refers to
-redirections to the redirection endpoint that do not originate at the
-authorization server, but a malicious third party. See Section
-4.4.1.8. of [@RFC6819] for details.) One-time use CSRF tokens carried
-in the `state` parameter, which are securely bound to the user agent,
-SHOULD be used for that purpose. If PKCE [@RFC7636] is used by the
-client and the client has ensured that the authorization server
-supports PKCE, the client MAY opt to not use `state` for CSRF
-protection, as such protection is provided by PKCE. In this case,
-`state` MAY be used again for its original purpose, namely
-transporting data about the application state of the client (see
-(#csrf_countermeasures)).
+Clients MUST prevent Cross-Site Request Forgery (CSRF). In this
+context, CSRF refers to redirections to the redirection endpoint that
+do not originate at the authorization server, but a malicious third
+party (see Section 4.4.1.8. of [@RFC6819] for details). One-time use
+CSRF tokens carried in the `state` parameter, which are securely bound
+to the user agent, SHOULD be used for that purpose. If PKCE [@RFC7636]
+is used by the client and the client has ensured that the
+authorization server supports PKCE, the client MAY opt to not use
+`state` for CSRF protection, as such protection is provided by PKCE.
+In this case, `state` MAY be used again for its original purpose,
+namely transporting data about the application state of the client
+(see (#csrf_countermeasures)).
         
         
 In order to prevent mix-up attacks, clients MUST only process redirect
@@ -40,15 +41,10 @@ sent an authorization request to and bind this information to the user
 agent and ensure any sub-sequent messages are sent to the same
 authorization server. Clients SHOULD use AS-specific redirect URIs as
 a means to identify the AS a particular response came from.
- 
 
-Note: [@I-D.bradley-oauth-jwt-encoded-state] gives advice on how to
-implement CSRF prevention and AS matching using signed JWTs in the
-`state` parameter. 
-
-AS which redirect a request that potentially contains user credentials
-MUST avoid forwarding these user credentials accidentally (see
-(#redirect_307)).
+An AS which redirects a request that potentially contains user
+credentials MUST avoid forwarding these user credentials accidentally
+(see (#redirect_307)).
 
 
 ### Authorization Code Grant {#ac}
