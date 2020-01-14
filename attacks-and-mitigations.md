@@ -878,7 +878,7 @@ for the respective server. This has huge functional and privacy
 advantages in deployments using structured access tokens.
   
   
-### Compromised Resource Server
+### Compromised Resource Server {#comp_res_server}
    
 An attacker may compromise a resource server to gain access to the
 resources of the respective deployment. Such a compromise may range
@@ -888,27 +888,30 @@ control of the respective server.
 If the attacker were able to gain full control, including shell
 access, it would be able to circumvent all controls and access
 resources. It would also obtain other access tokens held on the
-compromised system, which would potentially be valid to access other
+compromised system that would potentially be valid to access other
 resource servers.
-   
+
 Preventing server breaches by hardening and monitoring server systems
 is considered a standard operational procedure and, therefore, out of
-the scope of this document. This section focuses on the impact of such
+the scope of this document. This section focuses on the impact of 
 OAuth-related breaches and the replaying of captured access tokens.
-   
+
 The following measures should be taken into account by implementers in
 order to cope with access token replay:
    
-  * The resource server must treat access tokens like any other
-    credentials. It is considered good practice to not log them and
-    not to store them in plain text.
   * Sender-constrained access tokens as described in (#pop_tokens) will
     prevent the attacker from replaying the access tokens on other
     resource servers. Depending on the severity of the penetration, it
     will also prevent replay on the compromised system.
-  * Audience restriction as described in (#aud_restriction)
-    may be used to prevent replay of captured access tokens on other resource
- servers.
+  * Audience restriction as described in (#aud_restriction) may be
+    used to prevent replay of captured access tokens on other resource
+    servers.
+  * The resource server must treat access tokens like any other
+    credentials. It is considered good practice to not log them and
+    not store them in plain text.
+    
+The first and second recommendation also apply to other scenarios
+where access tokens leak (see Attacker A5).
 
 ## Open Redirection {#open_redirection}
 
