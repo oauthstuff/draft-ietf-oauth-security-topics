@@ -72,11 +72,11 @@ attackers in addition to those listed above:
   * (A4) Attackers that can read, but not modify, the contents of the
     authorization request (i.e., the authorization request can leak,
     in the same manner as above, to an attacker).
-  * (A5) Attackers that control a resource server used by RO with
-    an access token issued by AS. For example, a resource server can
-    be compromised by an attacker, an access token may be sent to an
-    attacker-controlled resource server due to a misconfiguration, or
-    an RO is social-engineered into using a attacker-controlled RS.
+  * (A5) Attackers that can acquire an access token issued by AS. For
+    example, a resource server can be compromised by an attacker, an
+    access token may be sent to an attacker-controlled resource server
+    due to a misconfiguration, or an RO is social-engineered into
+    using a attacker-controlled RS. See also (#comp_res_server).
     
 (A3), (A4) and (A5) typically occur together with either (A1) or (A2).
 
