@@ -36,7 +36,7 @@ namely transporting data about the application state of the client
 In order to prevent mix-up attacks, clients MUST only process redirect
 responses of the OAuth authorization server they sent the respective
 request to and from the same user agent this authorization request was
-initiated with. Clients MUST memorize which authorization server they
+initiated with. Clients MUST store the authorization server they
 sent an authorization request to and bind this information to the user
 agent and ensure any sub-sequent messages are sent to the same
 authorization server. Clients SHOULD use AS-specific redirect URIs as
@@ -184,9 +184,7 @@ client authentication such as MTLS [@I-D.ietf-oauth-mtls] or
 `private_key_jwt` [@!OpenID]. When asymmetric methods for client
 authentication are used, authorization servers do not need to store
 sensitive symmetric keys, making these methods more robust against a
-number of attacks. Additionally, these methods enable non-repudation
-and work well with sender-constrained access tokens (without requiring
-additional keys to be distributed).
+number of attacks.
 
 
 ## Other Recommendations

@@ -305,16 +305,23 @@ Proposed countermeasures:
 ## Mix-Up
   
 Mix-up is an attack on scenarios where an OAuth client interacts with
-multiple authorization servers, as is usually the case when dynamic
-registration is used. The goal of the attack is to obtain an
-authorization code or an access token by tricking the client into
-sending those credentials to the attacker instead of using them at the
-respective endpoint at the authorization/resource server. 
+multiple authorization servers. At least one of these authorization
+servers needs to be under the control of the attacker. This can be the
+case, for example, if the attacker uses dynamic registration to
+register the client at his authorization server or if an authorization
+server becomes compromised.
+
+The goal of the attack is to obtain an authorization code or an access
+token for an uncompromised authorization server. This is achieved by
+tricking the client into sending those credentials to the compromised
+authorization server (the attacker) instead of using them at the
+respective endpoint of the uncompromised authorization/resource
+server.
 
 ### Attack Description
 
-For a detailed attack description, refer to [@arXiv.1601.01229] and
-[@I-D.ietf-oauth-mix-up-mitigation]. The description here closely
+For a more detailed attack description, refer to [@arXiv.1601.01229]
+and [@I-D.ietf-oauth-mix-up-mitigation]. The description here closely
 follows [@arXiv.1601.01229], with variants of the attack outlined
 below.
 
@@ -368,9 +375,6 @@ Attack on the authorization code grant:
 
 Variants:
 
-  * **Implicit Grant**: In the implicit grant, the attacker receives
-    an access token instead of the code; the rest of the attack works
-    as above.
   * **Mix-Up Without Interception**: A variant of the above attack
     works even if the first request/response pair cannot be
     intercepted (for example, because TLS is used to protect these
@@ -381,6 +385,9 @@ Variants:
     client id to `7ZGZldHQ`). (A vigilant user might at this point
     detect that she intended to use A-AS instead of H-AS.) The attack
     now proceeds exactly as in Steps 3ff. of the attack description above.
+  * **Implicit Grant**: In the implicit grant, the attacker receives
+    an access token instead of the code; the rest of the attack works
+    as above.
   * **Per-AS Redirect URIs**: If clients use different redirect URIs
     for different ASs, do not store the selected AS in the user's
     session, and ASs do not check the redirect URIs properly,
@@ -416,24 +423,25 @@ Potential countermeasures:
 
 ## Authorization Code Injection {#code_injection}
   
-In such an attack, the adversary attempts to inject a stolen
-authorization code into a legitimate client on a device under his
-control. In the simplest case, the attacker would want to use the
-authorization code in his own client. But there are situations where
-this might not be possible or intended. Examples are:
+In such an attack, the attacker attempts to inject a stolen
+authorization code into the attacker's own session with the client.
+The aim is to associate the attacker's session at the client with the
+victim's resources or identity.
+
+This attack is useful if the attacker cannot exchange the
+authorization code for an access token himself. Examples include:
    
-  * The attacker wants to access certain functions in this particular
-    client. As an example, the attacker wants to impersonate his
-    victim in a certain app or on a certain web site.
   * The code is bound to a particular confidential client and the
     attacker is unable to obtain the required client credentials to
     redeem the code himself.
+  * The attacker wants to access certain functions in this particular
+    client. As an example, the attacker wants to impersonate his
+    victim in a certain app or on a certain web site.
   * The authorization or resource servers are limited to certain
     networks that the attacker is unable to access directly.
     
 In the following attack description and discussion, we assume the
-presence of a web (A1) or network attacker (A2), but not of an attacker with
-advanced capabilities (A3-A5).
+presence of a web (A1) or network attacker (A2).
    
 ### Attack Description
 The attack works as follows:
@@ -519,13 +527,14 @@ There are two good technical solutions to achieve this goal:
     used as a countermeasure. In contrast to its original intention,
     the verifier check fails although the client uses its correct
     verifier but the code is associated with a challenge that does not
-    match. PKCE is a deployed OAuth feature, even though it was
-    originally intended for securing native apps only.
+    match. PKCE is a deployed OAuth feature, although its original
+    intended use was solely focused on securing native apps, not the
+    broader use recommended by this document.
   * **Nonce**: OpenID Connect's existing `nonce` parameter can be used
     for the same purpose. The `nonce` value is one-time use and
     created by the client. The client is supposed to bind it to the
     user agent session and sends it with the initial request to the
-    OpenId Provider (OP). The OP binds `nonce` to the authorization
+    OpenID Provider (OP). The OP binds `nonce` to the authorization
     code and attests this binding in the ID token, which is issued as
     part of the code exchange at the token endpoint. If an attacker
     injected an authorization code in the authorization response, the
@@ -541,7 +550,7 @@ lack support and bring new security requirements.
 
 PKCE is the most obvious solution for OAuth clients as it is available
 and effectively used today for similar purposes for OAuth native apps
-whereas `nonce` is appropriate for OpenId Connect clients.
+whereas `nonce` is appropriate for OpenID Connect clients.
 
 Note on pre-warmed secrets: An attacker can circumvent the
 countermeasures described above if he is able to create or capture the
@@ -560,12 +569,12 @@ one-time use for PKCE verifier or `nonce` values.
    
 ## Access Token Injection {#access_token_injection}
    
-In such an attack, the adversary attempts to inject a stolen access
-token into a legitimate client on a device under his control. This
-will typically happen if the attacker wants to utilize a leaked access
-token to impersonate a user in a certain client.
+In such an attack, the attacker attempts to inject a stolen access
+token into a legitimate client (that is not under the attacker's
+control). This will typically happen if the attacker wants to utilize
+a leaked access token to impersonate a user in a certain client.
    
-To conduct the attack, the adversary starts an OAuth flow with the
+To conduct the attack, the attacker starts an OAuth flow with the
 client and modifies the authorization response by replacing the access
 token issued by the authorization server or directly makes up an
 authorization server response including the leaked access token. Since
@@ -593,7 +602,7 @@ client to access resources under the attacker's control.
 ### Proposed Countermeasures {#csrf_countermeasures}
  
 Use of CSRF tokens which are bound to the user agent and passed in the
-`state` parameter to the authorization server as described in [!@RFC6819].
+`state` parameter to the authorization server as described in [@!RFC6819].
 Alternatively, PKCE provides CSRF protection. 
 
 It is important to note that:
@@ -609,7 +618,7 @@ It is important to note that:
    state values [@I-D.bradley-oauth-jwt-encoded-state].
  
 The recommendation therefore is that AS publish their PKCE support
-either in AS metadata according to [@!RFC8418] or provide a
+either in AS metadata according to [@!RFC8414] or provide a
 deployment-specific way to ensure or determine PKCE support.
 
 Additionally, standard CSRF defenses MAY be used to protect the
