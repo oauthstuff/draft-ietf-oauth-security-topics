@@ -4,7 +4,7 @@ In [@RFC6819], an attacker model is laid out that describes the
 capabilities of attackers against which OAuth deployments must be
 protected. In the following, this attacker model is updated to account
 for the potentially dynamic relationships involving multiple parties
-(as described above), to include new types of attackers, and to define
+(as described in (#Introduction)), to include new types of attackers and to define
 the attacker model more clearly.
 
 OAuth MUST ensure that the authorization of the resource owner (RO)
@@ -20,11 +20,12 @@ least against the following attackers:
     
     Web attackers may, in particular, operate OAuth clients that are
     registered at AS, and operate their own authorization and resource
-    servers that can be used (in parallel) by ROs.
+    servers that can be used (in parallel) by the RO and other
+    resource owners.
     
     It must also be assumed that web attackers can lure the user to
-    open arbitrary attacker-chosen URIs at any time. This can be
-    achieved in many ways, for example, by injecting malicious
+    open arbitrary attacker-chosen URIs at any time. In practice, this
+    can be achieved in many ways, for example, by injecting malicious
     advertisements into advertisement networks, or by sending
     legit-looking emails.
     
@@ -34,9 +35,9 @@ least against the following attackers:
     through a misconfigured redirect URI, the web attacker can then
     try to redeem that code for an access token.
     
-    They cannot, however, receive messages that are not targeted
-    towards them (e.g., sent to a URL controlled by a non-attacker
-    controlled AS).
+    They cannot, however, read or manipulate messages that are not
+    targeted towards them (e.g., sent to a URL controlled by a
+    non-attacker controlled AS).
     
   * (A2) Network Attackers that additionally have full control over
     the network over which protocol participants communicate. They can
@@ -85,7 +86,7 @@ tokens or authorization codes obtained by any of the attacks described
 above at the client or RS.
 
 This document discusses the additional threats resulting from these
-attackers in detail and recommends suitable mitigations. Attacks in an
-even stronger attacker model are discussed, for example, in
-[@arXiv.1901.11520].
+attackers in detail and recommends suitable mitigations where these
+are available. Attacks in an even stronger attacker model are
+discussed, for example, in [@arXiv.1901.11520].
     
