@@ -23,10 +23,10 @@ Clients MUST prevent Cross-Site Request Forgery (CSRF). In this
 context, CSRF refers to redirections to the redirection endpoint that
 do not originate at the authorization server, but a malicious third
 party (see Section 4.4.1.8. of [@RFC6819] for details). One-time use
-CSRF tokens carried in the `state` parameter, which are securely bound
-to the user agent, SHOULD be used for that purpose. If PKCE [@RFC7636]
-is used by the client and the client has ensured that the
-authorization server supports PKCE, the client MAY opt to not use
+CSRF tokens carried in the `state` parameter that are securely bound
+to the user agent SHOULD be used for that purpose. Alternatively, if
+PKCE [@RFC7636] is used by the client and the client has ensured that
+the authorization server supports PKCE, the client MAY opt to not use
 `state` for CSRF protection, as such protection is provided by PKCE.
 In this case, `state` MAY be used again for its original purpose,
 namely transporting data about the application state of the client
@@ -34,17 +34,18 @@ namely transporting data about the application state of the client
         
         
 In order to prevent mix-up attacks, clients MUST only process redirect
-responses of the OAuth authorization server they sent the respective
-request to and from the same user agent this authorization request was
-initiated with. Clients MUST store the authorization server they
-sent an authorization request to and bind this information to the user
-agent and ensure any sub-sequent messages are sent to the same
-authorization server. Clients SHOULD use AS-specific redirect URIs as
-a means to identify the AS a particular response came from.
+responses of the authorization server they sent the respective request
+to and from the same user agent this authorization request was
+initiated with. Clients MUST store the authorization server they sent
+an authorization request to and bind this information to the user
+agent and ensure that the subsequent token request, if applicable, is
+sent to the same authorization server. Clients SHOULD use distinct
+redirect URIs for each authorization server as a means to identify the
+authorization server a particular response came from.
 
-An AS which redirects a request that potentially contains user
-credentials MUST avoid forwarding these user credentials accidentally
-(see (#redirect_307)).
+An AS that redirects a request potentially containing user credentials
+MUST avoid forwarding these user credentials accidentally (see
+(#redirect_307) for details).
 
 
 ### Authorization Code Grant {#ac}
@@ -52,10 +53,10 @@ credentials MUST avoid forwarding these user credentials accidentally
 Clients utilizing the authorization code grant type MUST use PKCE
 [@!RFC7636] or the OpenID Connect `nonce` parameter and ID Token Claim
 [@!OpenID] to detect and prevent attempts to inject (replay)
-authorization codes into the authorization response. The PKCE
-challenge or OpenID Connect `nonce` must be transaction-specific and
-securely bound to the client and the user agent in which the
-transaction was started.
+authorization codes into the authorization response by an attacker.
+The PKCE challenge or OpenID Connect `nonce` must be
+transaction-specific and securely bound to the client and the user
+agent in which the transaction was started.
 
 Note: although PKCE so far was recommended as a mechanism to protect
 native apps, this advice applies to all kinds of OAuth clients,
@@ -63,14 +64,15 @@ including web applications.
 
 When using PKCE, clients SHOULD use PKCE code challenge methods that
 do not expose the PKCE verifier in the authorization request.
-Otherwise, the attacker A4 can trivially break the security provided
+Otherwise, attackers that can read the authorization request (cf.
+Attacker A4 in (#secmodel)) can trivially break the security provided
 by PKCE. Currently, `S256` is the only such method.
 
 Authorization servers MUST support PKCE [@!RFC7636].
 
 Authorization servers MUST provide a way to detect their support for
-PKCE. To this end, they MUST either (a) publish, in their AS metadata
-([@!RFC8418]), the element `code_challenge_methods_supported`
+PKCE. To this end, they MUST either (a) publish the element
+`code_challenge_methods_supported` in their AS metadata ([@!RFC8418])
 containing the supported PKCE challenge methods (which can be used by
 the client to detect PKCE support) or (b) provide a
 deployment-specific way to ensure or determine PKCE support by the AS.
@@ -98,22 +100,22 @@ grant (response type "token") or other response types issuing
 access tokens in the authorization response, unless access token injection
 in the authorization response is prevented and the aforementioned token leakage
 vectors are mitigated.
- 
-A sender-constrained access token scopes the applicability of an access
-token to a certain sender. This sender is obliged to demonstrate knowledge
-of a certain secret as prerequisite for the acceptance of that token at
-the recipient (e.g., a resource server).
 
 Clients SHOULD instead use the response type "code" (aka authorization
 code grant type) as specified in (#ac) or any other response type that
 causes the authorization server to issue access tokens in the token
 response, such as the "code id\_token" response type. This allows the
-authorization server to detect replay attempts and generally reduces
-the attack surface since access tokens are not exposed in URLs. It
-also allows the authorization server to sender-constrain the issued
-tokens.
+authorization server to detect replay attempts by attackers and
+generally reduces the attack surface since access tokens are not
+exposed in URLs. It also allows the authorization server to
+sender-constrain the issued tokens (see next section).
 
 ## Token Replay Prevention {#token_replay_prevention}
+ 
+A sender-constrained access token scopes the applicability of an access
+token to a certain sender. This sender is obliged to demonstrate knowledge
+of a certain secret as prerequisite for the acceptance of that token at
+the recipient (e.g., a resource server).
 
 Authorization servers SHOULD use mechanisms for sender-constrained
 access tokens as described in (#pop_tokens), such as Mutual TLS for
@@ -121,7 +123,7 @@ OAuth 2.0 [@I-D.ietf-oauth-mtls], in order to prevent token replay.
 Refresh tokens MUST be sender-constrained or use refresh token
 rotation as described in (#refresh_token_protection).
 
-It is recommended to use end-to-end TLS whenever possible. If TLS
+It is RECOMMENDED to use end-to-end TLS. If TLS
 traffic needs to be terminated at an intermediary, refer to
 (#tls_terminating) for further security advice.
 
@@ -132,8 +134,7 @@ the minimum required for the particular application or use case. This
 prevents clients from exceeding the privileges authorized by the
 resource owner. It also prevents users from exceeding their privileges
 authorized by the respective security policy. Privilege restrictions
-also limit the impact of token leakage although more effective
-counter-measures are described in (#token_replay_prevention).
+also help to reduce the impact of access token leakage.
 
 In particular, access tokens SHOULD be restricted to certain resource
 servers (audience restriction), preferably to a single resource
@@ -151,11 +152,11 @@ Additionally, access tokens SHOULD be restricted to certain resources
 and actions on resource servers or resources. To put this into effect,
 the authorization server associates the access token with the
 respective resource and actions and every resource server is obliged
-to verify for every request, whether the access token sent with that
+to verify, for every request, whether the access token sent with that
 request was meant to be used for that particular action on the
 particular resource. If not, the resource server must refuse to serve
 the respective request. Clients and authorization servers MAY utilize
-the parameter `scope` as specified in [@!RFC6749] to determine those
+the parameter `scope` as specified in [@!RFC6749] and `authorization_details` as specified in [@I-D.ietf-oauth-rar] to determine those
 resources and/or actions.
 
 ## Resource Owner Password Credentials Grant
@@ -169,14 +170,15 @@ the AS.
 
 Furthermore, adapting the resource owner password credentials grant to
 two-factor authentication, authentication with cryptographic
-credentials, and authentication processes that require multiple steps
-can be hard or impossible (WebCrypto [@webcrypto], WebAuthn [@webauthn]]).
+credentials (cf. WebCrypto [@webcrypto], WebAuthn [@webauthn]), and
+authentication processes that require multiple steps can be hard or
+impossible.
 
 
 ## Client Authentication
-Authorization servers SHOULD use client authentication if possible.
+Authorization servers SHOULD use client authentication.
 
-It is RECOMMENDED to use asymmetric (public key based) methods for
+It is RECOMMENDED to use asymmetric (public-key based) methods for
 client authentication such as mTLS [@I-D.ietf-oauth-mtls] or
 `private_key_jwt` [@!OpenID]. When asymmetric methods for client
 authentication are used, authorization servers do not need to store

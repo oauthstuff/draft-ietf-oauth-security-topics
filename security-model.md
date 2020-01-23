@@ -1,4 +1,4 @@
-# The Updated OAuth 2.0 Attacker Model
+# The Updated OAuth 2.0 Attacker Model {#secmodel}
 
 In [@RFC6819], an attacker model is laid out that describes the
 capabilities of attackers against which OAuth deployments must be
