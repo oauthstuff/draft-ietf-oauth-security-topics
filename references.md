@@ -17,7 +17,7 @@
     <author initials="C." surname="Mortimore" fullname="Chuck Mortimore">
       <organization>Salesforce</organization>
     </author>
-   <date day="8" month="Nov" year="2014"/>
+    <date day="8" month="Nov" year="2014"/>
   </front>
 </reference>
 
@@ -87,7 +87,7 @@
     <author initials="Y." surname="Pei" fullname="Yutong Pei">
       <organization abbrev="CMU">Carnegie Mellon University</organization>
     </author>
-     <author initials="S." surname="Chen" fullname="Shuo Chen">
+    <author initials="S." surname="Chen" fullname="Shuo Chen">
       <organization abbrev="MR">Microsoft Research</organization>
     </author>
     <author initials="Y." surname="Tian" fullname="Yuan Tian">
@@ -105,51 +105,51 @@
 </reference>
 
 <reference anchor="arXiv.1601.01229"
-   target="http://arxiv.org/abs/1601.01229/">
-<front>
-  <title>A Comprehensive Formal Security Analysis of OAuth 2.0</title>
-  <author fullname="Daniel Fett" surname="Fett" initials="D."><organization/></author>
-  <author fullname="Ralf Küsters" surname="Küsters" initials="R."><organization/></author>
-  <author fullname="Guido Schmitz" surname="Schmitz" initials="G."><organization/></author>
-  <date day="6" month="January" year="2016"/>
-</front>
-<seriesInfo name="arXiv" value="1601.01229"/>
+           target="http://arxiv.org/abs/1601.01229/">
+  <front>
+    <title>A Comprehensive Formal Security Analysis of OAuth 2.0</title>
+    <author fullname="Daniel Fett" surname="Fett" initials="D."><organization/></author>
+    <author fullname="Ralf Küsters" surname="Küsters" initials="R."><organization/></author>
+    <author fullname="Guido Schmitz" surname="Schmitz" initials="G."><organization/></author>
+    <date day="6" month="January" year="2016"/>
+  </front>
+  <seriesInfo name="arXiv" value="1601.01229"/>
 </reference>
 
 <reference anchor="arXiv.1704.08539"
-     target="http://arxiv.org/abs/1704.08539/">
-<front>
-  <title>The Web SSO Standard OpenID Connect: In-Depth Formal Security Analysis and Security Guidelines</title>
-  <author fullname="Daniel Fett" surname="Fett" initials="D."><organization/></author>
-  <author fullname="Ralf Küsters" surname="Küsters" initials="R."><organization/></author>
-  <author fullname="Guido Schmitz" surname="Schmitz" initials="G."><organization/></author>
-  <date day="27" month="April" year="2017"/>
-</front>
-<seriesInfo name="arXiv" value="1704.08539"/>
+           target="http://arxiv.org/abs/1704.08539/">
+  <front>
+    <title>The Web SSO Standard OpenID Connect: In-Depth Formal Security Analysis and Security Guidelines</title>
+    <author fullname="Daniel Fett" surname="Fett" initials="D."><organization/></author>
+    <author fullname="Ralf Küsters" surname="Küsters" initials="R."><organization/></author>
+    <author fullname="Guido Schmitz" surname="Schmitz" initials="G."><organization/></author>
+    <date day="27" month="April" year="2017"/>
+  </front>
+  <seriesInfo name="arXiv" value="1704.08539"/>
 </reference>
 
 <reference anchor="arXiv.1901.11520"
-   target="http://arxiv.org/abs/1901.11520/">
-<front>
-  <title>An Extensive Formal Security Analysis of the OpenID Financial-grade API</title>
-  <author fullname="Daniel Fett" surname="Fett" initials="D."><organization/></author>
-  <author fullname="Pedram Hosseyni" surname="Hosseyni" initials="P."><organization/></author>
-  <author fullname="Ralf Küsters" surname="Küsters" initials="R."><organization/></author>
-  <date day="31" month="January" year="2019"/>
-</front>
-<seriesInfo name="arXiv" value="1901.11520"/>
+           target="http://arxiv.org/abs/1901.11520/">
+  <front>
+    <title>An Extensive Formal Security Analysis of the OpenID Financial-grade API</title>
+    <author fullname="Daniel Fett" surname="Fett" initials="D."><organization/></author>
+    <author fullname="Pedram Hosseyni" surname="Hosseyni" initials="P."><organization/></author>
+    <author fullname="Ralf Küsters" surname="Küsters" initials="R."><organization/></author>
+    <date day="31" month="January" year="2019"/>
+  </front>
+  <seriesInfo name="arXiv" value="1901.11520"/>
 </reference>
 
 <reference anchor="arXiv.1508.04324v2"
-     target="http://arxiv.org/abs/1508.04324v2/">
- <front>
-  <title>On the security of modern Single Sign-On Protocols: Second-Order Vulnerabilities in OpenID Connect</title>
-  <author fullname="Vladislav Mladenov" surname="Mladenov" initials="V."><organization/></author>
-  <author fullname="Christian Mainka" surname="Mainka" initials="C."><organization/></author>
-  <author fullname="Jörg Schwenk" surname="Schwenk" initials="J."><organization/></author>
-  <date day="7" month="January" year="2016"/>
-</front>
-<seriesInfo name="arXiv" value="1508.04324v2"/>
+           target="http://arxiv.org/abs/1508.04324v2/">
+  <front>
+    <title>On the security of modern Single Sign-On Protocols: Second-Order Vulnerabilities in OpenID Connect</title>
+    <author fullname="Vladislav Mladenov" surname="Mladenov" initials="V."><organization/></author>
+    <author fullname="Christian Mainka" surname="Mainka" initials="C."><organization/></author>
+    <author fullname="Jörg Schwenk" surname="Schwenk" initials="J."><organization/></author>
+    <date day="7" month="January" year="2016"/>
+  </front>
+  <seriesInfo name="arXiv" value="1508.04324v2"/>
 </reference>
 
 <reference anchor="oauth_security_jcs_14">
@@ -165,16 +165,26 @@
 </reference>
 
 <reference anchor="bug.chromium" target="https://bugs.chromium.org/p/chromium/issues/detail?id=168213/">
-<front>
-<title>Referer header includes URL fragment when opening link using New Tab</title>
-<author></author>
-<date />
-</front>
+  <front>
+    <title>Referer header includes URL fragment when opening link using New Tab</title>
+    <author></author>
+    <date />
+  </front>
 </reference>
 
 <reference anchor="webauthn" target="https://www.w3.org/TR/2019/REC-webauthn-1-20190304/">
   <front>
     <title>Web Authentication: An API for accessing Public Key Credentials Level 1</title>
+    
+    <author fullname="Dirk Balfanz" surname="Balfanz" initials="D."><organization>Google</organization></author>
+    <author fullname="Alexei Czeskis" surname="Czeskis" initials="A."><organization>Google</organization></author>
+    <author fullname="Jeff Hodges" surname="Hodges" initials="J."><organization>Google</organization></author>
+    <author fullname="J.C. Jones" surname="Jones" initials="J.C."><organization>Mozilla</organization></author>
+    <author fullname="Michael B. Jones" surname="Jones" initials="M.B."><organization>Microsoft</organization></author>
+    <author fullname="Akshay Kumar" surname="Kumar" initials="A."><organization>Microsoft</organization></author>
+    <author fullname="Angelo Liao" surname="Liao" initials="A."><organization>Microsoft</organization></author>
+    <author fullname="Rolf Lindemann" surname="Lindemann" initials="R."><organization>Nok Nok Labs</organization></author>
+    <author fullname="Emil Lundberg" surname="Lundberg" initials="E."><organization>Yubico</organization></author>
     <date day="04" month="March" year="2019"/>
   </front>
 </reference>
@@ -182,6 +192,7 @@
 <reference anchor="webcrypto" target="https://www.w3.org/TR/2017/REC-WebCryptoAPI-20170126/">
   <front>
     <title>Web Cryptography API</title>
+    <author fullname="Mark Watson" surname="Watson" initials="M."><organization>Netflix</organization></author>
     <date day="26" month="January" year="2017"/>
   </front>
 </reference>
