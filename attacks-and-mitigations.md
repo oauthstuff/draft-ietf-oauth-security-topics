@@ -181,34 +181,37 @@ without further checks.
 
 ## Credential Leakage via Referer Headers {#credential_leakage_referrer}
  
-Authorization codes or values of `state` can unintentionally be
-disclosed to attackers through the Referer HTTP header (see
-[@RFC7231], Section 5.5.2), by leaking either from a client's web site
-or from an AS's web site. Note: even if specified otherwise in
-[@RFC7231], Section 5.5.2, the same may happen to access tokens
-conveyed in URI fragments due to browser implementation issues as
-illustrated by Chromium Issue 168213 [@bug.chromium].
+The contents of the authorization request URI or the authorization
+response URI can unintentionally be disclosed to attackers through the
+Referer HTTP header (see [@RFC7231], Section 5.5.2), by leaking either
+from the AS's or the client's web site, respectively. Most
+importantly, authorization codes or `state` values can be disclosed in
+this way. Although specified otherwise in [@RFC7231], Section 5.5.2,
+the same may happen to access tokens conveyed in URI fragments due to
+browser implementation issues as illustrated by Chromium Issue 168213
+[@bug.chromium].
  
 ### Leakage from the OAuth Client
  
-Leakage from the OAuth client requires that the client, as a result of a successful
-authorization request, renders a page that
+Leakage from the OAuth client requires that the client, as a result of
+a successful authorization request, renders a page that
  
-  * contains links to other pages under the attacker's control (ads,
-    faq, ...) and a user clicks on such a link, or
-  * includes third-party content (iframes, images, etc.), for example
-    if the page contains user-generated content (blog).
+  * contains links to other pages under the attacker's control and a
+    user clicks on such a link, or
+  * includes third-party content (advertisements in iframes, images,
+    etc.), for example if the page contains user-generated content
+    (blog).
  
 As soon as the browser navigates to the attacker's page or loads the
 third-party content, the attacker receives the authorization response
-URL and can extract `code`, `access token`, or `state`.
+URL and can extract `code` or `state` (and potentially `access token`).
  
 
 ### Leakage from the Authorization Server
 
-In a similar way, an attacker can learn `state` if the authorization
-endpoint at the authorization server contains links or third-party
-content as above.
+In a similar way, an attacker can learn `state` from the authorization
+request if the authorization endpoint at the authorization server
+contains links or third-party content as above.
 
 ### Consequences
  
@@ -227,6 +230,14 @@ links to external sites.
  
 The following measures further reduce the chances of a successful attack:
  
+  * Suppress the Referer header by applying an appropriate Referrer
+    Policy [@webappsec-referrer-policy] to the document (either as
+    part of the "referrer" meta attribute or by setting a
+    Referrer-Policy header). For example, the header `Referrer-Policy:
+    no-referrer` in the response completely suppresses the Referer
+    header in all requests originating from the resulting document.
+  * Use authorization code instead of response types causing access
+    token issuance from the authorization endpoint.
   * Bind authorization code to a confidential client or PKCE
     challenge. In this case, the attacker lacks the secret to request
     the code exchange.
@@ -249,19 +260,8 @@ The following measures further reduce the chances of a successful attack:
     not help if the `state` leaks from the
     AS's web site, since then the `state`
     has not been used at the redirection endpoint at the client yet.)
-  * Suppress the Referer header by applying an appropriate Referrer
-    Policy [@webappsec-referrer-policy] to the document (either as
-    part of the "referrer" meta attribute or by setting a
-    Referrer-Policy header). For example, the header `Referrer-Policy:
-    no-referrer` in the response completely suppresses the Referer
-    header in all requests originating from the resulting document.
-  * Use authorization code instead of response types causing access
-    token issuance from the authorization endpoint. This provides
-    countermeasures against leakage on the OAuth protocol level
-    through the code exchange process with the authorization server.
-  * Additionally, one might use the form post response mode instead of
-    redirect for authorization response (see
-    [@!oauth-v2-form-post-response-mode]).
+  * Use the form post response mode instead of a redirect for the
+    authorization response (see [@!oauth-v2-form-post-response-mode]).
  
 ## Attacks through the Browser History {#browser_history}
 
