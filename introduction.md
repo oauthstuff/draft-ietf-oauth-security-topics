@@ -65,3 +65,9 @@ NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
 "MAY", and "OPTIONAL" in this document are to be interpreted as
 described in BCP 14 [@RFC2119] [@RFC8174] when, and only when, they
 appear in all capitals, as shown here.
+
+This specification uses the terms "access token", "authorization
+endpoint", "authorization grant", "authorization server", "client",
+"client identifier" (client ID), "protected resource", "refresh
+token", "resource owner", "resource server", and "token endpoint"
+defined by OAuth 2.0 [@!RFC6749].
