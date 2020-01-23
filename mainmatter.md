@@ -1,9 +1,9 @@
 
 {{introduction.md}}
 
-{{security-model.md}}
-
 {{recommendations.md}}
+
+{{security-model.md}}
 
 {{attacks-and-mitigations.md}}
 

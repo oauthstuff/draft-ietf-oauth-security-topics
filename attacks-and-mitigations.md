@@ -297,16 +297,17 @@ up in the browser history as a result of a redirect from a provider's
 authorization endpoint.
   
 Proposed countermeasures:
-  
-  * Replace implicit flow with postmessage communication or the
-    authorization code grant
+
   * Clients MUST NOT pass access tokens in a URI query parameter in
-    the way described in Section 2.3 of [@!RFC6750].
+    the way described in Section 2.3 of [@!RFC6750]. The authorization
+    code grant or alternative OAuth response modes like the form post
+    response mode [@oauth-v2-form-post-response-mode] can be used to
+    this end.
  
 ## Mix-Up {#mix_up}
   
 Mix-up is an attack on scenarios where an OAuth client interacts with
-multiple authorization servers. At least one of these authorization
+two or more authorization servers. At least one of these authorization
 servers needs to be under the control of the attacker. This can be the
 case, for example, if the attacker uses dynamic registration to
 register the client at his authorization server or if an authorization
@@ -503,7 +504,8 @@ on another device, if certain conditions are fulfilled:
 
   * the redirect URI itself needs to contain a nonce or another kind
     of one-time use, secret data and
-  * the client has bound this data to this particular instance.
+  * the client has bound this data to this particular instance of the
+    client.
    
 But this approach conflicts with the idea to enforce exact redirect
 URI matching at the authorization endpoint. Moreover, it has been
@@ -524,11 +526,12 @@ device won't be detected in the respective deployments.
 It is also assumed that the requirements defined in [@!RFC6749],
 Section 4.1.3, increase client implementation complexity as clients
 need to memorize or re-construct the correct redirect URI for the call
-to the tokens endpoint.
+to the token endpoint.
    
 This document therefore recommends to instead bind every authorization
 code to a certain client instance on a certain device (or in a certain
-user agent) in the context of a certain transaction. 
+user agent) in the context of a certain transaction using one of the
+mechanisms described next.
 
 ### Proposed Countermeasures
    

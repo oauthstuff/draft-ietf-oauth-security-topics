@@ -94,11 +94,10 @@ is recommended in (#token_replay_prevention). This makes replay
 detection for such access tokens at resource servers impossible.
     
 In order to avoid these issues, clients SHOULD NOT use the implicit
-grant (response type "token") or any other response type issuing
-access tokens in the authorization response, such as "id\_token token"
-and "code id\_token token", unless the issued access tokens are
-sender-constrained and access token injection in the authorization
-response is prevented. 
+grant (response type "token") or other response types issuing
+access tokens in the authorization response, unless access token injection
+in the authorization response is prevented and the aforementioned token leakage
+vectors are mitigated.
  
 A sender-constrained access token scopes the applicability of an access
 token to a certain sender. This sender is obliged to demonstrate knowledge
@@ -116,12 +115,11 @@ tokens.
 
 ## Token Replay Prevention {#token_replay_prevention}
 
-Authorization servers SHOULD use TLS-based methods for
-sender-constrained access tokens as described in (#pop_tokens), such
-as token binding [@I-D.ietf-oauth-token-binding] or Mutual TLS for
-OAuth 2.0 [@I-D.ietf-oauth-mtls] in order to prevent token replay.
+Authorization servers SHOULD use mechanisms for sender-constrained
+access tokens as described in (#pop_tokens), such as Mutual TLS for
+OAuth 2.0 [@I-D.ietf-oauth-mtls], in order to prevent token replay.
 Refresh tokens MUST be sender-constrained or use refresh token
-rotation as described in (#refresh_token_protection). 
+rotation as described in (#refresh_token_protection).
 
 It is recommended to use end-to-end TLS whenever possible. If TLS
 traffic needs to be terminated at an intermediary, refer to
