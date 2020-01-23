@@ -263,7 +263,7 @@ The following measures further reduce the chances of a successful attack:
   * Use the form post response mode instead of a redirect for the
     authorization response (see [@!oauth-v2-form-post-response-mode]).
  
-## Attacks through the Browser History {#browser_history}
+## Credential Leakage via Browser History {#browser_history}
 
 Authorization codes and access tokens can end up in the browser's
 history of visited URLs, enabling the attacks described in the
@@ -281,21 +281,21 @@ replay it.
 Proposed countermeasures:
 
   * Authorization code replay prevention as described in [@!RFC6819],
-    Section 4.4.1.1, and (#code_injection)
-  * Use form post response mode instead of redirect for authorization
-    response (see [@!oauth-v2-form-post-response-mode])
+    Section 4.4.1.1, and (#code_injection).
+  * Use form post response mode instead of redirect for the authorization
+    response (see [@!oauth-v2-form-post-response-mode]).
   
   
 ### Access Token in Browser History
   
-An access token may end up in the browser history if a client or
-just a web site, which already has a token, deliberately navigates to
-a page like "provider.com/get_user_profile?access_token=abcdef.".
-Actually [@!RFC6750] discourages this practice and asks to transfer
-tokens via a header, but in practice web sites often just pass access
-token in query parameters.
+An access token may end up in the browser history if a client or a web
+site that already has a token deliberately navigates to a page like
+`provider.com/get_user_profile?access_token=abcdef`. [@!RFC6750]
+discourages this practice and advises to transfer tokens via a header,
+but in practice web sites often pass access tokens in query
+parameters.
   
-In case of implicit grant, a URL like
+In case of the implicit grant, a URL like
 `client.example/redirection_endpoint#access_token=abcdef` may also end
 up in the browser history as a result of a redirect from a provider's
 authorization endpoint.
@@ -308,7 +308,7 @@ Proposed countermeasures:
     response mode [@oauth-v2-form-post-response-mode] can be used to
     this end.
  
-## Mix-Up {#mix_up}
+## Mix-Up Attacks {#mix_up}
   
 Mix-up is an attack on scenarios where an OAuth client interacts with
 two or more authorization servers. At least one of these authorization
