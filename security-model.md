@@ -64,8 +64,7 @@ attackers in addition to those listed above:
     
     Examples for such attacks include open redirector
     attacks, problems existing on mobile operating systems (where
-    different apps can register themselves on the same URI), so-called
-    mix-up attacks, where the client is tricked into sending
+    different apps can register themselves on the same URI), mix-up attacks (see (#mix_up)), where the client is tricked into sending
     credentials to a attacker-controlled AS, and the fact that URLs
     are often stored/logged by browsers (history), proxy servers, and
     operating systems.

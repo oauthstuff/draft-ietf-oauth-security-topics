@@ -171,3 +171,18 @@
 <date />
 </front>
 </reference>
+
+<reference anchor="webauthn" target="https://www.w3.org/TR/2019/REC-webauthn-1-20190304/">
+  <front>
+    <title>Web Authentication: An API for accessing Public Key Credentials Level 1</title>
+    <date day="04" month="March" year="2019"/>
+  </front>
+</reference>
+
+<reference anchor="webcrypto" target="https://www.w3.org/TR/2017/REC-WebCryptoAPI-20170126/">
+  <front>
+    <title>Web Cryptography API</title>
+    <date day="26" month="January" year="2017"/>
+  </front>
+</reference>
+

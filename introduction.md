@@ -2,10 +2,10 @@
 
 Since its publication in [@!RFC6749] and [@!RFC6750], OAuth 2.0
 ("OAuth" in the following) has gotten massive traction in the market
-and became the standard for API protection and, as the foundation of
-OpenID Connect [@!OpenID], identity providing. While OAuth was used in
-a variety of scenarios and different kinds of deployments, the
-following challenges could be observed:
+and became the standard for API protection and the basis for federated
+login using OpenID Connect [@!OpenID]. While OAuth is used in a
+variety of scenarios and different kinds of deployments, the following
+challenges can be observed:
 
   * OAuth implementations are being attacked through known
 	implementation weaknesses and anti-patterns. Although most of
@@ -38,14 +38,15 @@ authentication (see [@!RFC6819], Section 4.5.4). With the increasing
 adoption of OAuth, this simple model dissolved and, in several
 scenarios, was replaced by a dynamic establishment of the relationship
 between clients on one side and the authorization and resource servers
-of a particular deployment on the other side. This way, the same client
-could be used to access services of different providers (in case of
-standard APIs, such as e-mail or OpenID Connect) or serve as a
-frontend to a particular tenant in a multi-tenancy environment. Extensions of
-OAuth, such as [@RFC7591] and [@RFC8414] were developed in order to
-support the usage of OAuth in dynamic scenarios. As a challenge to the
-community, such usage scenarios open up new attack angles, 
-which are discussed in this document.
+of a particular deployment on the other side. This way, the same
+client could be used to access services of different providers (in
+case of standard APIs, such as e-mail or OpenID Connect) or serve as a
+frontend to a particular tenant in a multi-tenancy environment.
+Extensions of OAuth, such as the OAuth 2.0 Dynamic Client Registration
+Protocol [@RFC7591] and OAuth 2.0 Authorization Server Metadata
+[@RFC8414] were developed in order to support the usage of OAuth in
+dynamic scenarios. Such usage scenarios open up new attack angles that
+are discussed in this document.
 	  
 ## Structure
 

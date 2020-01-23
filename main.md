@@ -36,7 +36,7 @@ surname="Labunets"
 fullname="Andrey Labunets"
 organization="Facebook"
     [author.address]
-    email = "isciurus@fb.com"
+    email = "isciurus@gmail.com"
 
 [[author]]
 initials="D."
