@@ -7,74 +7,77 @@ complements and enhances the description given in [@!RFC6819].
 ## Insufficient Redirect URI Validation {#insufficient_uri_validation}
   
 Some authorization servers allow clients to register redirect URI
-patterns instead of complete redirect URIs. In those cases, the
-authorization server, at runtime, matches the actual redirect URI
-parameter value at the authorization endpoint against this pattern.
-This approach allows clients to encode transaction state into
-additional redirect URI parameters or to register just a single
-pattern for multiple redirect URIs. As a downside, it turned out to be
-more complex to implement and error prone to manage than exact
-redirect URI matching. Several successful attacks, utilizing flaws in
-the pattern matching implementation or concrete configurations, have
-been observed in the wild. Insufficient validation of the redirect URI
-effectively breaks client identification or authentication (depending
-on grant and client type) and allows the attacker to obtain an
-authorization code or access token, either
+patterns instead of complete redirect URIs. The authorization servers
+then match the redirect URI parameter value at the authorization
+endpoint against the registered patterns at runtime. This approach
+allows clients to encode transaction state into additional redirect
+URI parameters or to register a single pattern for multiple
+redirect URIs. 
+
+This approach turned out to be more complex to implement and more
+error prone to manage than exact redirect URI matching. Several
+successful attacks exploiting flaws in the pattern matching
+implementation or concrete configurations have been observed in the
+wild . Insufficient validation of the redirect URI effectively breaks
+client identification or authentication (depending on grant and client
+type) and allows the attacker to obtain an authorization code or
+access token, either
   
   * by directly sending the user agent to a URI under the attackers
     control, or
   * by exposing the OAuth credentials to an attacker by utilizing an
     open redirector at the client in conjunction with the way user
     agents handle URL fragments.
+    
+These attacks are shown in detail in the following subsections.
   
 ### Redirect URI Validation Attacks on Authorization Code Grant {#insufficient_uri_validation_acg}
   
-For a public client using the grant type code, an attack would look as
+For a client using the grant type code, an attack may work as
 follows:
   
-Let's assume the redirect URL pattern `https://*.somesite.example/*`
-had been registered for the client "s6BhdRkqt3". This pattern allows
-redirect URIs pointing to any host residing in the domain
-somesite.example. So if an attacker manages to establish a host or
-subdomain in somesite.example he can impersonate the legitimate
+Assume the redirect URL pattern `https://*.somesite.example/*` has
+been registered for the client with the client ID `s6BhdRkqt3`. This
+pattern allows redirect URIs pointing to any host residing in the
+domain somesite.example. So if an attacker manages to establish a host
+or subdomain in somesite.example he can impersonate the legitimate
 client. Assume the attacker sets up the host `evil.somesite.example`.
 
 The attack can then be conducted as follows:
 
 First, the attacker needs to trick the user into opening a tampered
-URL in his browser, which launches a page under the attacker's
-control, say `https://www.evil.example`. (See Attacker A1.)
+URL in his browser that launches a page under the attacker's
+control, say `https://www.evil.example` (see Attacker A1.)
 
-This URL initiates an authorization request with the client ID of a
-legitimate client to the authorization endpoint. This is the example
-authorization request (line breaks are for display purposes only):
+This URL initiates the following authorization request with the client
+ID of a legitimate client to the authorization endpoint (line breaks
+for display only):
     
     GET /authorize?response_type=code&client_id=s6BhdRkqt3&state=9ad67f13
          &redirect_uri=https%3A%2F%2Fevil.somesite.example%2Fcb HTTP/1.1
     Host: server.somesite.example
   
-Afterwards, the authorization server validates the redirect URI in
-order to identify the client. Since the pattern allows arbitrary
-host names in "somesite.example", the authorization request is
-processed under the legitimate client's identity. This includes the
-way the request for user consent is presented to the user. If
-auto-approval is allowed (which is not recommended for public clients
-according to [@!RFC6749]), the attack can be performed even easier.
-  
+The authorization server validates the redirect URI and compares it to
+the registered redirect URL patterns for the client `s6BhdRkqt3`.
+Since the pattern allows arbitrary host names in "somesite.example",
+the authorization request is processed and presented to the user. 
+
 If the user does not recognize the attack, the code is issued and
-immediately sent to the attacker's client.
+immediately sent to the attacker's client. If an automatic approval of
+the authorization is enabled (which is not recommended for public
+clients according to [@!RFC6749]), the attack can be performed even
+without user interaction.
   
-Since the attacker impersonated a public client, it can
-exchange the code for tokens at the respective token endpoint.
+If the attacker impersonated a public client, the attacker can
+exchange the code for tokens at the respective token endpoint. 
  
-Note: This attack will not work as easily for confidential clients,
-since the code exchange requires authentication with the legitimate
-client's secret. The attacker will need to impersonate or utilize the
-legitimate client to redeem the code (e.g., by performing an
-authorization code injection attack). This kind of injections is
-covered in (#code_injection).
+This attack will not work as easily for confidential clients, since
+the code exchange requires authentication with the legitimate client's
+secret. The attacker can, however, use the legitimate confidential
+client to redeem the code by performing an authorization code
+injection attack, see (#code_injection).
    
-### Redirect URI Validation Attacks on Implicit Grant
+### Redirect URI Validation Attacks on Implicit Grant {#redir_uri_open_redir}
    
 The attack described above works for the implicit grant as well. If
 the attacker is able to send the authorization response to a URI under
@@ -86,11 +89,11 @@ attack. It utilizes the fact that user agents re-attach fragments to
 the destination URL of a redirect if the location header does not
 contain a fragment (see [@!RFC7231], Section 9.5). The attack
 described here combines this behavior with the client as an open
-redirector in order to get access to access tokens. This allows
-circumvention even of very narrow redirect URI patterns (but not strict URL
-matching!).
+redirector (see (#open_redirector_on_client)) in order to get access to access tokens. This allows
+circumvention even of very narrow redirect URI patterns, but not strict URL
+matching.
    
-Assume the pattern for client "s6BhdRkqt3" is
+Assume the registered URL pattern for client `s6BhdRkqt3` is
 `https://client.somesite.example/cb?*`, i.e., any parameter is allowed
 for redirects to `https://client.somesite.example/cb`. Unfortunately,
 the client exposes an open redirector. This endpoint supports a
@@ -100,46 +103,45 @@ browser to this URL using an HTTP Location header redirect 303.
 The attack can now be conducted as follows:
   
 First, and as above, the attacker needs to trick the user into opening
-a tampered URL in his browser, which launches a page under the
+a tampered URL in his browser that launches a page under the
 attacker's control, say `https://www.evil.example`.
     
-Afterwards, the website initiates an authorization request, which is
+Afterwards, the website initiates an authorization request that is
 very similar to the one in the attack on the code flow. Different to
 above, it utilizes the open redirector by encoding
-`redirect_to=https://client.evil.example` into the redirect URI and it
-uses the response type "token" (line breaks are for display purposes
-only):
+`redirect_to=https://client.evil.example` into the parameters of the
+redirect URI and it uses the response type "token" (line breaks for display only):
   
     GET /authorize?response_type=token&state=9ad67f13
         &client_id=s6BhdRkqt3
         &redirect_uri=https%3A%2F%2Fclient.somesite.example
          %2Fcb%26redirect_to%253Dhttps%253A%252F
-         %252Fclient.evil.example%252Fcb HTTP/1.1
+         %252Fclient.evil.example%252F HTTP/1.1
     Host: server.somesite.example
         
 Now, since the redirect URI matches the registered pattern, the
-authorization server allows the request and sends the resulting access
-token with a 303 redirect (some response parameters are omitted for
-better readability)
+authorization server permits the request and sends the resulting access
+token in a 303 redirect (some response parameters omitted for
+readability):
 
     HTTP/1.1 303 See Other
     Location: https://client.somesite.example/cb?
               redirect_to%3Dhttps%3A%2F%2Fclient.evil.example%2Fcb
               #access_token=2YotnFZFEjr1zCsicMWpAA&...
      
-At example.com, the request arrives at the open redirector. It will
+At example.com, the request arrives at the open redirector. The endpoint will
 read the redirect parameter and will issue an HTTP 303 Location header
-redirect to the URL `https://client.evil.example/cb`.
+redirect to the URL `https://client.evil.example/`.
   
     HTTP/1.1 303 See Other
-    Location: https://client.evil.example/cb
+    Location: https://client.evil.example/
         
 Since the redirector at client.somesite.example does not include a
 fragment in the Location header, the user agent will re-attach the
 original fragment `#access_token=2YotnFZFEjr1zCsicMWpAA&amp;...` to
 the URL and will navigate to the following URL:
     
-    https://client.evil.example/cb#access_token=2YotnFZFEjr1z...
+    https://client.evil.example/#access_token=2YotnFZFEjr1z...
   
 The attacker's page at `client.evil.example` can now access the
 fragment and obtain the access token.
@@ -148,15 +150,15 @@ fragment and obtain the access token.
 ### Proposed Countermeasures
    
 The complexity of implementing and managing pattern matching correctly
-obviously causes security issues. This document therefore proposes to
+obviously causes security issues. This document therefore advises to
 simplify the required logic and configuration by using exact redirect
-URI matching only. This means the authorization server must compare
+URI matching only. This means the authorization server MUST compare
 the two URIs using simple string comparison as defined in [@!RFC3986],
 Section 6.2.1.
    
 Additional recommendations:
 
-  * Servers on which callbacks are hosted must not expose open
+  * Servers on which callbacks are hosted MUST NOT expose open
     redirectors (see (#open_redirection)).
   * Browsers reattach URL fragments to Location redirection URLs only
     if the URL in the Location header does not already contain a fragment.
@@ -167,14 +169,16 @@ Additional recommendations:
     response types causing access token issuance at the authorization
     endpoint. This offers countermeasures against reuse of leaked
     credentials through the exchange process with the authorization
-    server and token replay through certificate binding of the access
-    tokens. 
+    server and token replay through sender-constraining of the access
+    tokens.
    
-   
-As an alternative to exact redirect URI matching, the AS could also
-authenticate clients, e.g., using [@I-D.ietf-oauth-jwsreq].
-   
-   
+If the origin and integrity of the authorization request containing
+the redirect URI can be verified, for example when using
+[@I-D.ietf-oauth-jwsreq] or [@I-D.ietf-oauth-par] with client
+authentication, the authorization server MAY trust the redirect URI
+without further checks.
+
+
 ## Credential Leakage via Referer Headers {#credential_leakage_referrer}
  
 Authorization codes or values of `state` can unintentionally be
@@ -946,14 +950,14 @@ server (and its URL in particular) for performing phishing attacks.
   
 [@!RFC6749], Section 4.1.2.1, already prevents open redirects by
 stating that the AS MUST NOT automatically redirect the user agent in case
-of an invalid combination of client_id and redirect_uri.
+of an invalid combination of `client_id` and `redirect_uri`.
   
 However, as described in [@I-D.ietf-oauth-closing-redirectors], an
 attacker could also utilize a correctly registered redirect URI to
-perform phishing attacks. It could, for example, register a client via
-dynamic client registration [@RFC7591] and intentionally send an
-erroneous authorization request, e.g., by using an invalid scope
-value, thus instructing the AS to redirect the user agent to its
+perform phishing attacks. The attacker could, for example, register a
+client via dynamic client registration [@RFC7591] and intentionally
+send an erroneous authorization request, e.g., by using an invalid
+scope value, thus instructing the AS to redirect the user agent to its
 phishing site.
   
 The AS MUST take precautions to prevent this threat. Based on its risk
@@ -962,18 +966,22 @@ URI and SHOULD only automatically redirect the user agent if it trusts
 the redirect URI. If the URI is not trusted, the AS MAY inform the
 user and rely on the user to make the correct decision.
 
-### Clients as Open Redirector
-  
-Client MUST NOT expose URLs which could be utilized as an open
-redirector. Attackers may use an open redirector to produce URLs that
-appear to point to the client, which might trick users into trusting the
-URL and follow it in their browser. Another abuse case is to produce
-URLs pointing to the client and utilize them to impersonate a client
-with an authorization server.
+### Clients as Open Redirector {#open_redirector_on_client}
+
+An open redirector is an endpoint that forwards a user’s browser to an
+arbitrary URI obtained from a query parameter.
+
+Client MUST NOT expose open redirectors. Attackers may use open
+redirectors to produce URLs that appear to point to the client. This
+might trick users into trusting the URL and follow it in their
+browser. Another abuse case is to produce URLs pointing to the client
+and utilize them to exfiltrate authorization codes and access tokens,
+as described in (#redir_uri_open_redir).
   
 In order to prevent open redirection, clients should only redirect if
-the target URLs are whitelisted or if the origin of a request can be
-authenticated.
+the target URLs are whitelisted or if the origin and integrity of a
+request can be authenticated. Countermeasures against open redirection
+are described by OWASP [@owasp_redir].
 
 ## 307 Redirect  {#redirect_307}
 

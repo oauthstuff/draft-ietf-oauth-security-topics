@@ -85,8 +85,7 @@ act as one. For example, an attacker can use his own browser to replay
 tokens or authorization codes obtained by any of the attacks described
 above at the client or RS.
 
-This document discusses the additional threats resulting from these
-attackers in detail and recommends suitable mitigations where these
-are available. Attacks in an even stronger attacker model are
-discussed, for example, in [@arXiv.1901.11520].
+This document focusses on threats resulting from these attackers.
+Attacks in an even stronger attacker model are discussed, for example,
+in [@arXiv.1901.11520].
     

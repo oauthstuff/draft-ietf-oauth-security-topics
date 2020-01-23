@@ -5,19 +5,16 @@ working group recommends to OAuth implementers.
 
 ## Protecting Redirect-Based Flows {#rec_redirect}
 
-Authorization servers MUST utilize exact matching of client redirect
-URIs against pre-registered URIs. This measure contributes to the
-prevention of leakage of authorization codes and access tokens
-(depending on the grant type). It can also help to detect mix-up attacks
-(see below).
+When comparing client redirect URIs against pre-registered URIs,
+authorization servers MUST utilize exact string matching. This measure
+contributes to the prevention of leakage of authorization codes and
+access tokens (depending on the grant type). It can also help to
+detect mix-up attacks (see below).
 
-Clients SHOULD avoid forwarding the user’s browser to a URI obtained
-from a query parameter ("open redirector") since such a function can enable
-exfiltration of authorization codes and access tokens. If there is a strong
-need for this kind of redirect, clients are advised to implement
-appropriate countermeasures against open redirection, e.g., as
-described by OWASP [@owasp_redir].
-
+Clients MUST NOT expose URLs that forward the user’s browser to
+arbitrary URIs obtained from a query parameter ("open redirector").
+Open redirectors can enable exfiltration of authorization codes and
+access tokens, see (#open_redirector_on_client).
 
 Clients MUST prevent Cross-Site Request Forgery (CSRF). In this
 context, CSRF refers to redirections to the redirection endpoint that
