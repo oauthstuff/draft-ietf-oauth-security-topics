@@ -8,12 +8,12 @@ working group recommends to OAuth implementers.
 Authorization servers MUST utilize exact matching of client redirect
 URIs against pre-registered URIs. This measure contributes to the
 prevention of leakage of authorization codes and access tokens
-(depending on the grant type). It also helps to detect mix-up attacks
+(depending on the grant type). It can also help to detect mix-up attacks
 (see below).
 
 Clients SHOULD avoid forwarding the user’s browser to a URI obtained
-from a query parameter since such a function could be utilized to
-exfiltrate authorization codes and access tokens. If there is a strong
+from a query parameter ("open redirector") since such a function can enable
+exfiltration of authorization codes and access tokens. If there is a strong
 need for this kind of redirect, clients are advised to implement
 appropriate countermeasures against open redirection, e.g., as
 described by OWASP [@owasp_redir].
@@ -49,33 +49,31 @@ credentials MUST avoid forwarding these user credentials accidentally
 
 ### Authorization Code Grant {#ac}
 
-Clients utilizing the authorization grant type MUST use PKCE
-[@!RFC7636] in order to (with the help of the authorization server)
-detect and prevent attempts to inject (replay) authorization codes
-into the authorization response. The PKCE challenges must be
-transaction-specific and securely bound to the user agent in which the
-transaction was started and the respective client. OpenID Connect
-clients MAY use the `nonce` parameter of the OpenID Connect
-authentication request as specified in [@!OpenID] in conjunction with
-the corresponding ID Token claim for the same purpose.
+Clients utilizing the authorization code grant type MUST use PKCE
+[@!RFC7636] or the OpenID Connect `nonce` parameter and ID Token Claim
+[@!OpenID] to detect and prevent attempts to inject (replay)
+authorization codes into the authorization response. The PKCE
+challenge or OpenID Connect `nonce` must be transaction-specific and
+securely bound to the client and the user agent in which the
+transaction was started.
 
 Note: although PKCE so far was recommended as a mechanism to protect
 native apps, this advice applies to all kinds of OAuth clients,
 including web applications.
 
-Clients SHOULD use PKCE code challenge methods that do not expose the
-PKCE verifier in the authorization request. (Otherwise, the attacker
-A4 can trivially break the security provided by PKCE.) Currently,
-`S256` is the only such method.
+When using PKCE, clients SHOULD use PKCE code challenge methods that
+do not expose the PKCE verifier in the authorization request.
+Otherwise, the attacker A4 can trivially break the security provided
+by PKCE. Currently, `S256` is the only such method.
 
-AS MUST support PKCE [@!RFC7636].
+Authorization servers MUST support PKCE [@!RFC7636].
 
-AS MUST provide a way to detect their support for PKCE. To this end,
-they MUST either (a) publish, in their AS metadata ([@!RFC8418]), the
-element `code_challenge_methods_supported` containing the supported
-PKCE challenge methods (which can be used by the client to detect PKCE
-support) or (b) provide a deployment-specific way to ensure or
-determine PKCE support by the AS.
+Authorization servers MUST provide a way to detect their support for
+PKCE. To this end, they MUST either (a) publish, in their AS metadata
+([@!RFC8418]), the element `code_challenge_methods_supported`
+containing the supported PKCE challenge methods (which can be used by
+the client to detect PKCE support) or (b) provide a
+deployment-specific way to ensure or determine PKCE support by the AS.
 
 Authorization servers SHOULD furthermore consider the recommendations
 given in [@!RFC6819], Section 4.4.1.1, on authorization code replay
@@ -97,8 +95,8 @@ detection for such access tokens at resource servers impossible.
     
 In order to avoid these issues, clients SHOULD NOT use the implicit
 grant (response type "token") or any other response type issuing
-access tokens in the authorization response, such as "token id\_token"
-and "code token id\_token", unless the issued access tokens are
+access tokens in the authorization response, such as "id\_token token"
+and "code id\_token token", unless the issued access tokens are
 sender-constrained and access token injection in the authorization
 response is prevented. 
  
@@ -110,10 +108,11 @@ the recipient (e.g., a resource server).
 Clients SHOULD instead use the response type "code" (aka authorization
 code grant type) as specified in (#ac) or any other response type that
 causes the authorization server to issue access tokens in the token
-response. This allows the authorization server to detect replay
-attempts and generally reduces the attack surface since access tokens
-are not exposed in URLs. It also allows the authorization server to
-sender-constrain the issued tokens.
+response, such as the "code id\_token" response type. This allows the
+authorization server to detect replay attempts and generally reduces
+the attack surface since access tokens are not exposed in URLs. It
+also allows the authorization server to sender-constrain the issued
+tokens.
 
 ## Token Replay Prevention {#token_replay_prevention}
 
@@ -130,23 +129,23 @@ traffic needs to be terminated at an intermediary, refer to
 
 ## Access Token Privilege Restriction
 
-The privileges associated with an access token SHOULD be restricted to the
-minimum required for the particular application or use case. This prevents
-clients from exceeding the privileges authorized by the resource owner. It also
-prevents users from exceeding their privileges authorized by the respective
-security policy. Privilege restrictions also limit the impact of token leakage
-although more effective counter-measures are described in 
-(#token_replay_prevention).
+The privileges associated with an access token SHOULD be restricted to
+the minimum required for the particular application or use case. This
+prevents clients from exceeding the privileges authorized by the
+resource owner. It also prevents users from exceeding their privileges
+authorized by the respective security policy. Privilege restrictions
+also limit the impact of token leakage although more effective
+counter-measures are described in (#token_replay_prevention).
 
 In particular, access tokens SHOULD be restricted to certain resource
-servers, preferably to a single resource server. To put this into
-effect, the authorization server associates the access token with
-certain resource servers and every resource server is obliged to
-verify for every request, whether the access token sent with that
-request was meant to be used for that particular resource server. If
-not, the resource server MUST refuse to serve the respective request.
-Clients and authorization servers MAY utilize the parameters `scope`
-or `resource` as specified in [@!RFC6749] and
+servers (audience restriction), preferably to a single resource
+server. To put this into effect, the authorization server associates
+the access token with certain resource servers and every resource
+server is obliged to verify, for every request, whether the access
+token sent with that request was meant to be used for that particular
+resource server. If not, the resource server MUST refuse to serve the
+respective request. Clients and authorization servers MAY utilize the
+parameters `scope` or `resource` as specified in [@!RFC6749] and
 [@I-D.ietf-oauth-resource-indicators], respectively, to determine the
 resource server they want to access.
 
@@ -173,7 +172,7 @@ the AS.
 Furthermore, adapting the resource owner password credentials grant to
 two-factor authentication, authentication with cryptographic
 credentials, and authentication processes that require multiple steps
-can be hard or impossible (WebCrypto, WebAuthn).
+can be hard or impossible (WebCrypto [@webcrypto], WebAuthn [@webauthn]]).
 
 
 ## Client Authentication
