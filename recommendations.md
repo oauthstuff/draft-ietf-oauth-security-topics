@@ -17,7 +17,7 @@ Open redirectors can enable exfiltration of authorization codes and
 access tokens, see (#open_redirector_on_client).
 
 Clients MUST prevent Cross-Site Request Forgery (CSRF). In this
-context, CSRF refers to redirections to the redirection endpoint that
+context, CSRF refers to requests to the redirection endpoint that
 do not originate at the authorization server, but a malicious third
 party (see Section 4.4.1.8. of [@RFC6819] for details). One-time use
 CSRF tokens carried in the `state` parameter that are securely bound

@@ -630,29 +630,31 @@ using one of the countermeasures discussed in (#code_injection).
    
 An attacker might attempt to inject a request to the redirect URI of
 the legitimate client on the victim's device, e.g., to cause the
-client to access resources under the attacker's control. 
+client to access resources under the attacker's control. This is a
+variant of an attack known as Cross-Site Request Forgery (CSRF).
 
 ### Countermeasures {#csrf_countermeasures}
  
-Use of CSRF tokens which are bound to the user agent and passed in the
-`state` parameter to the authorization server as described in
-[@!RFC6819]. Alternatively, PKCE or the OpenID Connect `nonce` value
-provide CSRF protection.
+The traditional countermeasure are CSRF tokens that are bound to the
+user agent and passed in the `state` parameter to the authorization
+server as described in [@!RFC6819]. Alternatively, PKCE or the OpenID
+Connect `nonce` value provide CSRF protection.
 
-It is important to note that:
+When using PKCE instead of `state` for CSRF protection, it is
+important to note that:
 
  * Clients MUST ensure that the AS supports PKCE before using PKCE for
    CSRF protection. If an authorization server does not support PKCE,
    `state` or `nonce` MUST be used for CSRF protection.
 
  * If `state` is used for carrying application state, and integrity of
-   its contents is a concern, clients MUST protect state against
+   its contents is a concern, clients MUST protect `state` against
    tampering and swapping. This can be achieved by binding the
    contents of state to the browser session and/or signed/encrypted
    state values [@I-D.bradley-oauth-jwt-encoded-state].
  
-The recommendation therefore is that AS publish their PKCE support
-either in AS metadata according to [@!RFC8414] or provide a
+AS therefore MUST provide a way to detect their support for PKCE
+either via AS metadata according to [@!RFC8414] or provide a
 deployment-specific way to ensure or determine PKCE support.
    
 ## Access Token Leakage at the Resource Server
@@ -676,12 +678,13 @@ implementing a standardized API (e.g., for e-Mail, calendar, health,
 or banking) and where the client is configured by a user or
 administrator for a service which this user or company uses.
 
+#### Countermeasures
      
 There are several potential mitigation strategies, which will be
 discussed in the following sections.
      
-#### Metadata
-  
+##### Metadata
+
 An authorization server could provide the client with additional
 information about the location where it is safe to use its access
 tokens.
@@ -738,7 +741,7 @@ countermeasures, as described in the next sections, which provide a
 better balance between the involved parties.
   
   
-#### Sender-Constrained Access Tokens {#pop_tokens} 
+##### Sender-Constrained Access Tokens {#pop_tokens} 
 
  
 As the name suggests, sender-constrained access token scope the
@@ -750,7 +753,7 @@ for the acceptance of that token at a resource server.
 A typical flow looks like this:
 
  1. The authorization server associates data with the access token
-    which binds this particular token to a certain client. The binding
+    that binds this particular token to a certain client. The binding
     can utilize the client identity, but in most cases the AS utilizes
     key material (or data derived from the key material) known to the
     client.
@@ -764,9 +767,9 @@ A typical flow looks like this:
     case it might automatically happen during the setup of a TLS
     connection.
  3. The RS must implement the actual proof of possession check. This
-    is typically done on the application level, it may utilize
-    capabilities of the transport layer (e.g., TLS). Note: replay
-    prevention is required as well!
+    is typically done on the application level, often tied to specific
+    material provided by transport layer (e.g., TLS). The RS must also
+    ensure that replay of the proof of possession is not possible.
  
 There exist several proposals to demonstrate the proof of possession
  in the scope of the OAuth working group:
@@ -825,22 +828,22 @@ There exist several proposals to demonstrate the proof of possession
     over a server-provided nonce, client-provided nonce and a nonce
     counter.
  
-Mutual TLS and OAuth Token Binding are built
+OAuth Mutual TLS and OAuth Token Binding are built
 on top of TLS and this way continue the successful OAuth
 philosophy to leverage TLS to secure OAuth wherever possible. Both
 mechanisms allow prevention of access token leakage in a fairly client
 developer friendly way.
  
-There are some differences between both approaches: To start with, for OAuth Token Binding, all key material is automatically
-managed by the TLS stack whereas mTLS requires the
-developer to create and maintain the key pairs and respective
-certificates. Use of self-signed certificates, which is supported by
-the draft, significantly reduces the complexity of this task.
-Furthermore, OAuth Token Binding allows to use different
-key pairs for different resource servers, which is a privacy benefit.
-On the other hand, [@I-D.ietf-oauth-mtls] only requires widely
-deployed TLS features, which means it might be easier to adopt in the
-short term.
+There are some differences between both approaches: To start with, for
+OAuth Token Binding, all key material is automatically managed by the
+TLS stack whereas mTLS requires the developer to create and maintain
+the key pairs and respective certificates. Use of self-signed
+certificates, which is supported by the draft, significantly reduces
+the complexity of this task. Furthermore, OAuth Token Binding allows
+to use different key pairs for different resource servers, which is a
+privacy benefit. On the other hand, [@I-D.ietf-oauth-mtls] only
+requires widely deployed TLS features, which means it might be easier
+to adopt in the short term.
  
 Application level signing approaches, like
 [@I-D.ietf-oauth-signed-http-request] and [@I-D.sakimura-oauth-jpop]
@@ -855,11 +858,11 @@ experiences have revealed challenges regarding robustness (e.g.,
 reproduction of the signature base string including correct URL) as
 well as state management (e.g., replay prevention).
  
- This document therefore recommends implementers to consider one of
+This document therefore recommends implementers to consider one of the
 TLS-based approaches wherever possible.
 
 
-#### Audience Restricted Access Tokens {#aud_restriction} 
+##### Audience Restricted Access Tokens {#aud_restriction} 
 
 Audience restriction essentially restricts access tokens to a
 particular resource server. The authorization server associates the
@@ -902,10 +905,12 @@ Audience restriction may seem easier to use since it does not require
 any crypto on the client-side. Still, since every access token is
 bound to a specific resource server, the client also needs to obtain a
 single RS-specific access token when accessing several resource
-servers. [@I-D.ietf-oauth-token-binding] has the same property since
-different token binding ids must be associated with the access token.
-Using [@I-D.ietf-oauth-mtls], on the other hand, allows a client to use
-the access token at multiple resource servers.
+servers. (Resource indicators, as specified in
+[@I-D.ietf-oauth-resource-indicators], can help to achieve this.)
+[@I-D.ietf-oauth-token-binding] has the same property since different
+token binding ids must be associated with the access token. Using
+[@I-D.ietf-oauth-mtls], on the other hand, allows a client to use the
+access token at multiple resource servers.
  
 It shall be noted that audience restrictions, or generally speaking an
 indication by the client to the authorization server where it wants to
@@ -924,10 +929,10 @@ from partial access to the system, e.g., its log files, to full
 control of the respective server.
    
 If the attacker were able to gain full control, including shell
-access, it would be able to circumvent all controls and access
-resources. It would also obtain other access tokens held on the
-compromised system that would potentially be valid to access other
-resource servers.
+access, all controls can be circumvented and all resources be
+accessed. The attacker would also be able to obtain other access
+tokens held on the compromised system that would potentially be valid
+to access other resource servers.
 
 Preventing server breaches by hardening and monitoring server systems
 is considered a standard operational procedure and, therefore, out of
@@ -937,14 +942,15 @@ OAuth-related breaches and the replaying of captured access tokens.
 The following measures should be taken into account by implementers in
 order to cope with access token replay by malicious actors:
    
-  * Sender-constrained access tokens as described in (#pop_tokens) will
-    prevent the attacker from replaying the access tokens on other
-    resource servers. Depending on the severity of the penetration, it
-    will also prevent replay on the compromised system.
-  * Audience restriction as described in (#aud_restriction) may be
+  * Sender-constrained access tokens as described in (#pop_tokens)
+    SHOULD be used to prevent the attacker from replaying the access
+    tokens on other resource servers. Depending on the severity of the
+    penetration, sender-constrained access tokens will also prevent
+    replay on the compromised system.
+  * Audience restriction as described in (#aud_restriction) SHOULD be
     used to prevent replay of captured access tokens on other resource
     servers.
-  * The resource server must treat access tokens like any other
+  * The resource server MUST treat access tokens like any other
     credentials. It is considered good practice to not log them and
     not store them in plain text.
     
@@ -953,14 +959,31 @@ where access tokens leak (see Attacker A5).
 
 ## Open Redirection {#open_redirection}
 
-The following attacks can occur when an AS or client
-has an open redirector, i.e., a URL which causes an HTTP
-redirect to an attacker-controlled web site.
+The following attacks can occur when an AS or client has an open
+redirector. An open redirector is an endpoint that forwards a user’s
+browser to an arbitrary URI obtained from a query parameter.
+
+
+### Client as Open Redirector {#open_redirector_on_client}
+
+Clients MUST NOT expose open redirectors. Attackers may use open
+redirectors to produce URLs pointing to the client and utilize them to
+exfiltrate authorization codes and access tokens, as described in
+(#redir_uri_open_redir). Another abuse case is to produce URLs that
+appear to point to the client. This might trick users into trusting the URL
+and follow it in their browser. This can be abused for phishing.
+  
+In order to prevent open redirection, clients should only redirect if
+the target URLs are whitelisted or if the origin and integrity of a
+request can be authenticated. Countermeasures against open redirection
+are described by OWASP [@owasp_redir].
 
 ### Authorization Server as Open Redirector
   
-Attackers could try to utilize a user's trust in the authorization
-server (and its URL in particular) for performing phishing attacks.
+Just as with clients, attackers could try to utilize a user's trust in
+the authorization server (and its URL in particular) for performing
+phishing attacks. OAuth authorization servers regularly redirect users
+to other web sites (the clients), but must do so in a safe way.
   
 [@!RFC6749], Section 4.1.2.1, already prevents open redirects by
 stating that the AS MUST NOT automatically redirect the user agent in case
@@ -980,22 +1003,6 @@ URI and SHOULD only automatically redirect the user agent if it trusts
 the redirect URI. If the URI is not trusted, the AS MAY inform the
 user and rely on the user to make the correct decision.
 
-### Clients as Open Redirector {#open_redirector_on_client}
-
-An open redirector is an endpoint that forwards a user’s browser to an
-arbitrary URI obtained from a query parameter.
-
-Client MUST NOT expose open redirectors. Attackers may use open
-redirectors to produce URLs that appear to point to the client. This
-might trick users into trusting the URL and follow it in their
-browser. Another abuse case is to produce URLs pointing to the client
-and utilize them to exfiltrate authorization codes and access tokens,
-as described in (#redir_uri_open_redir).
-  
-In order to prevent open redirection, clients should only redirect if
-the target URLs are whitelisted or if the origin and integrity of a
-request can be authenticated. Countermeasures against open redirection
-are described by OWASP [@owasp_redir].
 
 ## 307 Redirect  {#redirect_307}
 
@@ -1007,15 +1014,20 @@ the user agent to the client's redirection endpoint.
 
 In [@!RFC6749], the HTTP status code 302 is used for this purpose, but
 "any other method available via the user-agent to accomplish this
-redirection is allowed". However, when the status code 307 is used for
-redirection, the user agent will send the form data (user credentials)
-via HTTP POST to the client since this status code does not require
-the user agent to rewrite the POST request to a GET request (and
-thereby dropping the form data in the POST request body). If the
-relying party is malicious, it can use the credentials to impersonate
-the user at the AS.
+redirection is allowed". When the status code 307 is used for
+redirection instead, the user agent will send the user credentials via
+HTTP POST to the client. 
 
-In the HTTP standard [@!RFC6749], only the status code 303
+This discloses the sensitive credentials to the client. If the relying
+party is malicious, it can use the credentials to impersonate the user
+at the AS.
+
+The behavior might be unexpected for developers, but is defined in
+[@!RFC7231], Section 6.4.7. This status code does not require the user
+agent to rewrite the POST request to a GET request and thereby drop
+the form data in the POST request body. 
+
+In the HTTP standard [@!RFC7231], only the status code 303
 unambigiously enforces rewriting the HTTP POST request to an HTTP GET
 request. For all other status codes, including the popular 302, user
 agents can opt not to rewrite POST to GET requests and therefore to
@@ -1030,31 +1042,34 @@ request, AS SHOULD use HTTP status code 303 "See Other".
 
 ## TLS Terminating Reverse Proxies {#tls_terminating}
    
-A common deployment architecture for HTTP applications is to have the
-application server sitting behind a reverse proxy which terminates
-the TLS connection and dispatches the incoming requests to the
-respective application server nodes.
+A common deployment architecture for HTTP applications is to hide the
+application server behind a reverse proxy that terminates the TLS
+connection and dispatches the incoming requests to the respective
+application server nodes.
    
 This section highlights some attack angles of this deployment
-architecture which are relevant to OAuth, and gives recommendations
-for security controls.
+architecture with relevance to OAuth and gives recommendations for
+security controls.
    
 In some situations, the reverse proxy needs to pass security-related
 data to the upstream application servers for further processing.
 Examples include the IP address of the request originator, token
-binding ids, and authenticated TLS client certificates.
+binding ids, and authenticated TLS client certificates. This data is
+usually passed in custom HTTP headers added to the upstream request.
    
 If the reverse proxy would pass through any header sent from the
 outside, an attacker could try to directly send the faked header
 values through the proxy to the application server in order to
 circumvent security controls that way. For example, it is standard
-practice of reverse proxies to accept `forwarded_for` headers and just
+practice of reverse proxies to accept `X-Forwarded-For` headers and just
 add the origin of the inbound request (making it a list). Depending on
 the logic performed in the application server, the attacker could
 simply add a whitelisted IP address to the header and render a IP
-whitelist useless. A reverse proxy must therefore sanitize any inbound
-requests to ensure the authenticity and integrity of all header values
-relevant for the security of the application servers.
+whitelist useless. 
+
+A reverse proxy must therefore sanitize any inbound requests to ensure
+the authenticity and integrity of all header values relevant for the
+security of the application servers.
    
 If an attacker was able to get access to the internal network between
 proxy and application server, the attacker could also try to
