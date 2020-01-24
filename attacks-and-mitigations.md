@@ -155,7 +155,7 @@ simplify the required logic and configuration by using exact redirect
 URI matching only. This means the authorization server MUST compare
 the two URIs using simple string comparison as defined in [@!RFC3986],
 Section 6.2.1.
-   
+
 Additional recommendations:
 
   * Servers on which callbacks are hosted MUST NOT expose open
@@ -422,6 +422,11 @@ and bind this information to the user agent. Clients MUST check that
 the authorization request was received from the correct authorization
 server and ensure that the subsequent token request, if applicable, is
 sent to the same authorization server.
+
+Unfortunately, distinct redirect URIs per AS do not work for all kinds
+of OAuth clients. They are effective for web and JavaScript apps and
+for native apps with claimed URLs. Attacks on native apps using custom
+schemes or redirect URIs on localhost cannot be prevented this way.
     
 If clients cannot use distinct redirect URIs for each AS, the following options exist:
 
@@ -437,10 +442,10 @@ If clients cannot use distinct redirect URIs for each AS, the following options 
 
 ## Authorization Code Injection {#code_injection}
   
-In such an attack, the attacker attempts to inject a stolen
-authorization code into the attacker's own session with the client.
-The aim is to associate the attacker's session at the client with the
-victim's resources or identity.
+In an authorization code injection attack, the attacker attempts to
+inject a stolen authorization code into the attacker's own session
+with the client. The aim is to associate the attacker's session at the
+client with the victim's resources or identity.
 
 This attack is useful if the attacker cannot exchange the
 authorization code for an access token himself. Examples include:
@@ -523,15 +528,16 @@ Other providers just pattern match the `redirect_uri` parameter
 against the registered redirect URI pattern. This saves the
 authorization server from storing the link between the actual redirect
 URI and the respective authorization code for every transaction. But
-this kind of check obviously does not fulfill the intent of the spec,
-since the tampered redirect URI is not considered. So any attempt to
-inject an authorization code obtained using the `client_id` of a
-legitimate client or by utilizing the legitimate client on another
-device won't be detected in the respective deployments.
+this kind of check obviously does not fulfill the intent of the
+specification, since the tampered redirect URI is not considered. So
+any attempt to inject an authorization code obtained using the
+`client_id` of a legitimate client or by utilizing the legitimate
+client on another device will not be detected in the respective
+deployments.
    
 It is also assumed that the requirements defined in [@!RFC6749],
 Section 4.1.3, increase client implementation complexity as clients
-need to memorize or re-construct the correct redirect URI for the call
+need to store or re-construct the correct redirect URI for the call
 to the token endpoint.
    
 This document therefore recommends to instead bind every authorization
@@ -570,38 +576,44 @@ for the code, or per-instance client credentials are conceivable, but
 lack support and bring new security requirements.
 
 PKCE is the most obvious solution for OAuth clients as it is available
-and effectively used today for similar purposes for OAuth native apps
-whereas `nonce` is appropriate for OpenID Connect clients.
+today (originally intended for OAuth native apps) whereas `nonce` is
+appropriate for OpenID Connect clients.
 
-Note: An attacker can circumvent the countermeasures described above
-if he is able to create or capture the respective secret or
-code_challenge that is then used in the victim's authorization
-request.
+### Limitations
 
-Exact redirect URI matching of authorization requests can prevent the
-attacker from using the pre-warmed secret in the faked authorization
-transaction on the victim's device.
+An attacker can circumvent the countermeasures described above if he
+can modify the `nonce` or `code_challenge` values that are used in the
+victim's authorization request. The attacker can modify these values
+to be the same ones as those chosen by the client in his own session
+in Step 2 of the attack above. (This requires that the victim's
+session with the client begins after the attacker started his session
+with the client.) If the attacker is then able to capture the
+authorization code from the victim, the attacker will be able to
+inject the stolen code in Step 3 even if PKCE or `nonce` are used.
 
-Unfortunately, it does not work for all kinds of OAuth clients. It is
-effective for web and JS apps and for native apps with claimed URLs.
-Attacks on native apps using custom schemes or redirect URIs on
-localhost cannot be prevented this way, except if the AS enforces
-one-time use for PKCE verifier or `nonce` values.
+This attack is complex and requires a close interaction between the
+attacker and the victim's session. Nonetheless, measures to prevent
+attackers from reading the contents of the authorization response
+still need to be taken, as described in
+(#insufficient_uri_validation), (#credential_leakage_referrer),
+(#browser_history), (#mix_up), and (#open_redirection).
    
 ## Access Token Injection {#access_token_injection}
    
-In such an attack, the attacker attempts to inject a stolen access
-token into a legitimate client (that is not under the attacker's
-control). This will typically happen if the attacker wants to utilize
-a leaked access token to impersonate a user in a certain client.
+In an access token injection attack, the attacker attempts to inject a
+stolen access token into a legitimate client (that is not under the
+attacker's control). This will typically happen if the attacker wants
+to utilize a leaked access token to impersonate a user in a certain
+client.
    
 To conduct the attack, the attacker starts an OAuth flow with the
-client and modifies the authorization response by replacing the access
-token issued by the authorization server or directly makes up an
-authorization server response including the leaked access token. Since
-the response includes the state value generated by the client for this
-particular transaction, the client does not treat the response as a
-CSRF and will use the access token injected by the attacker. 
+client using the implicit grant and modifies the authorization
+response by replacing the access token issued by the authorization
+server or directly makes up an authorization server response including
+the leaked access token. Since the response includes the `state` value
+generated by the client for this particular transaction, the client
+does not treat the response as a CSRF attack and uses the access token
+injected by the attacker.
 
 ### Countermeasures
    
