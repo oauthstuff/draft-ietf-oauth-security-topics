@@ -1083,8 +1083,8 @@ messages.
 ## Refresh Token Protection {#refresh_token_protection}
 
 
-Refresh tokens are a convenient and UX-friendly way to obtain new access
-tokens after the expiration of older access tokens. Refresh tokens also add
+Refresh tokens are a convenient and user-friendly way to obtain new access
+tokens after the expiration of access tokens. Refresh tokens also add
 to the security of OAuth since they allow the authorization server to issue
 access tokens with a short lifetime and reduced scope thus reducing the 
 potential impact of access token leakage.
@@ -1112,8 +1112,8 @@ revocation as well as refresh token rotation by defining respective
 error codes and response behavior.
     
    
-This draft gives recommendations beyond the scope of [@!RFC6749] and
-clarifications.
+This specification gives recommendations beyond the scope of
+[@!RFC6749] and clarifications.
     
 Authorization servers SHOULD determine, based on a risk assessment,
 whether to issue refresh tokens to a certain client. If the
@@ -1143,15 +1143,17 @@ detect refresh token replay by malicious actors for public clients:
     and the legitimate client, one of them will present an invalidated
     refresh token, which will inform the authorization server of the
     breach. The authorization server cannot determine which party
-    submitted the invalid refresh token, but it SHOULD revoke the
+    submitted the invalid refresh token, but it will revoke the
     active refresh token. This stops the attack at the cost of forcing
     the legitimate client to obtain a fresh authorization grant.
     
-    Implementation note: refresh tokens belonging to the same grant
-    may share a common ID. If any of those refresh tokens is used at
-    the authorization server, the authorization server uses this
-    common ID to look up the currently active refresh token and can
-    revoke it.
+    Implementation note: the grant to which a refresh token belongs
+    may be encoded into the refresh token itself. This can enable an
+    authorization server to efficiently determine the grant to which a
+    refresh token belongs, and by extension, all refresh tokens that
+    need to be revoked. Authorization servers MUST ensure the
+    integrity of the refresh token value in this case, for example,
+    using signatures.
     
 Authorization servers may revoke refresh tokens automatically in case
 of a security event, such as:
