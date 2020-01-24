@@ -78,7 +78,7 @@
   <format target="http://passwordresearch.com/papers/paper267.html" type="HTML" />
 </reference> 
 
-<reference anchor="oauth_security_cmu">
+<reference anchor="oauth_security_cmu" target="http://css.csail.mit.edu/6.858/2012/readings/oauth-sso.pdf">
   <front>
     <title>OAuth Demystified for Mobile Application Developers</title>
     <author  initials="E." surname="Chen" fullname="Eric Chen">
@@ -152,7 +152,7 @@
   <seriesInfo name="arXiv" value="1508.04324v2"/>
 </reference>
 
-<reference anchor="oauth_security_jcs_14">
+<reference anchor="oauth_security_jcs_14" target="https://www.doc.ic.ac.uk/~maffeis/papers/jcs14.pdf">
   <front>
     <title>Discovering concrete attacks on website authorization by formal analysis</title>
     <author fullname="Chetan Bansal" surname="Bansal" initials="C."><organization/></author>
