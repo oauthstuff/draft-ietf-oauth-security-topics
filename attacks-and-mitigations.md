@@ -147,7 +147,7 @@ The attacker's page at `client.evil.example` can now access the
 fragment and obtain the access token.
     
    
-### Proposed Countermeasures
+### Countermeasures
    
 The complexity of implementing and managing pattern matching correctly
 obviously causes security issues. This document therefore advises to
@@ -222,7 +222,7 @@ Referer header can perform the attacks as described in
 protection achieved by using `state` is lost, resulting in CSRF
 attacks as described in [@!RFC6819], Section 4.4.1.8.
  
-### Proposed Countermeasures
+### Countermeasures
  
 The page rendered as a result of the OAuth authorization response and
 the authorization endpoint SHOULD NOT include third-party resources or
@@ -278,7 +278,7 @@ the authorization code may end up in the browser's history. An
 attacker with access to the device could obtain the code and try to
 replay it.
   
-Proposed countermeasures:
+Countermeasures:
 
   * Authorization code replay prevention as described in [@!RFC6819],
     Section 4.4.1.1, and (#code_injection).
@@ -300,7 +300,7 @@ In case of the implicit grant, a URL like
 up in the browser history as a result of a redirect from a provider's
 authorization endpoint.
   
-Proposed countermeasures:
+Countermeasures:
 
   * Clients MUST NOT pass access tokens in a URI query parameter in
     the way described in Section 2.3 of [@!RFC6750]. The authorization
@@ -311,11 +311,11 @@ Proposed countermeasures:
 ## Mix-Up Attacks {#mix_up}
   
 Mix-up is an attack on scenarios where an OAuth client interacts with
-two or more authorization servers. At least one of these authorization
-servers needs to be under the control of the attacker. This can be the
-case, for example, if the attacker uses dynamic registration to
-register the client at his authorization server or if an authorization
-server becomes compromised.
+two or more authorization servers and at least one authorization
+server is under the control of the attacker. This can be the case,
+for example, if the attacker uses dynamic registration to register the
+client at his own authorization server or if an authorization server
+becomes compromised.
 
 The goal of the attack is to obtain an authorization code or an access
 token for an uncompromised authorization server. This is achieved by
@@ -369,7 +369,7 @@ Attack on the authorization code grant:
     the client's ID at H-AS. Therefore, the browser receives a
     redirection (`303 See Other`) with a Location header pointing to
     `https://honest.as.example/authorize?response_type=code&client_id=7ZGZldHQ`
- 5. Now, the user authorizes the client to access her resources at
+ 5. The user authorizes the client to access her resources at
     H-AS. H-AS issues a code and sends it (via the browser) back to
     the client.
   
@@ -402,7 +402,7 @@ Variants:
     for different ASs, do not store the selected AS in the user's
     session, and ASs do not check the redirect URIs properly,
     attackers can mount an attack called "Cross-Social Network Request
-    Forgery". Refer to [@oauth_security_jcs_14] for details.
+    Forgery". These attacks have been observed in practice. Refer to [@oauth_security_jcs_14] for details.
   * **OpenID Connect**: There are variants that can be used to attack
     OpenID Connect. In these attacks, the attacker misuses features of
     the OpenID Connect Discovery mechanism or replays access tokens or
@@ -413,25 +413,27 @@ Variants:
 ### Countermeasures
 
 In scenarios where an OAuth client interacts with multiple
-authorization servers, clients MUST prevent mix-up attacks.
+authorization servers, clients MUST prevent mix-up attacks. 
 
-Potential countermeasures:
-  
-  * Configure authorization servers to return an AS identitifier
-    (`iss`) and the `client_id` for which a code or token was issued
-    in the authorization response. This enables clients to compare
-    this data to their own client ID and the `iss` identifier of the
-    AS it believed it sent the user agent to. This mitigation is
-    discussed in detail in [@I-D.ietf-oauth-mix-up-mitigation]. In
-    OpenID Connect, if an ID Token is returned in the authorization
-    response, it carries client ID and issuer. It can be used for this
-    mitigation.
-  * As it can be seen in the preconditions of the attacks above,
-    clients can prevent mix-up attack by (1) using AS-specific
-    redirect URIs with exact redirect URI matching, (2) storing, for
-    each authorization request, the intended AS, and (3) comparing the
-    intended AS with the actual redirect URI where the authorization
-    response was received.
+To this end, clients SHOULD use distinct redirect URIs for each AS
+(with alternatives listed below). Clients MUST store, for each
+authorization request, the AS they sent the authorization request to
+and bind this information to the user agent. Clients MUST check that
+the authorization request was received from the correct authorization
+server and ensure that the subsequent token request, if applicable, is
+sent to the same authorization server.
+    
+If clients cannot use distinct redirect URIs for each AS, the following options exist:
+
+  * Authorization servers can be configured to return an AS
+    identitifier (`iss`) as a non-standard parameter in the
+    authorization response. This enables complying clients to compare
+    this data to the `iss` identifier of the AS it believed it sent
+    the user agent to. This mitigation is discussed in detail in
+    [@I-D.ietf-oauth-mix-up-mitigation].
+  * In OpenID Connect, if an ID Token is returned in the authorization
+    response, it carries client ID and issuer. It can be used in the
+    same way as the `iss` parameter.
 
 ## Authorization Code Injection {#code_injection}
   
@@ -537,7 +539,7 @@ code to a certain client instance on a certain device (or in a certain
 user agent) in the context of a certain transaction using one of the
 mechanisms described next.
 
-### Proposed Countermeasures
+### Countermeasures
    
 There are two good technical solutions to achieve this goal:
 
@@ -601,7 +603,7 @@ the response includes the state value generated by the client for this
 particular transaction, the client does not treat the response as a
 CSRF and will use the access token injected by the attacker. 
 
-### Proposed Countermeasures
+### Countermeasures
    
 There is no way to detect such an injection attack on the OAuth
 protocol level, since the token is issued without any binding to the
@@ -618,7 +620,7 @@ An attacker might attempt to inject a request to the redirect URI of
 the legitimate client on the victim's device, e.g., to cause the
 client to access resources under the attacker's control. 
 
-### Proposed Countermeasures {#csrf_countermeasures}
+### Countermeasures {#csrf_countermeasures}
  
 Use of CSRF tokens which are bound to the user agent and passed in the
 `state` parameter to the authorization server as described in
@@ -1152,7 +1154,7 @@ credentials grant may be mistaken as an access token authorized by the
 privileged user if the resource server does not perform additional
 checks.
 
-### Proposed Countermeasures {#client_impersonating_countermeasures}
+### Countermeasures {#client_impersonating_countermeasures}
 
 Authorization servers SHOULD NOT allow clients to influence their
 `client_id` or `sub` value or any other claim that might cause
