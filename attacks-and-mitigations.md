@@ -36,12 +36,17 @@ These attacks are shown in detail in the following subsections.
 For a client using the grant type code, an attack may work as
 follows:
   
-Assume the redirect URL pattern `https://*.somesite.example/*` has
-been registered for the client with the client ID `s6BhdRkqt3`. This
-pattern allows redirect URIs pointing to any host residing in the
-domain somesite.example. So if an attacker manages to establish a host
-or subdomain in somesite.example he can impersonate the legitimate
-client. Assume the attacker sets up the host `evil.somesite.example`.
+Assume the redirect URL pattern `https://*.somesite.example/*` is
+registered for the client with the client ID `s6BhdRkqt3`. The
+intention is to allow any subdomain of `somesite.example` to be a
+valid redirect URI for the client, for example
+`https://app1.somesite.example/redirect`. A naive implementation on
+the authorization server, however, might interpret the wildcard `*` as
+"any character" and not "any character valid for a domain name". The
+authorization server, therefore, might permit
+`https://attacker.example/.somesite.example` as a redirect URI,
+although `attacker.example` is a different domain potentially
+controlled by a malicious party.
 
 The attack can then be conducted as follows:
 
@@ -54,19 +59,20 @@ ID of a legitimate client to the authorization endpoint (line breaks
 for display only):
     
     GET /authorize?response_type=code&client_id=s6BhdRkqt3&state=9ad67f13
-         &redirect_uri=https%3A%2F%2Fevil.somesite.example%2Fcb HTTP/1.1
+         &redirect_uri=https%3A%2F%2Fattacker.example%2F.somesite.example 
+         HTTP/1.1
     Host: server.somesite.example
   
 The authorization server validates the redirect URI and compares it to
 the registered redirect URL patterns for the client `s6BhdRkqt3`.
-Since the pattern allows arbitrary host names in "somesite.example",
-the authorization request is processed and presented to the user. 
+The authorization request is processed and presented to the user. 
 
-If the user does not recognize the attack, the code is issued and
-immediately sent to the attacker's client. If an automatic approval of
-the authorization is enabled (which is not recommended for public
-clients according to [@!RFC6749]), the attack can be performed even
-without user interaction.
+If the user does not see the redirect URI or does not recognize the
+attack, the code is issued and immediately sent to the attacker's
+domain. If an automatic approval of the authorization is enabled
+(which is not recommended for public clients according to
+[@!RFC6749]), the attack can be performed even without user
+interaction.
   
 If the attacker impersonated a public client, the attacker can
 exchange the code for tokens at the respective token endpoint. 
@@ -76,6 +82,20 @@ the code exchange requires authentication with the legitimate client's
 secret. The attacker can, however, use the legitimate confidential
 client to redeem the code by performing an authorization code
 injection attack, see (#code_injection).
+
+Note: Vulnerabilities of this kind can also exist if the authorization
+server handles wildcards properly. For example, assume that the client
+registers the redirect URL pattern `https://*.somesite.example/*` and
+the authorization server interprets this as "allow redirect URIs
+pointing to any host residing in the domain `somesite.example`". If an
+attacker manages to establish a host or subdomain in
+`somesite.example`, he can impersonate the legitimate client. This
+could be caused, for example, by a subdomain takeover attack [@subdomaintakeover], where an
+outdated CNAME record (say, `external-service.somesite.example`)
+points to an external DNS name that does no longer exist (say,
+`customer-abc.service.example`) and can be taken over by an attacker
+(e.g., by registering as `customer-abc` with the external service).
+
    
 ### Redirect URI Validation Attacks on Implicit Grant {#redir_uri_open_redir}
    

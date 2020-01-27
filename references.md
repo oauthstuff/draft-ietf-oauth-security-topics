@@ -174,8 +174,7 @@
 
 <reference anchor="webauthn" target="https://www.w3.org/TR/2019/REC-webauthn-1-20190304/">
   <front>
-    <title>Web Authentication: An API for accessing Public Key Credentials Level 1</title>
-    
+    <title>Web Authentication: An API for accessing Public Key Credentials Level 1</title>    
     <author fullname="Dirk Balfanz" surname="Balfanz" initials="D."><organization>Google</organization></author>
     <author fullname="Alexei Czeskis" surname="Czeskis" initials="A."><organization>Google</organization></author>
     <author fullname="Jeff Hodges" surname="Hodges" initials="J."><organization>Google</organization></author>
@@ -197,3 +196,12 @@
   </front>
 </reference>
 
+<reference anchor="subdomaintakeover" target="https://www.eecis.udel.edu/~hnw/paper/ccs16a.pdf">
+  <front>
+    <title>All Your DNS Records Point to Us: Understanding the Security Threats of Dangling DNS Records</title>
+    <author fullname="Daiping Liu" surname="Liu" initials="D."></author>
+    <author fullname="Shuai Hao" surname="Hao" initials="S."></author>
+    <author fullname="Haining Wang" surname="Wang" initials="H."></author>
+    <date day="24" month="October" year="2016"/>
+  </front>
+</reference>
