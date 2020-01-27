@@ -76,10 +76,6 @@ containing the supported PKCE challenge methods (which can be used by
 the client to detect PKCE support) or (b) provide a
 deployment-specific way to ensure or determine PKCE support by the AS.
 
-Authorization servers SHOULD furthermore consider the recommendations
-given in [@!RFC6819], Section 4.4.1.1, on authorization code replay
-prevention.
-
 ### Implicit Grant
     
 The implicit grant (response type "token") and other response types

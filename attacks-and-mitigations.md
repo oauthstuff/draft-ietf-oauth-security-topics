@@ -1,8 +1,9 @@
 # Attacks and Mitigations
  
 This section gives a detailed description of attacks on OAuth
-implementations, along with potential countermeasures. This section
-complements and enhances the description given in [@!RFC6819].
+implementations, along with potential countermeasures. Attacks and
+mitigations already covered in [@!RFC6819] are not listed here, except
+where new recommendations are made.
  
 ## Insufficient Redirect URI Validation {#insufficient_uri_validation}
   
