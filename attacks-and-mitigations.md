@@ -879,6 +879,17 @@ well as state management (e.g., replay prevention).
 This document therefore recommends implementers to consider one of the
 TLS-based approaches wherever possible.
 
+Note that the security of sender-constrained tokens is undermined when
+an attacker gets access to the token and the key material. This is in
+particular the case for corrupted client software and cross-site
+scripting attacks (when the client is running in the browser). If the
+key material is protected in a hardware or software security module or
+only indirectly accessible (like in a TLS stack), sender-constrained
+tokens at least protect against a use of the token when the client is
+offline, i.e., when the security module or interface is not available
+to the attacker. This applies to access tokens as well as to refresh
+tokens (see (#refresh_token_protection)).
+
 
 ##### Audience Restricted Access Tokens {#aud_restriction} 
 
@@ -1106,6 +1117,8 @@ to the security of OAuth since they allow the authorization server to issue
 access tokens with a short lifetime and reduced scope thus reducing the 
 potential impact of access token leakage.
 
+### Discussion
+
 Refresh tokens are an attractive target for attackers since they
 represent the overall grant a resource owner delegated to a certain
 client. If an attacker is able to exfiltrate and successfully replay a
@@ -1131,6 +1144,8 @@ error codes and response behavior.
    
 This specification gives recommendations beyond the scope of
 [@!RFC6749] and clarifications.
+    
+### Recommendations
     
 Authorization servers SHOULD determine, based on a risk assessment,
 whether to issue refresh tokens to a certain client. If the
@@ -1172,7 +1187,7 @@ detect refresh token replay by malicious actors for public clients:
     integrity of the refresh token value in this case, for example,
     using signatures.
     
-Authorization servers may revoke refresh tokens automatically in case
+Authorization servers MAY revoke refresh tokens automatically in case
 of a security event, such as:
  
   * password change
