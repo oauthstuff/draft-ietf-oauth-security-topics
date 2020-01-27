@@ -4,6 +4,8 @@
    
    -14
    
+   * Changes from WGLC feedback
+   * Editorial changes
    * AS MUST announce PKCE support either in metadata or using deployment-specific ways (before: SHOULD)
    
    -13
