@@ -47,7 +47,9 @@ challenges can be observed:
 	implicit grant's underlying security model.
 	  
 This document provides updated security recommendations to address
-these challenges.
+these challenges. It does not supplant the security advice given in
+[@!RFC6749], [@!RFC6750], and [@!RFC6819], but complements those
+documents.
 	  
 ## Structure
 
