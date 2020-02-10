@@ -205,3 +205,28 @@
     <date day="24" month="October" year="2016"/>
   </front>
 </reference>
+
+
+<!-- To be removed when RFC has been published! -->
+
+<reference anchor="RFC8705" target="https://www.rfc-editor.org/info/rfc8705">
+<front>
+<title>
+OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound Access Tokens
+</title>
+<author initials="B." surname="Campbell" fullname="B. Campbell">
+<organization/>
+</author>
+<author initials="J." surname="Bradley" fullname="J. Bradley">
+<organization/>
+</author>
+<author initials="N." surname="Sakimura" fullname="N. Sakimura">
+<organization/>
+</author>
+<author initials="T." surname="Lodderstedt" fullname="T. Lodderstedt">
+<organization/>
+</author>
+<date year="2020" month="February"/>
+</front>
+<seriesInfo name="RFC" value="8705"/>
+</reference>

@@ -792,10 +792,11 @@ A typical flow looks like this:
 There exist several proposals to demonstrate the proof of possession
  in the scope of the OAuth working group:
  
-  * **OAuth Mutual TLS** ([@I-D.ietf-oauth-mtls]): The approach as
-    specified in this document allows the use of mutual TLS (mTLS) for both
-    client authentication and sender-constrained access tokens. For
-    the purpose of sender-constrained access tokens, the client is
+  * **OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound
+    Access Tokens** ([@!RFC8705]): The approach as specified in this
+    document allows the use of mutual TLS (mTLS) for both client
+    authentication and sender-constrained access tokens. For the
+    purpose of sender-constrained access tokens, the client is
     identified towards the resource server by the fingerprint of its
     public key. During processing of an access token request, the
     authorization server obtains the client's public key from the TLS
@@ -837,7 +838,7 @@ There exist several proposals to demonstrate the proof of possession
   * **JWT Pop Tokens** ([@I-D.sakimura-oauth-jpop]): This draft
     describes different ways to constrain access token usage, namely
     TLS or request signing. Note: Since the authors of this draft
-    contributed the TLS-related proposal to [@I-D.ietf-oauth-mtls],
+    contributed the TLS-related proposal to [@!RFC8705],
     this document only considers the request signing part. For request
     signing, the draft utilizes
     [@I-D.ietf-oauth-pop-key-distribution] and [@RFC7800]. The
@@ -845,39 +846,11 @@ There exist several proposals to demonstrate the proof of possession
     signing. Replay prevention is provided by building the signature
     over a server-provided nonce, client-provided nonce and a nonce
     counter.
- 
-OAuth Mutual TLS and OAuth Token Binding are built
-on top of TLS and this way continue the successful OAuth
-philosophy to leverage TLS to secure OAuth wherever possible. Both
-mechanisms allow prevention of access token leakage in a fairly client
-developer friendly way.
- 
-There are some differences between both approaches: To start with, for
-OAuth Token Binding, all key material is automatically managed by the
-TLS stack whereas mTLS requires the developer to create and maintain
-the key pairs and respective certificates. Use of self-signed
-certificates, which is supported by the draft, significantly reduces
-the complexity of this task. Furthermore, OAuth Token Binding allows
-to use different key pairs for different resource servers, which is a
-privacy benefit. On the other hand, [@I-D.ietf-oauth-mtls] only
-requires widely deployed TLS features, which means it might be easier
-to adopt in the short term.
- 
-Application level signing approaches, like
-[@I-D.ietf-oauth-signed-http-request] and [@I-D.sakimura-oauth-jpop]
-have been debated for a long time in the OAuth working group without a
-clear outcome.
- 
- 
-As one advantage, application-level signing allows for end-to-end
-protection including non-repudiation even if the TLS connection is
-terminated between client and resource server. But deployment
-experiences have revealed challenges regarding robustness (e.g.,
-reproduction of the signature base string including correct URL) as
-well as state management (e.g., replay prevention).
- 
-This document therefore recommends implementers to consider one of the
-TLS-based approaches wherever possible.
+
+
+At the time of writing, OAuth Mutual TLS is the most widely
+implemented and the only standardized sender-constraining method. The
+use of OAuth Mutual TLS therefore is RECOMMENDED.
 
 Note that the security of sender-constrained tokens is undermined when
 an attacker gets access to the token and the key material. This is in
@@ -938,7 +911,7 @@ servers. (Resource indicators, as specified in
 [@I-D.ietf-oauth-resource-indicators], can help to achieve this.)
 [@I-D.ietf-oauth-token-binding] has the same property since different
 token binding ids must be associated with the access token. Using
-[@I-D.ietf-oauth-mtls], on the other hand, allows a client to use the
+[@!RFC8705], on the other hand, allows a client to use the
 access token at multiple resource servers.
  
 It shall be noted that audience restrictions, or generally speaking an
@@ -1166,7 +1139,7 @@ detect refresh token replay by malicious actors for public clients:
   * **Sender-constrained refresh tokens:** the authorization server
     cryptographically binds the refresh token to a certain client
     instance by utilizing [@I-D.ietf-oauth-token-binding] or
-    [@I-D.ietf-oauth-mtls].
+    [@!RFC8705].
   * **Refresh token rotation:** the authorization server issues a new
     refresh token with every access token refresh response. The
     previous refresh token is invalidated but information about the

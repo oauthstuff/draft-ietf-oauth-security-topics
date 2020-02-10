@@ -46,15 +46,14 @@ MUST avoid forwarding these user credentials accidentally (see
 
 ### Authorization Code Grant {#ac}
 
-Clients utilizing the authorization code grant type MUST use PKCE
-[@!RFC7636] or the OpenID Connect `nonce` parameter and ID Token Claim
-[@!OpenID] to detect and prevent attempts to inject (replay)
-authorization codes into the authorization response by an attacker.
-The PKCE challenge or OpenID Connect `nonce` must be
-transaction-specific and securely bound to the client and the user
-agent in which the transaction was started.
+Clients MUST prevent injection (replay) of authorization codes into
+the authorization response by attackers. The use of PKCE [@!RFC7636]
+is RECOMMENDED to this end. The OpenID Connect `nonce` parameter and
+ID Token Claim [@!OpenID] MAY be used as well. The PKCE challenge or
+OpenID Connect `nonce` MUST be transaction-specific and securely bound
+to the client and the user agent in which the transaction was started.
 
-Note: although PKCE so far was recommended as a mechanism to protect
+Note: although PKCE so far was designed as a mechanism to protect
 native apps, this advice applies to all kinds of OAuth clients,
 including web applications.
 
@@ -109,11 +108,12 @@ token to a certain sender. This sender is obliged to demonstrate knowledge
 of a certain secret as prerequisite for the acceptance of that token at
 the recipient (e.g., a resource server).
 
-Authorization and resource servers SHOULD use mechanisms for sender-constrained
-access tokens as described in (#pop_tokens), such as Mutual TLS for
-OAuth 2.0 [@I-D.ietf-oauth-mtls], in order to prevent token replay.
-Refresh tokens MUST be sender-constrained or use refresh token
-rotation as described in (#refresh_token_protection).
+Authorization and resource servers SHOULD use mechanisms for
+sender-constrained access tokens to prevent token replay as described
+in (#pop_tokens). The use of Mutual TLS for OAuth 2.0
+[@!RFC8705] is RECOMMENDED. Refresh tokens MUST be
+sender-constrained or use refresh token rotation as described in
+(#refresh_token_protection).
 
 It is RECOMMENDED to use end-to-end TLS. If TLS
 traffic needs to be terminated at an intermediary, refer to
@@ -171,7 +171,7 @@ impossible.
 Authorization servers SHOULD use client authentication if possible.
 
 It is RECOMMENDED to use asymmetric (public-key based) methods for
-client authentication such as mTLS [@I-D.ietf-oauth-mtls] or
+client authentication such as mTLS [@!RFC8705] or
 `private_key_jwt` [@!OpenID]. When asymmetric methods for client
 authentication are used, authorization servers do not need to store
 sensitive symmetric keys, making these methods more robust against a
