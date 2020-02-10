@@ -8,8 +8,8 @@ working group recommends to OAuth implementers.
 When comparing client redirect URIs against pre-registered URIs,
 authorization servers MUST utilize exact string matching. This measure
 contributes to the prevention of leakage of authorization codes and
-access tokens (depending on the grant type). It can also help to
-detect mix-up attacks (see below).
+access tokens (see (#insufficient_uri_validation)). It can also help to
+detect mix-up attacks (see (#mix_up)).
 
 Clients MUST NOT expose URLs that forward the user’s browser to
 arbitrary URIs obtained from a query parameter ("open redirector").
@@ -17,20 +17,17 @@ Open redirectors can enable exfiltration of authorization codes and
 access tokens, see (#open_redirector_on_client).
 
 Clients MUST prevent Cross-Site Request Forgery (CSRF). In this
-context, CSRF refers to requests to the redirection endpoint that
-do not originate at the authorization server, but a malicious third
-party (see Section 4.4.1.8. of [@RFC6819] for details). One-time use
-CSRF tokens carried in the `state` parameter that are securely bound
-to the user agent SHOULD be used for that purpose. Alternatively, if
-PKCE [@RFC7636] is used by the client and the client has ensured that
-the authorization server supports PKCE, the client MAY opt to not use
-`state` for CSRF protection, as such protection is provided by PKCE.
-In this case, `state` MAY be used again for its original purpose,
-namely transporting data about the application state of the client
-(see (#csrf_countermeasures)).
+context, CSRF refers to requests to the redirection endpoint that do
+not originate at the authorization server, but a malicious third party
+(see Section 4.4.1.8. of [@RFC6819] for details). Clients that have
+ensured that the authorization server supports PKCE [@RFC7636] MAY
+rely the CSRF protection provided by PKCE. In OpenID Connect flows,
+the `nonce` parameter provides CSRF protection. Otherwise, one-time
+use CSRF tokens carried in the `state` parameter that are securely
+bound to the user agent MUST be used for CSRF protection (see
+(#csrf_countermeasures)).
         
-        
-In order to prevent mix-up attacks, clients MUST only process redirect
+In order to prevent mix-up attacks (see (#mix_up)), clients MUST only process redirect
 responses of the authorization server they sent the respective request
 to and from the same user agent this authorization request was
 initiated with. Clients MUST store the authorization server they sent
@@ -49,22 +46,21 @@ MUST avoid forwarding these user credentials accidentally (see
 
 ### Authorization Code Grant {#ac}
 
-Clients utilizing the authorization code grant type MUST use PKCE
-[@!RFC7636] or the OpenID Connect `nonce` parameter and ID Token Claim
-[@!OpenID] to detect and prevent attempts to inject (replay)
-authorization codes into the authorization response by an attacker.
-The PKCE challenge or OpenID Connect `nonce` must be
-transaction-specific and securely bound to the client and the user
-agent in which the transaction was started.
+Clients MUST prevent injection (replay) of authorization codes into
+the authorization response by attackers. The use of PKCE [@!RFC7636]
+is RECOMMENDED to this end. The OpenID Connect `nonce` parameter and
+ID Token Claim [@!OpenID] MAY be used as well. The PKCE challenge or
+OpenID Connect `nonce` MUST be transaction-specific and securely bound
+to the client and the user agent in which the transaction was started.
 
-Note: although PKCE so far was recommended as a mechanism to protect
+Note: although PKCE so far was designed as a mechanism to protect
 native apps, this advice applies to all kinds of OAuth clients,
 including web applications.
 
 When using PKCE, clients SHOULD use PKCE code challenge methods that
 do not expose the PKCE verifier in the authorization request.
 Otherwise, attackers that can read the authorization request (cf.
-Attacker A4 in (#secmodel)) can trivially break the security provided
+Attacker A4 in (#secmodel)) can break the security provided
 by PKCE. Currently, `S256` is the only such method.
 
 Authorization servers MUST support PKCE [@!RFC7636].
@@ -112,11 +108,12 @@ token to a certain sender. This sender is obliged to demonstrate knowledge
 of a certain secret as prerequisite for the acceptance of that token at
 the recipient (e.g., a resource server).
 
-Authorization servers SHOULD use mechanisms for sender-constrained
-access tokens as described in (#pop_tokens), such as Mutual TLS for
-OAuth 2.0 [@I-D.ietf-oauth-mtls], in order to prevent token replay.
-Refresh tokens MUST be sender-constrained or use refresh token
-rotation as described in (#refresh_token_protection).
+Authorization and resource servers SHOULD use mechanisms for
+sender-constrained access tokens to prevent token replay as described
+in (#pop_tokens). The use of Mutual TLS for OAuth 2.0
+[@!RFC8705] is RECOMMENDED. Refresh tokens MUST be
+sender-constrained or use refresh token rotation as described in
+(#refresh_token_protection).
 
 It is RECOMMENDED to use end-to-end TLS. If TLS
 traffic needs to be terminated at an intermediary, refer to
@@ -171,10 +168,10 @@ impossible.
 
 
 ## Client Authentication
-Authorization servers SHOULD use client authentication.
+Authorization servers SHOULD use client authentication if possible.
 
 It is RECOMMENDED to use asymmetric (public-key based) methods for
-client authentication such as mTLS [@I-D.ietf-oauth-mtls] or
+client authentication such as mTLS [@!RFC8705] or
 `private_key_jwt` [@!OpenID]. When asymmetric methods for client
 authentication are used, authorization servers do not need to store
 sensitive symmetric keys, making these methods more robust against a
@@ -184,5 +181,5 @@ number of attacks.
 ## Other Recommendations
 
 Authorization servers SHOULD NOT allow clients to influence their
-`client_id` or `sub` value or any other claim that might cause
+`client_id` or `sub` value or any other claim if that can cause
 confusion with a genuine resource owner (see (#client_impersonating)).
