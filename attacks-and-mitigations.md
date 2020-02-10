@@ -1232,9 +1232,9 @@ example of such a policy is shown in the following listing:
 
 ```
 HTTP/1.1 200 OK
-Content-Security-Policy: frame-ancestors https://other.example.org:8000
+Content-Security-Policy: frame-ancestors https://ext.example.org:8000
 Content-Security-Policy: script-src 'self'
-X-Frame-Options: ALLOW-FROM https://other.example.org:8000
+X-Frame-Options: ALLOW-FROM https://ext.example.org:8000
 ...
 ```
 
