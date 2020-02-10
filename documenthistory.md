@@ -1,6 +1,10 @@
 # Document History
 
    [[ To be removed from the final specification ]]
+
+   -15
+
+   * Added info about using CSP to prevent clickjacking
    
    -14
    

@@ -230,3 +230,13 @@ OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound Access Tokens
 </front>
 <seriesInfo name="RFC" value="8705"/>
 </reference>
+
+<reference target="https://www.w3.org/TR/CSP2" anchor="CSP-2">
+    <front>
+        <title>Content Security Policy Level 2</title>
+        <author initials="M." surname="West"/>
+        <author initials="A." surname="Barth"/>
+        <author initials="D." surname="Veditz"/>
+        <date month="July" year="2015"/>
+    </front>
+</reference>
