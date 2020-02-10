@@ -1203,21 +1203,23 @@ As described in Section 4.4.1.9 of [@!RFC6819], the authorization
 request is susceptible to clickjacking. An attacker can use this 
 vector to obtain the user's authentication credentials, change the 
 scope of access granted to the client, and potentially access the 
-user's resources. Multiple countermeasures are described in 
-[@!RFC6819], including the use of the X-Frame-Options HTTP response 
-header field and frame-busting JavaScript. In addition to those, 
-authorization servers MUST also use Content Security Policy (CSP) 
-level 2 [@CSP-2] or greater. 
+user's resources.
 
-This protocol MUST be used on the authorization endpoint and, if 
-applicable, other endpoints used to authenticate the user and 
-authorize the client (e.g., the device authorization endpoint, login 
-pages, error pages, etc.). This will prevent framing by unauthorized 
-origins in user agents that support CSP. The client MAY be framed by 
-some other origin than the one used in its redirection endpoint. For 
-this reason, authorization servers SHOULD allow administrators to 
-configure allowed origins for particular clients and/or for clients to
-register these dynamically.
+Authorization servers MUST prevent clickjacking attacks. Multiple
+countermeasures are described in [@!RFC6819], including the use of the
+X-Frame-Options HTTP response header field and frame-busting
+JavaScript. In addition to those, authorization servers SHOULD also
+use Content Security Policy (CSP) level 2 [@!CSP-2] or greater.
+
+To be effective, CSP must be used on the authorization endpoint and,
+if applicable, other endpoints used to authenticate the user and
+authorize the client (e.g., the device authorization endpoint, login
+pages, error pages, etc.). This prevents framing by unauthorized
+origins in user agents that support CSP. The client MAY permit being
+framed by some other origin than the one used in its redirection
+endpoint. For this reason, authorization servers SHOULD allow
+administrators to configure allowed origins for particular clients
+and/or for clients to register these dynamically.
 
 Using CSP allows authorization servers to specify multiple origins in 
 a single response header field and to constrain these using flexible 
@@ -1236,8 +1238,8 @@ X-Frame-Options: ALLOW-FROM https://other.example.org:8000
 ...
 ```
 
-Because some user agents do not support [@CSP-2], this technique MUST 
-be combined with others, including those described in [@!RFC6819], 
-unless such legacy user agents are explicitly unsupported by the 
-authorization server. Even in such cases, additional countermeasures 
-SHOULD still be employed.
+Because some user agents do not support [@CSP-2], this technique
+SHOULD be combined with others, including those described in
+[@!RFC6819], unless such legacy user agents are explicitly unsupported
+by the authorization server. Even in such cases, additional
+countermeasures SHOULD still be employed.
