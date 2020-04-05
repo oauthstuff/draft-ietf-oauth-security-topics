@@ -804,7 +804,7 @@ There exist several proposals to demonstrate the proof of possession
     tokens. The resource server in the same way obtains the public key
     from the TLS stack and compares its fingerprint with the
     fingerprint associated with the access token.
-  * **DPoP** ([@I-D.fett-oauth-dpop]): DPoP (Demonstration of
+  * **DPoP** ([@I-D.ietf-oauth-dpop]): DPoP (Demonstration of
     Proof-of-Possession at the Application Layer) outlines an
     application-level sender-constraining for access and refresh
     tokens that can be used in cases where neither mTLS nor OAuth
