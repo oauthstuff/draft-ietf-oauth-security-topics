@@ -67,7 +67,7 @@ Authorization servers MUST support PKCE [@!RFC7636].
 
 Authorization servers MUST provide a way to detect their support for
 PKCE. To this end, they MUST either (a) publish the element
-`code_challenge_methods_supported` in their AS metadata ([@!RFC8418])
+`code_challenge_methods_supported` in their AS metadata ([@!RFC8414])
 containing the supported PKCE challenge methods (which can be used by
 the client to detect PKCE support) or (b) provide a
 deployment-specific way to ensure or determine PKCE support by the AS.
