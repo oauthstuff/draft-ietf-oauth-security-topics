@@ -4,10 +4,13 @@
 
    -15
 
-   * Added info about using CSP to prevent clickjacking
+   * Update reference to DPoP
+   * Fix reference to RFC8414
+   * Move to xml2rfcv3
    
    -14
    
+   * Added info about using CSP to prevent clickjacking
    * Changes from WGLC feedback
    * Editorial changes
    * AS MUST announce PKCE support either in metadata or using deployment-specific ways (before: SHOULD)
