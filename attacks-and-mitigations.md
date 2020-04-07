@@ -527,7 +527,7 @@ redirect URI used by the attacker (otherwise, the redirect would not
 land at the attackers page). So the authorization server would detect
 the attack and refuse to exchange the code.
    
-Note: this check could also detect attempts to inject an authorization
+Note: This check could also detect attempts to inject an authorization
 code which had been obtained from another instance of the same client
 on another device, if certain conditions are fulfilled:
 
@@ -565,29 +565,50 @@ mechanisms described next.
 
 ### Countermeasures
    
-There are two good technical solutions to achieve this goal:
+There are two good technical solutions to achieve this goal, outlined
+in the following.
 
-  * **PKCE**: The PKCE parameter `code_challenge` along with the
-    corresponding `code_verifier` as specified in [@!RFC7636] can be
-    used as a countermeasure. In contrast to its original intention,
-    the verifier check fails although the client uses its correct
-    verifier but the code is associated with a challenge that does not
-    match. PKCE is a deployed OAuth feature, although its original
-    intended use was solely focused on securing native apps, not the
-    broader use recommended by this document.
-  * **Nonce**: OpenID Connect's existing `nonce` parameter can be used
-    for the same purpose. The `nonce` value is one-time use and
-    created by the client. The client is supposed to bind it to the
-    user agent session and sends it with the initial request to the
-    OpenID Provider (OP). The OP binds `nonce` to the authorization
-    code and attests this binding in the ID Token, which is issued as
-    part of the code exchange at the token endpoint. If an attacker
-    injected an authorization code in the authorization response, the
-    nonce value in the client session and the nonce value in the ID
-    token will not match and the attack is detected. The assumption is
-    that an attacker cannot get hold of the user agent state on the
-    victim's device, where he has stolen the respective authorization
-    code.
+#### PKCE
+
+The PKCE parameter `code_challenge` along with the corresponding
+`code_verifier` as specified in [@!RFC7636] can be used as a
+countermeasure. In contrast to its original intention, the verifier
+check fails although the client uses its correct verifier but the code
+is associated with a challenge that does not match. PKCE is a deployed
+OAuth feature, although its original intended use was solely focused
+on securing native apps, not the broader use recommended by this
+document.
+    
+    
+#### Nonce {#nonce_as_injection_protection}
+
+OpenID Connect's existing `nonce` parameter can be used for the same
+purpose. The `nonce` value is one-time use and created by the client.
+The client is supposed to bind it to the user agent session and sends
+it with the initial request to the OpenID Provider (OP). The OP binds
+`nonce` to the authorization code and attests this binding in the ID
+Token, which is issued as part of the code exchange at the token
+endpoint. If an attacker injected an authorization code in the
+authorization response, the nonce value in the client session and the
+nonce value in the ID token will not match and the attack is detected.
+The assumption is that an attacker cannot get hold of the user agent
+state on the victim's device, where he has stolen the respective
+authorization code.
+
+It is important to note that this countermeasure only works if the
+client properly checks the `nonce` parameter in the ID Token and does
+not use any issued token until this check has succeeded. More
+precisely, a client protecting itself against code injection using the
+`nonce` parameter,
+
+  1. MUST validate the `nonce` in the ID Token obtained from the
+     token endpoint, even if another ID Token was obtained from the
+     authorization response (e.g., `response_type=code+id_token`), and
+  1. MUST ensure that, unless and until that check succeeds, all
+     tokens (ID Tokens and the access token) are disregarded and not
+     used for any other purpose.
+
+#### Other Solutions
     
 Other solutions, like binding `state` to the code, using token binding
 for the code, or per-instance client credentials are conceivable, but
@@ -1132,14 +1153,17 @@ If refresh tokens are issued, those refresh tokens MUST be bound to
 the scope and resource servers as consented by the resource owner.
 This is to prevent privilege escalation by the legitimate client and reduce
 the impact of refresh token leakage.
-    
+
+For confidential clients, [@!RFC6749] already requires that refresh
+tokens can only be used by the client for which they were issued.
+
 Authorization server MUST utilize one of these methods to
 detect refresh token replay by malicious actors for public clients:
     
   * **Sender-constrained refresh tokens:** the authorization server
     cryptographically binds the refresh token to a certain client
-    instance by utilizing [@I-D.ietf-oauth-token-binding] or
-    [@!RFC8705].
+    instance by utilizing [@!RFC8705] or
+    [@I-D.ietf-oauth-token-binding].
   * **Refresh token rotation:** the authorization server issues a new
     refresh token with every access token refresh response. The
     previous refresh token is invalidated but information about the

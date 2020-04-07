@@ -48,14 +48,16 @@ MUST avoid forwarding these user credentials accidentally (see
 
 Clients MUST prevent injection (replay) of authorization codes into
 the authorization response by attackers. The use of PKCE [@!RFC7636]
-is RECOMMENDED to this end. The OpenID Connect `nonce` parameter and
-ID Token Claim [@!OpenID] MAY be used as well. The PKCE challenge or
-OpenID Connect `nonce` MUST be transaction-specific and securely bound
-to the client and the user agent in which the transaction was started.
+is RECOMMENDED to this end. With additional precautions, described in
+(#nonce_as_injection_protection), the OpenID Connect `nonce` parameter
+and the respective Claim in the ID Token [@!OpenID] MAY be used as
+well. The PKCE challenge or OpenID Connect `nonce` MUST be
+transaction-specific and securely bound to the client and the user
+agent in which the transaction was started.
 
-Note: although PKCE so far was designed as a mechanism to protect
-native apps, this advice applies to all kinds of OAuth clients,
-including web applications.
+Note: Although PKCE was designed as a mechanism to protect native
+apps, this advice applies to all kinds of OAuth clients, including web
+applications.
 
 When using PKCE, clients SHOULD use PKCE code challenge methods that
 do not expose the PKCE verifier in the authorization request.
@@ -102,6 +104,8 @@ exposed in URLs. It also allows the authorization server to
 sender-constrain the issued tokens (see next section).
 
 ## Token Replay Prevention {#token_replay_prevention}
+
+### Access Tokens
  
 A sender-constrained access token scopes the applicability of an access
 token to a certain sender. This sender is obliged to demonstrate knowledge
@@ -109,15 +113,14 @@ of a certain secret as prerequisite for the acceptance of that token at
 the recipient (e.g., a resource server).
 
 Authorization and resource servers SHOULD use mechanisms for
-sender-constrained access tokens to prevent token replay as described
-in (#pop_tokens). The use of Mutual TLS for OAuth 2.0
-[@!RFC8705] is RECOMMENDED. Refresh tokens MUST be
-sender-constrained or use refresh token rotation as described in
-(#refresh_token_protection).
+sender-constraining access tokens to prevent token replay, such as
+Mutual TLS for OAuth 2.0 [@!RFC8705] (see (#pop_tokens)).
 
-It is RECOMMENDED to use end-to-end TLS. If TLS
-traffic needs to be terminated at an intermediary, refer to
-(#tls_terminating) for further security advice.
+### Refresh Tokens
+
+Refresh tokens MUST be sender-constrained or use refresh token
+rotation as described in (#refresh_token_protection).
+
 
 ## Access Token Privilege Restriction
 
@@ -183,3 +186,7 @@ number of attacks.
 Authorization servers SHOULD NOT allow clients to influence their
 `client_id` or `sub` value or any other claim if that can cause
 confusion with a genuine resource owner (see (#client_impersonating)).
+
+It is RECOMMENDED to use end-to-end TLS. If TLS
+traffic needs to be terminated at an intermediary, refer to
+(#tls_terminating) for further security advice.
