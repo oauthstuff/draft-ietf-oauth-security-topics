@@ -2,6 +2,13 @@
 
    [[ To be removed from the final specification ]]
 
+   -16
+   
+   * Make MTLS a suggestion, not RECOMMENDED.
+   * Add important requirements when using nonce for code injection protection.
+   * Highlight requirements for refresh token sender-constraining.
+   
+
    -15
 
    * Update reference to DPoP
