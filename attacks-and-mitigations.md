@@ -485,8 +485,8 @@ The attack works as follows:
    
  1. The attacker obtains an authorization code by performing any of
     the attacks described above.
- 2. He performs a regular OAuth authorization process with the
-    legitimate client on his device.
+ 2. He starts a regular OAuth authorization process with the
+    legitimate client from his device.
  3. The attacker injects the stolen authorization code in the response
     of the authorization server to the legitimate client. Since this
     response is passing through the attacker's device, the attacker
@@ -572,10 +572,10 @@ in the following.
 
 The PKCE parameter `code_challenge` along with the corresponding
 `code_verifier` as specified in [@!RFC7636] can be used as a
-countermeasure. In contrast to its original intention, the verifier
-check fails although the client uses its correct verifier but the code
-is associated with a challenge that does not match. PKCE is a deployed
-OAuth feature, although its original intended use was solely focused
+countermeasure. When the attacker attempts to inject an authorization code, the verifier
+check fails: the client uses its correct verifier, but the code
+is associated with a challenge that does not match this verifier. PKCE is a deployed
+OAuth feature, although its originally intended use was solely focused
 on securing native apps, not the broader use recommended by this
 document.
     

@@ -46,14 +46,14 @@ MUST avoid forwarding these user credentials accidentally (see
 
 ### Authorization Code Grant {#ac}
 
-Clients MUST prevent injection (replay) of authorization codes into
-the authorization response by attackers. The use of PKCE [@!RFC7636]
-is RECOMMENDED to this end. With additional precautions, described in
-(#nonce_as_injection_protection), the OpenID Connect `nonce` parameter
-and the respective Claim in the ID Token [@!OpenID] MAY be used as
-well. The PKCE challenge or OpenID Connect `nonce` MUST be
-transaction-specific and securely bound to the client and the user
-agent in which the transaction was started.
+Clients MUST prevent injection (replay) of authorization codes into the
+authorization response by attackers. Public clients MUST use PKCE [@!RFC7636] to
+this end. For confidential clients, the use of PKCE [@!RFC7636] is RECOMMENDED.
+With additional precautions, described in (#nonce_as_injection_protection),
+confidential clients MAY use the OpenID Connect `nonce` parameter and the
+respective Claim in the ID Token [@!OpenID] instead. In any case, the PKCE
+challenge or OpenID Connect `nonce` MUST be transaction-specific and securely
+bound to the client and the user agent in which the transaction was started.
 
 Note: Although PKCE was designed as a mechanism to protect native
 apps, this advice applies to all kinds of OAuth clients, including web
