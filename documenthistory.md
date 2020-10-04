@@ -9,6 +9,7 @@
    * Highlight requirements for refresh token sender-constraining.
    * Make PKCE a MUST for public clients.
    * Describe PKCE Downgrade Attacks and countermeasures.
+   * Allow variable port numbers in localhost redirect URIs as in RFC8252, Section 7.3.
 
    -15
 

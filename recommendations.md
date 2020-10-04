@@ -5,11 +5,12 @@ working group recommends to OAuth implementers.
 
 ## Protecting Redirect-Based Flows {#rec_redirect}
 
-When comparing client redirect URIs against pre-registered URIs,
-authorization servers MUST utilize exact string matching. This measure
-contributes to the prevention of leakage of authorization codes and
-access tokens (see (#insufficient_uri_validation)). It can also help to
-detect mix-up attacks (see (#mix_up)).
+When comparing client redirect URIs against pre-registered URIs, authorization
+servers MUST utilize exact string matching except for port numbers in
+`localhost` redirection URIs of native apps, see (#iuv_countermeasures). This
+measure contributes to the prevention of leakage of authorization codes and
+access tokens (see (#insufficient_uri_validation)). It can also help to detect
+mix-up attacks (see (#mix_up)).
 
 Clients MUST NOT expose URLs that forward the user’s browser to
 arbitrary URIs obtained from a query parameter ("open redirector").
@@ -27,15 +28,14 @@ use CSRF tokens carried in the `state` parameter that are securely
 bound to the user agent MUST be used for CSRF protection (see
 (#csrf_countermeasures)).
         
-In order to prevent mix-up attacks (see (#mix_up)), clients MUST only process redirect
-responses of the authorization server they sent the respective request
-to and from the same user agent this authorization request was
-initiated with. Clients MUST store the authorization server they sent
-an authorization request to and bind this information to the user
-agent and check that the authorization request was received from the
-correct authorization server. Clients MUST ensure that the subsequent
-token request, if applicable, is sent to the same authorization
-server. Clients SHOULD use distinct redirect URIs for each
+In order to prevent mix-up attacks (see (#mix_up)), clients MUST only process
+redirect responses of the authorization server they sent the respective request
+to and from the same user agent this authorization request was initiated with.
+Clients MUST store the authorization server they sent an authorization request
+to and bind this information to the user agent and check that the authorization
+request was received from the correct authorization server. Clients MUST ensure
+that the subsequent token request, if applicable, is sent to the same
+authorization server. Clients SHOULD use distinct redirect URIs for each
 authorization server as a means to identify the authorization server a
 particular response came from.
 

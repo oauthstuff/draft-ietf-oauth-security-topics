@@ -168,14 +168,15 @@ The attacker's page at `attacker.example` can now access the
 fragment and obtain the access token.
     
    
-### Countermeasures
+### Countermeasures {#iuv_countermeasures}
    
-The complexity of implementing and managing pattern matching correctly
-obviously causes security issues. This document therefore advises to
-simplify the required logic and configuration by using exact redirect
-URI matching only. This means the authorization server MUST compare
-the two URIs using simple string comparison as defined in [@!RFC3986],
-Section 6.2.1.
+The complexity of implementing and managing pattern matching correctly obviously
+causes security issues. This document therefore advises to simplify the required
+logic and configuration by using exact redirect URI matching. This means
+the authorization server MUST compare the two URIs using simple string
+comparison as defined in [@!RFC3986], Section 6.2.1. The only exception are
+native apps using a `localhost` URI: In this case, the AS MUST allow variable
+port numbers as described in [@!RFC8252], Section 7.3.
 
 Additional recommendations:
 
