@@ -8,6 +8,7 @@
    * Add important requirements when using nonce for code injection protection.
    * Highlight requirements for refresh token sender-constraining.
    * Make PKCE a MUST for public clients.
+   * Describe PKCE Downgrade Attacks and countermeasures.
 
    -15
 

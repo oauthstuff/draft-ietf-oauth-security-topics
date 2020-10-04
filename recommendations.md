@@ -74,6 +74,11 @@ containing the supported PKCE challenge methods (which can be used by
 the client to detect PKCE support) or (b) provide a
 deployment-specific way to ensure or determine PKCE support by the AS.
 
+Authorization servers MUST mitigate PKCE Downgrade Attacks by ensuring that a
+token request containing a `code_verifier` parameter is accepted only if a
+`code_challenge` parameter was present in the authorization request, see
+(#pkce_downgrade_countermeasures) for details.
+
 ### Implicit Grant
     
 The implicit grant (response type "token") and other response types
