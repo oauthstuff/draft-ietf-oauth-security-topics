@@ -5,11 +5,12 @@ working group recommends to OAuth implementers.
 
 ## Protecting Redirect-Based Flows {#rec_redirect}
 
-When comparing client redirect URIs against pre-registered URIs,
-authorization servers MUST utilize exact string matching. This measure
-contributes to the prevention of leakage of authorization codes and
-access tokens (see (#insufficient_uri_validation)). It can also help to
-detect mix-up attacks (see (#mix_up)).
+When comparing client redirect URIs against pre-registered URIs, authorization
+servers MUST utilize exact string matching except for port numbers in
+`localhost` redirection URIs of native apps, see (#iuv_countermeasures). This
+measure contributes to the prevention of leakage of authorization codes and
+access tokens (see (#insufficient_uri_validation)). It can also help to detect
+mix-up attacks (see (#mix_up)).
 
 Clients MUST NOT expose URLs that forward the user’s browser to
 arbitrary URIs obtained from a query parameter ("open redirector").
@@ -27,15 +28,14 @@ use CSRF tokens carried in the `state` parameter that are securely
 bound to the user agent MUST be used for CSRF protection (see
 (#csrf_countermeasures)).
         
-In order to prevent mix-up attacks (see (#mix_up)), clients MUST only process redirect
-responses of the authorization server they sent the respective request
-to and from the same user agent this authorization request was
-initiated with. Clients MUST store the authorization server they sent
-an authorization request to and bind this information to the user
-agent and check that the authorization request was received from the
-correct authorization server. Clients MUST ensure that the subsequent
-token request, if applicable, is sent to the same authorization
-server. Clients SHOULD use distinct redirect URIs for each
+In order to prevent mix-up attacks (see (#mix_up)), clients MUST only process
+redirect responses of the authorization server they sent the respective request
+to and from the same user agent this authorization request was initiated with.
+Clients MUST store the authorization server they sent an authorization request
+to and bind this information to the user agent and check that the authorization
+request was received from the correct authorization server. Clients MUST ensure
+that the subsequent token request, if applicable, is sent to the same
+authorization server. Clients SHOULD use distinct redirect URIs for each
 authorization server as a means to identify the authorization server a
 particular response came from.
 
@@ -46,14 +46,14 @@ MUST avoid forwarding these user credentials accidentally (see
 
 ### Authorization Code Grant {#ac}
 
-Clients MUST prevent injection (replay) of authorization codes into
-the authorization response by attackers. The use of PKCE [@!RFC7636]
-is RECOMMENDED to this end. With additional precautions, described in
-(#nonce_as_injection_protection), the OpenID Connect `nonce` parameter
-and the respective Claim in the ID Token [@!OpenID] MAY be used as
-well. The PKCE challenge or OpenID Connect `nonce` MUST be
-transaction-specific and securely bound to the client and the user
-agent in which the transaction was started.
+Clients MUST prevent injection (replay) of authorization codes into the
+authorization response by attackers. Public clients MUST use PKCE [@!RFC7636] to
+this end. For confidential clients, the use of PKCE [@!RFC7636] is RECOMMENDED.
+With additional precautions, described in (#nonce_as_injection_protection),
+confidential clients MAY use the OpenID Connect `nonce` parameter and the
+respective Claim in the ID Token [@!OpenID] instead. In any case, the PKCE
+challenge or OpenID Connect `nonce` MUST be transaction-specific and securely
+bound to the client and the user agent in which the transaction was started.
 
 Note: Although PKCE was designed as a mechanism to protect native
 apps, this advice applies to all kinds of OAuth clients, including web
@@ -73,6 +73,11 @@ PKCE. To this end, they MUST either (a) publish the element
 containing the supported PKCE challenge methods (which can be used by
 the client to detect PKCE support) or (b) provide a
 deployment-specific way to ensure or determine PKCE support by the AS.
+
+Authorization servers MUST mitigate PKCE Downgrade Attacks by ensuring that a
+token request containing a `code_verifier` parameter is accepted only if a
+`code_challenge` parameter was present in the authorization request, see
+(#pkce_downgrade_countermeasures) for details.
 
 ### Implicit Grant
     

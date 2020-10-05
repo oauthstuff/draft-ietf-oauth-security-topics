@@ -168,14 +168,15 @@ The attacker's page at `attacker.example` can now access the
 fragment and obtain the access token.
     
    
-### Countermeasures
+### Countermeasures {#iuv_countermeasures}
    
-The complexity of implementing and managing pattern matching correctly
-obviously causes security issues. This document therefore advises to
-simplify the required logic and configuration by using exact redirect
-URI matching only. This means the authorization server MUST compare
-the two URIs using simple string comparison as defined in [@!RFC3986],
-Section 6.2.1.
+The complexity of implementing and managing pattern matching correctly obviously
+causes security issues. This document therefore advises to simplify the required
+logic and configuration by using exact redirect URI matching. This means
+the authorization server MUST compare the two URIs using simple string
+comparison as defined in [@!RFC3986], Section 6.2.1. The only exception are
+native apps using a `localhost` URI: In this case, the AS MUST allow variable
+port numbers as described in [@!RFC8252], Section 7.3.
 
 Additional recommendations:
 
@@ -485,8 +486,8 @@ The attack works as follows:
    
  1. The attacker obtains an authorization code by performing any of
     the attacks described above.
- 2. He performs a regular OAuth authorization process with the
-    legitimate client on his device.
+ 2. He starts a regular OAuth authorization process with the
+    legitimate client from his device.
  3. The attacker injects the stolen authorization code in the response
     of the authorization server to the legitimate client. Since this
     response is passing through the attacker's device, the attacker
@@ -572,10 +573,10 @@ in the following.
 
 The PKCE parameter `code_challenge` along with the corresponding
 `code_verifier` as specified in [@!RFC7636] can be used as a
-countermeasure. In contrast to its original intention, the verifier
-check fails although the client uses its correct verifier but the code
-is associated with a challenge that does not match. PKCE is a deployed
-OAuth feature, although its original intended use was solely focused
+countermeasure. When the attacker attempts to inject an authorization code, the verifier
+check fails: the client uses its correct verifier, but the code
+is associated with a challenge that does not match this verifier. PKCE is a deployed
+OAuth feature, although its originally intended use was solely focused
 on securing native apps, not the broader use recommended by this
 document.
     
@@ -664,8 +665,10 @@ The recommendation is therefore to use the authorization code grant
 type instead of relying on response types issuing acess tokens at the
 authorization endpoint. Authorization code injection can be detected
 using one of the countermeasures discussed in (#code_injection).
+
+
    
-## Cross Site Request Forgery
+## Cross Site Request Forgery {#csrf}
    
 An attacker might attempt to inject a request to the redirect URI of
 the legitimate client on the victim's device, e.g., to cause the
@@ -695,6 +698,82 @@ important to note that:
 AS therefore MUST provide a way to detect their support for PKCE
 either via AS metadata according to [@!RFC8414] or provide a
 deployment-specific way to ensure or determine PKCE support.
+
+## PKCE Downgrade Attack
+
+An authorization server that supports PKCE but does not make its use mandatory for
+all flows can be susceptible to a PKCE downgrade attack. 
+
+The first prerequisite for this attack is that there is an attacker-controllable
+flag in the authorization request that enables or disables PKCE for the
+particular flow. The presence or absence of the `code_challenge` parameter lends
+itself for this purpose, i.e., the AS enables and enforces PKCE if this
+parameter is present in the authorization request, but does not enforce PKCE if
+the parameter is missing.
+
+The second prerequisite for this attack is that the client is not using `state`
+at all (e.g., because the client relies on PKCE for CSRF prevention) or that the
+client is not checking `state` correctly.
+
+Roughly speaking, this attack is a variant of a CSRF attack. The attacker
+achieves the same goal as in the attack described in (#csrf): He injects an
+authorization code (and with that, an access token) that is bound to his
+resources into a session between his victim and the client.
+
+
+### Attack Description
+
+ 1. The user has started an OAuth session using some client at an AS. In the
+    authorization request, the client has set the parameter
+    `code_challenge=sha256(abc)` as the PKCE code challenge. The client is now
+    waiting to receive the authorization response from the user's browse.
+ 2. To conduct the attack, the attacker uses his own device to start an
+    authorization flow with the targeted client. The client now uses another
+    PKCE code challenge, say `code_challenge=sha256(xyz)`, in the authorization
+    request. The attacker intercepts the request and removes the entire
+    `code_challenge` parameter from the request. Since this step is performed on
+    the attacker's device, the attacker has full access to the request contents,
+    for example using browser debug tools.
+ 3. If the authorization server allows for flows without PKCE, it will create a
+    code that is not bound to any PKCE code challenge.
+ 4. The attacker now redirects the user's browser to an authorization response
+    URL which contains the code for the attacker's session with the AS. 
+ 5. The user's browser sends the authorization code to the client, which will
+    now try to redeem the code for an access token at the AS. The client will
+    send `code_verifier=abc` as the PKCE code verifier in the token request. 
+ 6. Since the authorization server sees that this code is not bound to any PKCE
+    code challenge, it will not check the presence or contents of the
+    `code_verifier` parameter. It will issue an access token that belongs to the
+    attacker's resource to the client under the user's control.
+
+### Countermeasures {#pkce_downgrade_countermeasures}
+
+Using `state` properly would prevent this attack. However, practice has shown
+that many OAuth clients do not use or check `state` properly. 
+
+Therefore, AS MUST take precautions against this threat. 
+
+Note that from the view of the AS, in the attack described above, a
+`code_verifier` parameter is received at the token endpoint although no
+`code_challenge` parameter was present in the authorization request for the
+OAuth flow in which the authorization code was issued. 
+
+This fact can be used to mitigate this attack. [@RFC7636] already mandates that 
+
+ - an AS that supports PKCE MUST check whether a code challenge is contained in
+   the authorization request and bind this information to the code that is
+   issued; and
+ - when a code arrives at the token endpoint, and there was a `code_challenge`
+   in the authorization request for which this code was issued, there must be a
+   valid `code_verifier` in the token request.
+
+Beyond this, to prevent PKCE downgrade attacks, the AS MUST ensure that
+if there was no `code_challenge` in the authorization request, a request to
+the token endpoint containing a `code_verifier` is rejected.
+
+Note: AS that mandate the use of PKCE in general or for particular clients
+implicitly implement this security measure.
+
    
 ## Access Token Leakage at the Resource Server
  
