@@ -2,6 +2,11 @@
 
    [[ To be removed from the final specification ]]
 
+   -17
+
+   * Make the use of metadata RECOMMENDED for both servers and clients
+   * Make announcing PKCE support in metadata the RECOMMENDED way (before: either metadata or deployment-specific way)
+
    -16
    
    * Make MTLS a suggestion, not RECOMMENDED.
