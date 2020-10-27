@@ -418,11 +418,11 @@ Variants:
   * **Implicit Grant**: In the implicit grant, the attacker receives
     an access token instead of the code; the rest of the attack works
     as above.
-  * **Per-AS Redirect URIs**: If clients use different redirect URIs
-    for different ASs, do not store the selected AS in the user's
-    session, and ASs do not check the redirect URIs properly,
-    attackers can mount an attack called "Cross-Social Network Request
-    Forgery". These attacks have been observed in practice. Refer to [@oauth_security_jcs_14] for details.
+  * **Per-AS Redirect URIs**: If clients use different redirect URIs for
+    different ASs, do not store the selected AS in the user's session, and ASs
+    do not check the redirect URIs properly, attackers can mount an attack
+    called "Cross-Social Network Request Forgery". These attacks have been
+    observed in practice. Refer to [@oauth_security_jcs_14] for details.
   * **OpenID Connect**: There are variants that can be used to attack
     OpenID Connect. In these attacks, the attacker misuses features of
     the OpenID Connect Discovery mechanism or replays access tokens or
@@ -432,32 +432,62 @@ Variants:
   
 ### Countermeasures
 
-In scenarios where an OAuth client interacts with multiple
-authorization servers, clients MUST prevent mix-up attacks. 
+When an OAuth client can only interact with one authorization server, a mix-up
+defense is not required. In scenarios where an OAuth client interacts with two
+or more authorization servers, however, clients MUST prevent mix-up attacks
+using one of the two methods described in the following.
 
-To this end, clients SHOULD use distinct redirect URIs for each AS
-(with alternatives listed below). Clients MUST store, for each
-authorization request, the AS they sent the authorization request to
-and bind this information to the user agent. Clients MUST check that
-the authorization request was received from the correct authorization
-server and ensure that the subsequent token request, if applicable, is
-sent to the same authorization server.
+For both defenses, clients MUST store, for each authorization request, the
+issuer they sent the authorization request to and bind this information to the
+user agent. The issuer serves, via the associated metadata, as an abstract
+identifier for the combination of the authorization endpoint and token endpoint
+that are to be used in the flow. If an issuer identifier is not available, for
+example, if neither OAuth metadata [@!RFC8414] nor OpenID Connect [@!OpenID] are
+used, a different unique identifier for this tuple or the tuple itself can be
+used instead. For brevity of presentation, such a deployment-specific identifier
+will be subsumed under the issuer (or issuer identifier) in the following. 
 
-Unfortunately, distinct redirect URIs per AS do not work for all kinds
-of OAuth clients. They are effective for web and JavaScript apps and
-for native apps with claimed URLs. Attacks on native apps using custom
-schemes or redirect URIs on localhost cannot be prevented this way.
-    
-If clients cannot use distinct redirect URIs for each AS, the following options exist:
+Note: Just storing the authorization server URL is not sufficient to identify
+mix-up attacks. An attacker might declare an uncompromised AS's endpoint URL as
+"his" AS URL, but declare a token endpoint under his own control.
 
-  * Authorization servers can be configured to return an AS
-    identitifier (`iss`) as a non-standard parameter in the
-    authorization response. This enables complying clients to compare
-    this data to the `iss` identifier of the AS it believed it sent
-    the user agent to. 
-  * In OpenID Connect, if an ID Token is returned in the authorization
-    response, it carries client ID and issuer. It can be used in the
-    same way as the `iss` parameter.
+#### Mix-Up Defense via Issuer Identification    
+This defense requires that the authorization server sends the issuer identifier
+in the authorization response to the client. When receiving the authorization
+response, the client MUST compare the received issuer identifier to the stored
+issuer identifier. If there is a mismatch, the client MUST abort the
+interaction.
+
+There are different ways this issuer identifier can be transported to the client:
+
+ * When OpenID Connect is used and an ID Token is returned in the authorization
+   response, the client can evaluate the `iss` Claim in the ID Token.
+ * Otherwise, the issuer information needs to be transported separately, for
+   example via a separate response parameter `iss`, defined in
+   [@I-D.meyerzuselhausen-oauth-iss-auth-resp].
+
+While this defense may require deploying new OAuth features to transport the
+`iss`, it is a robust and relatively simple defense against mix-up.
+
+#### Mix-Up Defense via Distinct Redirect URIs
+For this defense, clients MUST use a distinct redirect URI for each issuer
+they interact with. 
+
+Clients MUST check that the authorization response was received from the correct
+issuer by comparing the distinct redirect URI for the issuer to the URI where
+the authorization response was received on. If there is a mismatch, the client
+MUST abort the flow.
+
+While this defense builds upon existing OAuth functionality, it cannot be used
+in scenarios where clients only register once for the use of many different
+issuers (as in some open banking schemes) and due to the tight integration with
+the client registration, it is harder to deploy automatically. 
+
+Furthermore, an attacker might be able to circumvent the protection offered by
+this defense by registering a new client with the "honest" AS using the redirect
+URI that the client assigned to the attacker's AS. The attacker could then run
+the attack as in "Mix-Up Without Interception" described above, replacing the
+client ID with the client ID of his newly created client.
 
 ## Authorization Code Injection {#code_injection}
   
@@ -695,8 +725,8 @@ important to note that:
    contents of state to the browser session and/or signed/encrypted
    state values [@I-D.bradley-oauth-jwt-encoded-state].
 
-AS therefore MUST provide a way to detect their support for PKCE
-either via AS metadata according to [@!RFC8414] or provide a
+AS therefore MUST provide a way to detect their support for PKCE. Using AS
+metadata according to [@!RFC8414] is RECOMMENDED, but AS MAY instead provide a
 deployment-specific way to ensure or determine PKCE support.
 
 ## PKCE Downgrade Attack
