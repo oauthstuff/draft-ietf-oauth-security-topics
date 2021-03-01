@@ -491,6 +491,8 @@ URI that the client assigned to the attacker's AS. The attacker could then run
 the attack as in "Mix-Up Without Interception" described above, replacing the
 client ID with the client ID of his newly created client.
 
+This defense SHOULD therefore only be used if other options are not available.
+
 ## Authorization Code Injection {#code_injection}
   
 In an authorization code injection attack, the attacker attempts to
