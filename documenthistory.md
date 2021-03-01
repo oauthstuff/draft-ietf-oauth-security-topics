@@ -2,6 +2,11 @@
 
    [[ To be removed from the final specification ]]
 
+   -17
+   
+   * AS also MUST NOT expose open redirectors.
+   * Mention that attackers can collaborate.
+
    -16
    
    * Make MTLS a suggestion, not RECOMMENDED.
