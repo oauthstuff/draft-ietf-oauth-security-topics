@@ -2,6 +2,10 @@
 
    [[ To be removed from the final specification ]]
 
+   -17
+
+   * Update recommendations regarding mix-up defense builds upon [@draft-ietf-oauth-iss-auth-resp].
+
    -16
    
    * Make MTLS a suggestion, not RECOMMENDED.

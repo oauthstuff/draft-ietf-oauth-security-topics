@@ -430,12 +430,12 @@ Variants:
     detail in [@arXiv.1704.08539], Appendix A, and
     [@arXiv.1508.04324v2], Section 6 ("Malicious Endpoints Attacks").
   
-### Countermeasures
+### Countermeasures {#mixupcountermeasures}
 
 When an OAuth client can only interact with one authorization server, a mix-up
 defense is not required. In scenarios where an OAuth client interacts with two
-or more authorization servers, however, clients MUST prevent mix-up attacks
-using one of the two methods described in the following.
+or more authorization servers, however, clients MUST prevent mix-up attacks. Two
+different methods are discussed in the following.
 
 For both defenses, clients MUST store, for each authorization request, the
 issuer they sent the authorization request to and bind this information to the
@@ -464,7 +464,9 @@ There are different ways this issuer identifier can be transported to the client
    response, the client can evaluate the `iss` Claim in the ID Token.
  * Otherwise, the issuer information needs to be transported separately, for
    example via a separate response parameter `iss`, defined in
-   [@I-D.meyerzuselhausen-oauth-iss-auth-resp].
+   [@draft-ietf-oauth-iss-auth-resp].
+
+In both cases, the `iss` value MUST be evaluated according to [@draft-ietf-oauth-iss-auth-resp].
 
 While this defense may require deploying new OAuth features to transport the
 `iss`, it is a robust and relatively simple defense against mix-up.
