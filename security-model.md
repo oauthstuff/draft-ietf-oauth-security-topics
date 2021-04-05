@@ -51,24 +51,23 @@ provider itself, an attacker in a public (wifi) network using ARP
 spoofing, or a state-sponsored attacker with access to internet
 exchange points, for instance.
     
-These attackers conform to the attacker model that was used in formal
-analysis efforts for OAuth [@arXiv.1601.01229]. This is a minimal
-attacker model. Implementers MUST take into account all possible
-attackers in the environment in which their OAuth implementations are
-expected to run. Previous attacks on OAuth have shown that OAuth
-deployments SHOULD in particular consider the following, stronger
-attackers in addition to those listed above:
+These attackers conform to the attacker model that was used in formal analysis
+efforts for OAuth [@arXiv.1601.01229]. This is a minimal attacker model.
+Implementers MUST take into account all possible types of attackers in the
+environment in which their OAuth implementations are expected to run. Previous
+attacks on OAuth have shown that OAuth deployments SHOULD in particular consider
+the following, stronger attackers in addition to those listed above:
 
   * (A3) Attackers that can read, but not modify, the contents of the
     authorization response (i.e., the authorization response can leak
     to an attacker).
     
-    Examples for such attacks include open redirector
-    attacks, problems existing on mobile operating systems (where
-    different apps can register themselves on the same URI), mix-up attacks (see (#mix_up)), where the client is tricked into sending
-    credentials to a attacker-controlled AS, and the fact that URLs
-    are often stored/logged by browsers (history), proxy servers, and
-    operating systems.
+    Examples for such attacks include open redirector attacks, problems existing
+    on mobile operating systems (where different apps can register themselves on
+    the same URI), mix-up attacks (see (#mix_up)), where the client is tricked
+    into sending credentials to a attacker-controlled AS, and the fact that URLs
+    are often stored/logged by browsers (history), proxy servers, and operating
+    systems.
   * (A4) Attackers that can read, but not modify, the contents of the
     authorization request (i.e., the authorization request can leak,
     in the same manner as above, to an attacker).
@@ -79,6 +78,7 @@ attackers in addition to those listed above:
     using a attacker-controlled RS. See also (#comp_res_server).
     
 (A3), (A4) and (A5) typically occur together with either (A1) or (A2).
+Attackers can collaborate to reach a common goal. 
 
 Note that in this attacker model, an attacker (see A1) can be a RO or
 act as one. For example, an attacker can use his own browser to replay

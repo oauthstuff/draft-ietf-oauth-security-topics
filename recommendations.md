@@ -12,7 +12,7 @@ measure contributes to the prevention of leakage of authorization codes and
 access tokens (see (#insufficient_uri_validation)). It can also help to detect
 mix-up attacks (see (#mix_up)).
 
-Clients MUST NOT expose URLs that forward the user’s browser to
+Clients and AS MUST NOT expose URLs that forward the user’s browser to
 arbitrary URIs obtained from a query parameter ("open redirector").
 Open redirectors can enable exfiltration of authorization codes and
 access tokens, see (#open_redirector_on_client).
