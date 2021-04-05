@@ -6,6 +6,8 @@
    
    * AS also MUST NOT expose open redirectors.
    * Mention that attackers can collaborate.
+   * Update recommendations regarding mix-up defense, builds upon [@draft-ietf-oauth-iss-auth-resp].
+   * Improve description of mix-up attack.
 
    -16
    
