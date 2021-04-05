@@ -348,73 +348,56 @@ server.
 
 ### Attack Description
 
-The description here closely follows [@arXiv.1601.01229], with
+The description here follows [@arXiv.1601.01229], with
 variants of the attack outlined below.
 
 Preconditions: For this variant of the attack to work, we assume that
 
   * the implicit or authorization code grant are used with multiple AS
     of which one is considered "honest" (H-AS) and one is operated by
-    the attacker (A-AS),
+    the attacker (A-AS), and
   * the client stores the AS chosen by the user in a session bound to
     the user's browser and uses the same redirection endpoint URI for
-    each AS, and
-  * the attacker can intercept and manipulate the first
-    request/response pair from a user's browser to the client (in
-    which the user selects a certain AS and is then redirected by the
-    client to that AS), as in Attacker A2. 
+    each AS. 
     
-The latter ability can, for example, be the result of a
-man-in-the-middle attack on the user's connection to the client. Note
-that an attack variant exists that does not require this ability, see
-below.
-
 In the following, we assume that the client is registered with H-AS
 (URI: `https://honest.as.example`, client ID: `7ZGZldHQ`) and with
-A-AS (URI: `https://attacker.example`, client ID: `666RVZJTA`).
+A-AS (URI: `https://attacker.example`, client ID: `666RVZJTA`). URLs shown in the following example are shorted for presentation to only include parameters relevant for the attack.
 
 Attack on the authorization code grant:
 
- 1. The user selects to start the grant using H-AS (e.g., by clicking on a button at the
-    client's website).
- 2. The attacker intercepts this request and changes the user's
-    selection to "A-AS" (see preconditions).
- 3. The client stores in the user's session that the user selected
+ 1. The user selects to start the grant using A-AS (e.g., by clicking on a button at the
+    client's website). 
+ 2. The client stores in the user's session that the user selected
     "A-AS" and redirects the user to A-AS's authorization endpoint
     with a Location header containing the URL
     `https://attacker.example/authorize?response_type=code&client_id=666RVZJTA`.
- 4. Now the attacker intercepts this response and changes the
-    redirection such that the user is being redirected to H-AS. The
-    attacker also replaces the client ID of the client at A-AS with
+ 3. When the user's browser navigates to the attacker's authorization endpoint, the
+    attacker immediately redirects the browser to the authorization endpoint of H-AS. In the authorization request, the
+    attacker replaces the client ID of the client at A-AS with
     the client's ID at H-AS. Therefore, the browser receives a
     redirection (`303 See Other`) with a Location header pointing to
     `https://honest.as.example/authorize?response_type=code&client_id=7ZGZldHQ`
- 5. The user authorizes the client to access her resources at
-    H-AS. H-AS issues a code and sends it (via the browser) back to
+ 4. The user authorizes the client to access her resources at
+    H-AS. (Note that a vigilant user might at this
+    point detect that she intended to use A-AS instead of H-AS. The first attack variant listed below avoids this.) H-AS issues a code and sends it (via the browser) back to
     the client.
   
- 6. Since the client still assumes that the code was issued by A-AS,
+ 5. Since the client still assumes that the code was issued by A-AS,
     it will try to redeem the code at A-AS's token endpoint.
   
- 7. The attacker therefore obtains code and can either exchange the
+ 6. The attacker therefore obtains code and can either exchange the
     code for an access token (for public clients) or perform an
     authorization code injection attack as described in
     (#code_injection).
 
 
 Variants:
-
-  * **Mix-Up Without Interception**: A variant of the above attack
-    works even if the first request/response pair cannot be
-    intercepted, for example, because TLS is used to protect these
-    messages: Here, it is assumed that the user wants to start the
-    grant using A-AS (and not H-AS, see Attacker A1). After the client
-    redirected the user to the authorization endpoint at A-AS, the
-    attacker immediately redirects the user to H-AS (changing the
-    client ID to `7ZGZldHQ`). Note that a vigilant user might at this
-    point detect that she intended to use A-AS instead of H-AS. The
-    attack now proceeds exactly as in Steps 3ff. of the attack
-    description above.
+  * **Mix-Up With Interception**: This variant works only if the attacker can intercept and manipulate the first
+    request/response pair from a user's browser to the client (in
+    which the user selects a certain AS and is then redirected by the
+    client to that AS), as in Attacker A2. This capability can, for example, be the result of a
+man-in-the-middle attack on the user's connection to the client. In the attack, the user starts the flow with H-AS. The attacker intercepts this request and changes the user's selection to A-AS. The rest of the attack proceeds as in Steps 2 and following above.
   * **Implicit Grant**: In the implicit grant, the attacker receives
     an access token instead of the code; the rest of the attack works
     as above.
@@ -442,17 +425,17 @@ issuer they sent the authorization request to and bind this information to the
 user agent. The issuer serves, via the associated metadata, as an abstract
 identifier for the combination of the authorization endpoint and token endpoint
 that are to be used in the flow. If an issuer identifier is not available, for
-example, if neither OAuth metadata [@!RFC8414] nor OpenID Connect [@!OpenID] are
+example, if neither OAuth metadata [@!RFC8414] nor OpenID Connect Discovery [@!OpenIDDisc] are
 used, a different unique identifier for this tuple or the tuple itself can be
 used instead. For brevity of presentation, such a deployment-specific identifier
 will be subsumed under the issuer (or issuer identifier) in the following. 
 
 Note: Just storing the authorization server URL is not sufficient to identify
-mix-up attacks. An attacker might declare an uncompromised AS's endpoint URL as
+mix-up attacks. An attacker might declare an uncompromised AS's authorization endpoint URL as
 "his" AS URL, but declare a token endpoint under his own control.
 
 #### Mix-Up Defense via Issuer Identification    
-This defense requires that the authorization server sends the issuer identifier
+This defense requires that the authorization server sends his issuer identifier
 in the authorization response to the client. When receiving the authorization
 response, the client MUST compare the received issuer identifier to the stored
 issuer identifier. If there is a mismatch, the client MUST abort the
@@ -460,16 +443,16 @@ interaction.
 
 There are different ways this issuer identifier can be transported to the client:
 
+ * The issuer information can be transported, for
+   example, via a separate response parameter `iss`, defined in
+   [@draft-ietf-oauth-iss-auth-resp].
  * When OpenID Connect is used and an ID Token is returned in the authorization
    response, the client can evaluate the `iss` Claim in the ID Token.
- * Otherwise, the issuer information needs to be transported separately, for
-   example via a separate response parameter `iss`, defined in
-   [@draft-ietf-oauth-iss-auth-resp].
 
 In both cases, the `iss` value MUST be evaluated according to [@draft-ietf-oauth-iss-auth-resp].
 
 While this defense may require deploying new OAuth features to transport the
-`iss`, it is a robust and relatively simple defense against mix-up.
+issuer information, it is a robust and relatively simple defense against mix-up.
 
 #### Mix-Up Defense via Distinct Redirect URIs
 For this defense, clients MUST use a distinct redirect URI for each issuer

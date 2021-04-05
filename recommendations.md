@@ -35,7 +35,7 @@ SHOULD
   * use the `iss` parameter as a countermeasure according to
     [@draft-ietf-oauth-iss-auth-resp], or 
   * use an alternative countermeasure based on an `iss` value in the
-    authorization response (such as the `iss` parameter in the ID Token in
+    authorization response (such as the `iss` Claim in the ID Token in
     [@!OpenID] or in [@JARM] responses), processing it as described in
     [@draft-ietf-oauth-iss-auth-resp].
 
