@@ -28,16 +28,20 @@ use CSRF tokens carried in the `state` parameter that are securely
 bound to the user agent MUST be used for CSRF protection (see
 (#csrf_countermeasures)).
         
-In order to prevent mix-up attacks (see (#mix_up)), clients MUST only process
-redirect responses of the authorization server they sent the respective request
-to and from the same user agent this authorization request was initiated with.
-Clients MUST store the authorization server they sent an authorization request
-to and bind this information to the user agent and check that the authorization
-request was received from the correct authorization server. Clients MUST ensure
-that the subsequent token request, if applicable, is sent to the same
-authorization server. Clients SHOULD use distinct redirect URIs for each
-authorization server as a means to identify the authorization server a
-particular response came from.
+When an OAuth client can interact with more than one authorization server, a
+defense against mix-up attacks (see (#mix_up)) is REQUIRED. To this end, clients
+SHOULD 
+
+  * use the `iss` parameter as a countermeasure according to
+    [@draft-ietf-oauth-iss-auth-resp], or 
+  * use an alternative countermeasure based on an `iss` value in the
+    authorization response (such as the `iss` Claim in the ID Token in
+    [@!OpenID] or in [@JARM] responses), processing it as described in
+    [@draft-ietf-oauth-iss-auth-resp].
+
+In the absence of these options, clients MAY instead use distinct redirect URIs
+to identify authorization endpoints and token endpoints, as described in
+(#mixupcountermeasures).
 
 An AS that redirects a request potentially containing user credentials
 MUST avoid forwarding these user credentials accidentally (see
@@ -189,7 +193,7 @@ number of attacks.
 ## Other Recommendations
 
 Authorization servers SHOULD NOT allow clients to influence their
-`client_id` or `sub` value or any other claim if that can cause
+`client_id` or `sub` value or any other Claim if that can cause
 confusion with a genuine resource owner (see (#client_impersonating)).
 
 It is RECOMMENDED to use end-to-end TLS. If TLS
