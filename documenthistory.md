@@ -4,7 +4,8 @@
 
    -17
 
-   * Update recommendations regarding mix-up defense builds upon [@draft-ietf-oauth-iss-auth-resp].
+   * Update recommendations regarding mix-up defense, builds upon [@draft-ietf-oauth-iss-auth-resp].
+   * Improve description of mix-up attack.
 
    -16
    
