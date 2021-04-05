@@ -4,6 +4,8 @@
 
    -17
    
+   * Make the use of metadata RECOMMENDED for both servers and clients
+   * Make announcing PKCE support in metadata the RECOMMENDED way (before: either metadata or deployment-specific way)
    * AS also MUST NOT expose open redirectors.
    * Mention that attackers can collaborate.
    * Update recommendations regarding mix-up defense, builds upon [@draft-ietf-oauth-iss-auth-resp].

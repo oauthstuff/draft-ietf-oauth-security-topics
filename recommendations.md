@@ -72,10 +72,10 @@ by PKCE. Currently, `S256` is the only such method.
 Authorization servers MUST support PKCE [@!RFC7636].
 
 Authorization servers MUST provide a way to detect their support for
-PKCE. To this end, they MUST either (a) publish the element
+PKCE. It is RECOMMENDED for AS to publish the element
 `code_challenge_methods_supported` in their AS metadata ([@!RFC8414])
 containing the supported PKCE challenge methods (which can be used by
-the client to detect PKCE support) or (b) provide a
+the client to detect PKCE support). AS MAY instead provide a
 deployment-specific way to ensure or determine PKCE support by the AS.
 
 Authorization servers MUST mitigate PKCE Downgrade Attacks by ensuring that a
@@ -191,6 +191,20 @@ number of attacks.
 
 
 ## Other Recommendations
+
+The use of OAuth Metadata [@!RFC8414] can help to improve the security of OAuth
+deployments: 
+
+ * It ensures that security features and other new OAuth features can be enabled
+   automatically by compliant software libraries. 
+ * It reduces chances for misconfigurations, for example misconfigured endpoint
+   URLs (that might belong to an attacker) or misconfigured security features.
+ * It can help to facilitate rotation of cryptographic keys and to ensure
+   cryptographic agility.
+
+It is therefore RECOMMENDED that AS publish OAuth metadata according to
+[@!RFC8414] and that clients make use of this metadata to configure themselves
+when available.
 
 Authorization servers SHOULD NOT allow clients to influence their
 `client_id` or `sub` value or any other Claim if that can cause
