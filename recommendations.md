@@ -193,7 +193,7 @@ number of attacks.
 ## Other Recommendations
 
 Authorization servers SHOULD NOT allow clients to influence their
-`client_id` or `sub` value or any other claim if that can cause
+`client_id` or `sub` value or any other Claim if that can cause
 confusion with a genuine resource owner (see (#client_impersonating)).
 
 It is RECOMMENDED to use end-to-end TLS. If TLS

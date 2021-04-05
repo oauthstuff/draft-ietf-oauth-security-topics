@@ -1298,7 +1298,7 @@ on the client policy or the grant associated with the refresh token
 ## Client Impersonating Resource Owner {#client_impersonating}
    
 Resource servers may make access control decisions based on the
-identity of the resource owner as communicated in the `sub` claim
+identity of the resource owner as communicated in the `sub` Claim
 returned by the authorization server in a token introspection response
 [@!RFC7662] or other mechanisms. If a client is able to choose its own
 `client_id` during registration with the authorization server, then
@@ -1311,7 +1311,7 @@ checks.
 ### Countermeasures {#client_impersonating_countermeasures}
 
 Authorization servers SHOULD NOT allow clients to influence their
-`client_id` or `sub` value or any other claim if that can cause
+`client_id` or `sub` value or any other Claim if that can cause
 confusion with a genuine resource owner. Where this cannot be avoided,
 authorization servers MUST provide other means for the resource server
 to distinguish between access tokens authorized by a resource owner
