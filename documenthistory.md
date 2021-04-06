@@ -10,6 +10,7 @@
    * Mention that attackers can collaborate.
    * Update recommendations regarding mix-up defense, builds upon [@draft-ietf-oauth-iss-auth-resp].
    * Improve description of mix-up attack.
+   * Make HTTPS mandatory for most redirect URIs.
 
    -16
    
