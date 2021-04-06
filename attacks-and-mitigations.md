@@ -408,8 +408,8 @@ man-in-the-middle attack on the user's connection to the client. In the attack, 
     observed in practice. Refer to [@oauth_security_jcs_14] for details.
   * **OpenID Connect**: There are variants that can be used to attack
     OpenID Connect. In these attacks, the attacker misuses features of
-    the OpenID Connect Discovery mechanism or replays access tokens or
-    ID Tokens to conduct a Mix-Up Attack. The attacks are described in
+    the OpenID Connect Discovery [@!OpenIDDisc] mechanism or replays access tokens or
+    ID Tokens to conduct a mix-up attack. The attacks are described in
     detail in [@arXiv.1704.08539], Appendix A, and
     [@arXiv.1508.04324v2], Section 6 ("Malicious Endpoints Attacks").
   
@@ -445,11 +445,11 @@ There are different ways this issuer identifier can be transported to the client
 
  * The issuer information can be transported, for
    example, via a separate response parameter `iss`, defined in
-   [@draft-ietf-oauth-iss-auth-resp].
+   [@I-D.ietf-oauth-iss-auth-resp].
  * When OpenID Connect is used and an ID Token is returned in the authorization
    response, the client can evaluate the `iss` Claim in the ID Token.
 
-In both cases, the `iss` value MUST be evaluated according to [@draft-ietf-oauth-iss-auth-resp].
+In both cases, the `iss` value MUST be evaluated according to [@I-D.ietf-oauth-iss-auth-resp].
 
 While this defense may require deploying new OAuth features to transport the
 issuer information, it is a robust and relatively simple defense against mix-up.
@@ -471,7 +471,7 @@ the client registration, it is harder to deploy automatically.
 Furthermore, an attacker might be able to circumvent the protection offered by
 this defense by registering a new client with the "honest" AS using the redirect
 URI that the client assigned to the attacker's AS. The attacker could then run
-the attack as in "Mix-Up Without Interception" described above, replacing the
+the attack as described above, replacing the
 client ID with the client ID of his newly created client.
 
 This defense SHOULD therefore only be used if other options are not available.

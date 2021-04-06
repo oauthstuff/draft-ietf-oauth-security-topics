@@ -1,5 +1,5 @@
 
-<reference anchor="OpenID" target="http://openid.net/specs/openid-connect-core-1_0.html">
+<reference anchor="OpenID" target="https://openid.net/specs/openid-connect-core-1_0.html">
   <front>
     <title>OpenID Connect Core 1.0 incorporating errata set 1</title>
     <author initials="N." surname="Sakimura" fullname="Nat Sakimura">
@@ -20,6 +20,40 @@
     <date day="8" month="Nov" year="2014"/>
   </front>
 </reference>
+
+<reference anchor="OpenIDDisc" target="https://openid.net/specs/openid-connect-discovery-1_0.html">
+  <front>
+    <title>OpenID Connect Discovery 1.0 incorporating errata set 1</title>
+    <author initials="N." surname="Sakimura" fullname="Nat Sakimura">
+      <organization>NRI</organization>
+    </author>
+    <author initials="J." surname="Bradley" fullname="John Bradley">
+      <organization>Ping Identity</organization>
+    </author>
+    <author initials="M." surname="Jones" fullname="Mike Jones">
+      <organization>Microsoft</organization>
+    </author>
+    <author initials="E." surname="Jay" fullname="Edmund Jay">
+      <organization>Illumila</organization>
+    </author>
+    <date day="8" month="Nov" year="2014"/>
+  </front>
+</reference>
+
+<reference anchor="JARM" target="https://openid.net/specs/openid-financial-api-jarm.html">
+  <front>
+    <title>Financial-grade API: JWT Secured Authorization Response Mode for OAuth 2.0 (JARM)</title>
+    <author initials="T." surname="Lodderstedt" fullname="Torsten Lodderstedt">
+      <organization>Yes</organization>
+    </author>
+    <author initials="B." surname="Campbell" fullname="Brian Campbell">
+      <organization>Ping</organization>
+    </author>
+   <date day="17" month="Oct" year="2018"/>
+  </front>
+</reference>
+
+
 
 <reference anchor="owasp_redir" target="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">
   <front>

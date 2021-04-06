@@ -33,11 +33,11 @@ defense against mix-up attacks (see (#mix_up)) is REQUIRED. To this end, clients
 SHOULD 
 
   * use the `iss` parameter as a countermeasure according to
-    [@draft-ietf-oauth-iss-auth-resp], or 
+    [@I-D.ietf-oauth-iss-auth-resp], or 
   * use an alternative countermeasure based on an `iss` value in the
     authorization response (such as the `iss` Claim in the ID Token in
     [@!OpenID] or in [@JARM] responses), processing it as described in
-    [@draft-ietf-oauth-iss-auth-resp].
+    [@I-D.ietf-oauth-iss-auth-resp].
 
 In the absence of these options, clients MAY instead use distinct redirect URIs
 to identify authorization endpoints and token endpoints, as described in
