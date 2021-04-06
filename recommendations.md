@@ -214,4 +214,4 @@ It is RECOMMENDED to use end-to-end TLS. If TLS
 traffic needs to be terminated at an intermediary, refer to
 (#tls_terminating) for further security advice.
 
-AS MUST NOT allow redirect URIs that do not use the `https` scheme, except for native clients that use redirect URIs pointing to the same device (using the `localhost` address or custom schemes).
+AS MUST only allow redirect URIs that use the `https` scheme, except for native clients that use redirect URIs pointing to the same device (using a `localhost` address or custom schemes).
