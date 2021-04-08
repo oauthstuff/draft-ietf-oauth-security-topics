@@ -360,9 +360,11 @@ Preconditions: For this variant of the attack to work, we assume that
     the user's browser and uses the same redirection endpoint URI for
     each AS. 
     
-In the following, we assume that the client is registered with H-AS
-(URI: `https://honest.as.example`, client ID: `7ZGZldHQ`) and with
-A-AS (URI: `https://attacker.example`, client ID: `666RVZJTA`). URLs shown in the following example are shorted for presentation to only include parameters relevant for the attack.
+In the following, we assume that the client is registered with H-AS (URI:
+`https://honest.as.example`, client ID: `7ZGZldHQ`) and with A-AS (URI:
+`https://attacker.example`, client ID: `666RVZJTA`). URLs shown in the following
+example are shorted for presentation to only include parameters relevant for the
+attack.
 
 Attack on the authorization code grant:
 
@@ -372,16 +374,16 @@ Attack on the authorization code grant:
     "A-AS" and redirects the user to A-AS's authorization endpoint
     with a Location header containing the URL
     `https://attacker.example/authorize?response_type=code&client_id=666RVZJTA`.
- 3. When the user's browser navigates to the attacker's authorization endpoint, the
-    attacker immediately redirects the browser to the authorization endpoint of H-AS. In the authorization request, the
-    attacker replaces the client ID of the client at A-AS with
-    the client's ID at H-AS. Therefore, the browser receives a
-    redirection (`303 See Other`) with a Location header pointing to
+ 3. When the user's browser navigates to the attacker's authorization endpoint,
+    the attacker immediately redirects the browser to the authorization endpoint
+    of H-AS. In the authorization request, the attacker replaces the client ID
+    of the client at A-AS with the client's ID at H-AS. Therefore, the browser
+    receives a redirection (`303 See Other`) with a Location header pointing to
     `https://honest.as.example/authorize?response_type=code&client_id=7ZGZldHQ`
- 4. The user authorizes the client to access her resources at
-    H-AS. (Note that a vigilant user might at this
-    point detect that she intended to use A-AS instead of H-AS. The first attack variant listed below avoids this.) H-AS issues a code and sends it (via the browser) back to
-    the client.
+ 4. The user authorizes the client to access her resources at H-AS. (Note that a
+    vigilant user might at this point detect that she intended to use A-AS
+    instead of H-AS. The first attack variant listed below avoids this.) H-AS
+    issues a code and sends it (via the browser) back to the client.
   
  5. Since the client still assumes that the code was issued by A-AS,
     it will try to redeem the code at A-AS's token endpoint.
@@ -393,25 +395,28 @@ Attack on the authorization code grant:
 
 
 Variants:
-  * **Mix-Up With Interception**: This variant works only if the attacker can intercept and manipulate the first
-    request/response pair from a user's browser to the client (in
-    which the user selects a certain AS and is then redirected by the
-    client to that AS), as in Attacker A2. This capability can, for example, be the result of a
-man-in-the-middle attack on the user's connection to the client. In the attack, the user starts the flow with H-AS. The attacker intercepts this request and changes the user's selection to A-AS. The rest of the attack proceeds as in Steps 2 and following above.
-  * **Implicit Grant**: In the implicit grant, the attacker receives
-    an access token instead of the code; the rest of the attack works
-    as above.
+
+  * **Mix-Up With Interception**: This variant works only if the attacker can
+    intercept and manipulate the first request/response pair from a user's
+    browser to the client (in which the user selects a certain AS and is then
+    redirected by the client to that AS), as in Attacker A2. This capability
+    can, for example, be the result of a man-in-the-middle attack on the user's
+    connection to the client. In the attack, the user starts the flow with H-AS.
+    The attacker intercepts this request and changes the user's selection to
+    A-AS. The rest of the attack proceeds as in Steps 2 and following above.
+  * **Implicit Grant**: In the implicit grant, the attacker receives an access
+    token instead of the code; the rest of the attack works as above.
   * **Per-AS Redirect URIs**: If clients use different redirect URIs for
     different ASs, do not store the selected AS in the user's session, and ASs
     do not check the redirect URIs properly, attackers can mount an attack
     called "Cross-Social Network Request Forgery". These attacks have been
     observed in practice. Refer to [@oauth_security_jcs_14] for details.
-  * **OpenID Connect**: There are variants that can be used to attack
-    OpenID Connect. In these attacks, the attacker misuses features of
-    the OpenID Connect Discovery [@!OpenIDDisc] mechanism or replays access tokens or
-    ID Tokens to conduct a mix-up attack. The attacks are described in
-    detail in [@arXiv.1704.08539], Appendix A, and
-    [@arXiv.1508.04324v2], Section 6 ("Malicious Endpoints Attacks").
+  * **OpenID Connect**: There are variants that can be used to attack OpenID
+    Connect. In these attacks, the attacker misuses features of the OpenID
+    Connect Discovery [@!OpenIDDisc] mechanism or replays access tokens or ID
+    Tokens to conduct a mix-up attack. The attacks are described in detail in
+    [@arXiv.1704.08539], Appendix A, and [@arXiv.1508.04324v2], Section 6
+    ("Malicious Endpoints Attacks").
   
 ### Countermeasures {#mixupcountermeasures}
 
