@@ -2,6 +2,11 @@
 
    [[ To be removed from the final specification ]]
 
+   -18
+
+   * Fix editorial and spelling issues.
+   * Change wording for disallowing HTTP redirect URIs.
+
    -17
    
    * Make the use of metadata RECOMMENDED for both servers and clients
