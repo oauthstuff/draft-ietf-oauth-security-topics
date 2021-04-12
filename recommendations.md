@@ -214,5 +214,6 @@ It is RECOMMENDED to use end-to-end TLS. If TLS
 traffic needs to be terminated at an intermediary, refer to
 (#tls_terminating) for further security advice.
 
-AS MUST NOT allow redirect URIs that use the `http` scheme or other schemes
-where the authorization response is transmitted unencrypted over a network.
+Except for native clients that use Loopback Interface Redirection as described
+in [@!RFC8252], Section 7.3, AS MUST NOT allow redirect URIs that use the `http`
+scheme.
