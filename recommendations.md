@@ -214,7 +214,7 @@ It is RECOMMENDED to use end-to-end TLS. If TLS
 traffic needs to be terminated at an intermediary, refer to
 (#tls_terminating) for further security advice.
 
-Authorization Responses MUST NOT be transmitted over unencrypted network
+Authorization responses MUST NOT be transmitted over unencrypted network
 connections. To this end, AS MUST NOT allow redirect URIs that use the `http`
 scheme except for native clients that use Loopback Interface Redirection as
 described in [@!RFC8252], Section 7.3.
