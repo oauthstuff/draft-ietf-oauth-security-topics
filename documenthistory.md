@@ -2,6 +2,11 @@
 
    [[ To be removed from the final specification ]]
 
+   -19
+
+   * Changed affiliation of Andrey Labunets
+   * Editorial change to clarify the new recommendations for refresh tokens
+
    -18
 
    * Fix editorial and spelling issues.

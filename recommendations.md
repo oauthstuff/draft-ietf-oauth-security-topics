@@ -127,8 +127,10 @@ Mutual TLS for OAuth 2.0 [@!RFC8705] (see (#pop_tokens)).
 
 ### Refresh Tokens
 
-Refresh tokens MUST be sender-constrained or use refresh token
-rotation as described in (#refresh_token_protection).
+Refresh tokens for public clients MUST be sender-constrained or use refresh
+token rotation as described in (#refresh_token_protection). [@!RFC6749] already
+mandates that refresh tokens for confidential clients can only be used by the
+client for which they were issued.
 
 
 ## Access Token Privilege Restriction

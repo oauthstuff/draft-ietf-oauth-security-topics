@@ -1227,8 +1227,8 @@ them to access resource servers on behalf of the resource owner.
   * the transmission of refresh tokens over TLS-protected connections between 
     authorization server and client,
   * the authorization server to maintain and check the binding of a refresh token 
-    to a certain client (i.e., `client_id`),
-  * authentication of this client during token refresh, if possible, and
+    to a certain client and authentication of this client during token refresh,
+    if possible, and
   * that refresh tokens cannot be generated, modified, or guessed.
 
 [@!RFC6749] also lays the foundation for further (implementation
