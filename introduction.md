@@ -7,22 +7,20 @@ login using OpenID Connect [@!OpenID]. While OAuth is used in a
 variety of scenarios and different kinds of deployments, the following
 challenges can be observed:
 
-  * OAuth implementations are being attacked through known
-	implementation weaknesses and anti-patterns. Although most of
-	these threats are discussed in the OAuth 2.0 Threat Model and
-	Security Considerations [@!RFC6819], continued exploitation
-	demonstrates a need for more specific recommendations, easier to
-	implement mitigations, and more defense in depth.
+  * OAuth implementations are being attacked through known implementation
+	  weaknesses and anti-patterns. Although most of these threats are discussed
+	  in the OAuth 2.0 Threat Model and Security Considerations [@!RFC6819],
+   	continued exploitation demonstrates a need for more specific
+	  recommendations, easier to implement mitigations, and more defense in depth.
     
-  * OAuth is being used in environments with higher security
-    requirements than considered initially, such as Open Banking,
-    eHealth, eGovernment, and Electronic Signatures. Those use cases
-    call for stricter guidelines and additional protection.
+  * OAuth is being used in environments with higher security requirements than
+    considered initially, such as Open Banking, eHealth, eGovernment, and
+    Electronic Signatures. Those use cases call for stricter guidelines and
+    additional protection.
 	  
-  * OAuth is being used in much more dynamic setups than originally
-	anticipated, creating new challenges with respect to security.
-	Those challenges go beyond the original scope of [@!RFC6749],
-	[@!RFC6750], and [@!RFC6819].
+  * OAuth is being used in much more dynamic setups than originally anticipated,
+	  creating new challenges with respect to security. Those challenges go beyond
+	  the original scope of [@!RFC6749], [@!RFC6750], and [@!RFC6819].
     
     OAuth initially assumed a static relationship between client,
     authorization server and resource servers. The URLs of AS and RS were
@@ -42,14 +40,20 @@ challenges can be observed:
     [@RFC8414] were developed in order to support the usage of OAuth in
     dynamic scenarios.
 	  
-  * Technology has changed. For example, the way browsers treat
-	fragments when redirecting requests has changed, and with it, the
-	implicit grant's underlying security model.
+  * Technology has changed. For example, the way browsers treat fragments when
+	  redirecting requests has changed, and with it, the implicit grant's
+	  underlying security model.
 	  
 This document provides updated security recommendations to address
 these challenges. It does not supplant the security advice given in
 [@!RFC6749], [@!RFC6750], and [@!RFC6819], but complements those
 documents.
+
+This document introduces new requirements and deprecates some modes of operation
+that are deemed less secure or even insecure. Naturally, not all existing
+ecosystems and implementations are compatible to the new requirements, but it is
+RECOMMENDED that implementers upgrade their implementations and ecosystems when
+feasible.
 	  
 ## Structure
 
