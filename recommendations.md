@@ -22,7 +22,7 @@ context, CSRF refers to requests to the redirection endpoint that do
 not originate at the authorization server, but a malicious third party
 (see Section 4.4.1.8. of [@RFC6819] for details). Clients that have
 ensured that the authorization server supports PKCE [@RFC7636] MAY
-rely the CSRF protection provided by PKCE. In OpenID Connect flows,
+rely on the CSRF protection provided by PKCE. In OpenID Connect flows,
 the `nonce` parameter provides CSRF protection. Otherwise, one-time
 use CSRF tokens carried in the `state` parameter that are securely
 bound to the user agent MUST be used for CSRF protection (see
@@ -75,7 +75,7 @@ Authorization servers MUST provide a way to detect their support for
 PKCE. It is RECOMMENDED for AS to publish the element
 `code_challenge_methods_supported` in their AS metadata ([@!RFC8414])
 containing the supported PKCE challenge methods (which can be used by
-the client to detect PKCE support). AS MAY instead provide a
+the client to detect PKCE support). ASs MAY instead provide a
 deployment-specific way to ensure or determine PKCE support by the AS.
 
 Authorization servers MUST mitigate PKCE Downgrade Attacks by ensuring that a
@@ -204,7 +204,7 @@ deployments:
  * It can help to facilitate rotation of cryptographic keys and to ensure
    cryptographic agility.
 
-It is therefore RECOMMENDED that AS publish OAuth metadata according to
+It is therefore RECOMMENDED that ASs publish OAuth metadata according to
 [@!RFC8414] and that clients make use of this metadata to configure themselves
 when available.
 
