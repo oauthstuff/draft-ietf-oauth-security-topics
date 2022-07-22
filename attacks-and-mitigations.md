@@ -1111,9 +1111,12 @@ where access tokens leak (see Attacker A5).
 
 ## Open Redirection {#open_redirection}
 
-The following attacks can occur when an AS or client has an open
-redirector. An open redirector is an endpoint that forwards a user’s
-browser to an arbitrary URI obtained from a query parameter.
+The following attacks can occur when an AS or client has an open redirector. An
+open redirector is an endpoint that forwards a user’s browser to an arbitrary
+URI obtained from a query parameter.  Such endpoints are sometimes implemented,
+for example, to show a message before a user is then redirected to an external
+website, or to redirect users back to a URL they were intending to visit before
+being interrupted, e.g., by a login prompt. 
 
 
 ### Client as Open Redirector {#open_redirector_on_client}
