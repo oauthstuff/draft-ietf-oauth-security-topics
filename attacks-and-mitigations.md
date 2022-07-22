@@ -520,7 +520,7 @@ The authorization code injection attack works as follows:
    
  1. The attacker obtains an authorization code (see attacker (A3)). For the rest
     of the attack, only the capabilities of a web attacker (A1) are required.
- 2. From his own device, the attacker starts a regular OAuth authorization
+ 2. From the attacker's own device, the attacker starts a regular OAuth authorization
     process with the legitimate client.
  3. In the response of the authorization server to the legitimate client, the
     attacker replaces the newly created authorization code with the stolen
@@ -630,7 +630,7 @@ as part of the code exchange at the token endpoint. If an attacker injected an
 authorization code in the authorization response, the nonce value in the client
 session and the nonce value in the ID token will not match and the attack is
 detected. The assumption is that an attacker cannot get hold of the user agent
-state on the victim's device, where he has stolen the respective authorization
+state on the victim's device, where the attacker has stolen the respective authorization
 code.
 
 It is important to note that this countermeasure only works if the client
