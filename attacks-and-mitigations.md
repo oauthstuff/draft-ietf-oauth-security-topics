@@ -1,4 +1,4 @@
-# Attacks and Mitigations
+# Attacks and Mitigations {#attacks_and_mitigations}
  
 This section gives a detailed description of attacks on OAuth
 implementations, along with potential countermeasures. Attacks and

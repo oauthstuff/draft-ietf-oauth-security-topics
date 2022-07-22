@@ -9,14 +9,39 @@
 
 # Acknowledgements {#Acknowledgements}
       
-We would like to thank Jim Manico, Phil Hunt, Nat Sakimura, Christian
-Mainka, Doug McDorman, Johan Peeters, Joseph Heenan, Brock Allen,
-Vittorio Bertocci, David Waite, Nov Matake, Tomek Stojecki, Dominick
-Baier, Neil Madden, William Dennis, Dick Hardt, Petteri Stenius,
-Annabelle Richard Backman, Aaron Parecki, George Fletscher, Brian
-Campbell, Konstantin Lapine, Tim Würtele, Guido Schmitz, Hans
-Zandbelt, Jared Jennings, Michael Peck, Pedram Hosseyni, Michael
-B. Jones, Travis Spencer, and Karsten Meyer zu Selhausen for their valuable feedback.
+We would like to thank 
+Brock Allen,
+Annabelle Richard Backman,
+Dominick Baier,
+Vittorio Bertocci,
+Brian Campbell,
+William Dennis,
+George Fletscher,
+Dick Hardt,
+Joseph Heenan,
+Pedram Hosseyni,
+Phil Hunt,
+Jared Jennings,
+Michael B. Jones,
+Konstantin Lapine,
+Neil Madden,
+Christian Mainka,
+Jim Manico,
+Nov Matake,
+Doug McDorman,
+Karsten Meyer zu Selhausen,
+Aaron Parecki,
+Michael Peck,
+Johan Peeters,
+Nat Sakimura,
+Guido Schmitz,
+Travis Spencer,
+Petteri Stenius,
+Tomek Stojecki,
+Tim Würtele,
+David Waite and
+Hans Zandbelt
+ for their valuable feedback.
     
 
 # IANA Considerations {#IANA}
@@ -26,6 +51,5 @@ This draft makes no requests to IANA.
 
 # Security Considerations {#Security}
       
-All relevant security considerations have been given in the
-functional specification.
+Security considerations are described in Sections (#recommendations) to (#attacks_and_mitigations).
     

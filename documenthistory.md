@@ -5,6 +5,8 @@
    -20
 
    * Improved description of authorization code injection attacks and PKCE protection
+   * Reworded "placeholder" text in security considerations.
+   * Alphabetized list of names
 
    -19
 
