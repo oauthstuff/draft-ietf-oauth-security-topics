@@ -6,11 +6,9 @@ area = "Security"
 workgroup = "Web Authorization Protocol"
 keyword = ["security", "oauth2", "best current practice"]
 
-date = 2021-12-16T12:00:00Z
-
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-ietf-oauth-security-topics-19"
+value = "draft-ietf-oauth-security-topics-20"
 stream = "IETF"
 status = "bcp"
 

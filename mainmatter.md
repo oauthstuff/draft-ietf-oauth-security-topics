@@ -38,7 +38,7 @@ Guido Schmitz,
 Travis Spencer,
 Petteri Stenius,
 Tomek Stojecki,
-Tim Würtele,
+Tim Wuertele,
 David Waite and
 Hans Zandbelt
  for their valuable feedback.
