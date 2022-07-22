@@ -1352,10 +1352,20 @@ from access tokens authorized by the client itself.
 
 ## Clickjacking {#clickjacking}
 
-As described in Section 4.4.1.9 of [@!RFC6819], the authorization 
-request is susceptible to clickjacking. An attacker can use this 
-vector to obtain the user's authentication credentials, change the 
-scope of access granted to the client, and potentially access the 
+As described in Section 4.4.1.9 of [@!RFC6819], the authorization request is
+susceptible to clickjacking attacks, also called user interface redressing. In
+such an attack, an attacker embeds the authorization endpoint user interface in
+an innocuous context. A user believing to interact with that context, for
+example, clicking on buttons, inadvertently interacts with the authorization
+endpoint user interface instead. The opposite can be achieved as well: A user
+believing to interact with the authorization endpoint might inadvertently type a
+password into an attacker-provided input field overlaid over the original user
+interface. Clickjacking attacks can be designed such that users can hardly
+notice the attack, for example using almost invisible iframes overlaid on top of
+other elements.
+
+An attacker can use this vector to obtain the user's authentication credentials,
+change the scope of access granted to the client, and potentially access the
 user's resources.
 
 Authorization servers MUST prevent clickjacking attacks. Multiple
