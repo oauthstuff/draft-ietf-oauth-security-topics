@@ -24,10 +24,10 @@ challenges can be observed:
 	Those challenges go beyond the original scope of [@!RFC6749],
 	[@!RFC6750], and [@!RFC6819].
     
-    OAuth initially assumed a static relationship between client,
-    authorization server and resource servers. The URLs of AS and RS were
+    OAuth initially assumed static relationships between client,
+    authorization server, and resource servers. The URLs of the AS and RS were
     known to the client at deployment time and built an anchor for the
-    trust relationship among those parties. The validation whether the
+    trust relationships among those parties. The validation of whether the
     client talks to a legitimate server was based on TLS server
     authentication (see [@!RFC6819], Section 4.5.4). With the increasing
     adoption of OAuth, this simple model dissolved and, in several
@@ -36,10 +36,10 @@ challenges can be observed:
     of a particular deployment on the other side. This way, the same
     client could be used to access services of different providers (in
     case of standard APIs, such as e-mail or OpenID Connect) or serve as a
-    frontend to a particular tenant in a multi-tenancy environment.
+    front end to a particular tenant in a multi-tenant environment.
     Extensions of OAuth, such as the OAuth 2.0 Dynamic Client Registration
     Protocol [@RFC7591] and OAuth 2.0 Authorization Server Metadata
-    [@RFC8414] were developed in order to support the usage of OAuth in
+    [@RFC8414] were developed to support the use of OAuth in
     dynamic scenarios.
 	  
   * Technology has changed. For example, the way browsers treat

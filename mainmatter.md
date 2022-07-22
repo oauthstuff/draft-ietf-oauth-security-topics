@@ -21,7 +21,7 @@ B. Jones, Travis Spencer, and Karsten Meyer zu Selhausen for their valuable feed
 
 # IANA Considerations {#IANA}
       
-  This draft includes no request to IANA.
+This draft makes no requests to IANA.
     
 
 # Security Considerations {#Security}

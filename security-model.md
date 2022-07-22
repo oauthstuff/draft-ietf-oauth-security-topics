@@ -27,7 +27,7 @@ least against the following attackers:
     open arbitrary attacker-chosen URIs at any time. In practice, this
     can be achieved in many ways, for example, by injecting malicious
     advertisements into advertisement networks, or by sending
-    legit-looking emails.
+    legitimate-looking emails.
     
     Web attackers can use their own user credentials to create new
     messages as well as any secrets they learned previously. For

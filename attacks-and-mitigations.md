@@ -210,7 +210,7 @@ from the AS's or the client's web site, respectively. Most
 importantly, authorization codes or `state` values can be disclosed in
 this way. Although specified otherwise in [@RFC7231], Section 5.5.2,
 the same may happen to access tokens conveyed in URI fragments due to
-browser implementation issues as illustrated by Chromium Issue 168213
+browser implementation issues, as illustrated by Chromium Issue 168213
 [@bug.chromium].
  
 ### Leakage from the OAuth Client
@@ -260,7 +260,7 @@ The following measures further reduce the chances of a successful attack:
     header in all requests originating from the resulting document.
   * Use authorization code instead of response types causing access
     token issuance from the authorization endpoint.
-  * Bind authorization code to a confidential client or PKCE
+  * Bind the authorization code to a confidential client or PKCE
     challenge. In this case, the attacker lacks the secret to request
     the code exchange.
   * As described in [@!RFC6749], Section 4.1.2, authorization codes
@@ -363,7 +363,7 @@ Preconditions: For this variant of the attack to work, we assume that
 In the following, we assume that the client is registered with H-AS (URI:
 `https://honest.as.example`, client ID: `7ZGZldHQ`) and with A-AS (URI:
 `https://attacker.example`, client ID: `666RVZJTA`). URLs shown in the following
-example are shorted for presentation to only include parameters relevant for the
+example are shortened for presentation to only include parameters relevant for the
 attack.
 
 Attack on the authorization code grant:
@@ -551,7 +551,7 @@ land at the attackers page). So the authorization server would detect
 the attack and refuse to exchange the code.
    
 Note: This check could also detect attempts to inject an authorization
-code which had been obtained from another instance of the same client
+code that had been obtained from another instance of the same client
 on another device, if certain conditions are fulfilled:
 
   * the redirect URI itself needs to contain a nonce or another kind
@@ -717,7 +717,7 @@ important to note that:
    contents of state to the browser session and/or signed/encrypted
    state values [@I-D.bradley-oauth-jwt-encoded-state].
 
-AS therefore MUST provide a way to detect their support for PKCE. Using AS
+The AS therefore MUST provide a way to detect their support for PKCE. Using AS
 metadata according to [@!RFC8414] is RECOMMENDED, but AS MAY instead provide a
 deployment-specific way to ensure or determine PKCE support.
 
@@ -738,8 +738,8 @@ at all (e.g., because the client relies on PKCE for CSRF prevention) or that the
 client is not checking `state` correctly.
 
 Roughly speaking, this attack is a variant of a CSRF attack. The attacker
-achieves the same goal as in the attack described in (#csrf): He injects an
-authorization code (and with that, an access token) that is bound to his
+achieves the same goal as in the attack described in (#csrf): The attacker injects an
+authorization code (and with that, an access token) that is bound to the attacker's
 resources into a session between his victim and the client.
 
 
@@ -759,7 +759,7 @@ resources into a session between his victim and the client.
  3. If the authorization server allows for flows without PKCE, it will create a
     code that is not bound to any PKCE code challenge.
  4. The attacker now redirects the user's browser to an authorization response
-    URL which contains the code for the attacker's session with the AS. 
+    URL that contains the code for the attacker's session with the AS.
  5. The user's browser sends the authorization code to the client, which will
     now try to redeem the code for an access token at the AS. The client will
     send `code_verifier=abc` as the PKCE code verifier in the token request. 
@@ -773,7 +773,7 @@ resources into a session between his victim and the client.
 Using `state` properly would prevent this attack. However, practice has shown
 that many OAuth clients do not use or check `state` properly. 
 
-Therefore, AS MUST take precautions against this threat. 
+Therefore, ASs MUST take precautions against this threat.
 
 Note that from the view of the AS, in the attack described above, a
 `code_verifier` parameter is received at the token endpoint although no
@@ -793,7 +793,7 @@ Beyond this, to prevent PKCE downgrade attacks, the AS MUST ensure that
 if there was no `code_challenge` in the authorization request, a request to
 the token endpoint containing a `code_verifier` is rejected.
 
-Note: AS that mandate the use of PKCE in general or for particular clients
+Note: ASs that mandate the use of PKCE in general or for particular clients
 implicitly implement this security measure.
 
    
@@ -816,7 +816,7 @@ provided with the resource server URL at runtime. This kind of late
 binding is typical in situations where the client uses a service
 implementing a standardized API (e.g., for e-Mail, calendar, health,
 or banking) and where the client is configured by a user or
-administrator for a service which this user or company uses.
+administrator for a service that this user or company uses.
 
 #### Countermeasures
      
@@ -826,7 +826,7 @@ discussed in the following sections.
 ##### Metadata
 
 An authorization server could provide the client with additional
-information about the location where it is safe to use its access
+information about the locations where it is safe to use its access
 tokens.
   
 In the simplest form, this would require the AS to publish a list of
@@ -868,23 +868,23 @@ parameter `access_token_resource_server`:
   
 This mitigation strategy would rely on the client to enforce the
 security policy and to only send access tokens to legitimate
-destinations. Results of OAuth related security research (see for
+destinations. Results of OAuth-related security research (see for
 example [@oauth_security_ubc] and [@oauth_security_cmu]) indicate a
 large portion of client implementations do not or fail to properly
 implement security controls, like `state` checks. So relying on
 clients to prevent access token phishing is likely to fail as well.
-Moreover given the ratio of clients to authorization and resource
+Moreover, given the ratio of clients to authorization and resource
 servers, it is considered the more viable approach to move as much as
 possible security-related logic to those entities. Clearly, the client
 has to contribute to the overall security. But there are alternative
-countermeasures, as described in the next sections, which provide a
+countermeasures, as described in the next sections, that provide a
 better balance between the involved parties.
   
   
 ##### Sender-Constrained Access Tokens {#pop_tokens} 
 
  
-As the name suggests, sender-constrained access token scope the
+As the name suggests, sender-constrained access tokens scope the
 applicability of an access token to a certain sender. This sender is
 obliged to demonstrate knowledge of a certain secret as prerequisite
 for the acceptance of that token at a resource server.
@@ -901,7 +901,7 @@ A typical flow looks like this:
     material already exists before the AS creates the binding or the
     AS creates ephemeral keys. The way pre-existing key material is
     distributed varies among the different approaches. For example,
-    X.509 Certificates can be used in which case the distribution
+    X.509 Certificates can be used, in which case the distribution
     happens explicitly during the enrollment process. Or the key
     material is created and distributed at the TLS layer, in which
     case it might automatically happen during the setup of a TLS
@@ -975,8 +975,8 @@ implemented and the only standardized sender-constraining method. The
 use of OAuth Mutual TLS therefore is RECOMMENDED.
 
 Note that the security of sender-constrained tokens is undermined when
-an attacker gets access to the token and the key material. This is in
-particular the case for corrupted client software and cross-site
+an attacker gets access to the token and the key material. This is, in
+particular, the case for corrupted client software and cross-site
 scripting attacks (when the client is running in the browser). If the
 key material is protected in a hardware or software security module or
 only indirectly accessible (like in a TLS stack), sender-constrained
@@ -992,7 +992,7 @@ Audience restriction essentially restricts access tokens to a
 particular resource server. The authorization server associates the
 access token with the particular resource server and the resource
 server SHOULD verify the intended audience. If the access token fails
-the intended audience validation, the resource server must refuse to
+the intended audience validation, the resource server MUST refuse to
 serve the respective request.
 
 In general, audience restrictions limit the impact of token leakage.
@@ -1001,7 +1001,7 @@ below) also prevent abuse of the phished access token at the
 legitimate resource server.
 
 The audience can be expressed using logical names or
-physical addresses (like URLs). In order to prevent phishing, it is
+physical addresses (like URLs). To prevent phishing, it is
 necessary to use the actual URL the client will send requests to. In
 the phishing case, this URL will point to the counterfeit resource
 server. If the attacker tries to use the access token at the
@@ -1026,21 +1026,21 @@ different CA. It might also be considered a privacy benefit to hide
 the resource server URL from the authorization server.
  
 Audience restriction may seem easier to use since it does not require
-any crypto on the client-side. Still, since every access token is
+any crypto on the client side. Still, since every access token is
 bound to a specific resource server, the client also needs to obtain a
 single RS-specific access token when accessing several resource
 servers. (Resource indicators, as specified in
 [@I-D.ietf-oauth-resource-indicators], can help to achieve this.)
 [@I-D.ietf-oauth-token-binding] has the same property since different
-token binding ids must be associated with the access token. Using
+token binding IDs must be associated with the access token. Using
 [@!RFC8705], on the other hand, allows a client to use the
 access token at multiple resource servers.
  
-It shall be noted that audience restrictions, or generally speaking an
+It should be noted that audience restrictions, or generally speaking an
 indication by the client to the authorization server where it wants to
 use the access token, has additional benefits beyond the scope of
 token leakage prevention. It allows the authorization server to create
-different access token whose format and content is specifically minted
+a different access token whose format and content is specifically minted
 for the respective server. This has huge functional and privacy
 advantages in deployments using structured access tokens.
   
@@ -1053,7 +1053,7 @@ from partial access to the system, e.g., its log files, to full
 control of the respective server.
    
 If the attacker were able to gain full control, including shell
-access, all controls can be circumvented and all resources be
+access, all controls can be circumvented and all resources can be
 accessed. The attacker would also be able to obtain other access
 tokens held on the compromised system that would potentially be valid
 to access other resource servers.
@@ -1066,7 +1066,7 @@ OAuth-related breaches and the replaying of captured access tokens.
 The following measures should be taken into account by implementers in
 order to cope with access token replay by malicious actors:
    
-  * Sender-constrained access tokens as described in (#pop_tokens)
+  * Sender-constrained access tokens, as described in (#pop_tokens),
     SHOULD be used to prevent the attacker from replaying the access
     tokens on other resource servers. Depending on the severity of the
     penetration, sender-constrained access tokens will also prevent
@@ -1138,11 +1138,11 @@ the user agent to the client's redirection endpoint.
 In [@!RFC6749], the HTTP status code 302 is used for this purpose, but
 "any other method available via the user-agent to accomplish this
 redirection is allowed". When the status code 307 is used for
-redirection instead, the user agent will send the user credentials via
+redirection instead, the user agent will send the user's credentials via
 HTTP POST to the client. 
 
-This discloses the sensitive credentials to the client. If the relying
-party is malicious, it can use the credentials to impersonate the user
+This discloses the sensitive credentials to the client. If the client
+is malicious, it can use the credentials to impersonate the user
 at the AS.
 
 The behavior might be unexpected for developers, but is defined in
@@ -1154,13 +1154,13 @@ In the HTTP standard [@!RFC7231], only the status code 303
 unambigiously enforces rewriting the HTTP POST request to an HTTP GET
 request. For all other status codes, including the popular 302, user
 agents can opt not to rewrite POST to GET requests and therefore to
-reveal the user credentials to the client. (In practice, however, most
+reveal the user's credentials to the client. (In practice, however, most
 user agents will only show this behaviour for 307 redirects.)
 
-AS which redirect a request that potentially contains user credentials
+ASs that redirect a request that potentially contains the user's credentials
 therefore MUST NOT use the HTTP 307 status code for redirection. If an
 HTTP redirection (and not, for example, JavaScript) is used for such a
-request, AS SHOULD use HTTP status code 303 "See Other".
+request, the AS SHOULD use HTTP status code 303 (See Other).
   
 
 ## TLS Terminating Reverse Proxies {#tls_terminating}
@@ -1190,16 +1190,16 @@ the logic performed in the application server, the attacker could
 simply add a whitelisted IP address to the header and render a IP
 whitelist useless. 
 
-A reverse proxy must therefore sanitize any inbound requests to ensure
+A reverse proxy MUST therefore sanitize any inbound requests to ensure
 the authenticity and integrity of all header values relevant for the
 security of the application servers.
    
-If an attacker was able to get access to the internal network between
+If an attacker were able to get access to the internal network between
 proxy and application server, the attacker could also try to
 circumvent security controls in place. It is, therefore, essential to
 ensure the authenticity of the communicating entities. Furthermore,
 the communication link between reverse proxy and application server
-must be protected against eavesdropping, injection, and replay of
+MUST be protected against eavesdropping, injection, and replay of
 messages.
   
   
@@ -1208,13 +1208,13 @@ messages.
 
 Refresh tokens are a convenient and user-friendly way to obtain new access
 tokens after the expiration of access tokens. Refresh tokens also add
-to the security of OAuth since they allow the authorization server to issue
-access tokens with a short lifetime and reduced scope thus reducing the 
+to the security of OAuth, since they allow the authorization server to issue
+access tokens with a short lifetime and reduced scope, thus reducing the
 potential impact of access token leakage.
 
 ### Discussion
 
-Refresh tokens are an attractive target for attackers since they
+Refresh tokens are an attractive target for attackers, since they
 represent the overall grant a resource owner delegated to a certain
 client. If an attacker is able to exfiltrate and successfully replay a
 refresh token, the attacker will be able to mint access tokens and use
@@ -1234,7 +1234,7 @@ them to access resource servers on behalf of the resource owner.
 [@!RFC6749] also lays the foundation for further (implementation
 specific) security measures, such as refresh token expiration and
 revocation as well as refresh token rotation by defining respective
-error codes and response behavior.
+error codes and response behaviors.
     
    
 This specification gives recommendations beyond the scope of
