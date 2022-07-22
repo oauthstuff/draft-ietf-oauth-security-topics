@@ -718,10 +718,10 @@ variant of an attack known as Cross-Site Request Forgery (CSRF).
 
 ### Countermeasures {#csrf_countermeasures}
  
-The traditional countermeasure are CSRF tokens that are bound to the
-user agent and passed in the `state` parameter to the authorization
-server as described in [@!RFC6819]. The same protection is provided by
-PKCE or the OpenID Connect `nonce` value.
+The traditional countermeasure is that clients pass a value in the `state`
+parameter that links the request to the redirect URI to the user agent session
+as described in detail in [@!RFC6819], Section 5.3.5. The same protection is
+provided by PKCE or the OpenID Connect `nonce` value.
 
 When using PKCE instead of `state` or `nonce` for CSRF protection, it is
 important to note that:
