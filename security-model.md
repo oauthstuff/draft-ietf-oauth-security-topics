@@ -62,12 +62,13 @@ the following, stronger attackers in addition to those listed above:
     authorization response (i.e., the authorization response can leak
     to an attacker).
     
-    Examples for such attacks include open redirector attacks, problems existing
-    on mobile operating systems (where different apps can register themselves on
-    the same URI), mix-up attacks (see (#mix_up)), where the client is tricked
-    into sending credentials to a attacker-controlled AS, and the fact that URLs
-    are often stored/logged by browsers (history), proxy servers, and operating
-    systems.
+    Examples for such attacks include open redirector attacks, insufficient
+    checking of redirect URIs (see (#insufficient_uri_validation)), problems
+    existing on mobile operating systems (where different apps can register
+    themselves on the same URI), mix-up attacks (see (#mix_up)), where the
+    client is tricked into sending credentials to a attacker-controlled AS, and
+    the fact that URLs are often stored/logged by browsers (history), proxy
+    servers, and operating systems.
   * (A4) Attackers that can read, but not modify, the contents of the
     authorization request (i.e., the authorization request can leak,
     in the same manner as above, to an attacker).

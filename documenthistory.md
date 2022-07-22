@@ -2,6 +2,10 @@
 
    [[ To be removed from the final specification ]]
 
+   -20
+
+   * Improved description of authorization code injection attacks and PKCE protection
+
    -19
 
    * Changed affiliation of Andrey Labunets

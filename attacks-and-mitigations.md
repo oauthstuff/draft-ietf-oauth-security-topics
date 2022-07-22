@@ -482,43 +482,55 @@ client ID with the client ID of his newly created client.
 This defense SHOULD therefore only be used if other options are not available.
 
 ## Authorization Code Injection {#code_injection}
-  
-In an authorization code injection attack, the attacker attempts to
-inject a stolen authorization code into the attacker's own session
-with the client. The aim is to associate the attacker's session at the
-client with the victim's resources or identity.
 
-This attack is useful if the attacker cannot exchange the
-authorization code for an access token himself. Examples include:
-   
-  * The code is bound to a particular confidential client and the
-    attacker is unable to obtain the required client credentials to
-    redeem the code himself.
+An attacker that has gained access to an authorization code contained in an
+authorization response (see attacker model (A3)) can try to redeem the
+authorization code for an access token or otherwise make use of the
+authorization code.
+
+In the case that the authorization code was created for a public client, the
+attacker can send the authorization code to the token endpoint of the
+authorization server and thereby get an access token. This attack was described
+in Section 4.4.1.1 of [@RFC6819].
+
+For confidential clients, or in some special situations, the attacker can
+execute an authorization code injection attack, as described in the following. 
+
+In an authorization code injection attack, the attacker attempts to inject a
+stolen authorization code into the attacker's own session with the client. The
+aim is to associate the attacker's session at the client with the victim's
+resources or identity, thereby giving the attacker at least limited access to
+the victum's resources.
+
+Besides circumventing the client authentication of confidential clients, other
+use cases for this attack include:
+
   * The attacker wants to access certain functions in this particular
     client. As an example, the attacker wants to impersonate his
     victim in a certain app or on a certain web site.
   * The authorization or resource servers are limited to certain
     networks that the attacker is unable to access directly.
-    
-In the following attack description and discussion, we assume the
-presence of a web (A1) or network attacker (A2).
+
+Except in these special cases, authorization code injection is usually not
+interesting when the code was created for a public client, as sending the code
+to the token endpoint is a simpler and more powerful attack, as described above.
    
 ### Attack Description
-The attack works as follows:
+The authorization code injection attack works as follows:
    
- 1. The attacker obtains an authorization code by performing any of
-    the attacks described above.
- 2. He starts a regular OAuth authorization process with the
-    legitimate client from his device.
- 3. The attacker injects the stolen authorization code in the response
-    of the authorization server to the legitimate client. Since this
-    response is passing through the attacker's device, the attacker
-    can use any tool that can intercept and manipulate the
-    authorization response to this end. The attacker does not need to
-    control the network.
- 4. The legitimate client sends the code to the authorization server's
-    token endpoint, along with the client's client ID, client secret
-    and actual `redirect_uri`.
+ 1. The attacker obtains an authorization code (see attacker (A3)). For the rest
+    of the attack, only the capabilities of a web attacker (A1) are required.
+ 2. From the attacker's own device, the attacker starts a regular OAuth authorization
+    process with the legitimate client.
+ 3. In the response of the authorization server to the legitimate client, the
+    attacker replaces the newly created authorization code with the stolen
+    authorization code. Since this response is passing through the attacker's
+    device, the attacker can use any tool that can intercept and manipulate the
+    authorization response to this end. The attacker does not need to control
+    the network.
+ 4. The legitimate client sends the code to the authorization server's token
+    endpoint, along with the `redirect_uri` and the client's client ID and
+    client secret (or other means of client authentication).
  5. The authorization server checks the client secret, whether the
     code was issued to the particular client, and whether the actual
     redirect URI matches the `redirect_uri` parameter (see
@@ -580,6 +592,9 @@ It is also assumed that the requirements defined in [@!RFC6749],
 Section 4.1.3, increase client implementation complexity as clients
 need to store or re-construct the correct redirect URI for the call
 to the token endpoint.
+
+Asymmetric methods for client authentication do not stop this attack, as the
+legitimate client authenticates at the token endpoint.
    
 This document therefore recommends to instead bind every authorization
 code to a certain client instance on a certain device (or in a certain
@@ -591,45 +606,49 @@ mechanisms described next.
 There are two good technical solutions to achieve this goal, outlined
 in the following.
 
-#### PKCE
+#### PKCE {#pkce_as_injection_protection}
 
-The PKCE parameter `code_challenge` along with the corresponding
-`code_verifier` as specified in [@!RFC7636] can be used as a
-countermeasure. When the attacker attempts to inject an authorization code, the verifier
-check fails: the client uses its correct verifier, but the code
-is associated with a challenge that does not match this verifier. PKCE is a deployed
-OAuth feature, although its originally intended use was solely focused
-on securing native apps, not the broader use recommended by this
-document.
-    
+The PKCE mechanism specified in [@!RFC7636] can be used as a countermeasure.
+When the attacker attempts to inject an authorization code, the check of the
+`code_verifier` fails: the client uses its correct verifier, but the code is
+associated with a `code_challenge` that does not match this verifier. PKCE is a
+deployed OAuth feature, although its originally intended use was solely focused
+on securing native apps, not the broader use recommended by this document.
+
+PKCE does not only protect against the autorization code injection attack, but
+also protects authorization codes created for public clients: PKCE ensures that
+an attacker cannot redeem a stolen authorization code at the token endpoint of
+the authorization server without knowledge of the `code_verifier`. 
     
 #### Nonce {#nonce_as_injection_protection}
 
-OpenID Connect's existing `nonce` parameter can be used for the same
-purpose. The `nonce` value is one-time use and created by the client.
-The client is supposed to bind it to the user agent session and sends
-it with the initial request to the OpenID Provider (OP). The OP binds
-`nonce` to the authorization code and attests this binding in the ID
-Token, which is issued as part of the code exchange at the token
-endpoint. If an attacker injected an authorization code in the
-authorization response, the nonce value in the client session and the
-nonce value in the ID token will not match and the attack is detected.
-The assumption is that an attacker cannot get hold of the user agent
-state on the victim's device, where he has stolen the respective
-authorization code.
+OpenID Connect's existing `nonce` parameter can protect against authorization
+code injection attacks. The `nonce` value is one-time use and created by the
+client. The client is supposed to bind it to the user agent session and sends it
+with the initial request to the OpenID Provider (OP). The OP puts the received `nonce` value into the ID Token that is issued
+as part of the code exchange at the token endpoint. If an attacker injected an
+authorization code in the authorization response, the nonce value in the client
+session and the nonce value in the ID token will not match and the attack is
+detected. The assumption is that an attacker cannot get hold of the user agent
+state on the victim's device, where the attacker has stolen the respective authorization
+code.
 
-It is important to note that this countermeasure only works if the
-client properly checks the `nonce` parameter in the ID Token and does
-not use any issued token until this check has succeeded. More
-precisely, a client protecting itself against code injection using the
-`nonce` parameter,
+It is important to note that this countermeasure only works if the client
+properly checks the `nonce` parameter in the ID Token and does not use any
+issued token until this check has succeeded. More precisely, a client protecting
+itself against code injection using the `nonce` parameter,
 
-  1. MUST validate the `nonce` in the ID Token obtained from the
-     token endpoint, even if another ID Token was obtained from the
-     authorization response (e.g., `response_type=code+id_token`), and
-  1. MUST ensure that, unless and until that check succeeds, all
-     tokens (ID Tokens and the access token) are disregarded and not
-     used for any other purpose.
+  1. MUST validate the `nonce` in the ID Token obtained from the token endpoint,
+     even if another ID Token was obtained from the authorization response
+     (e.g., `response_type=code+id_token`), and
+  1. MUST ensure that, unless and until that check succeeds, all tokens (ID
+     Tokens and the access token) are disregarded and not used for any other
+     purpose.
+
+It is important to note that `nonce` does not protect authorization codes of
+public clients, as an attacker does not need to execute an authorization code
+injection attack. Instead, an attacker can directly call the token endpoint with
+the stolen authorization code.
 
 #### Other Solutions
     
@@ -720,6 +739,15 @@ important to note that:
 The AS therefore MUST provide a way to detect their support for PKCE. Using AS
 metadata according to [@!RFC8414] is RECOMMENDED, but AS MAY instead provide a
 deployment-specific way to ensure or determine PKCE support.
+
+PKCE provides robust protection against CSRF attacks even in presence of an (A3)
+attacker (which can read the authorization response). When `state` is used or an
+ID Token is returned in the authorization response (e.g.,
+`response_type=code+id_token`), the attacker either learns the `state` value and
+can replay it into the forged authorization response, or can extract the `nonce`
+from the ID Token and use it in a new request to the authorization server to
+mint an ID Token with the same `nonce`. The new ID Token can then be used for
+the CSRF attack.
 
 ## PKCE Downgrade Attack
 
