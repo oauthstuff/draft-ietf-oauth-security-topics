@@ -9,6 +9,7 @@
    * Alphabetized list of names and fixed unicode problem
    * Explained Clickjacking
    * Explained Open Redirectors
+   * Clarified references to attacker model by including a link to (#secmodel)
 
    -19
 

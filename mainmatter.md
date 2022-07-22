@@ -51,5 +51,5 @@ This draft makes no requests to IANA.
 
 # Security Considerations {#Security}
       
-Security considerations are described in Sections (#recommendations) to (#attacks_and_mitigations).
+Security considerations are described in (#recommendations), (#secmodel), and (#attacks_and_mitigations).
     

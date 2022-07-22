@@ -53,7 +53,7 @@ The attack can then be conducted as follows:
 
 First, the attacker needs to trick the user into opening a tampered
 URL in his browser that launches a page under the attacker's
-control, say `https://www.evil.example` (see Attacker A1.)
+control, say `https://www.evil.example` (see Attacker A1 in (#secmodel)).
 
 This URL initiates the following authorization request with the client
 ID of a legitimate client to the authorization endpoint (line breaks
@@ -399,7 +399,7 @@ Variants:
   * **Mix-Up With Interception**: This variant works only if the attacker can
     intercept and manipulate the first request/response pair from a user's
     browser to the client (in which the user selects a certain AS and is then
-    redirected by the client to that AS), as in Attacker A2. This capability
+    redirected by the client to that AS), as in Attacker A2 (see (#secmodel)). This capability
     can, for example, be the result of a man-in-the-middle attack on the user's
     connection to the client. In the attack, the user starts the flow with H-AS.
     The attacker intercepts this request and changes the user's selection to
@@ -484,7 +484,7 @@ This defense SHOULD therefore only be used if other options are not available.
 ## Authorization Code Injection {#code_injection}
 
 An attacker that has gained access to an authorization code contained in an
-authorization response (see attacker model (A3)) can try to redeem the
+authorization response (see Attacker A3 in (#secmodel)) can try to redeem the
 authorization code for an access token or otherwise make use of the
 authorization code.
 
@@ -518,7 +518,7 @@ to the token endpoint is a simpler and more powerful attack, as described above.
 ### Attack Description
 The authorization code injection attack works as follows:
    
- 1. The attacker obtains an authorization code (see attacker (A3)). For the rest
+ 1. The attacker obtains an authorization code (see attacker A3 in (#secmodel)). For the rest
     of the attack, only the capabilities of a web attacker (A1) are required.
  2. From the attacker's own device, the attacker starts a regular OAuth authorization
     process with the legitimate client.
@@ -740,9 +740,9 @@ The AS therefore MUST provide a way to detect their support for PKCE. Using AS
 metadata according to [@!RFC8414] is RECOMMENDED, but AS MAY instead provide a
 deployment-specific way to ensure or determine PKCE support.
 
-PKCE provides robust protection against CSRF attacks even in presence of an (A3)
-attacker (which can read the authorization response). When `state` is used or an
-ID Token is returned in the authorization response (e.g.,
+PKCE provides robust protection against CSRF attacks even in presence of an that
+can read the authorization response (see Attacker A3 in (#secmodel)). When
+`state` is used or an ID Token is returned in the authorization response (e.g.,
 `response_type=code+id_token`), the attacker either learns the `state` value and
 can replay it into the forged authorization response, or can extract the `nonce`
 from the ID Token and use it in a new request to the authorization server to
@@ -834,7 +834,7 @@ circumstances.
   
 An attacker may setup his own resource server and trick a client into
 sending access tokens to it that are valid for other resource servers
-(see Attackers A1 and A5). If the client sends a valid access token to
+(see Attackers A1 and A5 in (#secmodel)). If the client sends a valid access token to
 this counterfeit resource server, the attacker in turn may use that
 token to access other services on behalf of the resource owner.
 
@@ -1107,7 +1107,7 @@ order to cope with access token replay by malicious actors:
     not store them in plain text.
     
 The first and second recommendation also apply to other scenarios
-where access tokens leak (see Attacker A5).
+where access tokens leak (see Attacker A5 in (#secmodel)).
 
 ## Open Redirection {#open_redirection}
 
