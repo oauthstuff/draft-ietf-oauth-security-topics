@@ -50,8 +50,8 @@ MUST avoid forwarding these user credentials accidentally (see
 
 ### Authorization Code Grant {#ac}
 
-Clients MUST prevent misuse of authorization codes and authorization code
-injection attacks (see (#code_injection)) using one of the following options:
+Clients MUST prevent authorization code
+injection attacks (see (#code_injection)) and misuse of authorization codes using one of the following options:
 
  * Public clients MUST use PKCE [@!RFC7636] to this end, as motivated in
    (#pkce_as_injection_protection). 

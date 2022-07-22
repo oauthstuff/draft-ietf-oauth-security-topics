@@ -625,8 +625,7 @@ the authorization server without knowledge of the `code_verifier`.
 OpenID Connect's existing `nonce` parameter can protect against authorization
 code injection attacks. The `nonce` value is one-time use and created by the
 client. The client is supposed to bind it to the user agent session and sends it
-with the initial request to the OpenID Provider (OP). The OP binds `nonce` to
-the authorization code and attests this binding in the ID Token, which is issued
+with the initial request to the OpenID Provider (OP). The OP puts the received `nonce` value into the ID Token that is issued
 as part of the code exchange at the token endpoint. If an attacker injected an
 authorization code in the authorization response, the nonce value in the client
 session and the nonce value in the ID token will not match and the attack is
