@@ -1303,8 +1303,7 @@ detect refresh token replay by malicious actors for public clients:
     
   * **Sender-constrained refresh tokens:** the authorization server
     cryptographically binds the refresh token to a certain client
-    instance by utilizing [@!RFC8705] or
-    [@I-D.ietf-oauth-token-binding].
+    instance, e.g., by utilizing [@!RFC8705] or [@I-D.ietf-oauth-dpop].
   * **Refresh token rotation:** the authorization server issues a new
     refresh token with every access token refresh response. The
     previous refresh token is invalidated but information about the
