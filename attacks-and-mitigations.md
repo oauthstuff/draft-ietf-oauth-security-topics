@@ -1342,25 +1342,25 @@ on the client policy or the grant associated with the refresh token
 
 ## Client Impersonating Resource Owner {#client_impersonating}
    
-Resource servers may make access control decisions based on the
-identity of the resource owner as communicated in the `sub` Claim
-returned by the authorization server in a token introspection response
-[@!RFC7662] or other mechanisms. If a client is able to choose its own
-`client_id` during registration with the authorization server, then
-there is a risk that it can register with the same `sub` value as a
-privileged user. A subsequent access token obtained under the client
-credentials grant may be mistaken for an access token authorized by the
-privileged user if the resource server does not perform additional
-checks.
+Resource servers may make access control decisions based on the identity of a
+resource owner, for which an access token was issued, or based on the identity
+of a client in the client credentials grant. If both options are possible,
+depending on the details of the implementation, a client's identity may be
+mistaken for the identity of a resource owner. For example, if a client is able
+to choose its own `client_id` during registration with the authorization server,
+a malicious client may set it to a value identifying an end-user (e.g., a `sub`
+value if OpenID Connect is used). If the resource server cannot properly
+distinguish between access tokens issued to clients and access tokens issued to
+end-users, the client may then be able to access resource of the end-user. 
+
 
 ### Countermeasures {#client_impersonating_countermeasures}
 
-Authorization servers SHOULD NOT allow clients to influence their
-`client_id` or `sub` value or any other Claim if that can cause
-confusion with a genuine resource owner. Where this cannot be avoided,
-authorization servers MUST provide other means for the resource server
-to distinguish between access tokens authorized by a resource owner
-from access tokens authorized by the client itself.
+Authorization servers SHOULD NOT allow clients to influence their `client_id` or
+any other Claim if that can cause confusion with a genuine resource owner. Where
+this cannot be avoided, authorization servers MUST provide other means for the
+resource server to distinguish between access tokens authorized by a resource
+owner from access tokens authorized by the client itself.
 
 ## Clickjacking {#clickjacking}
 
