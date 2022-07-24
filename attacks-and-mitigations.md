@@ -698,15 +698,24 @@ injected by the attacker.
 
 ### Countermeasures
    
-There is no way to detect such an injection attack on the OAuth
-protocol level, since the token is issued without any binding to the
+There is no way to detect such an injection attack in pure-OAuth
+flows, since the token is issued without any binding to the
 transaction or the particular user agent.
-   
-The recommendation is therefore to use the authorization code grant
-type instead of relying on response types issuing acess tokens at the
-authorization endpoint. Authorization code injection can be detected
-using one of the countermeasures discussed in (#code_injection).
 
+In OpenID Connect, the attack can be mitigated, as the authorization response
+additionally contains an ID Token containing the `at_hash` claim. The attacker
+therefore needs to replace both the access token as well as the ID Token in the
+response. The attacker cannot forge the ID Token, as it is signed or encrypted
+with authentication. The attacker also cannot inject a leaked ID Token matching
+the stolen access token, as the `nonce` claim in the leaked ID Token will 
+(with a very high probability) contain a different value than the one expected
+in the authorization response.
+
+Note that further protection, like sender-constrained access tokens, is still
+required to prevent attackers from using the access token at the resource
+endpoint directly. 
+
+The recommendations in (#implicit_grant_recommendation) follow from this.
 
    
 ## Cross Site Request Forgery {#csrf}

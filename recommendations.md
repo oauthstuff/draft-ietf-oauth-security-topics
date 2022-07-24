@@ -92,7 +92,7 @@ token request containing a `code_verifier` parameter is accepted only if a
 `code_challenge` parameter was present in the authorization request, see
 (#pkce_downgrade_countermeasures) for details.
 
-### Implicit Grant
+### Implicit Grant {#implicit_grant_recommendation}
     
 The implicit grant (response type "token") and other response types
 causing the authorization server to issue access tokens in the

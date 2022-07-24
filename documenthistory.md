@@ -10,6 +10,8 @@
    * Explained Clickjacking
    * Explained Open Redirectors
    * Clarified references to attacker model by including a link to (#secmodel)
+   * Clarified description of "CSRF tokens" and reference to RFC6819
+   * Described that OIDC can prevent access token injection 
 
    -19
 
