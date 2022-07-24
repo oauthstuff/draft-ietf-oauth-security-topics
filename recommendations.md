@@ -158,7 +158,8 @@ the access token with certain resource servers and every resource
 server is obliged to verify, for every request, whether the access
 token sent with that request was meant to be used for that particular
 resource server. If not, the resource server MUST refuse to serve the
-respective request. Clients and authorization servers MAY utilize the
+respective request. The `aud` claim as defined in [@!RFC 9068] MAY be 
+used to audience-restrict access tokens. Clients and authorization servers MAY utilize the
 parameters `scope` or `resource` as specified in [@!RFC6749] and
 [@I-D.ietf-oauth-resource-indicators], respectively, to determine the
 resource server they want to access.
