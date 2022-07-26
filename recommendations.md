@@ -80,17 +80,21 @@ by PKCE. Currently, `S256` is the only such method.
 
 Authorization servers MUST support PKCE [@!RFC7636].
 
+If a client sends a valid PKCE [@!RFC7636] `code_challenge` parameter in the
+authorization request, the authorization server MUST enforce the correct usage
+of `code_verifier` at the token endpoint.
+
+Authorization servers MUST mitigate PKCE Downgrade Attacks by ensuring that a
+token request containing a `code_verifier` parameter is accepted only if a
+`code_challenge` parameter was present in the authorization request, see
+(#pkce_downgrade_countermeasures) for details.
+
 Authorization servers MUST provide a way to detect their support for
 PKCE. It is RECOMMENDED for AS to publish the element
 `code_challenge_methods_supported` in their AS metadata ([@!RFC8414])
 containing the supported PKCE challenge methods (which can be used by
 the client to detect PKCE support). ASs MAY instead provide a
 deployment-specific way to ensure or determine PKCE support by the AS.
-
-Authorization servers MUST mitigate PKCE Downgrade Attacks by ensuring that a
-token request containing a `code_verifier` parameter is accepted only if a
-`code_challenge` parameter was present in the authorization request, see
-(#pkce_downgrade_countermeasures) for details.
 
 ### Implicit Grant {#implicit_grant_recommendation}
     
