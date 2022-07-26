@@ -136,9 +136,9 @@ of a certain secret as prerequisite for the acceptance of that token at
 the recipient (e.g., a resource server).
 
 Authorization and resource servers SHOULD use mechanisms for sender-constraining
-access tokens to prevent token replay, such as Mutual TLS for OAuth 2.0
-[@!RFC8705] or OAuth Demonstration of Proof of Possession (DPoP)
-[@I-D.ietf-oauth-dpop] (see (#pop_tokens)).
+access tokens, such as Mutual TLS for OAuth 2.0 [@!RFC8705] or OAuth
+Demonstration of Proof of Possession (DPoP) [@I-D.ietf-oauth-dpop] (see
+(#pop_tokens)), to prevent misuse of stolen and leaked access tokens.
 
 ### Refresh Tokens
 
