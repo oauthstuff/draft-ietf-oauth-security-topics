@@ -3,9 +3,6 @@
 This section describes the set of security mechanisms the OAuth
 working group recommends to OAuth implementers.
 
-It is important to note that some of the requirements introduced here are not
-compatible to existing deployments and some limit the space of allowed 
-
 ## Protecting Redirect-Based Flows {#rec_redirect}
 
 When comparing client redirect URIs against pre-registered URIs, authorization
