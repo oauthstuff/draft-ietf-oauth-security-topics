@@ -652,9 +652,9 @@ the stolen authorization code.
 
 #### Other Solutions
     
-Other solutions, like binding `state` to the code, using token binding
-for the code, or per-instance client credentials are conceivable, but
-lack support and bring new security requirements.
+Other solutions, like binding `state` to the code, sender-constraining the code
+using cryptographic means, or per-instance client credentials are
+conceivable, but lack support and bring new security requirements.
 
 PKCE is the most obvious solution for OAuth clients as it is available
 today (originally intended for OAuth native apps) whereas `nonce` is
