@@ -196,7 +196,7 @@ Additional recommendations:
    
 If the origin and integrity of the authorization request containing
 the redirect URI can be verified, for example when using
-[@I-D.ietf-oauth-jwsreq] or [@I-D.ietf-oauth-par] with client
+[@RFC9101] or [@RFC9126] with client
 authentication, the authorization server MAY trust the redirect URI
 without further checks.
 
@@ -450,11 +450,11 @@ There are different ways this issuer identifier can be transported to the client
 
  * The issuer information can be transported, for
    example, via a separate response parameter `iss`, defined in
-   [@I-D.ietf-oauth-iss-auth-resp].
+   [@RFC9207].
  * When OpenID Connect is used and an ID Token is returned in the authorization
    response, the client can evaluate the `iss` Claim in the ID Token.
 
-In both cases, the `iss` value MUST be evaluated according to [@I-D.ietf-oauth-iss-auth-resp].
+In both cases, the `iss` value MUST be evaluated according to [@RFC9207].
 
 While this defense may require deploying new OAuth features to transport the
 issuer information, it is a robust and relatively simple defense against mix-up.
@@ -743,7 +743,7 @@ important to note that:
    its contents is a concern, clients MUST protect `state` against
    tampering and swapping. This can be achieved by binding the
    contents of state to the browser session and/or signed/encrypted
-   state values [@I-D.bradley-oauth-jwt-encoded-state].
+   state values as discussed in the now-expired draft [@I-D.bradley-oauth-jwt-encoded-state].
 
 The AS therefore MUST provide a way to detect their support for PKCE. Using AS
 metadata according to [@!RFC8414] is RECOMMENDED, but AS MAY instead provide a
@@ -948,8 +948,8 @@ A typical flow looks like this:
     material provided by transport layer (e.g., TLS). The RS must also
     ensure that replay of the proof of possession is not possible.
  
-There exist several proposals to demonstrate the proof of possession
- in the scope of the OAuth working group:
+Two methods for sender-constrained access tokens using proof-of-possession have
+been defined by the OAuth working group:
  
   * **OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound
     Access Tokens** ([@!RFC8705]): The approach as specified in this
@@ -972,6 +972,10 @@ There exist several proposals to demonstrate the proof of possession
     application-level signing. DPoP can be used with public clients
     and, in case of confidential clients, can be combined with any
     client authentication method.
+
+For reference, other approaches have been discussed as well but the relevant
+drafts are now expired:
+
   * **OAuth Token Binding** ([@I-D.ietf-oauth-token-binding]): In this approach, an access
     token is, via the token binding ID, bound to key
     material representing a long term association between a client and
@@ -1008,8 +1012,7 @@ There exist several proposals to demonstrate the proof of possession
 
 
 At the time of writing, OAuth Mutual TLS is the most widely
-implemented and the only standardized sender-constraining method. The
-use of OAuth Mutual TLS therefore is RECOMMENDED.
+implemented and the only standardized sender-constraining method. 
 
 Note that the security of sender-constrained tokens is undermined when
 an attacker gets access to the token and the key material. This is, in
@@ -1052,7 +1055,7 @@ access tokens for unknown resource server URLs.
 
 The client SHOULD tell the authorization server the intended
 resource server. The proposed mechanism
-[@I-D.ietf-oauth-resource-indicators] could be used or by encoding the
+[@RFC8707] could be used or by encoding the
 information in the scope value.
 
 Instead of the URL, it is also possible to utilize the fingerprint of
@@ -1067,7 +1070,7 @@ any crypto on the client side. Still, since every access token is
 bound to a specific resource server, the client also needs to obtain a
 single RS-specific access token when accessing several resource
 servers. (Resource indicators, as specified in
-[@I-D.ietf-oauth-resource-indicators], can help to achieve this.)
+[@RFC8707], can help to achieve this.)
 [@I-D.ietf-oauth-token-binding] has the same property since different
 token binding IDs must be associated with the access token. Using
 [@!RFC8705], on the other hand, allows a client to use the

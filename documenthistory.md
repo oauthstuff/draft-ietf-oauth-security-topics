@@ -5,13 +5,15 @@
    -20
 
    * Improved description of authorization code injection attacks and PKCE protection
+   * Removed recommendation for MTLS in discussion (not reflected in actual Recommendations section)
    * Reworded "placeholder" text in security considerations.
    * Alphabetized list of names and fixed unicode problem
    * Explained Clickjacking
    * Explained Open Redirectors
    * Clarified references to attacker model by including a link to (#secmodel)
    * Clarified description of "CSRF tokens" and reference to RFC6819
-   * Described that OIDC can prevent access token injection 
+   * Described that OIDC can prevent access token injection
+   * Updated references 
 
    -19
 

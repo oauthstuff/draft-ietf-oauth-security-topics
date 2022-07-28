@@ -33,11 +33,11 @@ defense against mix-up attacks (see (#mix_up)) is REQUIRED. To this end, clients
 SHOULD 
 
   * use the `iss` parameter as a countermeasure according to
-    [@I-D.ietf-oauth-iss-auth-resp], or 
+    [@!RFC9207], or 
   * use an alternative countermeasure based on an `iss` value in the
     authorization response (such as the `iss` Claim in the ID Token in
     [@!OpenID.Core] or in [@JARM] responses), processing it as described in
-    [@I-D.ietf-oauth-iss-auth-resp].
+    [@!RFC9207].
 
 In the absence of these options, clients MAY instead use distinct redirect URIs
 to identify authorization endpoints and token endpoints, as described in
@@ -167,7 +167,7 @@ resource server. If not, the resource server MUST refuse to serve the
 respective request. The `aud` claim as defined in [@!RFC9068] MAY be 
 used to audience-restrict access tokens. Clients and authorization servers MAY utilize the
 parameters `scope` or `resource` as specified in [@!RFC6749] and
-[@I-D.ietf-oauth-resource-indicators], respectively, to determine the
+[@RFC8707], respectively, to determine the
 resource server they want to access.
 
 Additionally, access tokens SHOULD be restricted to certain resources
