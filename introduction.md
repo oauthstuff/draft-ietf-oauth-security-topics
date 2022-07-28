@@ -49,11 +49,13 @@ these challenges. It does not supplant the security advice given in
 [@!RFC6749], [@!RFC6750], and [@!RFC6819], but complements those
 documents.
 
-This document introduces new requirements and deprecates some modes of operation
-that are deemed less secure or even insecure. Naturally, not all existing
-ecosystems and implementations are compatible to the new requirements, but it is
-RECOMMENDED that implementers upgrade their implementations and ecosystems when
-feasible.
+This document introduces new requirements beyond those defined in existing
+specifications such as OAuth 2.0 [@RFC6749] and OpenID Connect [@OpenID.Core]
+and deprecates some modes of operation that are deemed less secure or even
+insecure. Naturally, not all existing ecosystems and implementations are
+compatible to the new requirements and following the best practices described in
+this document may break interoperability. Nonetheless, it is RECOMMENDED that
+implementers upgrade their implementations and ecosystems when feasible.
 	  
 ## Structure
 
