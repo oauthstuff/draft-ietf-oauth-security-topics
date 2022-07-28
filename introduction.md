@@ -59,12 +59,11 @@ implementers upgrade their implementations and ecosystems when feasible.
 	  
 ## Structure
 
-The remainder of this document is organized as follows: The next
-section summarizes the most important recommendations of the OAuth
-working group for every OAuth implementor. Afterwards, the updated the
-OAuth attacker model is presented. Subsequently, a detailed analysis
-of the threats and implementation issues that can be found in the wild
-today is given along with a discussion of potential countermeasures.
+The remainder of this document is organized as follows: The next section
+summarizes the most important best practices for every OAuth implementor.
+Afterwards, the updated the OAuth attacker model is presented. Subsequently, a
+detailed analysis of the threats and implementation issues that can be found in
+the wild today is given along with a discussion of potential countermeasures.
 
 ## Conventions and Terminology
 
