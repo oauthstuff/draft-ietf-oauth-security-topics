@@ -1,7 +1,7 @@
-# Recommendations {#recommendations}
+# Best Practices {#recommendations}
     
-This section describes the set of security mechanisms the OAuth
-working group recommends to OAuth implementers.
+This section describes the set of security mechanisms and measures the OAuth
+working group considers best practices at the time of writing.
 
 ## Protecting Redirect-Based Flows {#rec_redirect}
 
