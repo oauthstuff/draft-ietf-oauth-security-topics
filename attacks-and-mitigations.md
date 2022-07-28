@@ -1,4 +1,4 @@
-# Attacks and Mitigations
+# Attacks and Mitigations {#attacks_and_mitigations}
  
 This section gives a detailed description of attacks on OAuth
 implementations, along with potential countermeasures. Attacks and
@@ -53,7 +53,7 @@ The attack can then be conducted as follows:
 
 First, the attacker needs to trick the user into opening a tampered
 URL in his browser that launches a page under the attacker's
-control, say `https://www.evil.example` (see Attacker A1.)
+control, say `https://www.evil.example` (see Attacker A1 in (#secmodel)).
 
 This URL initiates the following authorization request with the client
 ID of a legitimate client to the authorization endpoint (line breaks
@@ -196,7 +196,7 @@ Additional recommendations:
    
 If the origin and integrity of the authorization request containing
 the redirect URI can be verified, for example when using
-[@I-D.ietf-oauth-jwsreq] or [@I-D.ietf-oauth-par] with client
+[@RFC9101] or [@RFC9126] with client
 authentication, the authorization server MAY trust the redirect URI
 without further checks.
 
@@ -283,7 +283,7 @@ The following measures further reduce the chances of a successful attack:
     AS's web site, since then the `state`
     has not been used at the redirection endpoint at the client yet.)
   * Use the form post response mode instead of a redirect for the
-    authorization response (see [@!oauth-v2-form-post-response-mode]).
+    authorization response (see [@!OAuth.Post]).
  
 ## Credential Leakage via Browser History {#browser_history}
 
@@ -305,7 +305,7 @@ Countermeasures:
   * Authorization code replay prevention as described in [@!RFC6819],
     Section 4.4.1.1, and (#code_injection).
   * Use form post response mode instead of redirect for the authorization
-    response (see [@!oauth-v2-form-post-response-mode]).
+    response (see [@!OAuth.Post]).
   
   
 ### Access Token in Browser History
@@ -327,7 +327,7 @@ Countermeasures:
   * Clients MUST NOT pass access tokens in a URI query parameter in
     the way described in Section 2.3 of [@!RFC6750]. The authorization
     code grant or alternative OAuth response modes like the form post
-    response mode [@oauth-v2-form-post-response-mode] can be used to
+    response mode [@OAuth.Post] can be used to
     this end.
  
 ## Mix-Up Attacks {#mix_up}
@@ -399,7 +399,7 @@ Variants:
   * **Mix-Up With Interception**: This variant works only if the attacker can
     intercept and manipulate the first request/response pair from a user's
     browser to the client (in which the user selects a certain AS and is then
-    redirected by the client to that AS), as in Attacker A2. This capability
+    redirected by the client to that AS), as in Attacker A2 (see (#secmodel)). This capability
     can, for example, be the result of a man-in-the-middle attack on the user's
     connection to the client. In the attack, the user starts the flow with H-AS.
     The attacker intercepts this request and changes the user's selection to
@@ -413,7 +413,7 @@ Variants:
     observed in practice. Refer to [@oauth_security_jcs_14] for details.
   * **OpenID Connect**: There are variants that can be used to attack OpenID
     Connect. In these attacks, the attacker misuses features of the OpenID
-    Connect Discovery [@!OpenIDDisc] mechanism or replays access tokens or ID
+    Connect Discovery [@!OpenID.Discovery] mechanism or replays access tokens or ID
     Tokens to conduct a mix-up attack. The attacks are described in detail in
     [@arXiv.1704.08539], Appendix A, and [@arXiv.1508.04324v2], Section 6
     ("Malicious Endpoints Attacks").
@@ -430,7 +430,7 @@ issuer they sent the authorization request to and bind this information to the
 user agent. The issuer serves, via the associated metadata, as an abstract
 identifier for the combination of the authorization endpoint and token endpoint
 that are to be used in the flow. If an issuer identifier is not available, for
-example, if neither OAuth metadata [@!RFC8414] nor OpenID Connect Discovery [@!OpenIDDisc] are
+example, if neither OAuth metadata [@!RFC8414] nor OpenID Connect Discovery [@!OpenID.Discovery] are
 used, a different unique identifier for this tuple or the tuple itself can be
 used instead. For brevity of presentation, such a deployment-specific identifier
 will be subsumed under the issuer (or issuer identifier) in the following. 
@@ -450,11 +450,11 @@ There are different ways this issuer identifier can be transported to the client
 
  * The issuer information can be transported, for
    example, via a separate response parameter `iss`, defined in
-   [@I-D.ietf-oauth-iss-auth-resp].
+   [@RFC9207].
  * When OpenID Connect is used and an ID Token is returned in the authorization
    response, the client can evaluate the `iss` Claim in the ID Token.
 
-In both cases, the `iss` value MUST be evaluated according to [@I-D.ietf-oauth-iss-auth-resp].
+In both cases, the `iss` value MUST be evaluated according to [@RFC9207].
 
 While this defense may require deploying new OAuth features to transport the
 issuer information, it is a robust and relatively simple defense against mix-up.
@@ -484,7 +484,7 @@ This defense SHOULD therefore only be used if other options are not available.
 ## Authorization Code Injection {#code_injection}
 
 An attacker that has gained access to an authorization code contained in an
-authorization response (see attacker model (A3)) can try to redeem the
+authorization response (see Attacker A3 in (#secmodel)) can try to redeem the
 authorization code for an access token or otherwise make use of the
 authorization code.
 
@@ -518,7 +518,7 @@ to the token endpoint is a simpler and more powerful attack, as described above.
 ### Attack Description
 The authorization code injection attack works as follows:
    
- 1. The attacker obtains an authorization code (see attacker (A3)). For the rest
+ 1. The attacker obtains an authorization code (see attacker A3 in (#secmodel)). For the rest
     of the attack, only the capabilities of a web attacker (A1) are required.
  2. From the attacker's own device, the attacker starts a regular OAuth authorization
     process with the legitimate client.
@@ -652,9 +652,9 @@ the stolen authorization code.
 
 #### Other Solutions
     
-Other solutions, like binding `state` to the code, using token binding
-for the code, or per-instance client credentials are conceivable, but
-lack support and bring new security requirements.
+Other solutions, like binding `state` to the code, sender-constraining the code
+using cryptographic means, or per-instance client credentials are
+conceivable, but lack support and bring new security requirements.
 
 PKCE is the most obvious solution for OAuth clients as it is available
 today (originally intended for OAuth native apps) whereas `nonce` is
@@ -698,15 +698,24 @@ injected by the attacker.
 
 ### Countermeasures
    
-There is no way to detect such an injection attack on the OAuth
-protocol level, since the token is issued without any binding to the
+There is no way to detect such an injection attack in pure-OAuth
+flows, since the token is issued without any binding to the
 transaction or the particular user agent.
-   
-The recommendation is therefore to use the authorization code grant
-type instead of relying on response types issuing acess tokens at the
-authorization endpoint. Authorization code injection can be detected
-using one of the countermeasures discussed in (#code_injection).
 
+In OpenID Connect, the attack can be mitigated, as the authorization response
+additionally contains an ID Token containing the `at_hash` claim. The attacker
+therefore needs to replace both the access token as well as the ID Token in the
+response. The attacker cannot forge the ID Token, as it is signed or encrypted
+with authentication. The attacker also cannot inject a leaked ID Token matching
+the stolen access token, as the `nonce` claim in the leaked ID Token will 
+(with a very high probability) contain a different value than the one expected
+in the authorization response.
+
+Note that further protection, like sender-constrained access tokens, is still
+required to prevent attackers from using the access token at the resource
+endpoint directly. 
+
+The recommendations in (#implicit_grant_recommendation) follow from this.
 
    
 ## Cross Site Request Forgery {#csrf}
@@ -718,10 +727,10 @@ variant of an attack known as Cross-Site Request Forgery (CSRF).
 
 ### Countermeasures {#csrf_countermeasures}
  
-The traditional countermeasure are CSRF tokens that are bound to the
-user agent and passed in the `state` parameter to the authorization
-server as described in [@!RFC6819]. The same protection is provided by
-PKCE or the OpenID Connect `nonce` value.
+The traditional countermeasure is that clients pass a value in the `state`
+parameter that links the request to the redirect URI to the user agent session
+as described in detail in [@!RFC6819], Section 5.3.5. The same protection is
+provided by PKCE or the OpenID Connect `nonce` value.
 
 When using PKCE instead of `state` or `nonce` for CSRF protection, it is
 important to note that:
@@ -734,15 +743,15 @@ important to note that:
    its contents is a concern, clients MUST protect `state` against
    tampering and swapping. This can be achieved by binding the
    contents of state to the browser session and/or signed/encrypted
-   state values [@I-D.bradley-oauth-jwt-encoded-state].
+   state values as discussed in the now-expired draft [@I-D.bradley-oauth-jwt-encoded-state].
 
 The AS therefore MUST provide a way to detect their support for PKCE. Using AS
 metadata according to [@!RFC8414] is RECOMMENDED, but AS MAY instead provide a
 deployment-specific way to ensure or determine PKCE support.
 
-PKCE provides robust protection against CSRF attacks even in presence of an (A3)
-attacker (which can read the authorization response). When `state` is used or an
-ID Token is returned in the authorization response (e.g.,
+PKCE provides robust protection against CSRF attacks even in presence of an that
+can read the authorization response (see Attacker A3 in (#secmodel)). When
+`state` is used or an ID Token is returned in the authorization response (e.g.,
 `response_type=code+id_token`), the attacker either learns the `state` value and
 can replay it into the forged authorization response, or can extract the `nonce`
 from the ID Token and use it in a new request to the authorization server to
@@ -834,7 +843,7 @@ circumstances.
   
 An attacker may setup his own resource server and trick a client into
 sending access tokens to it that are valid for other resource servers
-(see Attackers A1 and A5). If the client sends a valid access token to
+(see Attackers A1 and A5 in (#secmodel)). If the client sends a valid access token to
 this counterfeit resource server, the attacker in turn may use that
 token to access other services on behalf of the resource owner.
 
@@ -939,8 +948,8 @@ A typical flow looks like this:
     material provided by transport layer (e.g., TLS). The RS must also
     ensure that replay of the proof of possession is not possible.
  
-There exist several proposals to demonstrate the proof of possession
- in the scope of the OAuth working group:
+Two methods for sender-constrained access tokens using proof-of-possession have
+been defined by the OAuth working group:
  
   * **OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound
     Access Tokens** ([@!RFC8705]): The approach as specified in this
@@ -963,6 +972,10 @@ There exist several proposals to demonstrate the proof of possession
     application-level signing. DPoP can be used with public clients
     and, in case of confidential clients, can be combined with any
     client authentication method.
+
+For reference, other approaches have been discussed as well but the relevant
+drafts are now expired:
+
   * **OAuth Token Binding** ([@I-D.ietf-oauth-token-binding]): In this approach, an access
     token is, via the token binding ID, bound to key
     material representing a long term association between a client and
@@ -999,8 +1012,7 @@ There exist several proposals to demonstrate the proof of possession
 
 
 At the time of writing, OAuth Mutual TLS is the most widely
-implemented and the only standardized sender-constraining method. The
-use of OAuth Mutual TLS therefore is RECOMMENDED.
+implemented and the only standardized sender-constraining method. 
 
 Note that the security of sender-constrained tokens is undermined when
 an attacker gets access to the token and the key material. This is, in
@@ -1043,7 +1055,7 @@ access tokens for unknown resource server URLs.
 
 The client SHOULD tell the authorization server the intended
 resource server. The proposed mechanism
-[@I-D.ietf-oauth-resource-indicators] could be used or by encoding the
+[@RFC8707] could be used or by encoding the
 information in the scope value.
 
 Instead of the URL, it is also possible to utilize the fingerprint of
@@ -1058,7 +1070,7 @@ any crypto on the client side. Still, since every access token is
 bound to a specific resource server, the client also needs to obtain a
 single RS-specific access token when accessing several resource
 servers. (Resource indicators, as specified in
-[@I-D.ietf-oauth-resource-indicators], can help to achieve this.)
+[@RFC8707], can help to achieve this.)
 [@I-D.ietf-oauth-token-binding] has the same property since different
 token binding IDs must be associated with the access token. Using
 [@!RFC8705], on the other hand, allows a client to use the
@@ -1107,13 +1119,16 @@ order to cope with access token replay by malicious actors:
     not store them in plain text.
     
 The first and second recommendation also apply to other scenarios
-where access tokens leak (see Attacker A5).
+where access tokens leak (see Attacker A5 in (#secmodel)).
 
 ## Open Redirection {#open_redirection}
 
-The following attacks can occur when an AS or client has an open
-redirector. An open redirector is an endpoint that forwards a user’s
-browser to an arbitrary URI obtained from a query parameter.
+The following attacks can occur when an AS or client has an open redirector. An
+open redirector is an endpoint that forwards a user’s browser to an arbitrary
+URI obtained from a query parameter.  Such endpoints are sometimes implemented,
+for example, to show a message before a user is then redirected to an external
+website, or to redirect users back to a URL they were intending to visit before
+being interrupted, e.g., by a login prompt. 
 
 
 ### Client as Open Redirector {#open_redirector_on_client}
@@ -1291,8 +1306,7 @@ detect refresh token replay by malicious actors for public clients:
     
   * **Sender-constrained refresh tokens:** the authorization server
     cryptographically binds the refresh token to a certain client
-    instance by utilizing [@!RFC8705] or
-    [@I-D.ietf-oauth-token-binding].
+    instance, e.g., by utilizing [@!RFC8705] or [@I-D.ietf-oauth-dpop].
   * **Refresh token rotation:** the authorization server issues a new
     refresh token with every access token refresh response. The
     previous refresh token is invalidated but information about the
@@ -1330,32 +1344,42 @@ on the client policy or the grant associated with the refresh token
 
 ## Client Impersonating Resource Owner {#client_impersonating}
    
-Resource servers may make access control decisions based on the
-identity of the resource owner as communicated in the `sub` Claim
-returned by the authorization server in a token introspection response
-[@!RFC7662] or other mechanisms. If a client is able to choose its own
-`client_id` during registration with the authorization server, then
-there is a risk that it can register with the same `sub` value as a
-privileged user. A subsequent access token obtained under the client
-credentials grant may be mistaken for an access token authorized by the
-privileged user if the resource server does not perform additional
-checks.
+Resource servers may make access control decisions based on the identity of a
+resource owner, for which an access token was issued, or based on the identity
+of a client in the client credentials grant. If both options are possible,
+depending on the details of the implementation, a client's identity may be
+mistaken for the identity of a resource owner. For example, if a client is able
+to choose its own `client_id` during registration with the authorization server,
+a malicious client may set it to a value identifying an end-user (e.g., a `sub`
+value if OpenID Connect is used). If the resource server cannot properly
+distinguish between access tokens issued to clients and access tokens issued to
+end-users, the client may then be able to access resource of the end-user. 
+
 
 ### Countermeasures {#client_impersonating_countermeasures}
 
-Authorization servers SHOULD NOT allow clients to influence their
-`client_id` or `sub` value or any other Claim if that can cause
-confusion with a genuine resource owner. Where this cannot be avoided,
-authorization servers MUST provide other means for the resource server
-to distinguish between access tokens authorized by a resource owner
-from access tokens authorized by the client itself.
+Authorization servers SHOULD NOT allow clients to influence their `client_id` or
+any other Claim if that can cause confusion with a genuine resource owner. Where
+this cannot be avoided, authorization servers MUST provide other means for the
+resource server to distinguish between access tokens authorized by a resource
+owner from access tokens authorized by the client itself.
 
 ## Clickjacking {#clickjacking}
 
-As described in Section 4.4.1.9 of [@!RFC6819], the authorization 
-request is susceptible to clickjacking. An attacker can use this 
-vector to obtain the user's authentication credentials, change the 
-scope of access granted to the client, and potentially access the 
+As described in Section 4.4.1.9 of [@!RFC6819], the authorization request is
+susceptible to clickjacking attacks, also called user interface redressing. In
+such an attack, an attacker embeds the authorization endpoint user interface in
+an innocuous context. A user believing to interact with that context, for
+example, clicking on buttons, inadvertently interacts with the authorization
+endpoint user interface instead. The opposite can be achieved as well: A user
+believing to interact with the authorization endpoint might inadvertently type a
+password into an attacker-provided input field overlaid over the original user
+interface. Clickjacking attacks can be designed such that users can hardly
+notice the attack, for example using almost invisible iframes overlaid on top of
+other elements.
+
+An attacker can use this vector to obtain the user's authentication credentials,
+change the scope of access granted to the client, and potentially access the
 user's resources.
 
 Authorization servers MUST prevent clickjacking attacks. Multiple
