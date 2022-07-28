@@ -283,7 +283,7 @@ The following measures further reduce the chances of a successful attack:
     AS's web site, since then the `state`
     has not been used at the redirection endpoint at the client yet.)
   * Use the form post response mode instead of a redirect for the
-    authorization response (see [@!oauth-v2-form-post-response-mode]).
+    authorization response (see [@!OAuth.Post]).
  
 ## Credential Leakage via Browser History {#browser_history}
 
@@ -305,7 +305,7 @@ Countermeasures:
   * Authorization code replay prevention as described in [@!RFC6819],
     Section 4.4.1.1, and (#code_injection).
   * Use form post response mode instead of redirect for the authorization
-    response (see [@!oauth-v2-form-post-response-mode]).
+    response (see [@!OAuth.Post]).
   
   
 ### Access Token in Browser History
@@ -327,7 +327,7 @@ Countermeasures:
   * Clients MUST NOT pass access tokens in a URI query parameter in
     the way described in Section 2.3 of [@!RFC6750]. The authorization
     code grant or alternative OAuth response modes like the form post
-    response mode [@oauth-v2-form-post-response-mode] can be used to
+    response mode [@OAuth.Post] can be used to
     this end.
  
 ## Mix-Up Attacks {#mix_up}
@@ -413,7 +413,7 @@ Variants:
     observed in practice. Refer to [@oauth_security_jcs_14] for details.
   * **OpenID Connect**: There are variants that can be used to attack OpenID
     Connect. In these attacks, the attacker misuses features of the OpenID
-    Connect Discovery [@!OpenIDDisc] mechanism or replays access tokens or ID
+    Connect Discovery [@!OpenID.Discovery] mechanism or replays access tokens or ID
     Tokens to conduct a mix-up attack. The attacks are described in detail in
     [@arXiv.1704.08539], Appendix A, and [@arXiv.1508.04324v2], Section 6
     ("Malicious Endpoints Attacks").
@@ -430,7 +430,7 @@ issuer they sent the authorization request to and bind this information to the
 user agent. The issuer serves, via the associated metadata, as an abstract
 identifier for the combination of the authorization endpoint and token endpoint
 that are to be used in the flow. If an issuer identifier is not available, for
-example, if neither OAuth metadata [@!RFC8414] nor OpenID Connect Discovery [@!OpenIDDisc] are
+example, if neither OAuth metadata [@!RFC8414] nor OpenID Connect Discovery [@!OpenID.Discovery] are
 used, a different unique identifier for this tuple or the tuple itself can be
 used instead. For brevity of presentation, such a deployment-specific identifier
 will be subsumed under the issuer (or issuer identifier) in the following. 

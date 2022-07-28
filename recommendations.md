@@ -3,6 +3,9 @@
 This section describes the set of security mechanisms the OAuth
 working group recommends to OAuth implementers.
 
+It is important to note that some of the requirements introduced here are not
+compatible to existing deployments and some limit the space of allowed 
+
 ## Protecting Redirect-Based Flows {#rec_redirect}
 
 When comparing client redirect URIs against pre-registered URIs, authorization
@@ -12,7 +15,7 @@ measure contributes to the prevention of leakage of authorization codes and
 access tokens (see (#insufficient_uri_validation)). It can also help to detect
 mix-up attacks (see (#mix_up)).
 
-Clients and AS MUST NOT expose URLs that forward the user’s browser to
+Clients and AS MUST NOT expose URLs that forward the user's browser to
 arbitrary URIs obtained from a query parameter ("open redirector").
 Open redirectors can enable exfiltration of authorization codes and
 access tokens, see (#open_redirector_on_client).
@@ -36,7 +39,7 @@ SHOULD
     [@I-D.ietf-oauth-iss-auth-resp], or 
   * use an alternative countermeasure based on an `iss` value in the
     authorization response (such as the `iss` Claim in the ID Token in
-    [@!OpenID] or in [@JARM] responses), processing it as described in
+    [@!OpenID.Core] or in [@JARM] responses), processing it as described in
     [@I-D.ietf-oauth-iss-auth-resp].
 
 In the absence of these options, clients MAY instead use distinct redirect URIs
@@ -61,7 +64,7 @@ injection attacks (see (#code_injection)) and misuse of authorization codes usin
    prevents CSRF even in presence of strong attackers as described in
    (#csrf_countermeasures). 
  * With additional precautions, described in (#nonce_as_injection_protection),
-   confidential OpenID Connect [@!OpenID] clients MAY use the `nonce` parameter and the
+   confidential OpenID Connect [@!OpenID.Core] clients MAY use the `nonce` parameter and the
    respective Claim in the ID Token instead. 
 
 In any case, the PKCE challenge or OpenID Connect `nonce` MUST be
@@ -164,7 +167,7 @@ the access token with certain resource servers and every resource
 server is obliged to verify, for every request, whether the access
 token sent with that request was meant to be used for that particular
 resource server. If not, the resource server MUST refuse to serve the
-respective request. The `aud` claim as defined in [@!RFC 9068] MAY be 
+respective request. The `aud` claim as defined in [@!RFC9068] MAY be 
 used to audience-restrict access tokens. Clients and authorization servers MAY utilize the
 parameters `scope` or `resource` as specified in [@!RFC6749] and
 [@I-D.ietf-oauth-resource-indicators], respectively, to determine the
@@ -192,7 +195,7 @@ the AS.
 
 Furthermore, adapting the resource owner password credentials grant to
 two-factor authentication, authentication with cryptographic
-credentials (cf. WebCrypto [@webcrypto], WebAuthn [@webauthn]), and
+credentials (cf. WebCrypto [@WebCrypto], WebAuthn [@WebAuthn]), and
 authentication processes that require multiple steps can be hard or
 impossible.
 
@@ -202,7 +205,7 @@ Authorization servers SHOULD use client authentication if possible.
 
 It is RECOMMENDED to use asymmetric (public-key based) methods for
 client authentication such as mTLS [@!RFC8705] or
-`private_key_jwt` [@!OpenID]. When asymmetric methods for client
+`private_key_jwt` [@!OpenID.Core]. When asymmetric methods for client
 authentication are used, authorization servers do not need to store
 sensitive symmetric keys, making these methods more robust against a
 number of attacks.

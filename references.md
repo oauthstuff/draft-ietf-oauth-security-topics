@@ -1,5 +1,5 @@
 
-<reference anchor="OpenID" target="https://openid.net/specs/openid-connect-core-1_0.html">
+<reference anchor="OpenID.Core" target="https://openid.net/specs/openid-connect-core-1_0.html">
   <front>
     <title>OpenID Connect Core 1.0 incorporating errata set 1</title>
     <author initials="N." surname="Sakimura" fullname="Nat Sakimura">
@@ -21,7 +21,7 @@
   </front>
 </reference>
 
-<reference anchor="OpenIDDisc" target="https://openid.net/specs/openid-connect-discovery-1_0.html">
+<reference anchor="OpenID.Discovery" target="https://openid.net/specs/openid-connect-discovery-1_0.html">
   <front>
     <title>OpenID Connect Discovery 1.0 incorporating errata set 1</title>
     <author initials="N." surname="Sakimura" fullname="Nat Sakimura">
@@ -84,7 +84,7 @@
   </front>
 </reference>
 
-<reference anchor="oauth-v2-form-post-response-mode" target="http://openid.net/specs/oauth-v2-form-post-response-mode-1_0.html">
+<reference anchor="OAuth.Post" target="http://openid.net/specs/oauth-v2-form-post-response-mode-1_0.html">
   <front>
     <title>OAuth 2.0 Form Post Response Mode</title>
     <author initials="M." surname="Jones" fullname="Mike Jones">
@@ -206,7 +206,7 @@
   </front>
 </reference>
 
-<reference anchor="webauthn" target="https://www.w3.org/TR/2019/REC-webauthn-1-20190304/">
+<reference anchor="WebAuthn" target="https://www.w3.org/TR/2019/REC-webauthn-1-20190304/">
   <front>
     <title>Web Authentication: An API for accessing Public Key Credentials Level 1</title>    
     <author fullname="Dirk Balfanz" surname="Balfanz" initials="D."><organization>Google</organization></author>
@@ -222,7 +222,7 @@
   </front>
 </reference>
 
-<reference anchor="webcrypto" target="https://www.w3.org/TR/2017/REC-WebCryptoAPI-20170126/">
+<reference anchor="WebCrypto" target="https://www.w3.org/TR/2017/REC-WebCryptoAPI-20170126/">
   <front>
     <title>Web Cryptography API</title>
     <author fullname="Mark Watson" surname="Watson" initials="M."><organization>Netflix</organization></author>
