@@ -236,3 +236,6 @@ Authorization responses MUST NOT be transmitted over unencrypted network
 connections. To this end, AS MUST NOT allow redirect URIs that use the `http`
 scheme except for native clients that use Loopback Interface Redirection as
 described in [@!RFC8252], Section 7.3.
+
+Authorization servers MUST take precautions to prevent phishing attacks via
+redirection as described in (#phishing_via_as).
