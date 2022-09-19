@@ -1442,10 +1442,15 @@ and execute one of the following attacks:
     with client_id and redirect_uri controlled by the attacker. In this case,
     the AS will automatically redirect the user agent to the phishing site. 
 
-The AS MUST take precautions to prevent these threats. The AS MUST always 
-authenticate the user first and, with the exception of the silent authentication use 
-case, prompt the user for credentials when needed, before redirecting the user. 
-Based on its risk assessment, the AS needs to decide whether it can trust 
-the redirect URI and SHOULD only automatically redirect the user agent if 
-it trusts the redirect URI.  If the URI is not trusted, the AS MAY inform the 
-user and rely on the user to make the correct decision.
+The AS MUST take precautions to prevent these threats. The AS MUST always
+authenticate the user first and, with the exception of the silent authentication
+use case, prompt the user for credentials when needed, before redirecting the
+user. Based on its risk assessment, the AS needs to decide whether it can trust
+the redirect URI or not. It could take into account  URI analytics done
+internally or through some external service to evaluate the credibility and
+trustworthiness content behind the URI, and the source of the redirect URI and
+other client data.
+
+The AS SHOULD only automatically redirect the user agent if it trusts the
+redirect URI.  If the URI is not trusted, the AS MAY inform the user and rely on
+the user to make the correct decision.
