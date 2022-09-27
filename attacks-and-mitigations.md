@@ -1420,3 +1420,37 @@ SHOULD be combined with others, including those described in
 [@!RFC6819], unless such legacy user agents are explicitly unsupported
 by the authorization server. Even in such cases, additional
 countermeasures SHOULD still be employed.
+
+## Authorization Server Redirecting to Phishing Site {#phishing_via_as}
+
+However, an attacker could also utilize a correctly registered
+redirect URI to perform phishing attacks.  The attacker could, for
+example, register a client via dynamic client registration [RFC7591]
+and execute one of the following attacks:
+
+ 1. Intentionally send an erroneous authorization request, e.g., by
+    using an invalid scope value, thus instructing the AS to redirect the
+    user-agent to its phishing site. 
+ 1. Intentionally send a valid authorization request with client_id 
+    and redirect_uri controlled by the attacker. After the user authenticates, 
+    the AS prompts the user to provide consent to the request. If the user 
+    notices an issue with the request and declines the request, the AS still 
+    redirects the user agent to the phishing site. In this case, the user agent
+    will be redirected to the phishing site regardless of the action taken by
+    the user.
+ 1. Intentionally send a valid silent authentication request (prompt=none) 
+    with client_id and redirect_uri controlled by the attacker. In this case,
+    the AS will automatically redirect the user agent to the phishing site. 
+
+The AS MUST take precautions to prevent these threats. The AS MUST always
+authenticate the user first and, with the exception of the silent authentication
+use case, prompt the user for credentials when needed, before redirecting the
+user. Based on its risk assessment, the AS needs to decide whether it can trust
+the redirect URI or not. It could take into account  URI analytics done
+internally or through some external service to evaluate the credibility and
+trustworthiness content behind the URI, and the source of the redirect URI and
+other client data.
+
+The AS SHOULD only automatically redirect the user agent if it trusts the
+redirect URI.  If the URI is not trusted, the AS MAY inform the user and rely on
+the user to make the correct decision.
