@@ -1423,7 +1423,7 @@ countermeasures SHOULD still be employed.
 
 ## Authorization Server Redirecting to Phishing Site {#phishing_via_as}
 
-However, an attacker could also utilize a correctly registered
+An attacker could utilize a correctly registered
 redirect URI to perform phishing attacks.  The attacker could, for
 example, register a client via dynamic client registration [RFC7591]
 and execute one of the following attacks:
