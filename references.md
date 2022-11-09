@@ -274,3 +274,24 @@ OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound Access Tokens
         <date month="July" year="2015"/>
     </front>
 </reference>
+
+<reference anchor="inbc_security_sso"
+           target="https://distinct-sso.com/paper.pdf">
+  <front>
+    <title>DISTINCT: Identity Theft using In-Browser Communications in Dual-Window Single Sign-On</title>
+    <author fullname="Louis Jannett" surname="Jannett" initials="L."><organization/></author>
+    <author fullname="Vladislav Mladenov" surname="Mladenov" initials="V."><organization/></author>
+    <author fullname="Christian Mainka" surname="Mainka" initials="C."><organization/></author>
+    <author fullname="Jörg Schwenk" surname="Schwenk" initials="J."><organization/></author>
+    <date day="7" month="November" year="2022"/>
+  </front>
+  <seriesInfo name="DOI" value="10.1145/3548606.3560692"/>
+</reference>
+
+<reference anchor="postmessage_api" target="https://html.spec.whatwg.org/multipage/web-messaging.html#web-messaging">
+  <front>
+    <title>HTML Living Standard: Cross-document messaging</title>
+    <author>WHATWG</author>
+    <date />
+  </front>
+</reference>

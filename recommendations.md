@@ -126,6 +126,30 @@ generally reduces the attack surface since access tokens are not
 exposed in URLs. It also allows the authorization server to
 sender-constrain the issued tokens (see next section).
 
+## Protecting In-Browser Communication Flows {#rec_ibc}
+
+If the authorization response is sent with in-browser communication techniques
+like postMessage [@postmessage_api] instead of HTTP redirects, both the
+initiator and receiver of the in-browser message MUST be strictly verified,
+see [@inbc_security_sso].
+
+When comparing client receiver origins against pre-registered origins,
+authorization servers MUST utilize exact string matching, see (#iuv_countermeasures).
+Wildcard origins like "*" in postMessage MUST not be used as attackers can use them
+to leak a victim's in-browser message to malicious origins.
+Both measures contribute to the prevention of leakage of authorization codes and
+access tokens (see (#insufficient_uri_validation)).
+
+Clients MUST prevent injections of in-browser messages on the client receiver endpoint,
+which is known as Cross-Site Request Forgery (CSRF). Clients MUST utilize exact
+string matching to compare the initiator origin of an in-browser message with
+the authorization server origin.
+
+Since in-browser communication flows only apply a different communication
+technique (i.e., postMessage instead of HTTP redirect), all measures protecting
+the authorization response in redirect-based flows MUST be equally applied,
+see (#rec_redirect).
+
 ## Token Replay Prevention {#token_replay_prevention}
 
 ### Access Tokens
