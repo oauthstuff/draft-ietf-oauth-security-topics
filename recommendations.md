@@ -135,6 +135,18 @@ see [@inbc_security_sso].
 
 When comparing client receiver origins against pre-registered origins,
 authorization servers MUST utilize exact string matching, see (#iuv_countermeasures).
+Authorization servers MUST send postMessages to trusted client receiver origins:
+
+```
+window.opener.postMessage(
+  {
+    code: "ABC",
+    state: "123"
+  },
+  "https://client.example" // use explicit client origin
+)
+```
+
 Wildcard origins like "*" in postMessage MUST not be used as attackers can use them
 to leak a victim's in-browser message to malicious origins.
 Both measures contribute to the prevention of leakage of authorization codes and
@@ -143,7 +155,16 @@ access tokens (see (#insufficient_uri_validation)).
 Clients MUST prevent injections of in-browser messages on the client receiver endpoint,
 which is known as Cross-Site Request Forgery (CSRF). Clients MUST utilize exact
 string matching to compare the initiator origin of an in-browser message with
-the authorization server origin.
+the authorization server origin:
+
+```
+window.addEventListener("message", (e) => {
+  // validate exact AS origin
+  if (e.origin === "https://honest.as.example") {
+    // process e.data.code and e.data.state
+  }
+})
+```
 
 Since in-browser communication flows only apply a different communication
 technique (i.e., postMessage instead of HTTP redirect), all measures protecting
