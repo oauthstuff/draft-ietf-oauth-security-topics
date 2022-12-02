@@ -1431,15 +1431,15 @@ and execute one of the following attacks:
  1. Intentionally send an erroneous authorization request, e.g., by
     using an invalid scope value, thus instructing the AS to redirect the
     user-agent to its phishing site. 
- 1. Intentionally send a valid authorization request with client_id 
-    and redirect_uri controlled by the attacker. After the user authenticates, 
+ 1. Intentionally send a valid authorization request with `client_id` 
+    and `redirect_uri` controlled by the attacker. After the user authenticates, 
     the AS prompts the user to provide consent to the request. If the user 
     notices an issue with the request and declines the request, the AS still 
     redirects the user agent to the phishing site. In this case, the user agent
     will be redirected to the phishing site regardless of the action taken by
     the user.
  1. Intentionally send a valid silent authentication request (prompt=none) 
-    with client_id and redirect_uri controlled by the attacker. In this case,
+    with `client_id` and `redirect_uri` controlled by the attacker. In this case,
     the AS will automatically redirect the user agent to the phishing site. 
 
 The AS MUST take precautions to prevent these threats. The AS MUST always
