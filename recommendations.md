@@ -13,9 +13,9 @@ access tokens (see (#insufficient_uri_validation)). It can also help to detect
 mix-up attacks (see (#mix_up)).
 
 Clients and AS MUST NOT expose URLs that forward the user's browser to
-arbitrary URIs obtained from a query parameter ("open redirector").
-Open redirectors can enable exfiltration of authorization codes and
-access tokens, see (#open_redirector_on_client).
+arbitrary URIs obtained from a query parameter ("open redirector") as
+described in (#open_redirection). Open redirectors can enable
+exfiltration of authorization codes and access tokens.
 
 Clients MUST prevent Cross-Site Request Forgery (CSRF). In this
 context, CSRF refers to requests to the redirection endpoint that do
@@ -282,5 +282,3 @@ connections. To this end, AS MUST NOT allow redirect URIs that use the `http`
 scheme except for native clients that use Loopback Interface Redirection as
 described in [@!RFC8252], Section 7.3.
 
-Authorization servers MUST take precautions to prevent phishing attacks via
-redirection as described in (#phishing_via_as).

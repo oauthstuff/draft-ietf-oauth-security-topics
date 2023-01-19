@@ -4,9 +4,11 @@
 
    -22
 
+   * Merged section on phishing via AS into existing section on open redirectors
+
    -21
 
-   * Improve wording on phishing via AS
+   * Improved wording on phishing via AS
 
    -20
 
