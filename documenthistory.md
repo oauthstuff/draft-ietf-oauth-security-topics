@@ -4,6 +4,8 @@
 
    -22
 
+   * Added section on securing in-browser communication
+
    -21
 
    * Improve wording on phishing via AS
