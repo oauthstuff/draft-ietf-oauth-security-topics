@@ -4,6 +4,8 @@
 
    -22
 
+   * Restructure and move section on sender-constrained tokens
+
    -21
 
    * Improve wording on phishing via AS

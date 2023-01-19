@@ -500,7 +500,7 @@ In an authorization code injection attack, the attacker attempts to inject a
 stolen authorization code into the attacker's own session with the client. The
 aim is to associate the attacker's session at the client with the victim's
 resources or identity, thereby giving the attacker at least limited access to
-the victum's resources.
+the victim's resources.
 
 Besides circumventing the client authentication of confidential clients, other
 use cases for this attack include:
@@ -834,12 +834,12 @@ Note: ASs that mandate the use of PKCE in general or for particular clients
 implicitly implement this security measure.
 
    
-## Access Token Leakage at the Resource Server
+## Access Token Leakage at the Resource Server {#access_token_leakage}
  
 Access tokens can leak from a resource server under certain
 circumstances.
   
-### Access Token Phishing by Counterfeit Resource Server
+### Access Token Phishing by Counterfeit Resource Server {#counterfeit_res_server}
   
 An attacker may setup his own resource server and trick a client into
 sending access tokens to it that are valid for other resource servers
@@ -853,73 +853,58 @@ provided with the resource server URL at runtime. This kind of late
 binding is typical in situations where the client uses a service
 implementing a standardized API (e.g., for e-Mail, calendar, health,
 or banking) and where the client is configured by a user or
-administrator for a service that this user or company uses.
+administrator for a service that this user or company uses.  
+  
+### Compromised Resource Server {#comp_res_server}
+   
+An attacker may compromise a resource server to gain access to the
+resources of the respective deployment. Such a compromise may range
+from partial access to the system, e.g., its log files, to full
+control of the respective server.
+   
+If the attacker were able to gain full control, including shell
+access, all controls can be circumvented and all resources can be
+accessed. The attacker would also be able to obtain other access
+tokens held on the compromised system that would potentially be valid
+to access other resource servers.
 
-#### Countermeasures
-     
-There are several potential mitigation strategies, which will be
-discussed in the following sections.
-     
-##### Metadata
+Preventing server breaches by hardening and monitoring server systems
+is considered a standard operational procedure and, therefore, out of
+the scope of this document. This section focuses on the impact of 
+OAuth-related breaches and the replaying of captured access tokens.
 
-An authorization server could provide the client with additional
-information about the locations where it is safe to use its access
-tokens.
-  
-In the simplest form, this would require the AS to publish a list of
-its known resource servers, illustrated in the following example using
-a non-standard metadata parameter `resource_servers`:
-  
-    HTTP/1.1 200 OK
-    Content-Type: application/json
-
-    {
-      "issuer":"https://server.somesite.example",
-      "authorization_endpoint":
-        "https://server.somesite.example/authorize",
-      "resource_servers":[
-        "email.somesite.example",
-        "storage.somesite.example",
-        "video.somesite.example"
-      ]
-      ...
-    } 
-  
-The AS could also return the URL(s) an access token is good for in the
-token response, illustrated by the example and non-standard return
-parameter `access_token_resource_server`:
-  
+The following measures should be taken into account by implementers in
+order to cope with access token replay by malicious actors:
+   
+  * Sender-constrained access tokens, as described in (#pop_tokens),
+    SHOULD be used to prevent the attacker from replaying the access
+    tokens on other resource servers. Depending on the severity of the
+    penetration, sender-constrained access tokens will also prevent
+    replay on the compromised system.
+  * Audience restriction as described in (#aud_restriction) SHOULD be
+    used to prevent replay of captured access tokens on other resource
+    servers.
+  * The resource server MUST treat access tokens like any other
+    credentials. It is considered good practice to not log them and
+    not store them in plain text.
     
-    HTTP/1.1 200 OK
-    Content-Type: application/json;charset=UTF-8
-    Cache-Control: no-store
-    Pragma: no-cache
-    
-    {
-      "access_token":"2YotnFZFEjr1zCsicMWpAA",
-      "access_token_resource_server":
-        "https://hostedresource.somesite.example/path1",
-    ...
-    }
+The first and second recommendation also apply to other scenarios
+where access tokens leak (see Attacker A5 in (#secmodel)).
+
+## Misuse of Stolen Access Tokens
+
+Access tokens can be stolen by an attacker in various ways, for example,
+via the attacks described in (#insufficient_uri_validation),
+(#credential_leakage_referrer), (#browser_history), (#mix_up) and
+(#access_token_leakage). Some of these attacks can be mitigated by
+specific security measures, as described in the respective sections.
+However, in some cases, these measures are not sufficient or are not
+implemented correctly. Authorization servers therefore SHOULD ensure that
+access tokens are sender-constrained and audience-restriced as described
+in the following.
 
   
-This mitigation strategy would rely on the client to enforce the
-security policy and to only send access tokens to legitimate
-destinations. Results of OAuth-related security research (see for
-example [@oauth_security_ubc] and [@oauth_security_cmu]) indicate a
-large portion of client implementations do not or fail to properly
-implement security controls, like `state` checks. So relying on
-clients to prevent access token phishing is likely to fail as well.
-Moreover, given the ratio of clients to authorization and resource
-servers, it is considered the more viable approach to move as much as
-possible security-related logic to those entities. Clearly, the client
-has to contribute to the overall security. But there are alternative
-countermeasures, as described in the next sections, that provide a
-better balance between the involved parties.
-  
-  
-##### Sender-Constrained Access Tokens {#pop_tokens} 
-
+### Sender-Constrained Access Tokens {#pop_tokens} 
  
 As the name suggests, sender-constrained access tokens scope the
 applicability of an access token to a certain sender. This sender is
@@ -1026,7 +1011,7 @@ to the attacker. This applies to access tokens as well as to refresh
 tokens (see (#refresh_token_protection)).
 
 
-##### Audience Restricted Access Tokens {#aud_restriction} 
+### Audience Restricted Access Tokens {#aud_restriction} 
 
 Audience restriction essentially restricts access tokens to a
 particular resource server. The authorization server associates the
@@ -1083,43 +1068,65 @@ token leakage prevention. It allows the authorization server to create
 a different access token whose format and content is specifically minted
 for the respective server. This has huge functional and privacy
 advantages in deployments using structured access tokens.
-  
-  
-### Compromised Resource Server {#comp_res_server}
-   
-An attacker may compromise a resource server to gain access to the
-resources of the respective deployment. Such a compromise may range
-from partial access to the system, e.g., its log files, to full
-control of the respective server.
-   
-If the attacker were able to gain full control, including shell
-access, all controls can be circumvented and all resources can be
-accessed. The attacker would also be able to obtain other access
-tokens held on the compromised system that would potentially be valid
-to access other resource servers.
 
-Preventing server breaches by hardening and monitoring server systems
-is considered a standard operational procedure and, therefore, out of
-the scope of this document. This section focuses on the impact of 
-OAuth-related breaches and the replaying of captured access tokens.
 
-The following measures should be taken into account by implementers in
-order to cope with access token replay by malicious actors:
-   
-  * Sender-constrained access tokens, as described in (#pop_tokens),
-    SHOULD be used to prevent the attacker from replaying the access
-    tokens on other resource servers. Depending on the severity of the
-    penetration, sender-constrained access tokens will also prevent
-    replay on the compromised system.
-  * Audience restriction as described in (#aud_restriction) SHOULD be
-    used to prevent replay of captured access tokens on other resource
-    servers.
-  * The resource server MUST treat access tokens like any other
-    credentials. It is considered good practice to not log them and
-    not store them in plain text.
+### Discussion: Preventing Leakage via Metadata
+     
+An authorization server could provide the client with additional
+information about the locations where it is safe to use its access
+tokens.
+  
+In the simplest form, this would require the AS to publish a list of
+its known resource servers, illustrated in the following example using
+a non-standard metadata parameter `resource_servers`:
+  
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+
+    {
+      "issuer":"https://server.somesite.example",
+      "authorization_endpoint":
+        "https://server.somesite.example/authorize",
+      "resource_servers":[
+        "email.somesite.example",
+        "storage.somesite.example",
+        "video.somesite.example"
+      ]
+      ...
+    } 
+  
+The AS could also return the URL(s) an access token is good for in the
+token response, illustrated by the example and non-standard return
+parameter `access_token_resource_server`:
+  
     
-The first and second recommendation also apply to other scenarios
-where access tokens leak (see Attacker A5 in (#secmodel)).
+    HTTP/1.1 200 OK
+    Content-Type: application/json;charset=UTF-8
+    Cache-Control: no-store
+    Pragma: no-cache
+    
+    {
+      "access_token":"2YotnFZFEjr1zCsicMWpAA",
+      "access_token_resource_server":
+        "https://hostedresource.somesite.example/path1",
+    ...
+    }
+
+  
+This mitigation strategy would rely on the client to enforce the
+security policy and to only send access tokens to legitimate
+destinations. Results of OAuth-related security research (see for
+example [@oauth_security_ubc] and [@oauth_security_cmu]) indicate a
+large portion of client implementations do not or fail to properly
+implement security controls, like `state` checks. So relying on
+clients to prevent access token phishing is likely to fail as well.
+Moreover, given the ratio of clients to authorization and resource
+servers, it is considered the more viable approach to move as much as
+possible security-related logic to those entities. Clearly, the client
+has to contribute to the overall security. But there are alternative
+countermeasures, as described before, that provide a
+better balance between the involved parties.
+  
 
 ## Open Redirection {#open_redirection}
 
