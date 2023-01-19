@@ -2,6 +2,12 @@
 
    [[ To be removed from the final specification ]]
 
+   -22
+
+   -21
+
+   * Improve wording on phishing via AS
+
    -20
 
    * Improved description of authorization code injection attacks and PKCE protection
