@@ -351,7 +351,7 @@ server.
 The description here follows [@arXiv.1601.01229], with
 variants of the attack outlined below.
 
-Preconditions: For this variant of the attack to work, we assume that
+Preconditions: For this variant of the attack to work, it is assumed that
 
   * the implicit or authorization code grant are used with multiple AS
     of which one is considered "honest" (H-AS) and one is operated by
@@ -360,7 +360,7 @@ Preconditions: For this variant of the attack to work, we assume that
     the user's browser and uses the same redirection endpoint URI for
     each AS. 
     
-In the following, we assume that the client is registered with H-AS (URI:
+In the following, it is further assumed that the client is registered with H-AS (URI:
 `https://honest.as.example`, client ID: `7ZGZldHQ`) and with A-AS (URI:
 `https://attacker.example`, client ID: `666RVZJTA`). URLs shown in the following
 example are shortened for presentation to only include parameters relevant for the
@@ -900,7 +900,7 @@ via the attacks described in (#insufficient_uri_validation),
 specific security measures, as described in the respective sections.
 However, in some cases, these measures are not sufficient or are not
 implemented correctly. Authorization servers therefore SHOULD ensure that
-access tokens are sender-constrained and audience-restriced as described
+access tokens are sender-constrained and audience-restricted as described
 in the following.
 
   
