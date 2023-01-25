@@ -5,10 +5,13 @@
    -22
 
    * Added section on securing in-browser communication
+   * Merged section on phishing via AS into existing section on open redirectors
+   * Restructure and move section on sender-constrained tokens
+   * Mention RFCs for Private Key JWK method
 
    -21
 
-   * Improve wording on phishing via AS
+   * Improved wording on phishing via AS
 
    -20
 

@@ -13,9 +13,9 @@ access tokens (see (#insufficient_uri_validation)). It can also help to detect
 mix-up attacks (see (#mix_up)).
 
 Clients and AS MUST NOT expose URLs that forward the user's browser to
-arbitrary URIs obtained from a query parameter ("open redirector").
-Open redirectors can enable exfiltration of authorization codes and
-access tokens, see (#open_redirector_on_client).
+arbitrary URIs obtained from a query parameter ("open redirector") as
+described in (#open_redirection). Open redirectors can enable
+exfiltration of authorization codes and access tokens.
 
 Clients MUST prevent Cross-Site Request Forgery (CSRF). In this
 context, CSRF refers to requests to the redirection endpoint that do
@@ -201,11 +201,12 @@ impossible.
 Authorization servers SHOULD use client authentication if possible.
 
 It is RECOMMENDED to use asymmetric (public-key based) methods for
-client authentication such as mTLS [@!RFC8705] or
-`private_key_jwt` [@!OpenID.Core]. When asymmetric methods for client
-authentication are used, authorization servers do not need to store
-sensitive symmetric keys, making these methods more robust against a
-number of attacks.
+client authentication such as mTLS [@!RFC8705] or using signed JWTs
+("Private Key JWT") in accordance with [@!RFC7521] and [@!RFC7523]
+(in [@!OpenID.Core] defined as the client authentication method `private_key_jwt`).
+When such methods for client authentication are used, authorization
+servers do not need to store sensitive symmetric keys, making these
+methods more robust against a number of attacks.
 
 
 ## Other Recommendations
@@ -241,6 +242,3 @@ If the authorization response is sent with in-browser communication techniques
 like postMessage [@postmessage_api] instead of HTTP redirects, both the
 initiator and receiver of the in-browser message MUST be strictly verified as described
 in (#rec_ibc).
-
-Authorization servers MUST take precautions to prevent phishing attacks via
-redirection as described in (#phishing_via_as).
