@@ -246,11 +246,12 @@ impossible.
 Authorization servers SHOULD use client authentication if possible.
 
 It is RECOMMENDED to use asymmetric (public-key based) methods for
-client authentication such as mTLS [@!RFC8705] or
-`private_key_jwt` [@!OpenID.Core]. When asymmetric methods for client
-authentication are used, authorization servers do not need to store
-sensitive symmetric keys, making these methods more robust against a
-number of attacks.
+client authentication such as mTLS [@!RFC8705] or using signed JWTs
+("Private Key JWT") in accordance with [@!RFC7521] and [@!RFC7523]
+(in [@!OpenID.Core] defined as the client authentication method `private_key_jwt`).
+When such methods for client authentication are used, authorization
+servers do not need to store sensitive symmetric keys, making these
+methods more robust against a number of attacks.
 
 
 ## Other Recommendations
