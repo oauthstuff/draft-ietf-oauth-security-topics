@@ -1450,3 +1450,141 @@ SHOULD be combined with others, including those described in
 [@!RFC6819], unless such legacy user agents are explicitly unsupported
 by the authorization server. Even in such cases, additional
 countermeasures SHOULD still be employed.
+
+## Authorization Server Redirecting to Phishing Site {#phishing_via_as}
+
+An attacker could utilize a correctly registered
+redirect URI to perform phishing attacks.  The attacker could, for
+example, register a client via dynamic client registration [RFC7591]
+and execute one of the following attacks:
+
+ 1. Intentionally send an erroneous authorization request, e.g., by
+    using an invalid scope value, thus instructing the AS to redirect the
+    user-agent to its phishing site. 
+ 1. Intentionally send a valid authorization request with `client_id` 
+    and `redirect_uri` controlled by the attacker. After the user authenticates, 
+    the AS prompts the user to provide consent to the request. If the user 
+    notices an issue with the request and declines the request, the AS still 
+    redirects the user agent to the phishing site. In this case, the user agent
+    will be redirected to the phishing site regardless of the action taken by
+    the user.
+ 1. Intentionally send a valid silent authentication request (prompt=none) 
+    with `client_id` and `redirect_uri` controlled by the attacker. In this case,
+    the AS will automatically redirect the user agent to the phishing site. 
+
+The AS MUST take precautions to prevent these threats. The AS MUST always
+authenticate the user first and, with the exception of the silent authentication
+use case, prompt the user for credentials when needed, before redirecting the
+user. Based on its risk assessment, the AS needs to decide whether it can trust
+the redirect URI or not. It could take into account  URI analytics done
+internally or through some external service to evaluate the credibility and
+trustworthiness content behind the URI, and the source of the redirect URI and
+other client data.
+
+The AS SHOULD only automatically redirect the user agent if it trusts the
+redirect URI.  If the URI is not trusted, the AS MAY inform the user and rely on
+the user to make the correct decision.
+
+## Attacks on In-Browser Communication Flows {#rec_ibc}
+
+If the authorization response is sent with in-browser communication techniques
+like postMessage [@postmessage_api] instead of HTTP redirects, messages may
+inadvertently be sent to malicious origins or injected from malicious origins. 
+
+### Examples
+
+The following examples of attacks using in-browser communication are
+described in [@inbc_security_sso]:
+
+#### Insufficient Limitation of Receiver Origins
+
+When sending the authorization response or token response via
+postMessage, the authorization server sends the response to the wildcard
+origin "*" instead of the client's origin. When the window to which the
+response is sent is controlled by an attacker, the attacker can read the
+response.
+
+```
+window.opener.postMessage(
+  {
+    code: "ABC",
+    state: "123"
+  },
+  "*" // any website in the opener window can receive the message
+)
+```
+
+#### Insufficient URI Validation
+
+When sending the authorization response or token response via
+postMessage, the authorization server may not check the
+receiver origin against the redirect URI and instead, for example, send
+the response to an origin provided by an attacker. This is analogous to
+the attack described in (#insufficient_uri_validation).
+
+```
+window.opener.postMessage(
+  {
+    code: "ABC",
+    state: "123"
+  },
+  "https://attacker.example" // attacker-provided value
+)
+```
+
+#### Injection after Insufficient Validation of Sender Origin
+
+A client that expects the authorization response or token response via
+postMessage may not validate the sender origin of the message. This
+may allow an attacker to inject an authorization response or token response
+into the client. 
+
+In the case of a maliciously injected authorization response, the attack
+is a variant of the CSRF attacks described in (#csrf). The
+countermeasures described in (#csrf) apply to this attack as well.
+
+In the case of a maliciously injected token response, sender-constrained
+access tokens as described in (#pop_tokens) may prevent the attack under
+some circumstances, but additional countermeasures as described next are
+generally required.
+
+
+### Recommendations
+
+When comparing client receiver origins against pre-registered origins,
+authorization servers MUST utilize exact string matching as described in
+(#iuv_countermeasures). Authorization servers MUST send postMessages to
+trusted client receiver origins:
+
+```
+window.opener.postMessage(
+  {
+    code: "ABC",
+    state: "123"
+  },
+  "https://client.example" // use explicit client origin
+)
+```
+
+Wildcard origins like "*" in postMessage MUST not be used as attackers can use them
+to leak a victim's in-browser message to malicious origins.
+Both measures contribute to the prevention of leakage of authorization codes and
+access tokens (see (#insufficient_uri_validation)).
+
+Clients MUST prevent injection of in-browser messages on the client
+receiver endpoint. Clients MUST utilize exact string matching to compare
+the initiator origin of an in-browser message with the authorization
+server origin:
+
+```
+window.addEventListener("message", (e) => {
+  // validate exact AS origin
+  if (e.origin === "https://honest.as.example") {
+    // process e.data.code and e.data.state
+  }
+})
+```
+
+Since in-browser communication flows only apply a different communication
+technique (i.e., postMessage instead of HTTP redirect), all measures protecting
+the authorization response listed in (#rec_redirect) MUST be applied equally.
