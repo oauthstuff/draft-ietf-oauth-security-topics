@@ -727,10 +727,11 @@ variant of an attack known as Cross-Site Request Forgery (CSRF).
 
 ### Countermeasures {#csrf_countermeasures}
  
-The traditional countermeasure is that clients pass a value in the `state`
-parameter that links the request to the redirect URI to the user agent session
-as described in detail in [@!RFC6819], Section 5.3.5. The same protection is
-provided by PKCE or the OpenID Connect `nonce` value.
+The traditional countermeasure is that clients pass a random value, also
+known as a CSRF Token, in the `state` parameter that links the request to
+the redirect URI to the user agent session as described. This
+countermeasure is described in detail in [@!RFC6819], Section 5.3.5. The
+same protection is provided by PKCE or the OpenID Connect `nonce` value.
 
 When using PKCE instead of `state` or `nonce` for CSRF protection, it is
 important to note that:
@@ -1226,9 +1227,12 @@ security controls.
    
 In some situations, the reverse proxy needs to pass security-related
 data to the upstream application servers for further processing.
-Examples include the IP address of the request originator, token
-binding ids, and authenticated TLS client certificates. This data is
-usually passed in custom HTTP headers added to the upstream request.
+Examples include the IP address of the request originator, token binding
+ids, and authenticated TLS client certificates. This data is usually
+passed in HTTP headers added to the upstream request. While the headers
+are often custom, application-specific headers, standardized header
+fields for client certificates and client certificate chains are defined
+in [@draft-ietf-httpbis-client-cert-field].
    
 If the reverse proxy would pass through any header sent from the
 outside, an attacker could try to directly send the faked header

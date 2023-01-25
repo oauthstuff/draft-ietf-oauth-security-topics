@@ -5,6 +5,7 @@
    -22
 
    * Restructure and move section on sender-constrained tokens
+   * Mention RFCs for Private Key JWK method
 
    -21
 
