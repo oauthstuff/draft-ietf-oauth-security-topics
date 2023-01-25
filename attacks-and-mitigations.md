@@ -727,8 +727,8 @@ variant of an attack known as Cross-Site Request Forgery (CSRF).
 
 ### Countermeasures {#csrf_countermeasures}
  
-The traditional countermeasure is that clients pass a random value (a
-so-called CSRF Token) in the `state` parameter that links the request to
+The traditional countermeasure is that clients pass a random value, also
+known as a CSRF Token, in the `state` parameter that links the request to
 the redirect URI to the user agent session as described. This
 countermeasure is described in detail in [@!RFC6819], Section 5.3.5. The
 same protection is provided by PKCE or the OpenID Connect `nonce` value.
