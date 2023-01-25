@@ -1219,9 +1219,12 @@ security controls.
    
 In some situations, the reverse proxy needs to pass security-related
 data to the upstream application servers for further processing.
-Examples include the IP address of the request originator, token
-binding ids, and authenticated TLS client certificates. This data is
-usually passed in custom HTTP headers added to the upstream request.
+Examples include the IP address of the request originator, token binding
+ids, and authenticated TLS client certificates. This data is usually
+passed in HTTP headers added to the upstream request. While the headers
+are often custom, application-specific headers, standardized header
+fields for client certificates and client certificate chains are defined
+in [@draft-ietf-httpbis-client-cert-field].
    
 If the reverse proxy would pass through any header sent from the
 outside, an attacker could try to directly send the faked header
