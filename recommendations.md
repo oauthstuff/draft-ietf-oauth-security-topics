@@ -225,9 +225,9 @@ It is therefore RECOMMENDED that ASs publish OAuth metadata according to
 [@!RFC8414] and that clients make use of this metadata to configure themselves
 when available.
 
-Authorization servers SHOULD NOT allow clients to influence their `client_id` or
-any other Claim if that can cause confusion with a genuine resource owner, as
-described in (#client_impersonating)
+Under the conditions described in (#client_impersonating_countermeasures),
+authorization servers SHOULD NOT allow clients to influence their `client_id` or
+any claim that could cause confusion with a genuine resource owner.
 
 It is RECOMMENDED to use end-to-end TLS. If TLS
 traffic needs to be terminated at an intermediary, refer to
