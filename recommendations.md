@@ -178,7 +178,7 @@ to verify, for every request, whether the access token sent with that
 request was meant to be used for that particular action on the
 particular resource. If not, the resource server must refuse to serve
 the respective request. Clients and authorization servers MAY utilize
-the parameter `scope` as specified in [@!RFC6749] and `authorization_details` as specified in [@I-D.ietf-oauth-rar] to determine those
+the parameter `scope` as specified in [@!RFC6749] and `authorization_details` as specified in [@RFC9396] to determine those
 resources and/or actions.
 
 ## Resource Owner Password Credentials Grant
