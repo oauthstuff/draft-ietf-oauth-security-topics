@@ -452,7 +452,7 @@ There are different ways this issuer identifier can be transported to the client
    example, via a separate response parameter `iss`, defined in
    [@RFC9207].
  * When OpenID Connect is used and an ID Token is returned in the authorization
-   response, the client can evaluate the `iss` Claim in the ID Token.
+   response, the client can evaluate the `iss` claim in the ID Token.
 
 In both cases, the `iss` value MUST be evaluated according to [@RFC9207].
 
@@ -1375,7 +1375,7 @@ on the client policy or the grant associated with the refresh token
 ## Client Impersonating Resource Owner {#client_impersonating}
    
 Resource servers may make access control decisions based on the identity of a
-resource owner, for which an access token was issued, or based on the identity
+resource owner for which an access token was issued, or based on the identity
 of a client in the client credentials grant. If both options are possible,
 depending on the details of the implementation, a client's identity may be
 mistaken for the identity of a resource owner. For example, if a client is able
@@ -1388,11 +1388,14 @@ end-users, the client may then be able to access resource of the end-user.
 
 ### Countermeasures {#client_impersonating_countermeasures}
 
-Authorization servers SHOULD NOT allow clients to influence their `client_id` or
-any other Claim if that can cause confusion with a genuine resource owner. Where
-this cannot be avoided, authorization servers MUST provide other means for the
-resource server to distinguish between access tokens authorized by a resource
-owner from access tokens authorized by the client itself.
+If the authorization server has a common namespace for client IDs and user
+identifiers, causing the resource server to be unable to distinguish an access
+token authorized by a resource owner from an access token authorized by a client
+itself, the authorization server SHOULD NOT allow clients to influence their
+`client_id` or any claim that could cause confusion with a genuine resource
+owner. Where this cannot be avoided, authorization servers MUST provide other
+means for the resource server to distinguish between the two types of access
+tokens.
 
 ## Clickjacking {#clickjacking}
 
