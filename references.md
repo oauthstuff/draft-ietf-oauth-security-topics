@@ -296,7 +296,7 @@ OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound Access Tokens
   </front>
 </reference>
 
-<reference anchor="CORS" target="https://fetch.spec.whatwg.org/#cors-protocol">
+<reference anchor="CORS" target="https://fetch.spec.whatwg.org/#http-cors-protocol">
   <front>
     <title>Fetch Standard: CORS protocol</title>
     <author>WHATWG</author>
