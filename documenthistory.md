@@ -2,6 +2,13 @@
 
    [[ To be removed from the final specification ]]
 
+   -23
+
+   * Added CORS considerations
+   * Reworded (#client_impersonating_countermeasures) to be more in line with OAuth 2.1
+   * Editorial changes
+   * Clarifications and updated references
+
    -22
 
    * Added section on securing in-browser communication
