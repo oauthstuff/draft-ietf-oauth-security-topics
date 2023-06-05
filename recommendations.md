@@ -247,4 +247,4 @@ including the Token Endpoint, Authorization Server Metadata Endpoint, `jwks_uri`
 Endpoint, and the Dynamic Client Registration Endpoint MAY support the use of
 Cross-Origin Resource Sharing (CORS, [@CORS]). However, CORS MUST NOT be
 supported at the Authorization Endpoint as the client does not access this
-not directly accessed.
+endpoint directly, instead the client redirects the user agent to it.
