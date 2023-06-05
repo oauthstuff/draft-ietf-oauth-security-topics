@@ -183,7 +183,7 @@ resources and/or actions.
 
 ## Resource Owner Password Credentials Grant
 
-The resource owner password credentials grant as defined in [@!RFC6749] MUST NOT
+The resource owner password credentials grant [@!RFC6749] MUST NOT
 be used. This grant type insecurely exposes the credentials of the resource
 owner to the client. Even if the client is benign, this results in an increased
 attack surface (credentials can leak in more places than just the AS) and users
