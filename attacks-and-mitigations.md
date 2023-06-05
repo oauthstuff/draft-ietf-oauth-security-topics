@@ -1318,7 +1318,7 @@ This specification gives recommendations beyond the scope of
 Authorization servers SHOULD determine, based on a risk assessment,
 whether to issue refresh tokens to a certain client. If the
 authorization server decides not to issue refresh tokens, the client
-MAY refresh access tokens by utilizing other grant types, such as the
+MAY obtain a new access token by utilizing other grant types, such as the
 authorization code grant type. In such a case, the authorization
 server may utilize cookies and persistent grants to optimize the user
 experience.
@@ -1331,7 +1331,7 @@ the impact of refresh token leakage.
 For confidential clients, [@!RFC6749] already requires that refresh
 tokens can only be used by the client for which they were issued.
 
-Authorization server MUST utilize one of these methods to
+Authorization servers MUST utilize one of these methods to
 detect refresh token replay by malicious actors for public clients:
     
   * **Sender-constrained refresh tokens:** the authorization server
