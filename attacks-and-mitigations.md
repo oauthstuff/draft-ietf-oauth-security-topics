@@ -150,7 +150,7 @@ readability):
               redirect_to%3Dhttps%3A%2F%2Fattacker.example%2Fcb
               #access_token=2YotnFZFEjr1zCsicMWpAA&...
      
-At example.com, the request arrives at the open redirector. The endpoint will
+At client.somesite.example, the request arrives at the open redirector. The endpoint will
 read the redirect parameter and will issue an HTTP 303 Location header
 redirect to the URL `https://attacker.example/`.
   
