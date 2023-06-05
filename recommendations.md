@@ -241,3 +241,13 @@ If the authorization response is sent with in-browser communication techniques
 like postMessage [@postmessage_api] instead of HTTP redirects, both the
 initiator and receiver of the in-browser message MUST be strictly verified as described
 in (#rec_ibc).
+
+### Usage of CORS
+
+To support browser-based clients, endpoints directly accessed by such clients
+including the Token Endpoint, Authorization Server Metadata Endpoint, `jwks_uri`
+Endpoint, and the Dynamic Client Registration Endpoint MAY support the use of
+Cross-Origin Resource Sharing (CORS, [@CORS]). 
+
+However, CORS MUST NOT be supported at the Authorization Endpoint as it is redirected
+to by the client and not directly accessed.
