@@ -16,7 +16,7 @@ Dominick Baier,
 Vittorio Bertocci,
 Brian Campbell,
 William Dennis,
-George Fletscher,
+George Fletcher,
 Dick Hardt,
 Joseph Heenan,
 Pedram Hosseyni,
@@ -45,7 +45,7 @@ Tomek Stojecki,
 Tim Wuertele,
 David Waite and
 Hans Zandbelt
- for their valuable feedback.
+for their valuable feedback.
     
 
 # IANA Considerations {#IANA}

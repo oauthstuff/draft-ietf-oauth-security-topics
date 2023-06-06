@@ -8,7 +8,7 @@ keyword = ["security", "oauth2", "best current practice"]
 
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-ietf-oauth-security-topics-22"
+value = "draft-ietf-oauth-security-topics-23"
 stream = "IETF"
 status = "bcp"
 
