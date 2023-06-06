@@ -95,7 +95,7 @@
     </author>
     <date day="27" month="April" year="2015"/>
   </front>
-</reference>       
+</reference>
 
 
 <reference anchor="oauth_security_ubc" target="http://passwordresearch.com/papers/paper267.html">
@@ -110,7 +110,7 @@
     <date month="October" year="2012"/>
   </front>
   <format target="http://passwordresearch.com/papers/paper267.html" type="HTML" />
-</reference> 
+</reference>
 
 <reference anchor="oauth_security_cmu" target="http://css.csail.mit.edu/6.858/2012/readings/oauth-sso.pdf">
   <front>
@@ -126,7 +126,7 @@
     </author>
     <author initials="Y." surname="Tian" fullname="Yuan Tian">
       <organization abbrev="CMU">Carnegie Mellon University</organization>
-    </author>          
+    </author>
     <author initials="R." surname="Kotcher" fullname="Robert Kotcher">
       <organization abbrev="CMU">Carnegie Mellon University</organization>
     </author>
@@ -208,7 +208,7 @@
 
 <reference anchor="WebAuthn" target="https://www.w3.org/TR/2019/REC-webauthn-1-20190304/">
   <front>
-    <title>Web Authentication: An API for accessing Public Key Credentials Level 1</title>    
+    <title>Web Authentication: An API for accessing Public Key Credentials Level 1</title>
     <author fullname="Dirk Balfanz" surname="Balfanz" initials="D."><organization>Google</organization></author>
     <author fullname="Alexei Czeskis" surname="Czeskis" initials="A."><organization>Google</organization></author>
     <author fullname="Jeff Hodges" surname="Hodges" initials="J."><organization>Google</organization></author>

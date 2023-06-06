@@ -27,7 +27,7 @@ fullname="John Bradley"
 organization="Yubico"
     [author.address]
     email = "ve7jtb@ve7jtb.com"
-    
+
 [[author]]
 initials="A."
 surname="Labunets"
@@ -43,10 +43,10 @@ fullname="Daniel Fett"
 organization="Authlete"
     [author.address]
     email = "mail@danielfett.de"
-    
+
 %%%
 
-.# Abstract 
+.# Abstract
 
 This document describes best current security practice for OAuth 2.0.
 It updates and extends the OAuth 2.0 Security Threat Model to

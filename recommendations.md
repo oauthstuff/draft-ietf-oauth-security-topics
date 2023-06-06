@@ -1,5 +1,5 @@
 # Best Practices {#recommendations}
-    
+
 This section describes the set of security mechanisms and measures the OAuth
 working group considers best practices at the time of writing.
 
@@ -27,13 +27,13 @@ the `nonce` parameter provides CSRF protection. Otherwise, one-time
 use CSRF tokens carried in the `state` parameter that are securely
 bound to the user agent MUST be used for CSRF protection (see
 (#csrf_countermeasures)).
-        
+
 When an OAuth client can interact with more than one authorization server, a
 defense against mix-up attacks (see (#mix_up)) is REQUIRED. To this end, clients
-SHOULD 
+SHOULD
 
   * use the `iss` parameter as a countermeasure according to
-    [@!RFC9207], or 
+    [@!RFC9207], or
   * use an alternative countermeasure based on an `iss` value in the
     authorization response (such as the `iss` Claim in the ID Token in
     [@!OpenID.Core] or in [@JARM] responses), processing it as described in
@@ -54,15 +54,15 @@ Clients MUST prevent authorization code
 injection attacks (see (#code_injection)) and misuse of authorization codes using one of the following options:
 
  * Public clients MUST use PKCE [@!RFC7636] to this end, as motivated in
-   (#pkce_as_injection_protection). 
+   (#pkce_as_injection_protection).
  * For confidential clients, the use of PKCE [@!RFC7636] is RECOMMENDED, as it
    provides a strong protection against misuse and injection of authorization
    codes as described in (#pkce_as_injection_protection) and, as a side-effect,
    prevents CSRF even in presence of strong attackers as described in
-   (#csrf_countermeasures). 
+   (#csrf_countermeasures).
  * With additional precautions, described in (#nonce_as_injection_protection),
    confidential OpenID Connect [@!OpenID.Core] clients MAY use the `nonce` parameter and the
-   respective Claim in the ID Token instead. 
+   respective Claim in the ID Token instead.
 
 In any case, the PKCE challenge or OpenID Connect `nonce` MUST be
 transaction-specific and securely bound to the client and the user agent in
@@ -97,20 +97,20 @@ the client to detect PKCE support). ASs MAY instead provide a
 deployment-specific way to ensure or determine PKCE support by the AS.
 
 ### Implicit Grant {#implicit_grant_recommendation}
-    
+
 The implicit grant (response type "token") and other response types
 causing the authorization server to issue access tokens in the
 authorization response are vulnerable to access token leakage and
 access token replay as described in (#insufficient_uri_validation),
 (#credential_leakage_referrer), (#browser_history), and
 (#access_token_injection).
-    
-Moreover, no viable method for sender-constraining exists to 
+
+Moreover, no viable method for sender-constraining exists to
 bind access tokens to a specific client (as recommended in
 (#token_replay_prevention)) when the access tokens are issued in the
 authorization response. This means that an attacker can use leaked or stolen
 access token at a resource endpoint.
-    
+
 In order to avoid these issues, clients SHOULD NOT use the implicit
 grant (response type "token") or other response types issuing
 access tokens in the authorization response, unless access token injection
@@ -129,7 +129,7 @@ sender-constrain the issued tokens (see next section).
 ## Token Replay Prevention {#token_replay_prevention}
 
 ### Access Tokens
- 
+
 A sender-constrained access token scopes the applicability of an access
 token to a certain sender. This sender is obliged to demonstrate knowledge
 of a certain secret as prerequisite for the acceptance of that token at
@@ -164,7 +164,7 @@ the access token with certain resource servers and every resource
 server is obliged to verify, for every request, whether the access
 token sent with that request was meant to be used for that particular
 resource server. If not, the resource server MUST refuse to serve the
-respective request. The `aud` claim as defined in [@!RFC9068] MAY be 
+respective request. The `aud` claim as defined in [@!RFC9068] MAY be
 used to audience-restrict access tokens. Clients and authorization servers MAY utilize the
 parameters `scope` or `resource` as specified in [@!RFC6749] and
 [@RFC8707], respectively, to determine the
@@ -211,10 +211,10 @@ methods more robust against a number of attacks.
 ## Other Recommendations
 
 The use of OAuth Metadata [@!RFC8414] can help to improve the security of OAuth
-deployments: 
+deployments:
 
  * It ensures that security features and other new OAuth features can be enabled
-   automatically by compliant software libraries. 
+   automatically by compliant software libraries.
  * It reduces chances for misconfigurations, for example misconfigured endpoint
    URLs (that might belong to an attacker) or misconfigured security features.
  * It can help to facilitate rotation of cryptographic keys and to ensure

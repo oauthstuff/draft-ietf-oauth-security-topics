@@ -12,16 +12,16 @@ challenges can be observed:
 	  in the OAuth 2.0 Threat Model and Security Considerations [@!RFC6819],
    	continued exploitation demonstrates a need for more specific
 	  recommendations, easier to implement mitigations, and more defense in depth.
-    
+
   * OAuth is being used in environments with higher security requirements than
     considered initially, such as Open Banking, eHealth, eGovernment, and
     Electronic Signatures. Those use cases call for stricter guidelines and
     additional protection.
-	  
+
   * OAuth is being used in much more dynamic setups than originally anticipated,
 	  creating new challenges with respect to security. Those challenges go beyond
 	  the original scope of [@!RFC6749], [@!RFC6750], and [@!RFC6819].
-    
+
     OAuth initially assumed static relationships between client,
     authorization server, and resource servers. The URLs of the AS and RS were
     known to the client at deployment time and built an anchor for the
@@ -39,11 +39,11 @@ challenges can be observed:
     Protocol [@RFC7591] and OAuth 2.0 Authorization Server Metadata
     [@RFC8414] were developed to support the use of OAuth in
     dynamic scenarios.
-	  
+
   * Technology has changed. For example, the way browsers treat fragments when
 	  redirecting requests has changed, and with it, the implicit grant's
 	  underlying security model.
-	  
+
 This document provides updated security recommendations to address
 these challenges. It does not supplant the security advice given in
 [@!RFC6749], [@!RFC6750], and [@!RFC6819], but complements those
@@ -56,7 +56,7 @@ insecure. Naturally, not all existing ecosystems and implementations are
 compatible with the new requirements and following the best practices described in
 this document may break interoperability. Nonetheless, it is RECOMMENDED that
 implementers upgrade their implementations and ecosystems when feasible.
-	  
+
 ## Structure
 
 The remainder of this document is organized as follows: The next section

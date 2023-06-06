@@ -31,7 +31,7 @@
    * Clarified references to attacker model by including a link to (#secmodel)
    * Clarified description of "CSRF tokens" and reference to RFC6819
    * Described that OIDC can prevent access token injection
-   * Updated references 
+   * Updated references
 
    -19
 
@@ -44,7 +44,7 @@
    * Change wording for disallowing HTTP redirect URIs.
 
    -17
-   
+
    * Make the use of metadata RECOMMENDED for both servers and clients
    * Make announcing PKCE support in metadata the RECOMMENDED way (before: either metadata or deployment-specific way)
    * AS also MUST NOT expose open redirectors.
@@ -54,7 +54,7 @@
    * Make HTTPS mandatory for most redirect URIs.
 
    -16
-   
+
    * Make MTLS a suggestion, not RECOMMENDED.
    * Add important requirements when using nonce for code injection protection.
    * Highlight requirements for refresh token sender-constraining.
@@ -67,16 +67,16 @@
    * Update reference to DPoP
    * Fix reference to RFC8414
    * Move to xml2rfcv3
-   
+
    -14
-   
+
    * Added info about using CSP to prevent clickjacking
    * Changes from WGLC feedback
    * Editorial changes
    * AS MUST announce PKCE support either in metadata or using deployment-specific ways (before: SHOULD)
-   
+
    -13
-   
+
    * Discourage use of Resource Owner Password Credentials Grant
    * Added text on client impersonating resource owner
    * Recommend asymmetric methods for client authentication
@@ -85,18 +85,18 @@
    * AS SHOULD publish PKCE support
    * Cleaned up discussion on auth code injection
    * AS MUST support PKCE
-   
+
    -12
-   
+
    * Added updated attacker model
-   
+
    -11
-   
+
    * Adapted section 2.1.2 to outcome of consensus call
    * more text on refresh token inactivity and implementation note on refresh token replay detection via refresh token rotation
 
    -10
-   
+
    * incorporated feedback by Joseph Heenan
    * changed occurrences of SHALL to MUST
    * added text on lack of token/cert binding support tokens issued in
