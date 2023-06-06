@@ -2,7 +2,7 @@ name: "Perform Initial Repository Setup"
 
 on:
   push:
-    branches: [main]
+    branches: [master]
 
 jobs:
   setup:
@@ -21,10 +21,10 @@ jobs:
           echo
           echo "Rename draft-todo-yourname-protocol.md to start using this repository:"
           echo
-          echo "    https://github.com/${{github.repository}}/edit/main/draft-todo-yourname-protocol.md"
+          echo "    https://github.com/${{github.repository}}/edit/master/draft-todo-yourname-protocol.md"
           echo
           echo "Change the name of the file and its title."
-          echo "Commit the changes to the 'main' branch."
+          echo "Commit the changes to the 'master' branch."
           echo
           echo "============================================================="
           echo "skip=true" >>"$GITHUB_OUTPUT"
@@ -34,7 +34,7 @@ jobs:
           echo
           echo "Delete .github/workflows/setup.yml to avoid running this action:"
           echo
-          echo "    https://github.com/${{github.repository}}/delete/main/.github/workflows/setup.yml"
+          echo "    https://github.com/${{github.repository}}/delete/master/.github/workflows/setup.yml"
           echo
           echo "============================================================="
           echo "skip=true" >>"$GITHUB_OUTPUT"
