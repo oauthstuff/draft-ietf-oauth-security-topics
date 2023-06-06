@@ -1,1 +1,3 @@
-* @danielfett @selfissued @isciurus @ve7jtb @tlodderstedt 
+# Automatically generated CODEOWNERS
+# Regenerate with `make update-codeowners`
+draft-ietf-oauth-security-topics.md torsten@lodderstedt.net ve7jtb@ve7jtb.com isciurus@gmail.com mail@danielfett.de
