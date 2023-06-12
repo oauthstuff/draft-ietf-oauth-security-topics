@@ -91,7 +91,7 @@ the authorization server interprets this as "allow redirect URIs
 pointing to any host residing in the domain `somesite.example`". If an
 attacker manages to establish a host or subdomain in
 `somesite.example`, he can impersonate the legitimate client. This
-could be caused, for example, by a subdomain takeover attack [@subdomaintakeover], where an
+could be caused, for example, by a subdomain takeover attack [@research.udel], where an
 outdated CNAME record (say, `external-service.somesite.example`)
 points to an external DNS name that does no longer exist (say,
 `customer-abc.service.example`) and can be taken over by an attacker
@@ -253,7 +253,7 @@ links to external sites.
 The following measures further reduce the chances of a successful attack:
 
   * Suppress the Referer header by applying an appropriate Referrer
-    Policy [@webappsec-referrer-policy] to the document (either as
+    Policy [@W3C.webappsec-referrer-policy] to the document (either as
     part of the "referrer" meta attribute or by setting a
     Referrer-Policy header). For example, the header `Referrer-Policy:
     no-referrer` in the response completely suppresses the Referer
@@ -410,10 +410,10 @@ Variants:
     different ASs, do not store the selected AS in the user's session, and ASs
     do not check the redirect URIs properly, attackers can mount an attack
     called "Cross-Social Network Request Forgery". These attacks have been
-    observed in practice. Refer to [@oauth_security_jcs_14] for details.
+    observed in practice. Refer to [@research.jcs_14] for details.
   * **OpenID Connect**: There are variants that can be used to attack OpenID
     Connect. In these attacks, the attacker misuses features of the OpenID
-    Connect Discovery [@!OpenID.Discovery] mechanism or replays access tokens or ID
+    Connect Discovery [@OpenID.Discovery] mechanism or replays access tokens or ID
     Tokens to conduct a mix-up attack. The attacks are described in detail in
     [@arXiv.1704.08539], Appendix A, and [@arXiv.1508.04324v2], Section 6
     ("Malicious Endpoints Attacks").
@@ -430,7 +430,7 @@ issuer they sent the authorization request to and bind this information to the
 user agent. The issuer serves, via the associated metadata, as an abstract
 identifier for the combination of the authorization endpoint and token endpoint
 that are to be used in the flow. If an issuer identifier is not available, for
-example, if neither OAuth metadata [@!RFC8414] nor OpenID Connect Discovery [@!OpenID.Discovery] are
+example, if neither OAuth metadata [@RFC8414] nor OpenID Connect Discovery [@OpenID.Discovery] are
 used, a different unique identifier for this tuple or the tuple itself can be
 used instead. For brevity of presentation, such a deployment-specific identifier
 will be subsumed under the issuer (or issuer identifier) in the following.
@@ -1117,7 +1117,7 @@ parameter `access_token_resource_server`:
 This mitigation strategy would rely on the client to enforce the
 security policy and to only send access tokens to legitimate
 destinations. Results of OAuth-related security research (see for
-example [@oauth_security_ubc] and [@oauth_security_cmu]) indicate a
+example [@research.ubc] and [@research.cmu]) indicate a
 large portion of client implementations do not or fail to properly
 implement security controls, like `state` checks. So relying on
 clients to prevent access token phishing is likely to fail as well.
@@ -1151,7 +1151,7 @@ and follow it in their browser. This can be abused for phishing.
 In order to prevent open redirection, clients should only redirect if
 the target URLs are whitelisted or if the origin and integrity of a
 request can be authenticated. Countermeasures against open redirection
-are described by OWASP [@owasp_redir].
+are described by OWASP [@owasp.redir].
 
 ### Authorization Server as Open Redirector
 
@@ -1216,11 +1216,11 @@ is malicious, it can use the credentials to impersonate the user
 at the AS.
 
 The behavior might be unexpected for developers, but is defined in
-[@!RFC7231], Section 6.4.7. This status code does not require the user
+[@RFC7231], Section 6.4.7. This status code does not require the user
 agent to rewrite the POST request to a GET request and thereby drop
 the form data in the POST request body.
 
-In the HTTP standard [@!RFC7231], only the status code 303
+In the HTTP standard [@RFC7231], only the status code 303
 unambigiously enforces rewriting the HTTP POST request to an HTTP GET
 request. For all other status codes, including the popular 302, user
 agents can opt not to rewrite POST to GET requests and therefore to
@@ -1419,7 +1419,7 @@ Authorization servers MUST prevent clickjacking attacks. Multiple
 countermeasures are described in [@!RFC6819], including the use of the
 X-Frame-Options HTTP response header field and frame-busting
 JavaScript. In addition to those, authorization servers SHOULD also
-use Content Security Policy (CSP) level 2 [@!CSP-2] or greater.
+use Content Security Policy (CSP) level 2 [@!W3C.CSP-2] or greater.
 
 To be effective, CSP must be used on the authorization endpoint and,
 if applicable, other endpoints used to authenticate the user and
@@ -1433,7 +1433,7 @@ and/or for clients to register these dynamically.
 
 Using CSP allows authorization servers to specify multiple origins in
 a single response header field and to constrain these using flexible
-patterns (see [@CSP-2] for details). Level 2 of this standard provides
+patterns (see [@W3C.CSP-2] for details). Level 2 of this standard provides
 a robust mechanism for protecting against clickjacking by using
 policies that restrict the origin of frames (using `frame-ancestors`)
 together with those that restrict the sources of scripts allowed to
@@ -1448,7 +1448,7 @@ X-Frame-Options: ALLOW-FROM https://ext.example.org:8000
 ...
 ```
 
-Because some user agents do not support [@CSP-2], this technique
+Because some user agents do not support [@W3C.CSP-2], this technique
 SHOULD be combined with others, including those described in
 [@!RFC6819], unless such legacy user agents are explicitly unsupported
 by the authorization server. Even in such cases, additional
@@ -1491,13 +1491,13 @@ the user to make the correct decision.
 ## Attacks on In-Browser Communication Flows {#rec_ibc}
 
 If the authorization response is sent with in-browser communication techniques
-like postMessage [@postmessage_api] instead of HTTP redirects, messages may
+like postMessage [@WHATWG.postmessage_api] instead of HTTP redirects, messages may
 inadvertently be sent to malicious origins or injected from malicious origins.
 
 ### Examples
 
 The following examples of attacks using in-browser communication are
-described in [@inbc_security_sso]:
+described in [@research.rub]:
 
 #### Insufficient Limitation of Receiver Origins
 

@@ -40,7 +40,7 @@
   </front>
 </reference>
 
-<reference anchor="JARM" target="https://openid.net/specs/openid-financial-api-jarm.html">
+<reference anchor="OpenID.JARM" target="https://openid.net/specs/openid-financial-api-jarm.html">
   <front>
     <title>Financial-grade API: JWT Secured Authorization Response Mode for OAuth 2.0 (JARM)</title>
     <author initials="T." surname="Lodderstedt" fullname="Torsten Lodderstedt">
@@ -55,7 +55,7 @@
 
 
 
-<reference anchor="owasp_redir" target="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">
+<reference anchor="owasp.redir" target="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">
   <front>
     <title>OWASP Cheat Sheet Series - Unvalidated Redirects and Forwards</title>
     <author></author>
@@ -63,15 +63,7 @@
   </front>
 </reference>
 
-<reference anchor="owasp_csrf" target="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)_Prevention_Cheat_Sheet">
-  <front>
-    <title>Cross-Site Request Forgery (CSRF) Prevention Cheat Sheet</title>
-    <author></author>
-    <date />
-  </front>
-</reference>
-
-<reference anchor="webappsec-referrer-policy" target="https://w3c.github.io/webappsec-referrer-policy">
+<reference anchor="W3C.webappsec-referrer-policy" target="https://w3c.github.io/webappsec-referrer-policy">
   <front>
     <title>Referrer Policy</title>
     <author initials="J." surname="Eisinger">
@@ -98,7 +90,7 @@
 </reference>
 
 
-<reference anchor="oauth_security_ubc" target="http://passwordresearch.com/papers/paper267.html">
+<reference anchor="research.ubc" target="http://passwordresearch.com/papers/paper267.html">
   <front>
     <title>The Devil is in the (Implementation) Details: An Empirical Analysis of OAuth SSO Systems</title>
     <author  initials="S.-T." surname="Sun" fullname="San-Tsai Sun">
@@ -112,7 +104,7 @@
   <format target="http://passwordresearch.com/papers/paper267.html" type="HTML" />
 </reference>
 
-<reference anchor="oauth_security_cmu" target="http://css.csail.mit.edu/6.858/2012/readings/oauth-sso.pdf">
+<reference anchor="research.cmu" target="http://css.csail.mit.edu/6.858/2012/readings/oauth-sso.pdf">
   <front>
     <title>OAuth Demystified for Mobile Application Developers</title>
     <author  initials="E." surname="Chen" fullname="Eric Chen">
@@ -186,7 +178,7 @@
   <seriesInfo name="arXiv" value="1508.04324v2"/>
 </reference>
 
-<reference anchor="oauth_security_jcs_14" target="https://www.doc.ic.ac.uk/~maffeis/papers/jcs14.pdf">
+<reference anchor="research.jcs_14" target="https://www.doc.ic.ac.uk/~maffeis/papers/jcs14.pdf">
   <front>
     <title>Discovering concrete attacks on website authorization by formal analysis</title>
     <author fullname="Chetan Bansal" surname="Bansal" initials="C."><organization/></author>
@@ -206,7 +198,7 @@
   </front>
 </reference>
 
-<reference anchor="WebAuthn" target="https://www.w3.org/TR/2019/REC-webauthn-1-20190304/">
+<reference anchor="W3C.WebAuthn" target="https://www.w3.org/TR/2019/REC-webauthn-1-20190304/">
   <front>
     <title>Web Authentication: An API for accessing Public Key Credentials Level 1</title>
     <author fullname="Dirk Balfanz" surname="Balfanz" initials="D."><organization>Google</organization></author>
@@ -222,7 +214,7 @@
   </front>
 </reference>
 
-<reference anchor="WebCrypto" target="https://www.w3.org/TR/2017/REC-WebCryptoAPI-20170126/">
+<reference anchor="W3C.WebCrypto" target="https://www.w3.org/TR/2017/REC-WebCryptoAPI-20170126/">
   <front>
     <title>Web Cryptography API</title>
     <author fullname="Mark Watson" surname="Watson" initials="M."><organization>Netflix</organization></author>
@@ -230,7 +222,7 @@
   </front>
 </reference>
 
-<reference anchor="subdomaintakeover" target="https://www.eecis.udel.edu/~hnw/paper/ccs16a.pdf">
+<reference anchor="research.udel" target="https://www.eecis.udel.edu/~hnw/paper/ccs16a.pdf">
   <front>
     <title>All Your DNS Records Point to Us: Understanding the Security Threats of Dangling DNS Records</title>
     <author fullname="Daiping Liu" surname="Liu" initials="D."></author>
@@ -240,32 +232,7 @@
   </front>
 </reference>
 
-
-<!-- To be removed when RFC has been published! -->
-
-<reference anchor="RFC8705" target="https://www.rfc-editor.org/info/rfc8705">
-<front>
-<title>
-OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound Access Tokens
-</title>
-<author initials="B." surname="Campbell" fullname="B. Campbell">
-<organization/>
-</author>
-<author initials="J." surname="Bradley" fullname="J. Bradley">
-<organization/>
-</author>
-<author initials="N." surname="Sakimura" fullname="N. Sakimura">
-<organization/>
-</author>
-<author initials="T." surname="Lodderstedt" fullname="T. Lodderstedt">
-<organization/>
-</author>
-<date year="2020" month="February"/>
-</front>
-<seriesInfo name="RFC" value="8705"/>
-</reference>
-
-<reference target="https://www.w3.org/TR/CSP2" anchor="CSP-2">
+<reference target="https://www.w3.org/TR/CSP2" anchor="W3C.CSP-2">
     <front>
         <title>Content Security Policy Level 2</title>
         <author initials="M." surname="West"/>
@@ -275,7 +242,7 @@ OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound Access Tokens
     </front>
 </reference>
 
-<reference anchor="inbc_security_sso"
+<reference anchor="research.rub"
            target="https://distinct-sso.com/paper.pdf">
   <front>
     <title>DISTINCT: Identity Theft using In-Browser Communications in Dual-Window Single Sign-On</title>
@@ -288,7 +255,7 @@ OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound Access Tokens
   <seriesInfo name="DOI" value="10.1145/3548606.3560692"/>
 </reference>
 
-<reference anchor="postmessage_api" target="https://html.spec.whatwg.org/multipage/web-messaging.html#web-messaging">
+<reference anchor="WHATWG.postmessage_api" target="https://html.spec.whatwg.org/multipage/web-messaging.html#web-messaging">
   <front>
     <title>HTML Living Standard: Cross-document messaging</title>
     <author>WHATWG</author>
@@ -296,7 +263,7 @@ OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound Access Tokens
   </front>
 </reference>
 
-<reference anchor="CORS" target="https://fetch.spec.whatwg.org/#http-cors-protocol">
+<reference anchor="WHATWG.CORS" target="https://fetch.spec.whatwg.org/#http-cors-protocol">
   <front>
     <title>Fetch Standard: CORS protocol</title>
     <author>WHATWG</author>

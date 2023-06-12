@@ -36,7 +36,7 @@ SHOULD
     [@!RFC9207], or
   * use an alternative countermeasure based on an `iss` value in the
     authorization response (such as the `iss` Claim in the ID Token in
-    [@!OpenID.Core] or in [@JARM] responses), processing it as described in
+    [@!OpenID.Core] or in [@OpenID.JARM] responses), processing it as described in
     [@!RFC9207].
 
 In the absence of these options, clients MAY instead use distinct redirect URIs
@@ -191,7 +191,7 @@ are trained to enter their credentials in places other than the AS.
 
 Furthermore, adapting the resource owner password credentials grant to
 two-factor authentication, authentication with cryptographic
-credentials (cf. WebCrypto [@WebCrypto], WebAuthn [@WebAuthn]), and
+credentials (cf. WebCrypto [@W3C.WebCrypto], WebAuthn [@W3C.WebAuthn]), and
 authentication processes that require multiple steps can be hard or
 impossible.
 
@@ -202,7 +202,7 @@ Authorization servers SHOULD use client authentication if possible.
 It is RECOMMENDED to use asymmetric (public-key based) methods for
 client authentication such as mTLS [@!RFC8705] or using signed JWTs
 ("Private Key JWT") in accordance with [@!RFC7521] and [@!RFC7523]
-(in [@!OpenID.Core] defined as the client authentication method `private_key_jwt`).
+(in [@OpenID.Core] defined as the client authentication method `private_key_jwt`).
 When such methods for client authentication are used, authorization
 servers do not need to store sensitive symmetric keys, making these
 methods more robust against a number of attacks.
@@ -238,13 +238,13 @@ scheme except for native clients that use Loopback Interface Redirection as
 described in [@!RFC8252], Section 7.3.
 
 If the authorization response is sent with in-browser communication techniques
-like postMessage [@postmessage_api] instead of HTTP redirects, both the
+like postMessage [@WHATWG.postmessage_api] instead of HTTP redirects, both the
 initiator and receiver of the in-browser message MUST be strictly verified as described
 in (#rec_ibc).
 
 To support browser-based clients, endpoints directly accessed by such clients
 including the Token Endpoint, Authorization Server Metadata Endpoint, `jwks_uri`
 Endpoint, and the Dynamic Client Registration Endpoint MAY support the use of
-Cross-Origin Resource Sharing (CORS, [@CORS]). However, CORS MUST NOT be
+Cross-Origin Resource Sharing (CORS, [@WHATWG.CORS]). However, CORS MUST NOT be
 supported at the Authorization Endpoint as the client does not access this
 endpoint directly, instead the client redirects the user agent to it.

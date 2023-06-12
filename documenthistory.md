@@ -2,6 +2,10 @@
 
    [[ To be removed from the final specification ]]
 
+   -24
+
+   * Cleaned up references
+
    -23
 
    * Added CORS considerations
