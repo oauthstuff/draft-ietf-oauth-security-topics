@@ -405,9 +405,9 @@ Variants:
     The attacker intercepts this request and changes the user's selection to
     A-AS. The rest of the attack proceeds as in Steps 2 and following above.
   * **Implicit Grant**: In the implicit grant, the attacker receives an access
-    token instead of the code in step 4. The attacker's AS receives the access token
+    token instead of the code in Step 4. The attacker's AS receives the access token
     when the client makes a request to the A-AS userinfo endpoint, or since the
-    client believes it's completed the flow with A-AS, a request to the
+    client believes it has completed the flow with A-AS, a request to the
     attacker's resource server.
   * **Per-AS Redirect URIs**: If clients use different redirect URIs for
     different ASs, do not store the selected AS in the user's session, and ASs
