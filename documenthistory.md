@@ -5,6 +5,8 @@
    -24
 
    * Cleaned up references
+   * Clarification on mix-up attack
+   * Add researcher names to acknowledgements
 
    -23
 
