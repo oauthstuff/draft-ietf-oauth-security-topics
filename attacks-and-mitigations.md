@@ -952,8 +952,8 @@ been defined by the OAuth working group:
     tokens. The resource server in the same way obtains the public key
     from the TLS stack and compares its fingerprint with the
     fingerprint associated with the access token.
-  * **DPoP** ([@I-D.ietf-oauth-dpop]): DPoP (Demonstration of
-    Proof-of-Possession at the Application Layer) outlines an
+  * **OAuth 2.0 Demonstrating Proof of Possession (DPoP)** ([@RFC9449]):
+    DPoP outlines an
     application-level sender-constraining for access and refresh
     tokens that can be used in cases where neither mTLS nor OAuth
     Token Binding (see below) are available. It uses
@@ -1339,7 +1339,7 @@ detect refresh token replay by malicious actors for public clients:
 
   * **Sender-constrained refresh tokens:** the authorization server
     cryptographically binds the refresh token to a certain client
-    instance, e.g., by utilizing [@!RFC8705] or [@I-D.ietf-oauth-dpop].
+    instance, e.g., by utilizing [@!RFC8705] or [@RFC9449].
   * **Refresh token rotation:** the authorization server issues a new
     refresh token with every access token refresh response. The
     previous refresh token is invalidated but information about the
