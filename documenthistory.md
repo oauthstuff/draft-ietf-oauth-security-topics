@@ -4,6 +4,7 @@
 
    -24
 
+   * Some feedback from shepherd's writeup incorporated
    * Cleaned up references
    * Clarification on mix-up attack
    * Add researcher names to acknowledgements
