@@ -110,7 +110,7 @@ attack. It utilizes the fact that user agents re-attach fragments to
 the destination URL of a redirect if the location header does not
 contain a fragment (see [@!RFC7231], Section 9.5). The attack
 described here combines this behavior with the client as an open
-redirector (see (#open_redirector_on_client)) in order to get access to access tokens. This allows
+redirector (see (#open_redirector_on_client)) in order to obtain access tokens. This allows
 circumvention even of very narrow redirect URI patterns, but not strict URL
 matching.
 
@@ -753,7 +753,7 @@ The AS therefore MUST provide a way to detect their support for PKCE. Using AS
 metadata according to [@!RFC8414] is RECOMMENDED, but AS MAY instead provide a
 deployment-specific way to ensure or determine PKCE support.
 
-PKCE provides robust protection against CSRF attacks even in presence of an that
+PKCE provides robust protection against CSRF attacks even in presence of an attacker that
 can read the authorization response (see Attacker A3 in (#secmodel)). When
 `state` is used or an ID Token is returned in the authorization response (e.g.,
 `response_type=code+id_token`), the attacker either learns the `state` value and
@@ -1568,7 +1568,7 @@ window.opener.postMessage(
 )
 ```
 
-Wildcard origins like "*" in postMessage MUST not be used as attackers can use them
+Wildcard origins like "*" in postMessage MUST NOT be used as attackers can use them
 to leak a victim's in-browser message to malicious origins.
 Both measures contribute to the prevention of leakage of authorization codes and
 access tokens (see (#insufficient_uri_validation)).

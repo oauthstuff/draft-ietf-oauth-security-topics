@@ -1,10 +1,11 @@
 %%%
 title = "OAuth 2.0 Security Best Current Practice"
-abbrev = "oauth-security-topics"
+abbrev = "OAuth 2.0 Security BCP"
 ipr = "trust200902"
 area = "Security"
 workgroup = "Web Authorization Protocol"
 keyword = ["security", "oauth2", "best current practice"]
+updates = [ 6749, 6750, 6819 ]
 
 [seriesInfo]
 name = "Internet-Draft"
