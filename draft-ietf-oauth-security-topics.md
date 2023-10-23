@@ -1,6 +1,6 @@
 %%%
 title = "OAuth 2.0 Security Best Current Practice"
-abbrev = "oauth-security-topics"
+abbrev = "OAuth 2.0 Security BCP"
 ipr = "trust200902"
 area = "Security"
 workgroup = "Web Authorization Protocol"
