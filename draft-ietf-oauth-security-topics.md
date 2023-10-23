@@ -17,7 +17,7 @@ status = "bcp"
 initials="T."
 surname="Lodderstedt"
 fullname="Torsten Lodderstedt"
-organization="yes.com"
+organization="SPRIND"
     [author.address]
     email = "torsten@lodderstedt.net"
 
