@@ -57,7 +57,7 @@
    * Make announcing PKCE support in metadata the RECOMMENDED way (before: either metadata or deployment-specific way)
    * AS also MUST NOT expose open redirectors.
    * Mention that attackers can collaborate.
-   * Update recommendations regarding mix-up defense, building upon [@I-D.ietf-oauth-iss-auth-resp].
+   * Update recommendations regarding mix-up defense, building upon [@RFC9207].
    * Improve description of mix-up attack.
    * Make HTTPS mandatory for most redirect URIs.
 
