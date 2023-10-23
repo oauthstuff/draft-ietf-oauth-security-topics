@@ -7,6 +7,7 @@
    * Cleaned up references
    * Clarification on mix-up attack
    * Add researcher names to acknowledgements
+   * Removed sentence stating that only MTLS is standardized; DPoP is now as well
 
    -23
 
