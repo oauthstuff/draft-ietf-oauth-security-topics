@@ -938,7 +938,7 @@ A typical flow looks like this:
     ensure that replay of the proof of possession is not possible.
 
 Two methods for sender-constrained access tokens using proof-of-possession have
-been defined by the OAuth working group:
+been defined by the OAuth working group and are in use in practice:
 
   * **OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound
     Access Tokens** ([@!RFC8705]): The approach as specified in this
@@ -952,7 +952,7 @@ been defined by the OAuth working group:
     tokens. The resource server in the same way obtains the public key
     from the TLS stack and compares its fingerprint with the
     fingerprint associated with the access token.
-  * **OAuth 2.0 Demonstrating Proof of Possession (DPoP)** ([@RFC9449]):
+  * **OAuth 2.0 Demonstrating Proof of Possession (DPoP)** ([@!RFC9449]):
     DPoP outlines an
     application-level sender-constraining for access and refresh
     tokens that can be used in cases where neither mTLS nor OAuth
@@ -998,10 +998,6 @@ drafts are now expired:
     signing. Replay prevention is provided by building the signature
     over a server-provided nonce, client-provided nonce and a nonce
     counter.
-
-
-At the time of writing, OAuth Mutual TLS is the most widely
-implemented and the only standardized sender-constraining method.
 
 Note that the security of sender-constrained tokens is undermined when
 an attacker gets access to the token and the key material. This is, in
