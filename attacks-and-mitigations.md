@@ -877,6 +877,8 @@ is considered a standard operational procedure and, therefore, out of
 the scope of this document. This section focuses on the impact of
 OAuth-related breaches and the replaying of captured access tokens.
 
+### Countermeasures
+
 The following measures should be taken into account by implementers in
 order to cope with access token replay by malicious actors:
 
