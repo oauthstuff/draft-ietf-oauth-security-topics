@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-11-28T00:58:52.826079+00:00",
+  "timestamp": "2023-11-30T00:58:13.090121+00:00",
   "repo": "oauthstuff/draft-ietf-oauth-security-topics",
   "labels": [
     {
@@ -3156,7 +3156,7 @@
       "labels": [],
       "body": "... as discussed with @aaronpk and @danielfett  at IETF 118.",
       "createdAt": "2023-11-07T11:26:28Z",
-      "updatedAt": "2023-11-07T17:01:18Z",
+      "updatedAt": "2023-11-28T20:43:08Z",
       "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
       "baseRefName": "master",
       "baseRefOid": "1e9ae984c5d31215ce765ad89becde5c795cd814",
@@ -3181,6 +3181,13 @@
           "body": "I agree with Filip. I don't think it's necessary to detect every case of re-use. This is really a measure to stop client developers deploying clients into production systems that have poor security, and a 'best efforts' style detection that will eventually stop some requests from clients that are reusing nonces/PKCE challenges is probably okay.\r\n\r\nI also think it should not be explicit about it being the PKCE challenge - some authorization servers may prefer to detect reuse of code_verifier instead (they're almost equivalent statements, but referring to PKCE challenges may imply that the detection should be at the authorization endpoint).",
           "createdAt": "2023-11-07T17:01:18Z",
           "updatedAt": "2023-11-07T17:01:18Z"
+        },
+        {
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "body": "What if I changed the language to:\r\n> Authorization servers SHOULD detect and prevent the use of constant PKCE challenge or OpenID Connect `nonce` values.\r\n\r\nThen synchronization isn't required.\r\n\r\nI believe we need to say something about this possibility, which actually occurs in practice.  If you have different language in mind, please propose text.",
+          "createdAt": "2023-11-28T20:43:06Z",
+          "updatedAt": "2023-11-28T20:43:06Z"
         }
       ],
       "reviews": []
