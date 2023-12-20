@@ -68,7 +68,7 @@ In any case, the PKCE challenge or OpenID Connect `nonce` MUST be
 transaction-specific and securely bound to the client and the user agent in
 which the transaction was started.
 Authorization servers are encouraged to make a reasonable effort at detecting and
-preventing the use of constant PKCE challenge or OpenID Connect nonce values.
+preventing the use of constant PKCE challenge or OpenID Connect `nonce` values.
 
 Note: Although PKCE was designed as a mechanism to protect native
 apps, this advice applies to all kinds of OAuth clients, including web
