@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-12-19T00:58:21.601487+00:00",
+  "timestamp": "2023-12-21T00:57:22.475303+00:00",
   "repo": "oauthstuff/draft-ietf-oauth-security-topics",
   "labels": [
     {
@@ -3147,26 +3147,32 @@
       "id": "PR_kwDODGW6jc5ey26D",
       "title": "Prevent use of constant challenge value",
       "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/86",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "selfissued",
       "authorAssociation": "COLLABORATOR",
       "assignees": [
-        "danielfett"
+        "danielfett",
+        "panva",
+        "jogu",
+        "tlodderstedt",
+        "bc-pi"
       ],
       "labels": [],
       "body": "... as discussed with @aaronpk and @danielfett  at IETF 118.",
       "createdAt": "2023-11-07T11:26:28Z",
-      "updatedAt": "2023-11-28T20:43:08Z",
+      "updatedAt": "2023-12-20T08:00:32Z",
       "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
       "baseRefName": "master",
       "baseRefOid": "1e9ae984c5d31215ce765ad89becde5c795cd814",
       "headRepository": "selfissued/draft-ietf-oauth-security-topics",
       "headRefName": "mbj-prevent-constants",
-      "headRefOid": "45fae5adcb6e390114d3135e2d6a02dfe67e9c36",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "f61f95e730d33a23dcb9da078b97c12f2e613650",
+      "closedAt": "2023-12-20T08:00:32Z",
+      "mergedAt": "2023-12-20T08:00:32Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "30ce0bbefb0e99ab464f17b1b30047eb690e46ac"
+      },
       "comments": [
         {
           "author": "panva",
@@ -3188,9 +3194,176 @@
           "body": "What if I changed the language to:\r\n> Authorization servers SHOULD detect and prevent the use of constant PKCE challenge or OpenID Connect `nonce` values.\r\n\r\nThen synchronization isn't required.\r\n\r\nI believe we need to say something about this possibility, which actually occurs in practice.  If you have different language in mind, please propose text.",
           "createdAt": "2023-11-28T20:43:06Z",
           "updatedAt": "2023-11-28T20:43:06Z"
+        },
+        {
+          "author": "bc-pi",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Perhaps something like this might be a more realistic statement and be less objectionable?\r\n\r\n> Authorization servers are encouraged to make a reasonable effort at detecting and preventing the use of constant PKCE challenge or OpenID Connect nonce values. ",
+          "createdAt": "2023-12-19T03:55:51Z",
+          "updatedAt": "2023-12-19T03:55:51Z"
+        },
+        {
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I applied the suggested wording to the PR.",
+          "createdAt": "2023-12-19T04:29:06Z",
+          "updatedAt": "2023-12-19T04:29:06Z"
+        },
+        {
+          "author": "bc-pi",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> Ah no, it seems brian's suggestion is not the one in the PR at the moment. It is in my opinion preferable.\r\n\r\nThanks for catching that Filip. I'd overlooked it in my flu induced and sleep deprived stupor. ",
+          "createdAt": "2023-12-19T08:53:35Z",
+          "updatedAt": "2023-12-19T08:53:35Z"
+        },
+        {
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I've applied Brian's wording suggestion.",
+          "createdAt": "2023-12-20T01:10:51Z",
+          "updatedAt": "2023-12-20T01:10:51Z"
         }
       ],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDODGW6jc5qk-4Y",
+          "commit": {
+            "abbreviatedOid": "45fae5a"
+          },
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-12-19T04:27:48Z",
+          "updatedAt": "2023-12-19T04:27:48Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "```suggestion\r\nAuthorization servers SHOULD detect and prevent the use of constant PKCE challenge or OpenID Connect `nonce` values.\r\n```",
+              "createdAt": "2023-12-19T04:27:48Z",
+              "updatedAt": "2023-12-19T04:27:48Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc5qk_ij",
+          "commit": {
+            "abbreviatedOid": "01bf1ab"
+          },
+          "author": "bc-pi",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-19T04:32:10Z",
+          "updatedAt": "2023-12-19T04:32:10Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDODGW6jc5ql_Xh",
+          "commit": {
+            "abbreviatedOid": "01bf1ab"
+          },
+          "author": "panva",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-19T08:31:09Z",
+          "updatedAt": "2023-12-19T08:31:09Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDODGW6jc5ql_vb",
+          "commit": {
+            "abbreviatedOid": "01bf1ab"
+          },
+          "author": "panva",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "Ah no, it seems brian's suggestion is not the one in the PR at the moment. It is in my opinion preferable. ",
+          "createdAt": "2023-12-19T08:32:04Z",
+          "updatedAt": "2023-12-19T08:33:17Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDODGW6jc5qmHWl",
+          "commit": {
+            "abbreviatedOid": "01bf1ab"
+          },
+          "author": "bc-pi",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2023-12-19T08:47:23Z",
+          "updatedAt": "2023-12-19T08:48:39Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "```suggestion\r\nAuthorization servers are encouraged to make a reasonable effort at detecting and\r\npreventing the use of constant PKCE challenge or OpenID Connect nonce values.\r\n```",
+              "createdAt": "2023-12-19T08:47:23Z",
+              "updatedAt": "2023-12-19T08:48:39Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc5qsBBa",
+          "commit": {
+            "abbreviatedOid": "4d90e27"
+          },
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-12-20T01:09:00Z",
+          "updatedAt": "2023-12-20T01:09:00Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "```suggestion\r\npreventing the use of constant PKCE challenge or OpenID Connect `nonce` values.\r\n```",
+              "createdAt": "2023-12-20T01:09:00Z",
+              "updatedAt": "2023-12-20T01:09:00Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc5qsU3z",
+          "commit": {
+            "abbreviatedOid": "f61f95e"
+          },
+          "author": "bc-pi",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-20T01:55:21Z",
+          "updatedAt": "2023-12-20T01:55:21Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDODGW6jc5qtcn3",
+          "commit": {
+            "abbreviatedOid": "f61f95e"
+          },
+          "author": "panva",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-20T07:15:48Z",
+          "updatedAt": "2023-12-20T07:15:48Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDODGW6jc5qtrLL",
+          "commit": {
+            "abbreviatedOid": "f61f95e"
+          },
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-20T07:59:41Z",
+          "updatedAt": "2023-12-20T07:59:41Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 87,
