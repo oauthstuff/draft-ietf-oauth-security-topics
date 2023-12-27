@@ -23,7 +23,7 @@ challenges can be observed:
 	  the original scope of [@!RFC6749], [@!RFC6750], and [@!RFC6819].
 
     OAuth initially assumed static relationships between client,
-    authorization server, and resource servers. The URLs of the AS and RS were
+    authorization server, and resource servers. The URLs of the servers were
     known to the client at deployment time and built an anchor for the
     trust relationships among those parties. The validation of whether the
     client talks to a legitimate server was based on TLS server
@@ -44,18 +44,20 @@ challenges can be observed:
 	  redirecting requests has changed, and with it, the implicit grant's
 	  underlying security model.
 
-This document provides updated security recommendations to address
-these challenges. It does not supplant the security advice given in
-[@!RFC6749], [@!RFC6750], and [@!RFC6819], but complements those
-documents.
-
-This document introduces new requirements beyond those defined in existing
+This document provides updated security recommendations to address these
+challenges. It introduces new requirements beyond those defined in existing
 specifications such as OAuth 2.0 [@RFC6749] and OpenID Connect [@OpenID.Core]
 and deprecates some modes of operation that are deemed less secure or even
-insecure. Naturally, not all existing ecosystems and implementations are
+insecure. However, this document does not supplant the security advice given in
+[@!RFC6749], [@!RFC6750], and [@!RFC6819], but complements those documents.
+
+Naturally, not all existing ecosystems and implementations are
 compatible with the new requirements and following the best practices described in
 this document may break interoperability. Nonetheless, it is RECOMMENDED that
 implementers upgrade their implementations and ecosystems when feasible.
+
+OAuth 2.1, under developement as [@I-D.ietf-oauth-v2-1], will incorporate the
+security recommendations of this document.
 
 ## Structure
 

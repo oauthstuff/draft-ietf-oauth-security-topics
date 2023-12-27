@@ -175,7 +175,7 @@ causes security issues. This document therefore advises to simplify the required
 logic and configuration by using exact redirect URI matching. This means the
 authorization server MUST ensure that the two URIs are equal, see [@!RFC3986],
 Section 6.2.1, Simple String Comparison, for details. The only exception are
-native apps using a `localhost` URI: In this case, the AS MUST allow variable
+native apps using a `localhost` URI: In this case, the authorization server MUST allow variable
 port numbers as described in [@!RFC8252], Section 7.3.
 
 Additional recommendations:
@@ -206,7 +206,7 @@ without further checks.
 The contents of the authorization request URI or the authorization
 response URI can unintentionally be disclosed to attackers through the
 Referer HTTP header (see [@RFC7231], Section 5.5.2), by leaking either
-from the AS's or the client's web site, respectively. Most
+from the authorization server's or the client's web site, respectively. Most
 importantly, authorization codes or `state` values can be disclosed in
 this way. Although specified otherwise in [@RFC7231], Section 5.5.2,
 the same may happen to access tokens conveyed in URI fragments due to
@@ -264,15 +264,15 @@ The following measures further reduce the chances of a successful attack:
     challenge. In this case, the attacker lacks the secret to request
     the code exchange.
   * As described in [@!RFC6749], Section 4.1.2, authorization codes
-    MUST be invalidated by the AS after their first use at the token
-    endpoint. For example, if an AS invalidated the code after the
+    MUST be invalidated by the authorization server after their first use at the token
+    endpoint. For example, if an authorization server invalidated the code after the
     legitimate client redeemed it, the attacker would fail exchanging
     this code later.
 
     This does not mitigate the attack if the attacker manages to
     exchange the code for a token before the legitimate client does
     so. Therefore, [@!RFC6749] further recommends that, when an
-    attempt is made to redeem a code twice, the AS SHOULD revoke all
+    attempt is made to redeem a code twice, the authorization server SHOULD revoke all
     tokens issued previously based on that code.
   * The `state` value SHOULD be invalidated by the client after its
     first use at the redirection endpoint. If this is implemented, and
@@ -280,7 +280,7 @@ The following measures further reduce the chances of a successful attack:
     client's web site, the `state` was already used, invalidated by
     the client and cannot be used again by the attacker. (This does
     not help if the `state` leaks from the
-    AS's web site, since then the `state`
+    authorization server's web site, since then the `state`
     has not been used at the redirection endpoint at the client yet.)
   * Use the form post response mode instead of a redirect for the
     authorization response (see [@!OAuth.Post]).
@@ -353,12 +353,12 @@ variants of the attack outlined below.
 
 Preconditions: For this variant of the attack to work, it is assumed that
 
-  * the implicit or authorization code grant are used with multiple AS
+  * the implicit or authorization code grant are used with multiple authorization servers
     of which one is considered "honest" (H-AS) and one is operated by
     the attacker (A-AS), and
-  * the client stores the AS chosen by the user in a session bound to
+  * the client stores the authorization server chosen by the user in a session bound to
     the user's browser and uses the same redirection endpoint URI for
-    each AS.
+    each authorization server.
 
 In the following, it is further assumed that the client is registered with H-AS (URI:
 `https://honest.as.example`, client ID: `7ZGZldHQ`) and with A-AS (URI:
@@ -398,19 +398,19 @@ Variants:
 
   * **Mix-Up With Interception**: This variant works only if the attacker can
     intercept and manipulate the first request/response pair from a user's
-    browser to the client (in which the user selects a certain AS and is then
-    redirected by the client to that AS), as in Attacker A2 (see (#secmodel)). This capability
+    browser to the client (in which the user selects a certain authorization server and is then
+    redirected by the client to that authorization server), as in Attacker A2 (see (#secmodel)). This capability
     can, for example, be the result of a man-in-the-middle attack on the user's
     connection to the client. In the attack, the user starts the flow with H-AS.
     The attacker intercepts this request and changes the user's selection to
     A-AS. The rest of the attack proceeds as in Steps 2 and following above.
   * **Implicit Grant**: In the implicit grant, the attacker receives an access
-    token instead of the code in Step 4. The attacker's AS receives the access token
+    token instead of the code in Step 4. The attacker's authorization server receives the access token
     when the client makes a request to the A-AS userinfo endpoint, or since the
     client believes it has completed the flow with A-AS, a request to the
     attacker's resource server.
   * **Per-AS Redirect URIs**: If clients use different redirect URIs for
-    different ASs, do not store the selected AS in the user's session, and ASs
+    different authorization servers, do not store the selected authorization server in the user's session, and authorization servers
     do not check the redirect URIs properly, attackers can mount an attack
     called "Cross-Social Network Request Forgery". These attacks have been
     observed in practice. Refer to [@research.jcs_14] for details.
@@ -439,8 +439,8 @@ used instead. For brevity of presentation, such a deployment-specific identifier
 will be subsumed under the issuer (or issuer identifier) in the following.
 
 Note: Just storing the authorization server URL is not sufficient to identify
-mix-up attacks. An attacker might declare an uncompromised AS's authorization endpoint URL as
-"his" AS URL, but declare a token endpoint under his own control.
+mix-up attacks. An attacker might declare an uncompromised authorization server's authorization endpoint URL as
+"his" authorization server URL, but declare a token endpoint under his own control.
 
 #### Mix-Up Defense via Issuer Identification
 This defense requires that the authorization server sends his issuer identifier
@@ -477,8 +477,8 @@ issuers (as in some open banking schemes) and due to the tight integration with
 the client registration, it is harder to deploy automatically.
 
 Furthermore, an attacker might be able to circumvent the protection offered by
-this defense by registering a new client with the "honest" AS using the redirect
-URI that the client assigned to the attacker's AS. The attacker could then run
+this defense by registering a new client with the "honest" authorization server using the redirect
+URI that the client assigned to the attacker's authorization server. The attacker could then run
 the attack as described above, replacing the
 client ID with the client ID of his newly created client.
 
@@ -554,7 +554,7 @@ should also be detected if the authorization server stored the
 complete redirect URI used in the authorization request and compares
 it with the `redirect_uri` parameter.
 
-[@!RFC6749], Section 4.1.3, requires the AS to "... ensure that the
+[@!RFC6749], Section 4.1.3, requires the authorization server to "... ensure that the
 `redirect_uri` parameter is present if the `redirect_uri` parameter
 was included in the initial authorization request as described in
 Section 4.1.1, and if included ensure that their values are
@@ -739,7 +739,7 @@ same protection is provided by PKCE or the OpenID Connect `nonce` value.
 When using PKCE instead of `state` or `nonce` for CSRF protection, it is
 important to note that:
 
- * Clients MUST ensure that the AS supports PKCE before using PKCE for
+ * Clients MUST ensure that the authorization server supports PKCE before using PKCE for
    CSRF protection. If an authorization server does not support PKCE,
    `state` or `nonce` MUST be used for CSRF protection.
 
@@ -749,8 +749,8 @@ important to note that:
    contents of state to the browser session and/or signed/encrypted
    state values as discussed in the now-expired draft [@I-D.bradley-oauth-jwt-encoded-state].
 
-The AS therefore MUST provide a way to detect their support for PKCE. Using AS
-metadata according to [@!RFC8414] is RECOMMENDED, but AS MAY instead provide a
+The authorization server therefore MUST provide a way to detect their support for PKCE. Using authorization server
+metadata according to [@!RFC8414] is RECOMMENDED, but authorization server MAY instead provide a
 deployment-specific way to ensure or determine PKCE support.
 
 PKCE provides robust protection against CSRF attacks even in presence of an attacker that
@@ -770,7 +770,7 @@ all flows can be susceptible to a PKCE downgrade attack.
 The first prerequisite for this attack is that there is an attacker-controllable
 flag in the authorization request that enables or disables PKCE for the
 particular flow. The presence or absence of the `code_challenge` parameter lends
-itself for this purpose, i.e., the AS enables and enforces PKCE if this
+itself for this purpose, i.e., the authorization server enables and enforces PKCE if this
 parameter is present in the authorization request, but does not enforce PKCE if
 the parameter is missing.
 
@@ -786,7 +786,7 @@ resources into a session between his victim and the client.
 
 ### Attack Description
 
- 1. The user has started an OAuth session using some client at an AS. In the
+ 1. The user has started an OAuth session using some client at an authorization server. In the
     authorization request, the client has set the parameter
     `code_challenge=sha256(abc)` as the PKCE code challenge. The client is now
     waiting to receive the authorization response from the user's browse.
@@ -800,9 +800,9 @@ resources into a session between his victim and the client.
  3. If the authorization server allows for flows without PKCE, it will create a
     code that is not bound to any PKCE code challenge.
  4. The attacker now redirects the user's browser to an authorization response
-    URL that contains the code for the attacker's session with the AS.
+    URL that contains the code for the attacker's session with the authorization server.
  5. The user's browser sends the authorization code to the client, which will
-    now try to redeem the code for an access token at the AS. The client will
+    now try to redeem the code for an access token at the authorization server. The client will
     send `code_verifier=abc` as the PKCE code verifier in the token request.
  6. Since the authorization server sees that this code is not bound to any PKCE
     code challenge, it will not check the presence or contents of the
@@ -814,27 +814,27 @@ resources into a session between his victim and the client.
 Using `state` properly would prevent this attack. However, practice has shown
 that many OAuth clients do not use or check `state` properly.
 
-Therefore, ASs MUST take precautions against this threat.
+Therefore, authorization servers MUST take precautions against this threat.
 
-Note that from the view of the AS, in the attack described above, a
+Note that from the view of the authorization server, in the attack described above, a
 `code_verifier` parameter is received at the token endpoint although no
 `code_challenge` parameter was present in the authorization request for the
 OAuth flow in which the authorization code was issued.
 
 This fact can be used to mitigate this attack. [@RFC7636] already mandates that
 
- - an AS that supports PKCE MUST check whether a code challenge is contained in
+ - an authorization server that supports PKCE MUST check whether a code challenge is contained in
    the authorization request and bind this information to the code that is
    issued; and
  - when a code arrives at the token endpoint, and there was a `code_challenge`
    in the authorization request for which this code was issued, there must be a
    valid `code_verifier` in the token request.
 
-Beyond this, to prevent PKCE downgrade attacks, the AS MUST ensure that
+Beyond this, to prevent PKCE downgrade attacks, the authorization server MUST ensure that
 if there was no `code_challenge` in the authorization request, a request to
 the token endpoint containing a `code_verifier` is rejected.
 
-Note: ASs that mandate the use of PKCE in general or for particular clients
+Note: authorization servers that mandate the use of PKCE in general or for particular clients
 implicitly implement this security measure.
 
 
@@ -922,21 +922,21 @@ A typical flow looks like this:
 
  1. The authorization server associates data with the access token
     that binds this particular token to a certain client. The binding
-    can utilize the client identity, but in most cases the AS utilizes
+    can utilize the client identity, but in most cases the authorization server utilizes
     key material (or data derived from the key material) known to the
     client.
  2. This key material must be distributed somehow. Either the key
-    material already exists before the AS creates the binding or the
-    AS creates ephemeral keys. The way pre-existing key material is
+    material already exists before the authorization server creates the binding or the
+    authorization server creates ephemeral keys. The way pre-existing key material is
     distributed varies among the different approaches. For example,
     X.509 Certificates can be used, in which case the distribution
     happens explicitly during the enrollment process. Or the key
     material is created and distributed at the TLS layer, in which
     case it might automatically happen during the setup of a TLS
     connection.
- 3. The RS must implement the actual proof of possession check. This
+ 3. The resource server must implement the actual proof of possession check. This
     is typically done on the application level, often tied to specific
-    material provided by transport layer (e.g., TLS). The RS must also
+    material provided by transport layer (e.g., TLS). The resource server must also
     ensure that replay of the proof of possession is not possible.
 
 Two methods for sender-constrained access tokens using proof-of-possession have
@@ -1055,7 +1055,7 @@ the resource server URL from the authorization server.
 Audience restriction may seem easier to use since it does not require
 any crypto on the client side. Still, since every access token is
 bound to a specific resource server, the client also needs to obtain a
-single RS-specific access token when accessing several resource
+single resource server-specific access token when accessing several resource
 servers. (Resource indicators, as specified in
 [@RFC8707], can help to achieve this.)
 [@I-D.ietf-oauth-token-binding] has the same property since different
@@ -1078,7 +1078,7 @@ An authorization server could provide the client with additional
 information about the locations where it is safe to use its access
 tokens.
 
-In the simplest form, this would require the AS to publish a list of
+In the simplest form, this would require the authorization server to publish a list of
 its known resource servers, illustrated in the following example using
 a non-standard metadata parameter `resource_servers`:
 
@@ -1097,7 +1097,7 @@ a non-standard metadata parameter `resource_servers`:
       ...
     }
 
-The AS could also return the URL(s) an access token is good for in the
+The authorization server could also return the URL(s) an access token is good for in the
 token response, illustrated by the example and non-standard return
 parameter `access_token_resource_server`:
 
@@ -1132,7 +1132,7 @@ better balance between the involved parties.
 
 ## Open Redirection {#open_redirection}
 
-The following attacks can occur when an AS or client has an open redirector. An
+The following attacks can occur when an authorization server or client has an open redirector. An
 open redirector is an endpoint that forwards a user’s browser to an arbitrary
 URI obtained from a query parameter.  Such endpoints are sometimes implemented,
 for example, to show a message before a user is then redirected to an external
@@ -1162,7 +1162,7 @@ phishing attacks. OAuth authorization servers regularly redirect users
 to other web sites (the clients), but must do so in a safe way.
 
 [@!RFC6749], Section 4.1.2.1, already prevents open redirects by
-stating that the AS MUST NOT automatically redirect the user agent in case
+stating that the authorization server MUST NOT automatically redirect the user agent in case
 of an invalid combination of `client_id` and `redirect_uri`.
 
 However, an attacker could also utilize a correctly registered
@@ -1171,39 +1171,39 @@ example, register a client via dynamic client registration [@RFC7591]
 and execute one of the following attacks:
 
  1. Intentionally send an erroneous authorization request, e.g., by
-    using an invalid scope value, thus instructing the AS to redirect the
+    using an invalid scope value, thus instructing the authorization server to redirect the
     user-agent to its phishing site.
  1. Intentionally send a valid authorization request with `client_id`
     and `redirect_uri` controlled by the attacker. After the user authenticates,
-    the AS prompts the user to provide consent to the request. If the user
-    notices an issue with the request and declines the request, the AS still
+    the authorization server prompts the user to provide consent to the request. If the user
+    notices an issue with the request and declines the request, the authorization server still
     redirects the user agent to the phishing site. In this case, the user agent
     will be redirected to the phishing site regardless of the action taken by
     the user.
  1. Intentionally send a valid silent authentication request (prompt=none)
     with `client_id` and `redirect_uri` controlled by the attacker. In this case,
-    the AS will automatically redirect the user agent to the phishing site.
+    the authorization server will automatically redirect the user agent to the phishing site.
 
-The AS MUST take precautions to prevent these threats. The AS MUST always
+The authorization server MUST take precautions to prevent these threats. The authorization server MUST always
 authenticate the user first and, with the exception of the silent authentication
 use case, prompt the user for credentials when needed, before redirecting the
-user. Based on its risk assessment, the AS needs to decide whether it can trust
+user. Based on its risk assessment, the authorization server needs to decide whether it can trust
 the redirect URI or not. It could take into account  URI analytics done
 internally or through some external service to evaluate the credibility and
 trustworthiness content behind the URI, and the source of the redirect URI and
 other client data.
 
-The AS SHOULD only automatically redirect the user agent if it trusts the
-redirect URI.  If the URI is not trusted, the AS MAY inform the user and rely on
+The authorization server SHOULD only automatically redirect the user agent if it trusts the
+redirect URI.  If the URI is not trusted, the authorization server MAY inform the user and rely on
 the user to make the correct decision.
 
 
 ## 307 Redirect  {#redirect_307}
 
-At the authorization endpoint, a typical protocol flow is that the AS
+At the authorization endpoint, a typical protocol flow is that the authorization server
 prompts the user to enter her credentials in a form that is then
 submitted (using the HTTP POST method) back to the authorization
-server. The AS checks the credentials and, if successful, redirects
+server. The authorization server checks the credentials and, if successful, redirects
 the user agent to the client's redirection endpoint.
 
 In [@!RFC6749], the HTTP status code 302 is used for this purpose, but
@@ -1214,7 +1214,7 @@ HTTP POST to the client.
 
 This discloses the sensitive credentials to the client. If the client
 is malicious, it can use the credentials to impersonate the user
-at the AS.
+at the authorization server.
 
 The behavior might be unexpected for developers, but is defined in
 [@RFC7231], Section 6.4.7. This status code does not require the user
@@ -1228,10 +1228,10 @@ agents can opt not to rewrite POST to GET requests and therefore to
 reveal the user's credentials to the client. (In practice, however, most
 user agents will only show this behaviour for 307 redirects.)
 
-ASs that redirect a request that potentially contains the user's credentials
+Authorization servers that redirect a request that potentially contains the user's credentials
 therefore MUST NOT use the HTTP 307 status code for redirection. If an
 HTTP redirection (and not, for example, JavaScript) is used for such a
-request, the AS SHOULD use HTTP status code 303 (See Other).
+request, the authorization server SHOULD use HTTP status code 303 (See Other).
 
 
 ## TLS Terminating Reverse Proxies {#tls_terminating}
@@ -1463,30 +1463,30 @@ example, register a client via dynamic client registration [RFC7591]
 and execute one of the following attacks:
 
  1. Intentionally send an erroneous authorization request, e.g., by
-    using an invalid scope value, thus instructing the AS to redirect the
+    using an invalid scope value, thus instructing the authorization server to redirect the
     user-agent to its phishing site.
  1. Intentionally send a valid authorization request with `client_id`
     and `redirect_uri` controlled by the attacker. After the user authenticates,
-    the AS prompts the user to provide consent to the request. If the user
-    notices an issue with the request and declines the request, the AS still
+    the authorization server prompts the user to provide consent to the request. If the user
+    notices an issue with the request and declines the request, the authorization server still
     redirects the user agent to the phishing site. In this case, the user agent
     will be redirected to the phishing site regardless of the action taken by
     the user.
  1. Intentionally send a valid silent authentication request (prompt=none)
     with `client_id` and `redirect_uri` controlled by the attacker. In this case,
-    the AS will automatically redirect the user agent to the phishing site.
+    the authorization server will automatically redirect the user agent to the phishing site.
 
-The AS MUST take precautions to prevent these threats. The AS MUST always
+The authorization server MUST take precautions to prevent these threats. The authorization server MUST always
 authenticate the user first and, with the exception of the silent authentication
 use case, prompt the user for credentials when needed, before redirecting the
-user. Based on its risk assessment, the AS needs to decide whether it can trust
+user. Based on its risk assessment, the authorization server needs to decide whether it can trust
 the redirect URI or not. It could take into account  URI analytics done
 internally or through some external service to evaluate the credibility and
 trustworthiness content behind the URI, and the source of the redirect URI and
 other client data.
 
-The AS SHOULD only automatically redirect the user agent if it trusts the
-redirect URI.  If the URI is not trusted, the AS MAY inform the user and rely on
+The authorization server SHOULD only automatically redirect the user agent if it trusts the
+redirect URI.  If the URI is not trusted, the authorization server MAY inform the user and rely on
 the user to make the correct decision.
 
 ## Attacks on In-Browser Communication Flows {#rec_ibc}
@@ -1582,7 +1582,7 @@ server origin:
 
 ```
 window.addEventListener("message", (e) => {
-  // validate exact AS origin
+  // validate exact authorization server origin
   if (e.origin === "https://honest.as.example") {
     // process e.data.code and e.data.state
   }

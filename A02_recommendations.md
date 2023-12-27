@@ -12,7 +12,7 @@ measure contributes to the prevention of leakage of authorization codes and
 access tokens (see (#insufficient_uri_validation)). It can also help to detect
 mix-up attacks (see (#mix_up)).
 
-Clients and AS MUST NOT expose URLs that forward the user's browser to
+Clients and authorization servers MUST NOT expose URLs that forward the user's browser to
 arbitrary URIs obtained from a query parameter ("open redirector") as
 described in (#open_redirection). Open redirectors can enable
 exfiltration of authorization codes and access tokens.
@@ -21,7 +21,7 @@ Clients MUST prevent Cross-Site Request Forgery (CSRF). In this
 context, CSRF refers to requests to the redirection endpoint that do
 not originate at the authorization server, but a malicious third party
 (see Section 4.4.1.8. of [@RFC6819] for details). Clients that have
-ensured that the authorization server supports PKCE [@RFC7636] MAY
+ensured that the authorization server supports Proof Key for Code Exchange (PKCE,  [@RFC7636]) MAY
 rely on the CSRF protection provided by PKCE. In OpenID Connect flows,
 the `nonce` parameter provides CSRF protection. Otherwise, one-time
 use CSRF tokens carried in the `state` parameter that are securely
@@ -43,7 +43,7 @@ In the absence of these options, clients MAY instead use distinct redirect URIs
 to identify authorization endpoints and token endpoints, as described in
 (#mixupcountermeasures).
 
-An AS that redirects a request potentially containing user credentials
+An authorization server that redirects a request potentially containing user credentials
 MUST avoid forwarding these user credentials accidentally (see
 (#redirect_307) for details).
 
@@ -92,11 +92,11 @@ token request containing a `code_verifier` parameter is accepted only if a
 (#pkce_downgrade_countermeasures) for details.
 
 Authorization servers MUST provide a way to detect their support for
-PKCE. It is RECOMMENDED for AS to publish the element
-`code_challenge_methods_supported` in their AS metadata ([@!RFC8414])
+PKCE. It is RECOMMENDED for authorization servers to publish the element
+`code_challenge_methods_supported` in their authorization server metadata ([@!RFC8414])
 containing the supported PKCE challenge methods (which can be used by
-the client to detect PKCE support). ASs MAY instead provide a
-deployment-specific way to ensure or determine PKCE support by the AS.
+the client to detect PKCE support). Authorization servers MAY instead provide a
+deployment-specific way to ensure or determine PKCE support by the authorization server.
 
 ### Implicit Grant {#implicit_grant_recommendation}
 
@@ -188,8 +188,8 @@ resources and/or actions.
 The resource owner password credentials grant [@!RFC6749] MUST NOT
 be used. This grant type insecurely exposes the credentials of the resource
 owner to the client. Even if the client is benign, this results in an increased
-attack surface (credentials can leak in more places than just the AS) and users
-are trained to enter their credentials in places other than the AS.
+attack surface (credentials can leak in more places than just the authorization server) and users
+are trained to enter their credentials in places other than the authorization server.
 
 Furthermore, adapting the resource owner password credentials grant to
 two-factor authentication, authentication with cryptographic
@@ -222,7 +222,7 @@ deployments:
  * It can help to facilitate rotation of cryptographic keys and to ensure
    cryptographic agility.
 
-It is therefore RECOMMENDED that ASs publish OAuth metadata according to
+It is therefore RECOMMENDED that authorization servers publish OAuth metadata according to
 [@!RFC8414] and that clients make use of this metadata to configure themselves
 when available.
 
@@ -235,7 +235,7 @@ traffic needs to be terminated at an intermediary, refer to
 (#tls_terminating) for further security advice.
 
 Authorization responses MUST NOT be transmitted over unencrypted network
-connections. To this end, AS MUST NOT allow redirect URIs that use the `http`
+connections. To this end, authorization servers MUST NOT allow redirect URIs that use the `http`
 scheme except for native clients that use Loopback Interface Redirection as
 described in [@!RFC8252], Section 7.3.
 

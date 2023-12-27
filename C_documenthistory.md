@@ -2,6 +2,9 @@
 
    [[ To be removed from the final specification ]]
 
+   * Shepherd's writup feedback: Clarify relationship to other document.
+   * Shepherd's writup feedback: Expand abbreviations
+
    -24
 
    * Some feedback from shepherd's writeup incorporated

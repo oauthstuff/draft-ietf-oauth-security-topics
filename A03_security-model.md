@@ -7,20 +7,20 @@ for the potentially dynamic relationships involving multiple parties
 (as described in (#Introduction)), to include new types of attackers and to define
 the attacker model more clearly.
 
-OAuth MUST ensure that the authorization of the resource owner (RO)
-(with a user agent) at the authorization server (AS) and the subsequent
-usage of the access token at the resource server (RS) is protected at
+OAuth MUST ensure that the authorization of the resource owner
+(with a user agent) at the authorization server and the subsequent
+usage of the access token at the resource server is protected at
 least against the following attackers:
 
   * (A1) Web Attackers that can set up and operate an arbitrary number
     of network endpoints including browsers and servers (except for
-    the concrete RO, AS, and RS). Web attackers may set up web sites
-    that are visited by the RO, operate their own user agents, and
+    the concrete resource owner, authorization server, and resource server). Web attackers may set up web sites
+    that are visited by the resource owner, operate their own user agents, and
     participate in the protocol.
 
     Web attackers may, in particular, operate OAuth clients that are
-    registered at AS, and operate their own authorization and resource
-    servers that can be used (in parallel) by the RO and other
+    registered at the authorization server, and operate their own authorization and resource
+    servers that can be used (in parallel) by the resource owner and other
     resource owners.
 
     It must also be assumed that web attackers can lure the user to
@@ -37,7 +37,7 @@ least against the following attackers:
 
     They cannot, however, read or manipulate messages that are not
     targeted towards them (e.g., sent to a URL controlled by a
-    non-attacker controlled AS).
+    non-attacker controlled authorization server).
 
   * (A2) Network Attackers that additionally have full control over
     the network over which protocol participants communicate. They can
@@ -66,25 +66,25 @@ the following, stronger attackers in addition to those listed above:
     checking of redirect URIs (see (#insufficient_uri_validation)), problems
     existing on mobile operating systems (where different apps can register
     themselves on the same URI), mix-up attacks (see (#mix_up)), where the
-    client is tricked into sending credentials to a attacker-controlled AS, and
+    client is tricked into sending credentials to an attacker-controlled authorization server, and
     the fact that URLs are often stored/logged by browsers (history), proxy
     servers, and operating systems.
   * (A4) Attackers that can read, but not modify, the contents of the
     authorization request (i.e., the authorization request can leak,
     in the same manner as above, to an attacker).
-  * (A5) Attackers that can acquire an access token issued by AS. For
+  * (A5) Attackers that can acquire an access token issued by an authorization server. For
     example, a resource server can be compromised by an attacker, an
     access token may be sent to an attacker-controlled resource server
-    due to a misconfiguration, or an RO is social-engineered into
-    using a attacker-controlled RS. See also (#comp_res_server).
+    due to a misconfiguration, or a resource owner is social-engineered into
+    using an attacker-controlled resource server. See also (#comp_res_server).
 
 (A3), (A4) and (A5) typically occur together with either (A1) or (A2).
 Attackers can collaborate to reach a common goal.
 
-Note that in this attacker model, an attacker (see A1) can be a RO or
+Note that in this attacker model, an attacker (see A1) can be a resource owner or
 act as one. For example, an attacker can use his own browser to replay
 tokens or authorization codes obtained by any of the attacks described
-above at the client or RS.
+above at the client or resource server.
 
 This document focusses on threats resulting from these attackers.
 Attacks in an even stronger attacker model are discussed, for example,
