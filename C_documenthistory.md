@@ -2,8 +2,11 @@
 
    [[ To be removed from the final specification ]]
 
-   * Shepherd's writup feedback: Clarify relationship to other document.
-   * Shepherd's writup feedback: Expand abbreviations
+   * Shepherd's writup feedback (Hannes): Removed discussion on outdated POP approaches
+   * Shepherd's writup feedback (Hannes): Clarify relationship to other document.
+   * Shepherd's writup feedback (Hannes): Expand abbreviations
+   * Shepherd's writup feedback (Hannes): Better explain attacker model
+   * Shepherd's writup feedback (Hannes): Various editorial changes
 
    -24
 

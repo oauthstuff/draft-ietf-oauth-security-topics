@@ -80,3 +80,6 @@ endpoint", "authorization grant", "authorization server", "client",
 "client identifier" (client ID), "protected resource", "refresh
 token", "resource owner", "resource server", and "token endpoint"
 defined by OAuth 2.0 [@!RFC6749].
+
+An "open redirector" is an endpoint on a web server that forwards a user’s
+browser to an arbitrary URI obtained from a query parameter.

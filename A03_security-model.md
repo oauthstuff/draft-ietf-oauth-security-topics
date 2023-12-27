@@ -51,12 +51,18 @@ provider itself, an attacker in a public (wifi) network using ARP
 spoofing, or a state-sponsored attacker with access to internet
 exchange points, for instance.
 
-These attackers conform to the attacker model that was used in formal analysis
+The aforementioned attackers (A1) and (A2) conform to the attacker model that was used in formal analysis
 efforts for OAuth [@arXiv.1601.01229]. This is a minimal attacker model.
 Implementers MUST take into account all possible types of attackers in the
-environment in which their OAuth implementations are expected to run. Previous
-attacks on OAuth have shown that OAuth deployments SHOULD in particular consider
-the following, stronger attackers in addition to those listed above:
+environment of their OAuth implementations. For example, in [@arXiv.1901.11520],
+a very strong attacker model is used that includes attackers that have
+full control over the token endpoint. This models effects of a
+possible misconfiguration of endpoints in the ecosystem (which can be avoided
+by using authorization server metadata as described in (#other_recommendations)).
+
+Previous
+attacks on OAuth have shown that OAuth deployments SHOULD in particular be protected against
+the following, stronger attackers in addition to (A1) and (A2) listed above:
 
   * (A3) Attackers that can read, but not modify, the contents of the
     authorization response (i.e., the authorization response can leak
@@ -81,12 +87,10 @@ the following, stronger attackers in addition to those listed above:
 (A3), (A4) and (A5) typically occur together with either (A1) or (A2).
 Attackers can collaborate to reach a common goal.
 
-Note that in this attacker model, an attacker (see A1) can be a resource owner or
-act as one. For example, an attacker can use his own browser to replay
+Note that an attacker (A1) or (A2) can be a resource owner or
+act as one. For example, such an attacker can use their own browser to replay
 tokens or authorization codes obtained by any of the attacks described
 above at the client or resource server.
 
-This document focusses on threats resulting from these attackers.
-Attacks in an even stronger attacker model are discussed, for example,
-in [@arXiv.1901.11520].
+This document focusses on threats resulting from attackers (A1) to (A5).
 

@@ -1,7 +1,9 @@
 # Best Practices {#recommendations}
 
 This section describes the set of security mechanisms and measures the OAuth
-working group considers best practices at the time of writing.
+working group considers best practices at the time of writing. Details about
+these mechanisms and measures, including attack descriptions, are provided in
+(#attacks_and_mitigations).
 
 ## Protecting Redirect-Based Flows {#rec_redirect}
 
@@ -13,7 +15,7 @@ access tokens (see (#insufficient_uri_validation)). It can also help to detect
 mix-up attacks (see (#mix_up)).
 
 Clients and authorization servers MUST NOT expose URLs that forward the user's browser to
-arbitrary URIs obtained from a query parameter ("open redirector") as
+arbitrary URIs obtained from a query parameter (open redirector) as
 described in (#open_redirection). Open redirectors can enable
 exfiltration of authorization codes and access tokens.
 
@@ -93,7 +95,7 @@ token request containing a `code_verifier` parameter is accepted only if a
 
 Authorization servers MUST provide a way to detect their support for
 PKCE. It is RECOMMENDED for authorization servers to publish the element
-`code_challenge_methods_supported` in their authorization server metadata ([@!RFC8414])
+`code_challenge_methods_supported` in their Authorization Server Metadata ([@!RFC8414])
 containing the supported PKCE challenge methods (which can be used by
 the client to detect PKCE support). Authorization servers MAY instead provide a
 deployment-specific way to ensure or determine PKCE support by the authorization server.
@@ -199,20 +201,20 @@ impossible.
 
 
 ## Client Authentication
-Authorization servers SHOULD use client authentication if possible.
+Authorization servers SHOULD enforce client authentication if possible.
 
-It is RECOMMENDED to use asymmetric (public-key based) methods for
-client authentication such as mTLS [@!RFC8705] or using signed JWTs
+It is RECOMMENDED to use asymmetric cryptography for
+client authentication, such as mTLS [@!RFC8705] or signed JWTs
 ("Private Key JWT") in accordance with [@!RFC7521] and [@!RFC7523]
 (in [@OpenID.Core] defined as the client authentication method `private_key_jwt`).
-When such methods for client authentication are used, authorization
+When asymmetric cryptography for client authentication is used, authorization
 servers do not need to store sensitive symmetric keys, making these
-methods more robust against a number of attacks.
+methods more robust against leakage of keys.
 
 
-## Other Recommendations
+## Other Recommendations {#other_recommendations}
 
-The use of OAuth Metadata [@!RFC8414] can help to improve the security of OAuth
+The use of OAuth Authorization Server Metadata [@!RFC8414] can help to improve the security of OAuth
 deployments:
 
  * It ensures that security features and other new OAuth features can be enabled
@@ -222,8 +224,8 @@ deployments:
  * It can help to facilitate rotation of cryptographic keys and to ensure
    cryptographic agility.
 
-It is therefore RECOMMENDED that authorization servers publish OAuth metadata according to
-[@!RFC8414] and that clients make use of this metadata to configure themselves
+It is therefore RECOMMENDED that authorization servers publish OAuth Authorization Server Metadata according to
+[@!RFC8414] and that clients make use of this Authorization Server Metadata to configure themselves
 when available.
 
 Under the conditions described in (#client_impersonating_countermeasures),
