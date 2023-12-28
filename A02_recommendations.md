@@ -161,9 +161,8 @@ resource owner. It also prevents users from exceeding their privileges
 authorized by the respective security policy. Privilege restrictions
 also help to reduce the impact of access token leakage.
 
-In particular, access tokens SHOULD be restricted to certain resource
-servers (audience restriction), preferably to a single resource
-server. To put this into effect, the authorization server associates
+In particular, access tokens SHOULD be audience-restricted to a specific resource
+server, or, if that is not feasible, to a small set of resource servers. To put this into effect, the authorization server associates
 the access token with certain resource servers and every resource
 server is obliged to verify, for every request, whether the access
 token sent with that request was meant to be used for that particular
@@ -193,12 +192,11 @@ owner to the client. Even if the client is benign, this results in an increased
 attack surface (credentials can leak in more places than just the authorization server) and users
 are trained to enter their credentials in places other than the authorization server.
 
-Furthermore, adapting the resource owner password credentials grant to
-two-factor authentication, authentication with cryptographic
-credentials (cf. WebCrypto [@W3C.WebCrypto], WebAuthn [@W3C.WebAuthn]), and
-authentication processes that require multiple steps can be hard or
-impossible.
-
+Furthermore, the resource owner password credentials grant is not designed to
+work with two-factor authentication and authentication processes that require
+multiple user interaction steps. Authentication with cryptographic credentials
+(cf. WebCrypto [@W3C.WebCrypto], WebAuthn [@W3C.WebAuthn]) may be impossible
+to implement with this grant type, as it is usually bound to a specific web origin.
 
 ## Client Authentication
 Authorization servers SHOULD enforce client authentication if possible.

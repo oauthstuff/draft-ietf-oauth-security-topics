@@ -973,7 +973,7 @@ to the attacker. This applies to access tokens as well as to refresh
 tokens (see (#refresh_token_protection)).
 
 
-### Audience Restricted Access Tokens {#aud_restriction}
+### Audience-Restricted Access Tokens {#aud_restriction}
 
 Audience restriction essentially restricts access tokens to a
 particular resource server. The authorization server associates the
@@ -982,7 +982,7 @@ server is then supposed to verify the intended audience. If the access token fai
 the intended audience validation, the resource server refuses to
 serve the respective request.
 
-In general, audience restrictions limit the impact of token leakage.
+In general, audience restriction limits the impact of token leakage.
 In the case of a counterfeit resource server, it may (as described
 below) also prevent abuse of the phished access token at the
 legitimate resource server.

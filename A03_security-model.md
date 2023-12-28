@@ -23,7 +23,7 @@ possible, at least against the following attackers:
     resource owner and other resource owners.
 
     It must also be assumed that web attackers can lure the user to
-    open arbitrary attacker-chosen URIs at any time. In practice, this
+    navigate their browser to arbitrary attacker-chosen URIs at any time. In practice, this
     can be achieved in many ways, for example, by injecting malicious
     advertisements into advertisement networks, or by sending
     legitimate-looking emails.
@@ -56,12 +56,11 @@ Implementers MUST take into account all possible types of attackers in the
 environment of their OAuth implementations. For example, in [@arXiv.1901.11520],
 a very strong attacker model is used that includes attackers that have
 full control over the token endpoint. This models effects of a
-possible misconfiguration of endpoints in the ecosystem (which can be avoided
-by using authorization server metadata as described in (#other_recommendations)).
+possible misconfiguration of endpoints in the ecosystem, which can be avoided
+by using authorization server metadata as described in (#other_recommendations). Such an attacker is therefore not listed here.
 
-Previous
-attacks on OAuth have shown that OAuth deployments SHOULD in particular be protected against
-the following, stronger attackers in addition to (A1) and (A2) listed above:
+However, previous attacks on OAuth have shown that the following types of
+attackers are relevant in particular:
 
   * (A3) Attackers that can read, but not modify, the contents of the
     authorization response (i.e., the authorization response can leak
