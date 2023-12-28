@@ -10,11 +10,12 @@
 <meta content="Andrey Labunets" name="author">
 <meta content="Daniel Fett" name="author">
 <meta content="
-       This document describes best current security practice for OAuth 2.0.
-It updates and extends the OAuth 2.0 Security Threat Model to
-incorporate practical experiences gathered since OAuth 2.0 was
-published and covers new threats relevant due to the broader
-application of OAuth 2.0. 
+       This document describes best current security practice for OAuth 2.0. It updates
+and extends the threat model and security advice given in  ,
+ , and   to incorporate practical experiences gathered since
+OAuth 2.0 was published and covers new threats relevant due to the broader
+application of OAuth 2.0. It further deprecates some modes of operation that are
+deemed less secure or even insecure. 
     " name="description">
 <meta content="xml2rfc 3.19.0" name="generator">
 <meta content="security" name="keyword">
@@ -1038,7 +1039,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lodderstedt, et al.</td>
-<td class="center">Expires 29 June 2024</td>
+<td class="center">Expires 30 June 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1054,12 +1055,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc6749" class="eref">6749</a>, <a href="https://www.rfc-editor.org/rfc/rfc6750" class="eref">6750</a>, <a href="https://www.rfc-editor.org/rfc/rfc6819" class="eref">6819</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-12-27" class="published">27 December 2023</time>
+<time datetime="2023-12-28" class="published">28 December 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Best Current Practice</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-06-29">29 June 2024</time></dd>
+<dd class="expires"><time datetime="2024-06-30">30 June 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1084,11 +1085,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <h1 id="title">OAuth 2.0 Security Best Current Practice</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document describes best current security practice for OAuth 2.0.
-It updates and extends the OAuth 2.0 Security Threat Model to
-incorporate practical experiences gathered since OAuth 2.0 was
-published and covers new threats relevant due to the broader
-application of OAuth 2.0.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document describes best current security practice for OAuth 2.0. It updates
+and extends the threat model and security advice given in <span>[<a href="#RFC6749" class="cite xref">RFC6749</a>]</span>,
+<span>[<a href="#RFC6750" class="cite xref">RFC6750</a>]</span>, and <span>[<a href="#RFC6819" class="cite xref">RFC6819</a>]</span> to incorporate practical experiences gathered since
+OAuth 2.0 was published and covers new threats relevant due to the broader
+application of OAuth 2.0. It further deprecates some modes of operation that are
+deemed less secure or even insecure.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-discussion-venues">
@@ -1120,7 +1122,7 @@ application of OAuth 2.0.<a href="#section-abstract-1" class="pilcrow">¶</a></p
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 29 June 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 30 June 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1323,7 +1325,7 @@ application of OAuth 2.0.<a href="#section-abstract-1" class="pilcrow">¶</a></p
                     <p id="section-toc.1-1.4.2.10.2.1.1"><a href="#section-4.10.1" class="auto internal xref">4.10.1</a>.  <a href="#name-sender-constrained-access-t" class="internal xref">Sender-Constrained Access Tokens</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.10.2.2">
-                    <p id="section-toc.1-1.4.2.10.2.2.1"><a href="#section-4.10.2" class="auto internal xref">4.10.2</a>.  <a href="#name-audience-restricted-access-" class="internal xref">Audience Restricted Access Tokens</a></p>
+                    <p id="section-toc.1-1.4.2.10.2.2.1"><a href="#section-4.10.2" class="auto internal xref">4.10.2</a>.  <a href="#name-audience-restricted-access-" class="internal xref">Audience-Restricted Access Tokens</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.10.2.3">
                     <p id="section-toc.1-1.4.2.10.2.3.1"><a href="#section-4.10.3" class="auto internal xref">4.10.3</a>.  <a href="#name-discussion-preventing-leaka" class="internal xref">Discussion: Preventing Leakage via Metadata</a></p>
@@ -1420,8 +1422,7 @@ application of OAuth 2.0.<a href="#section-abstract-1" class="pilcrow">¶</a></p
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">Since its publication in <span>[<a href="#RFC6749" class="cite xref">RFC6749</a>]</span> and <span>[<a href="#RFC6750" class="cite xref">RFC6750</a>]</span>, OAuth 2.0
-("OAuth" in the following) has gotten massive traction in the market
+<p id="section-1-1">Since its publication in <span>[<a href="#RFC6749" class="cite xref">RFC6749</a>]</span> and <span>[<a href="#RFC6750" class="cite xref">RFC6750</a>]</span>, OAuth 2.0 (referred to as simply "OAuth" in the following) has gained massive traction in the market
 and became the standard for API protection and the basis for federated
 login using OpenID Connect <span>[<a href="#OpenID.Core" class="cite xref">OpenID.Core</a>]</span>. While OAuth is used in a
 variety of scenarios and different kinds of deployments, the following
@@ -1507,6 +1508,8 @@ endpoint", "authorization grant", "authorization server", "client",
 "client identifier" (client ID), "protected resource", "refresh
 token", "resource owner", "resource server", and "token endpoint"
 defined by OAuth 2.0 <span>[<a href="#RFC6749" class="cite xref">RFC6749</a>]</span>.<a href="#section-1.2-2" class="pilcrow">¶</a></p>
+<p id="section-1.2-3">An "open redirector" is an endpoint on a web server that forwards a user’s
+browser to an arbitrary URI obtained from a query parameter.<a href="#section-1.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1517,7 +1520,9 @@ defined by OAuth 2.0 <span>[<a href="#RFC6749" class="cite xref">RFC6749</a>]</s
 <a href="#section-2" class="section-number selfRef">2. </a><a href="#name-best-practices" class="section-name selfRef">Best Practices</a>
       </h2>
 <p id="section-2-1">This section describes the set of security mechanisms and measures the OAuth
-working group considers best practices at the time of writing.<a href="#section-2-1" class="pilcrow">¶</a></p>
+working group considers best practices at the time of writing. Details about
+these mechanisms and measures, including attack descriptions, are provided in
+<a href="#attacks_and_mitigations" class="auto internal xref">Section 4</a>.<a href="#section-2-1" class="pilcrow">¶</a></p>
 <div id="rec_redirect">
 <section id="section-2.1">
         <h3 id="name-protecting-redirect-based-f">
@@ -1530,7 +1535,7 @@ measure contributes to the prevention of leakage of authorization codes and
 access tokens (see <a href="#insufficient_uri_validation" class="auto internal xref">Section 4.1</a>). It can also help to detect
 mix-up attacks (see <a href="#mix_up" class="auto internal xref">Section 4.4</a>).<a href="#section-2.1-1" class="pilcrow">¶</a></p>
 <p id="section-2.1-2">Clients and authorization servers MUST NOT expose URLs that forward the user's browser to
-arbitrary URIs obtained from a query parameter ("open redirector") as
+arbitrary URIs obtained from a query parameter (open redirector) as
 described in <a href="#open_redirection" class="auto internal xref">Section 4.11</a>. Open redirectors can enable
 exfiltration of authorization codes and access tokens.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
 <p id="section-2.1-3">Clients MUST prevent Cross-Site Request Forgery (CSRF). In this
@@ -1607,7 +1612,7 @@ token request containing a <code>code_verifier</code> parameter is accepted only
 <a href="#pkce_downgrade_countermeasures" class="auto internal xref">Section 4.8.2</a> for details.<a href="#section-2.1.1-8" class="pilcrow">¶</a></p>
 <p id="section-2.1.1-9">Authorization servers MUST provide a way to detect their support for
 PKCE. It is RECOMMENDED for authorization servers to publish the element
-<code>code_challenge_methods_supported</code> in their authorization server metadata (<span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span>)
+<code>code_challenge_methods_supported</code> in their Authorization Server Metadata (<span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span>)
 containing the supported PKCE challenge methods (which can be used by
 the client to detect PKCE support). Authorization servers MAY instead provide a
 deployment-specific way to ensure or determine PKCE support by the authorization server.<a href="#section-2.1.1-9" class="pilcrow">¶</a></p>
@@ -1690,9 +1695,8 @@ prevents clients from exceeding the privileges authorized by the
 resource owner. It also prevents users from exceeding their privileges
 authorized by the respective security policy. Privilege restrictions
 also help to reduce the impact of access token leakage.<a href="#section-2.3-1" class="pilcrow">¶</a></p>
-<p id="section-2.3-2">In particular, access tokens SHOULD be restricted to certain resource
-servers (audience restriction), preferably to a single resource
-server. To put this into effect, the authorization server associates
+<p id="section-2.3-2">In particular, access tokens SHOULD be audience-restricted to a specific resource
+server, or, if that is not feasible, to a small set of resource servers. To put this into effect, the authorization server associates
 the access token with certain resource servers and every resource
 server is obliged to verify, for every request, whether the access
 token sent with that request was meant to be used for that particular
@@ -1724,11 +1728,11 @@ be used. This grant type insecurely exposes the credentials of the resource
 owner to the client. Even if the client is benign, this results in an increased
 attack surface (credentials can leak in more places than just the authorization server) and users
 are trained to enter their credentials in places other than the authorization server.<a href="#section-2.4-1" class="pilcrow">¶</a></p>
-<p id="section-2.4-2">Furthermore, adapting the resource owner password credentials grant to
-two-factor authentication, authentication with cryptographic
-credentials (cf. WebCrypto <span>[<a href="#W3C.WebCrypto" class="cite xref">W3C.WebCrypto</a>]</span>, WebAuthn <span>[<a href="#W3C.WebAuthn" class="cite xref">W3C.WebAuthn</a>]</span>), and
-authentication processes that require multiple steps can be hard or
-impossible.<a href="#section-2.4-2" class="pilcrow">¶</a></p>
+<p id="section-2.4-2">Furthermore, the resource owner password credentials grant is not designed to
+work with two-factor authentication and authentication processes that require
+multiple user interaction steps. Authentication with cryptographic credentials
+(cf. WebCrypto <span>[<a href="#W3C.WebCrypto" class="cite xref">W3C.WebCrypto</a>]</span>, WebAuthn <span>[<a href="#W3C.WebAuthn" class="cite xref">W3C.WebAuthn</a>]</span>) may be impossible
+to implement with this grant type, as it is usually bound to a specific web origin.<a href="#section-2.4-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="client-authentication">
@@ -1736,22 +1740,22 @@ impossible.<a href="#section-2.4-2" class="pilcrow">¶</a></p>
         <h3 id="name-client-authentication">
 <a href="#section-2.5" class="section-number selfRef">2.5. </a><a href="#name-client-authentication" class="section-name selfRef">Client Authentication</a>
         </h3>
-<p id="section-2.5-1">Authorization servers SHOULD use client authentication if possible.<a href="#section-2.5-1" class="pilcrow">¶</a></p>
-<p id="section-2.5-2">It is RECOMMENDED to use asymmetric (public-key based) methods for
-client authentication such as mTLS <span>[<a href="#RFC8705" class="cite xref">RFC8705</a>]</span> or using signed JWTs
+<p id="section-2.5-1">Authorization servers SHOULD enforce client authentication if possible.<a href="#section-2.5-1" class="pilcrow">¶</a></p>
+<p id="section-2.5-2">It is RECOMMENDED to use asymmetric cryptography for
+client authentication, such as mTLS <span>[<a href="#RFC8705" class="cite xref">RFC8705</a>]</span> or signed JWTs
 ("Private Key JWT") in accordance with <span>[<a href="#RFC7521" class="cite xref">RFC7521</a>]</span> and <span>[<a href="#RFC7523" class="cite xref">RFC7523</a>]</span>
 (in <span>[<a href="#OpenID.Core" class="cite xref">OpenID.Core</a>]</span> defined as the client authentication method <code>private_key_jwt</code>).
-When such methods for client authentication are used, authorization
+When asymmetric cryptography for client authentication is used, authorization
 servers do not need to store sensitive symmetric keys, making these
-methods more robust against a number of attacks.<a href="#section-2.5-2" class="pilcrow">¶</a></p>
+methods more robust against leakage of keys.<a href="#section-2.5-2" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="other-recommendations">
+<div id="other_recommendations">
 <section id="section-2.6">
         <h3 id="name-other-recommendations">
 <a href="#section-2.6" class="section-number selfRef">2.6. </a><a href="#name-other-recommendations" class="section-name selfRef">Other Recommendations</a>
         </h3>
-<p id="section-2.6-1">The use of OAuth Metadata <span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span> can help to improve the security of OAuth
+<p id="section-2.6-1">The use of OAuth Authorization Server Metadata <span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span> can help to improve the security of OAuth
 deployments:<a href="#section-2.6-1" class="pilcrow">¶</a></p>
 <ul class="compact">
 <li class="compact" id="section-2.6-2.1">It ensures that security features and other new OAuth features can be enabled
@@ -1764,8 +1768,8 @@ URLs (that might belong to an attacker) or misconfigured security features.<a hr
 cryptographic agility.<a href="#section-2.6-2.3" class="pilcrow">¶</a>
 </li>
         </ul>
-<p id="section-2.6-3">It is therefore RECOMMENDED that authorization servers publish OAuth metadata according to
-<span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span> and that clients make use of this metadata to configure themselves
+<p id="section-2.6-3">It is therefore RECOMMENDED that authorization servers publish OAuth Authorization Server Metadata according to
+<span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span> and that clients make use of this Authorization Server Metadata to configure themselves
 when available.<a href="#section-2.6-3" class="pilcrow">¶</a></p>
 <p id="section-2.6-4">Under the conditions described in <a href="#client_impersonating_countermeasures" class="auto internal xref">Section 4.15.1</a>,
 authorization servers SHOULD NOT allow clients to influence their <code>client_id</code> or
@@ -1802,23 +1806,22 @@ protected. In the following, this attacker model is updated to account
 for the potentially dynamic relationships involving multiple parties
 (as described in <a href="#Introduction" class="auto internal xref">Section 1</a>), to include new types of attackers and to define
 the attacker model more clearly.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">OAuth MUST ensure that the authorization of the resource owner
-(with a user agent) at the authorization server and the subsequent
-usage of the access token at the resource server is protected at
-least against the following attackers:<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-2">The goal of this document is to ensure that the authorization of a resource
+owner (with a user agent) at an authorization server and the subsequent usage of
+the access token at a resource server is protected, as good as practically
+possible, at least against the following attackers:<a href="#section-3-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3-3.1">
-          <p id="section-3-3.1.1">(A1) Web Attackers that can set up and operate an arbitrary number
-of network endpoints including browsers and servers (except for
-the concrete resource owner, authorization server, and resource server). Web attackers may set up web sites
-that are visited by the resource owner, operate their own user agents, and
-participate in the protocol.<a href="#section-3-3.1.1" class="pilcrow">¶</a></p>
-<p id="section-3-3.1.2">Web attackers may, in particular, operate OAuth clients that are
-registered at the authorization server, and operate their own authorization and resource
-servers that can be used (in parallel) by the resource owner and other
-resource owners.<a href="#section-3-3.1.2" class="pilcrow">¶</a></p>
+          <p id="section-3-3.1.1">(A1) Web Attackers that can set up and operate an arbitrary number of
+network endpoints (besides the "honest" ones) including browsers and
+servers. Web attackers may set up web sites that are visited by the resource
+owner, operate their own user agents, and participate in the protocol.<a href="#section-3-3.1.1" class="pilcrow">¶</a></p>
+<p id="section-3-3.1.2">Web attackers may, in particular, operate OAuth clients that are registered
+at the authorization server, and operate their own authorization and
+resource servers that can be used (in parallel to the "honest" ones) by the
+resource owner and other resource owners.<a href="#section-3-3.1.2" class="pilcrow">¶</a></p>
 <p id="section-3-3.1.3">It must also be assumed that web attackers can lure the user to
-open arbitrary attacker-chosen URIs at any time. In practice, this
+navigate their browser to arbitrary attacker-chosen URIs at any time. In practice, this
 can be achieved in many ways, for example, by injecting malicious
 advertisements into advertisement networks, or by sending
 legitimate-looking emails.<a href="#section-3-3.1.3" class="pilcrow">¶</a></p>
@@ -1844,47 +1847,49 @@ service provider, network attackers could be the internet service
 provider itself, an attacker in a public (wifi) network using ARP
 spoofing, or a state-sponsored attacker with access to internet
 exchange points, for instance.<a href="#section-3-4" class="pilcrow">¶</a></p>
-<p id="section-3-5">These attackers conform to the attacker model that was used in formal analysis
+<p id="section-3-5">The aforementioned attackers (A1) and (A2) conform to the attacker model that was used in formal analysis
 efforts for OAuth <span>[<a href="#arXiv.1601.01229" class="cite xref">arXiv.1601.01229</a>]</span>. This is a minimal attacker model.
 Implementers MUST take into account all possible types of attackers in the
-environment in which their OAuth implementations are expected to run. Previous
-attacks on OAuth have shown that OAuth deployments SHOULD in particular consider
-the following, stronger attackers in addition to those listed above:<a href="#section-3-5" class="pilcrow">¶</a></p>
+environment of their OAuth implementations. For example, in <span>[<a href="#arXiv.1901.11520" class="cite xref">arXiv.1901.11520</a>]</span>,
+a very strong attacker model is used that includes attackers that have
+full control over the token endpoint. This models effects of a
+possible misconfiguration of endpoints in the ecosystem, which can be avoided
+by using authorization server metadata as described in <a href="#other_recommendations" class="auto internal xref">Section 2.6</a>. Such an attacker is therefore not listed here.<a href="#section-3-5" class="pilcrow">¶</a></p>
+<p id="section-3-6">However, previous attacks on OAuth have shown that the following types of
+attackers are relevant in particular:<a href="#section-3-6" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3-6.1">
-          <p id="section-3-6.1.1">(A3) Attackers that can read, but not modify, the contents of the
+<li class="normal" id="section-3-7.1">
+          <p id="section-3-7.1.1">(A3) Attackers that can read, but not modify, the contents of the
 authorization response (i.e., the authorization response can leak
-to an attacker).<a href="#section-3-6.1.1" class="pilcrow">¶</a></p>
-<p id="section-3-6.1.2">Examples for such attacks include open redirector attacks, insufficient
+to an attacker).<a href="#section-3-7.1.1" class="pilcrow">¶</a></p>
+<p id="section-3-7.1.2">Examples for such attacks include open redirector attacks, insufficient
 checking of redirect URIs (see <a href="#insufficient_uri_validation" class="auto internal xref">Section 4.1</a>), problems
 existing on mobile operating systems (where different apps can register
 themselves on the same URI), mix-up attacks (see <a href="#mix_up" class="auto internal xref">Section 4.4</a>), where the
 client is tricked into sending credentials to an attacker-controlled authorization server, and
 the fact that URLs are often stored/logged by browsers (history), proxy
-servers, and operating systems.<a href="#section-3-6.1.2" class="pilcrow">¶</a></p>
+servers, and operating systems.<a href="#section-3-7.1.2" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-6.2">
-          <p id="section-3-6.2.1">(A4) Attackers that can read, but not modify, the contents of the
+        <li class="normal" id="section-3-7.2">
+          <p id="section-3-7.2.1">(A4) Attackers that can read, but not modify, the contents of the
 authorization request (i.e., the authorization request can leak,
-in the same manner as above, to an attacker).<a href="#section-3-6.2.1" class="pilcrow">¶</a></p>
+in the same manner as above, to an attacker).<a href="#section-3-7.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-6.3">
-          <p id="section-3-6.3.1">(A5) Attackers that can acquire an access token issued by an authorization server. For
+        <li class="normal" id="section-3-7.3">
+          <p id="section-3-7.3.1">(A5) Attackers that can acquire an access token issued by an authorization server. For
 example, a resource server can be compromised by an attacker, an
 access token may be sent to an attacker-controlled resource server
 due to a misconfiguration, or a resource owner is social-engineered into
-using an attacker-controlled resource server. See also <a href="#comp_res_server" class="auto internal xref">Section 4.9.2</a>.<a href="#section-3-6.3.1" class="pilcrow">¶</a></p>
+using an attacker-controlled resource server. See also <a href="#comp_res_server" class="auto internal xref">Section 4.9.2</a>.<a href="#section-3-7.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-3-7">(A3), (A4) and (A5) typically occur together with either (A1) or (A2).
-Attackers can collaborate to reach a common goal.<a href="#section-3-7" class="pilcrow">¶</a></p>
-<p id="section-3-8">Note that in this attacker model, an attacker (see A1) can be a resource owner or
-act as one. For example, an attacker can use his own browser to replay
+<p id="section-3-8">(A3), (A4) and (A5) typically occur together with either (A1) or (A2).
+Attackers can collaborate to reach a common goal.<a href="#section-3-8" class="pilcrow">¶</a></p>
+<p id="section-3-9">Note that an attacker (A1) or (A2) can be a resource owner or
+act as one. For example, such an attacker can use their own browser to replay
 tokens or authorization codes obtained by any of the attacks described
-above at the client or resource server.<a href="#section-3-8" class="pilcrow">¶</a></p>
-<p id="section-3-9">This document focusses on threats resulting from these attackers.
-Attacks in an even stronger attacker model are discussed, for example,
-in <span>[<a href="#arXiv.1901.11520" class="cite xref">arXiv.1901.11520</a>]</span>.<a href="#section-3-9" class="pilcrow">¶</a></p>
+above at the client or resource server.<a href="#section-3-9" class="pilcrow">¶</a></p>
+<p id="section-3-10">This document focusses on threats resulting from attackers (A1) to (A5).<a href="#section-3-10" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="attacks_and_mitigations">
@@ -1912,7 +1917,7 @@ redirect URIs.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 error prone to manage than exact redirect URI matching. Several
 successful attacks exploiting flaws in the pattern matching
 implementation or concrete configurations have been observed in the
-wild . Insufficient validation of the redirect URI effectively breaks
+wild (see, e.g., <span>[<a href="#research.rub2" class="cite xref">research.rub2</a>]</span>). Insufficient validation of the redirect URI effectively breaks
 client identification or authentication (depending on grant and client
 type) and allows the attacker to obtain an authorization code or
 access token, either<a href="#section-4.1-2" class="pilcrow">¶</a></p>
@@ -1946,7 +1951,7 @@ although <code>attacker.example</code> is a different domain potentially
 controlled by a malicious party.<a href="#section-4.1.1-2" class="pilcrow">¶</a></p>
 <p id="section-4.1.1-3">The attack can then be conducted as follows:<a href="#section-4.1.1-3" class="pilcrow">¶</a></p>
 <p id="section-4.1.1-4">First, the attacker needs to trick the user into opening a tampered
-URL in his browser that launches a page under the attacker's
+URL in their browser that launches a page under the attacker's
 control, say <code>https://www.evil.example</code> (see Attacker A1 in <a href="#secmodel" class="auto internal xref">Section 3</a>).<a href="#section-4.1.1-4" class="pilcrow">¶</a></p>
 <p id="section-4.1.1-5">This URL initiates the following authorization request with the client
 ID of a legitimate client to the authorization endpoint (line breaks
@@ -1975,7 +1980,7 @@ the code exchange requires authentication with the legitimate client's
 secret. The attacker can, however, use the legitimate confidential
 client to redeem the code by performing an authorization code
 injection attack, see <a href="#code_injection" class="auto internal xref">Section 4.5</a>.<a href="#section-4.1.1-10" class="pilcrow">¶</a></p>
-<p id="section-4.1.1-11">Note: Vulnerabilities of this kind can also exist if the authorization
+<p id="section-4.1.1-11">It is important to note that redirect URI validation vulnerabilities can also exist if the authorization
 server handles wildcards properly. For example, assume that the client
 registers the redirect URL pattern <code>https://*.somesite.example/*</code> and
 the authorization server interprets this as "allow redirect URIs
@@ -1995,13 +2000,12 @@ points to an external DNS name that does no longer exist (say,
 <a href="#section-4.1.2" class="section-number selfRef">4.1.2. </a><a href="#name-redirect-uri-validation-atta" class="section-name selfRef">Redirect URI Validation Attacks on Implicit Grant</a>
           </h4>
 <p id="section-4.1.2-1">The attack described above works for the implicit grant as well. If
-the attacker is able to send the authorization response to a URI under
-his control, he will directly get access to the fragment carrying the
+the attacker is able to send the authorization response to an attacker-controlled URI, the attacker will directly get access to the fragment carrying the
 access token.<a href="#section-4.1.2-1" class="pilcrow">¶</a></p>
 <p id="section-4.1.2-2">Additionally, implicit clients can be subject to a further kind of
 attack. It utilizes the fact that user agents re-attach fragments to
 the destination URL of a redirect if the location header does not
-contain a fragment (see <span>[<a href="#RFC7231" class="cite xref">RFC7231</a>]</span>, Section 9.5). The attack
+contain a fragment (see <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span>, Section 17.11). The attack
 described here combines this behavior with the client as an open
 redirector (see <a href="#open_redirector_on_client" class="auto internal xref">Section 4.11.1</a>) in order to obtain access tokens. This allows
 circumvention even of very narrow redirect URI patterns, but not strict URL
@@ -2014,7 +2018,7 @@ parameter <code>redirect_to</code> which takes a target URL and will send the
 browser to this URL using an HTTP Location header redirect 303.<a href="#section-4.1.2-3" class="pilcrow">¶</a></p>
 <p id="section-4.1.2-4">The attack can now be conducted as follows:<a href="#section-4.1.2-4" class="pilcrow">¶</a></p>
 <p id="section-4.1.2-5">First, and as above, the attacker needs to trick the user into opening
-a tampered URL in his browser that launches a page under the
+a tampered URL in their browser that launches a page under the
 attacker's control, say <code>https://www.evil.example</code>.<a href="#section-4.1.2-5" class="pilcrow">¶</a></p>
 <p id="section-4.1.2-6">Afterwards, the website initiates an authorization request that is
 very similar to the one in the attack on the code flow. Different to
@@ -2079,7 +2083,7 @@ native apps using a <code>localhost</code> URI: In this case, the authorization 
 port numbers as described in <span>[<a href="#RFC8252" class="cite xref">RFC8252</a>]</span>, Section 7.3.<a href="#section-4.1.3-1" class="pilcrow">¶</a></p>
 <p id="section-4.1.3-2">Additional recommendations:<a href="#section-4.1.3-2" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="section-4.1.3-3.1">Servers on which callbacks are hosted MUST NOT expose open
+<li class="compact" id="section-4.1.3-3.1">Web servers on which redirect URIs are hosted MUST NOT expose open
 redirectors (see <a href="#open_redirection" class="auto internal xref">Section 4.11</a>).<a href="#section-4.1.3-3.1" class="pilcrow">¶</a>
 </li>
             <li class="compact" id="section-4.1.3-3.2">Browsers reattach URL fragments to Location redirection URLs only
@@ -2112,10 +2116,10 @@ without further checks.<a href="#section-4.1.3-4" class="pilcrow">¶</a></p>
         </h3>
 <p id="section-4.2-1">The contents of the authorization request URI or the authorization
 response URI can unintentionally be disclosed to attackers through the
-Referer HTTP header (see <span>[<a href="#RFC7231" class="cite xref">RFC7231</a>]</span>, Section 5.5.2), by leaking either
+Referer HTTP header (see <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span>, Section 10.1.3), by leaking either
 from the authorization server's or the client's web site, respectively. Most
 importantly, authorization codes or <code>state</code> values can be disclosed in
-this way. Although specified otherwise in <span>[<a href="#RFC7231" class="cite xref">RFC7231</a>]</span>, Section 5.5.2,
+this way. Although specified otherwise in <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span>, Section 10.1.3,
 the same may happen to access tokens conveyed in URI fragments due to
 browser implementation issues, as illustrated by Chromium Issue 168213
 <span>[<a href="#bug.chromium" class="cite xref">bug.chromium</a>]</span>.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
@@ -2285,7 +2289,7 @@ this end.<a href="#section-4.3.2-4.1" class="pilcrow">¶</a>
 two or more authorization servers and at least one authorization
 server is under the control of the attacker. This can be the case,
 for example, if the attacker uses dynamic registration to register the
-client at his own authorization server or if an authorization server
+client at their own authorization server or if an authorization server
 becomes compromised.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
 <p id="section-4.4-2">The goal of the attack is to obtain an authorization code or an access
 token for an uncompromised authorization server. This is achieved by
@@ -2334,8 +2338,8 @@ receives a redirection (<code>303 See Other</code>) with a Location header point
 <code>https://honest.as.example/authorize?response_type=code&amp;client_id=7ZGZldHQ</code><a href="#section-4.4.1-6.3" class="pilcrow">¶</a>
 </li>
             <li id="section-4.4.1-6.4">
-              <p id="section-4.4.1-6.4.1">The user authorizes the client to access her resources at H-AS. (Note that a
-vigilant user might at this point detect that she intended to use A-AS
+              <p id="section-4.4.1-6.4.1">The user authorizes the client to access their resources at H-AS. (Note that a
+vigilant user might at this point detect that they intended to use A-AS
 instead of H-AS. The first attack variant listed below avoids this.) H-AS
 issues a code and sends it (via the browser) back to the client.<a href="#section-4.4.1-6.4.1" class="pilcrow">¶</a></p>
 </li>
@@ -2401,19 +2405,19 @@ issuer they sent the authorization request to and bind this information to the
 user agent. The issuer serves, via the associated metadata, as an abstract
 identifier for the combination of the authorization endpoint and token endpoint
 that are to be used in the flow. If an issuer identifier is not available, for
-example, if neither OAuth metadata <span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span> nor OpenID Connect Discovery <span>[<a href="#OpenID.Discovery" class="cite xref">OpenID.Discovery</a>]</span> are
+example, if neither OAuth Authorization Server Metadata <span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span> nor OpenID Connect Discovery <span>[<a href="#OpenID.Discovery" class="cite xref">OpenID.Discovery</a>]</span> are
 used, a different unique identifier for this tuple or the tuple itself can be
 used instead. For brevity of presentation, such a deployment-specific identifier
 will be subsumed under the issuer (or issuer identifier) in the following.<a href="#section-4.4.2-2" class="pilcrow">¶</a></p>
-<p id="section-4.4.2-3">Note: Just storing the authorization server URL is not sufficient to identify
+<p id="section-4.4.2-3">It is important to note that just storing the authorization server URL is not sufficient to identify
 mix-up attacks. An attacker might declare an uncompromised authorization server's authorization endpoint URL as
-"his" authorization server URL, but declare a token endpoint under his own control.<a href="#section-4.4.2-3" class="pilcrow">¶</a></p>
+"their" authorization server URL, but declare a token endpoint under their own control.<a href="#section-4.4.2-3" class="pilcrow">¶</a></p>
 <div id="mix-up-defense-via-issuer-identification">
 <section id="section-4.4.2.1">
             <h5 id="name-mix-up-defense-via-issuer-i">
 <a href="#section-4.4.2.1" class="section-number selfRef">4.4.2.1. </a><a href="#name-mix-up-defense-via-issuer-i" class="section-name selfRef">Mix-Up Defense via Issuer Identification</a>
             </h5>
-<p id="section-4.4.2.1-1">This defense requires that the authorization server sends his issuer identifier
+<p id="section-4.4.2.1-1">This defense requires that the authorization server sends its issuer identifier
 in the authorization response to the client. When receiving the authorization
 response, the client MUST compare the received issuer identifier to the stored
 issuer identifier. If there is a mismatch, the client MUST abort the
@@ -2452,7 +2456,7 @@ the client registration, it is harder to deploy automatically.<a href="#section-
 this defense by registering a new client with the "honest" authorization server using the redirect
 URI that the client assigned to the attacker's authorization server. The attacker could then run
 the attack as described above, replacing the
-client ID with the client ID of his newly created client.<a href="#section-4.4.2.2-4" class="pilcrow">¶</a></p>
+client ID with the client ID of their newly created client.<a href="#section-4.4.2.2-4" class="pilcrow">¶</a></p>
 <p id="section-4.4.2.2-5">This defense SHOULD therefore only be used if other options are not available.<a href="#section-4.4.2.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2484,7 +2488,7 @@ the victim's resources.<a href="#section-4.5-4" class="pilcrow">¶</a></p>
 use cases for this attack include:<a href="#section-4.5-5" class="pilcrow">¶</a></p>
 <ul class="compact">
 <li class="compact" id="section-4.5-6.1">The attacker wants to access certain functions in this particular
-client. As an example, the attacker wants to impersonate his
+client. As an example, the attacker wants to impersonate their
 victim in a certain app or on a certain web site.<a href="#section-4.5-6.1" class="pilcrow">¶</a>
 </li>
           <li class="compact" id="section-4.5-6.2">The authorization or resource servers are limited to certain
@@ -2524,7 +2528,7 @@ redirect URI matches the <code>redirect_uri</code> parameter (see
 <span>[<a href="#RFC6749" class="cite xref">RFC6749</a>]</span>).<a href="#section-4.5.1-2.5" class="pilcrow">¶</a>
 </li>
             <li id="section-4.5.1-2.6">All checks succeed and the authorization server issues access and
-other tokens to the client. The attacker has now associated his
+other tokens to the client. The attacker has now associated their
 session with the legitimate client with the victim's resources
 and/or identity.<a href="#section-4.5.1-2.6" class="pilcrow">¶</a>
 </li>
@@ -2554,7 +2558,7 @@ authorization requests. But this URI would not match the tampered
 redirect URI used by the attacker (otherwise, the redirect would not
 land at the attackers page). So the authorization server would detect
 the attack and refuse to exchange the code.<a href="#section-4.5.2-3" class="pilcrow">¶</a></p>
-<p id="section-4.5.2-4">Note: This check could also detect attempts to inject an authorization
+<p id="section-4.5.2-4">This check could also detect attempts to inject an authorization
 code that had been obtained from another instance of the same client
 on another device, if certain conditions are fulfilled:<a href="#section-4.5.2-4" class="pilcrow">¶</a></p>
 <ul class="compact">
@@ -2597,8 +2601,8 @@ mechanisms described next.<a href="#section-4.5.2-10" class="pilcrow">¶</a></p>
           <h4 id="name-countermeasures-4">
 <a href="#section-4.5.3" class="section-number selfRef">4.5.3. </a><a href="#name-countermeasures-4" class="section-name selfRef">Countermeasures</a>
           </h4>
-<p id="section-4.5.3-1">There are two good technical solutions to achieve this goal, outlined
-in the following.<a href="#section-4.5.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.5.3-1">There are two good technical solutions to binding authorization codes to client
+instances, outlined in the following.<a href="#section-4.5.3-1" class="pilcrow">¶</a></p>
 <div id="pkce_as_injection_protection">
 <section id="section-4.5.3.1">
             <h5 id="name-pkce">
@@ -2674,9 +2678,9 @@ appropriate for OpenID Connect clients.<a href="#section-4.5.3.3-2" class="pilcr
 <p id="section-4.5.4-1">An attacker can circumvent the countermeasures described above if he
 can modify the <code>nonce</code> or <code>code_challenge</code> values that are used in the
 victim's authorization request. The attacker can modify these values
-to be the same ones as those chosen by the client in his own session
+to be the same ones as those chosen by the client in their own session
 in Step 2 of the attack above. (This requires that the victim's
-session with the client begins after the attacker started his session
+session with the client begins after the attacker started their session
 with the client.) If the attacker is then able to capture the
 authorization code from the victim, the attacker will be able to
 inject the stolen code in Step 3 even if PKCE or <code>nonce</code> are used.<a href="#section-4.5.4-1" class="pilcrow">¶</a></p>
@@ -2764,11 +2768,10 @@ CSRF protection. If an authorization server does not support PKCE,
 its contents is a concern, clients MUST protect <code>state</code> against
 tampering and swapping. This can be achieved by binding the
 contents of state to the browser session and/or signed/encrypted
-state values as discussed in the now-expired draft <span>[<a href="#I-D.bradley-oauth-jwt-encoded-state" class="cite xref">I-D.bradley-oauth-jwt-encoded-state</a>]</span>.<a href="#section-4.7.1-3.2.1" class="pilcrow">¶</a></p>
+state values. One example of this is discussed in the now-expired draft <span>[<a href="#I-D.bradley-oauth-jwt-encoded-state" class="cite xref">I-D.bradley-oauth-jwt-encoded-state</a>]</span>.<a href="#section-4.7.1-3.2.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
-<p id="section-4.7.1-4">The authorization server therefore MUST provide a way to detect their support for PKCE. Using authorization server
-metadata according to <span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span> is RECOMMENDED, but authorization server MAY instead provide a
+<p id="section-4.7.1-4">The authorization server therefore MUST provide a way to detect their support for PKCE. Using Authorization Server Metadata according to <span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span> is RECOMMENDED, but authorization servers MAY instead provide a
 deployment-specific way to ensure or determine PKCE support.<a href="#section-4.7.1-4" class="pilcrow">¶</a></p>
 <p id="section-4.7.1-5">PKCE provides robust protection against CSRF attacks even in presence of an attacker that
 can read the authorization response (see Attacker A3 in <a href="#secmodel" class="auto internal xref">Section 3</a>). When
@@ -2801,7 +2804,7 @@ client is not checking <code>state</code> correctly.<a href="#section-4.8-3" cla
 <p id="section-4.8-4">Roughly speaking, this attack is a variant of a CSRF attack. The attacker
 achieves the same goal as in the attack described in <a href="#csrf" class="auto internal xref">Section 4.7</a>: The attacker injects an
 authorization code (and with that, an access token) that is bound to the attacker's
-resources into a session between his victim and the client.<a href="#section-4.8-4" class="pilcrow">¶</a></p>
+resources into a session between their victim and the client.<a href="#section-4.8-4" class="pilcrow">¶</a></p>
 <div id="attack-description-2">
 <section id="section-4.8.1">
           <h4 id="name-attack-description-3">
@@ -2810,12 +2813,12 @@ resources into a session between his victim and the client.<a href="#section-4.8
 <ol start="1" type="1" class="compact type-1" id="section-4.8.1-1">
 <li id="section-4.8.1-1.1">The user has started an OAuth session using some client at an authorization server. In the
 authorization request, the client has set the parameter
-<code>code_challenge=sha256(abc)</code> as the PKCE code challenge. The client is now
-waiting to receive the authorization response from the user's browse.<a href="#section-4.8.1-1.1" class="pilcrow">¶</a>
+<code>code_challenge=hash(abc)</code> as the PKCE code challenge (with the hash function and parameter encoding as defined in <span>[<a href="#RFC7636" class="cite xref">RFC7636</a>]</span>). The client is now
+waiting to receive the authorization response from the user's browser.<a href="#section-4.8.1-1.1" class="pilcrow">¶</a>
 </li>
-            <li id="section-4.8.1-1.2">To conduct the attack, the attacker uses his own device to start an
+            <li id="section-4.8.1-1.2">To conduct the attack, the attacker uses their own device to start an
 authorization flow with the targeted client. The client now uses another
-PKCE code challenge, say <code>code_challenge=sha256(xyz)</code>, in the authorization
+PKCE code challenge, say <code>code_challenge=hash(xyz)</code>, in the authorization
 request. The attacker intercepts the request and removes the entire
 <code>code_challenge</code> parameter from the request. Since this step is performed on
 the attacker's device, the attacker has full access to the request contents,
@@ -2846,7 +2849,7 @@ attacker's resource to the client under the user's control.<a href="#section-4.8
           </h4>
 <p id="section-4.8.2-1">Using <code>state</code> properly would prevent this attack. However, practice has shown
 that many OAuth clients do not use or check <code>state</code> properly.<a href="#section-4.8.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.8.2-2">Therefore, authorization servers MUST take precautions against this threat.<a href="#section-4.8.2-2" class="pilcrow">¶</a></p>
+<p id="section-4.8.2-2">Therefore, authorization servers MUST mitigate this attack.<a href="#section-4.8.2-2" class="pilcrow">¶</a></p>
 <p id="section-4.8.2-3">Note that from the view of the authorization server, in the attack described above, a
 <code>code_verifier</code> parameter is received at the token endpoint although no
 <code>code_challenge</code> parameter was present in the authorization request for the
@@ -2865,7 +2868,7 @@ valid <code>code_verifier</code> in the token request.<a href="#section-4.8.2-5.
 <p id="section-4.8.2-6">Beyond this, to prevent PKCE downgrade attacks, the authorization server MUST ensure that
 if there was no <code>code_challenge</code> in the authorization request, a request to
 the token endpoint containing a <code>code_verifier</code> is rejected.<a href="#section-4.8.2-6" class="pilcrow">¶</a></p>
-<p id="section-4.8.2-7">Note: authorization servers that mandate the use of PKCE in general or for particular clients
+<p id="section-4.8.2-7">Authorization servers that mandate the use of PKCE in general or for particular clients
 implicitly implement this security measure.<a href="#section-4.8.2-7" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2883,7 +2886,7 @@ circumstances.<a href="#section-4.9-1" class="pilcrow">¶</a></p>
           <h4 id="name-access-token-phishing-by-co">
 <a href="#section-4.9.1" class="section-number selfRef">4.9.1. </a><a href="#name-access-token-phishing-by-co" class="section-name selfRef">Access Token Phishing by Counterfeit Resource Server</a>
           </h4>
-<p id="section-4.9.1-1">An attacker may setup his own resource server and trick a client into
+<p id="section-4.9.1-1">An attacker may setup their own resource server and trick a client into
 sending access tokens to it that are valid for other resource servers
 (see Attackers A1 and A5 in <a href="#secmodel" class="auto internal xref">Section 3</a>). If the client sends a valid access token to
 this counterfeit resource server, the attacker in turn may use that
@@ -2905,16 +2908,15 @@ administrator for a service that this user or company uses.<a href="#section-4.9
 <p id="section-4.9.2-1">An attacker may compromise a resource server to gain access to the
 resources of the respective deployment. Such a compromise may range
 from partial access to the system, e.g., its log files, to full
-control of the respective server.<a href="#section-4.9.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.9.2-2">If the attacker were able to gain full control, including shell
-access, all controls can be circumvented and all resources can be
+control over the respective server, in which case all controls can be
+circumvented and all resources can be
 accessed. The attacker would also be able to obtain other access
 tokens held on the compromised system that would potentially be valid
-to access other resource servers.<a href="#section-4.9.2-2" class="pilcrow">¶</a></p>
-<p id="section-4.9.2-3">Preventing server breaches by hardening and monitoring server systems
+to access other resource servers.<a href="#section-4.9.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.9.2-2">Preventing server breaches by hardening and monitoring server systems
 is considered a standard operational procedure and, therefore, out of
 the scope of this document. This section focuses on the impact of
-OAuth-related breaches and the replaying of captured access tokens.<a href="#section-4.9.2-3" class="pilcrow">¶</a></p>
+OAuth-related breaches and the replaying of captured access tokens.<a href="#section-4.9.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="countermeasures-3">
@@ -2935,9 +2937,8 @@ replay on the compromised system.<a href="#section-4.9.3-2.1" class="pilcrow">¶
 used to prevent replay of captured access tokens on other resource
 servers.<a href="#section-4.9.3-2.2" class="pilcrow">¶</a>
 </li>
-            <li class="compact" id="section-4.9.3-2.3">The resource server MUST treat access tokens like any other
-credentials. It is considered good practice to not log them and
-not store them in plain text.<a href="#section-4.9.3-2.3" class="pilcrow">¶</a>
+            <li class="compact" id="section-4.9.3-2.3">The resource server MUST treat access tokens like other sensitive secrets
+and not store or transfer them in plain text.<a href="#section-4.9.3-2.3" class="pilcrow">¶</a>
 </li>
           </ul>
 <p id="section-4.9.3-3">The first and second recommendation also apply to other scenarios
@@ -3014,58 +3015,14 @@ fingerprint associated with the access token.<a href="#section-4.10.1-5.1" class
               <strong>OAuth 2.0 Demonstrating Proof of Possession (DPoP)</strong> (<span>[<a href="#RFC9449" class="cite xref">RFC9449</a>]</span>):
 DPoP outlines an
 application-level sender-constraining for access and refresh
-tokens that can be used in cases where neither mTLS nor OAuth
-Token Binding (see below) are available. It uses
+tokens. It uses
 proof-of-possession based on a public/private key pair and
 application-level signing. DPoP can be used with public clients
 and, in case of confidential clients, can be combined with any
 client authentication method.<a href="#section-4.10.1-5.2" class="pilcrow">¶</a>
 </li>
           </ul>
-<p id="section-4.10.1-6">For reference, other approaches have been discussed as well but the relevant
-drafts are now expired:<a href="#section-4.10.1-6" class="pilcrow">¶</a></p>
-<ul class="compact">
-<li class="compact" id="section-4.10.1-7.1">
-              <strong>OAuth Token Binding</strong> (<span>[<a href="#I-D.ietf-oauth-token-binding" class="cite xref">I-D.ietf-oauth-token-binding</a>]</span>): In this approach, an access
-token is, via the token binding ID, bound to key
-material representing a long term association between a client and
-a certain TLS host. Negotiation of the key material and proof of
-possession in the context of a TLS handshake is taken care of by
-the TLS stack. The client needs to determine the token binding ID
-of the target resource server and pass this data to the access
-token request. The authorization server then associates the access
-token with this ID. The resource server checks on every invocation
-that the token binding ID of the active TLS connection and the
-token binding ID of associated with the access token match. Since
-all crypto-related functions are covered by the TLS stack, this
-approach is very client developer friendly. As a prerequisite,
-token binding as described in <span>[<a href="#RFC8473" class="cite xref">RFC8473</a>]</span>
-(including federated token bindings) must be supported on all ends
-(client, authorization server, resource server).<a href="#section-4.10.1-7.1" class="pilcrow">¶</a>
-</li>
-            <li class="compact" id="section-4.10.1-7.2">
-              <strong>Signed HTTP Requests</strong> (<span>[<a href="#I-D.ietf-oauth-signed-http-request" class="cite xref">I-D.ietf-oauth-signed-http-request</a>]</span>):
-This approach utilizes <span>[<a href="#I-D.ietf-oauth-pop-key-distribution" class="cite xref">I-D.ietf-oauth-pop-key-distribution</a>]</span> and
-represents the elements of the signature in a JSON object. The
-signature is built using JWS. The mechanism has built-in support
-for signing of HTTP method, query parameters and headers. It also
-incorporates a timestamp as basis for replay prevention.<a href="#section-4.10.1-7.2" class="pilcrow">¶</a>
-</li>
-            <li class="compact" id="section-4.10.1-7.3">
-              <strong>JWT Pop Tokens</strong> (<span>[<a href="#I-D.sakimura-oauth-jpop" class="cite xref">I-D.sakimura-oauth-jpop</a>]</span>): This draft
-describes different ways to constrain access token usage, namely
-TLS or request signing. Note: Since the authors of this draft
-contributed the TLS-related proposal to <span>[<a href="#RFC8705" class="cite xref">RFC8705</a>]</span>,
-this document only considers the request signing part. For request
-signing, the draft utilizes
-<span>[<a href="#I-D.ietf-oauth-pop-key-distribution" class="cite xref">I-D.ietf-oauth-pop-key-distribution</a>]</span> and <span>[<a href="#RFC7800" class="cite xref">RFC7800</a>]</span>. The
-signature data is represented in a JWT and JWS is used for
-signing. Replay prevention is provided by building the signature
-over a server-provided nonce, client-provided nonce and a nonce
-counter.<a href="#section-4.10.1-7.3" class="pilcrow">¶</a>
-</li>
-          </ul>
-<p id="section-4.10.1-8">Note that the security of sender-constrained tokens is undermined when
+<p id="section-4.10.1-6">Note that the security of sender-constrained tokens is undermined when
 an attacker gets access to the token and the key material. This is, in
 particular, the case for corrupted client software and cross-site
 scripting attacks (when the client is running in the browser). If the
@@ -3074,21 +3031,21 @@ only indirectly accessible (like in a TLS stack), sender-constrained
 tokens at least protect against a use of the token when the client is
 offline, i.e., when the security module or interface is not available
 to the attacker. This applies to access tokens as well as to refresh
-tokens (see <a href="#refresh_token_protection" class="auto internal xref">Section 4.14</a>).<a href="#section-4.10.1-8" class="pilcrow">¶</a></p>
+tokens (see <a href="#refresh_token_protection" class="auto internal xref">Section 4.14</a>).<a href="#section-4.10.1-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="aud_restriction">
 <section id="section-4.10.2">
           <h4 id="name-audience-restricted-access-">
-<a href="#section-4.10.2" class="section-number selfRef">4.10.2. </a><a href="#name-audience-restricted-access-" class="section-name selfRef">Audience Restricted Access Tokens</a>
+<a href="#section-4.10.2" class="section-number selfRef">4.10.2. </a><a href="#name-audience-restricted-access-" class="section-name selfRef">Audience-Restricted Access Tokens</a>
           </h4>
 <p id="section-4.10.2-1">Audience restriction essentially restricts access tokens to a
 particular resource server. The authorization server associates the
 access token with the particular resource server and the resource
-server SHOULD verify the intended audience. If the access token fails
-the intended audience validation, the resource server MUST refuse to
+server is then supposed to verify the intended audience. If the access token fails
+the intended audience validation, the resource server refuses to
 serve the respective request.<a href="#section-4.10.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.10.2-2">In general, audience restrictions limit the impact of token leakage.
+<p id="section-4.10.2-2">In general, audience restriction limits the impact of token leakage.
 In the case of a counterfeit resource server, it may (as described
 below) also prevent abuse of the phished access token at the
 legitimate resource server.<a href="#section-4.10.2-2" class="pilcrow">¶</a></p>
@@ -3103,10 +3060,9 @@ the request.<a href="#section-4.10.2-3" class="pilcrow">¶</a></p>
 <p id="section-4.10.2-4">In deployments where the authorization server knows the URLs of all
 resource servers, the authorization server may just refuse to issue
 access tokens for unknown resource server URLs.<a href="#section-4.10.2-4" class="pilcrow">¶</a></p>
-<p id="section-4.10.2-5">The client SHOULD tell the authorization server the intended
-resource server. The proposed mechanism
-<span>[<a href="#RFC8707" class="cite xref">RFC8707</a>]</span> could be used or by encoding the
-information in the scope value.<a href="#section-4.10.2-5" class="pilcrow">¶</a></p>
+<p id="section-4.10.2-5">For this to work, the client needs to tell the authorization server the intended
+resource server. The mechanism in <span>[<a href="#RFC8707" class="cite xref">RFC8707</a>]</span> can be used for this or the
+information can be encoded in the scope value (Section 3.3 of <span>[<a href="#RFC6749" class="cite xref">RFC6749</a>]</span>).<a href="#section-4.10.2-5" class="pilcrow">¶</a></p>
 <p id="section-4.10.2-6">Instead of the URL, it is also possible to utilize the fingerprint of
 the resource server's X.509 certificate as audience value. This
 variant would also allow to detect an attempt to spoof the legitimate
@@ -3139,10 +3095,11 @@ advantages in deployments using structured access tokens.<a href="#section-4.10.
           </h4>
 <p id="section-4.10.3-1">An authorization server could provide the client with additional
 information about the locations where it is safe to use its access
-tokens.<a href="#section-4.10.3-1" class="pilcrow">¶</a></p>
+tokens. This approach, and why it is not recommended, is discussed in
+the following.<a href="#section-4.10.3-1" class="pilcrow">¶</a></p>
 <p id="section-4.10.3-2">In the simplest form, this would require the authorization server to publish a list of
 its known resource servers, illustrated in the following example using
-a non-standard metadata parameter <code>resource_servers</code>:<a href="#section-4.10.3-2" class="pilcrow">¶</a></p>
+a non-standard Authorization Server Metadata parameter <code>resource_servers</code>:<a href="#section-4.10.3-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.10.3-3">
 <pre>HTTP/1.1 200 OK
 Content-Type: application/json
@@ -3201,9 +3158,7 @@ better balance between the involved parties.<a href="#section-4.10.3-6" class="p
         <h3 id="name-open-redirection">
 <a href="#section-4.11" class="section-number selfRef">4.11. </a><a href="#name-open-redirection" class="section-name selfRef">Open Redirection</a>
         </h3>
-<p id="section-4.11-1">The following attacks can occur when an authorization server or client has an open redirector. An
-open redirector is an endpoint that forwards a user’s browser to an arbitrary
-URI obtained from a query parameter.  Such endpoints are sometimes implemented,
+<p id="section-4.11-1">The following attacks can occur when an authorization server or client has an open redirector. Such endpoints are sometimes implemented,
 for example, to show a message before a user is then redirected to an external
 website, or to redirect users back to a URL they were intending to visit before
 being interrupted, e.g., by a login prompt.<a href="#section-4.11-1" class="pilcrow">¶</a></p>
@@ -3219,7 +3174,7 @@ exfiltrate authorization codes and access tokens, as described in
 appear to point to the client. This might trick users into trusting the URL
 and follow it in their browser. This can be abused for phishing.<a href="#section-4.11.1-1" class="pilcrow">¶</a></p>
 <p id="section-4.11.1-2">In order to prevent open redirection, clients should only redirect if
-the target URLs are whitelisted or if the origin and integrity of a
+the target URLs are allowlisted or if the origin and integrity of a
 request can be authenticated. Countermeasures against open redirection
 are described by OWASP <span>[<a href="#owasp.redir" class="cite xref">owasp.redir</a>]</span>.<a href="#section-4.11.1-2" class="pilcrow">¶</a></p>
 </section>
@@ -3279,7 +3234,7 @@ the user to make the correct decision.<a href="#section-4.11.2-6" class="pilcrow
 <a href="#section-4.12" class="section-number selfRef">4.12. </a><a href="#name-307-redirect" class="section-name selfRef">307 Redirect</a>
         </h3>
 <p id="section-4.12-1">At the authorization endpoint, a typical protocol flow is that the authorization server
-prompts the user to enter her credentials in a form that is then
+prompts the user to enter their credentials in a form that is then
 submitted (using the HTTP POST method) back to the authorization
 server. The authorization server checks the credentials and, if successful, redirects
 the user agent to the client's redirection endpoint.<a href="#section-4.12-1" class="pilcrow">¶</a></p>
@@ -3292,11 +3247,11 @@ HTTP POST to the client.<a href="#section-4.12-2" class="pilcrow">¶</a></p>
 is malicious, it can use the credentials to impersonate the user
 at the authorization server.<a href="#section-4.12-3" class="pilcrow">¶</a></p>
 <p id="section-4.12-4">The behavior might be unexpected for developers, but is defined in
-<span>[<a href="#RFC7231" class="cite xref">RFC7231</a>]</span>, Section 6.4.7. This status code does not require the user
+<span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span>, Section 15.4.8. This status code does not require the user
 agent to rewrite the POST request to a GET request and thereby drop
 the form data in the POST request body.<a href="#section-4.12-4" class="pilcrow">¶</a></p>
-<p id="section-4.12-5">In the HTTP standard <span>[<a href="#RFC7231" class="cite xref">RFC7231</a>]</span>, only the status code 303
-unambigiously enforces rewriting the HTTP POST request to an HTTP GET
+<p id="section-4.12-5">In the HTTP standard <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span>, only the status code 303
+unambiguously enforces rewriting the HTTP POST request to an HTTP GET
 request. For all other status codes, including the popular 302, user
 agents can opt not to rewrite POST to GET requests and therefore to
 reveal the user's credentials to the client. (In practice, however, most
@@ -3334,8 +3289,7 @@ circumvent security controls that way. For example, it is standard
 practice of reverse proxies to accept <code>X-Forwarded-For</code> headers and just
 add the origin of the inbound request (making it a list). Depending on
 the logic performed in the application server, the attacker could
-simply add a whitelisted IP address to the header and render a IP
-whitelist useless.<a href="#section-4.13-4" class="pilcrow">¶</a></p>
+simply add an allowlisted IP address to the header and render the protection useless.<a href="#section-4.13-4" class="pilcrow">¶</a></p>
 <p id="section-4.13-5">A reverse proxy MUST therefore sanitize any inbound requests to ensure
 the authenticity and integrity of all header values relevant for the
 security of the application servers.<a href="#section-4.13-5" class="pilcrow">¶</a></p>
@@ -3395,7 +3349,7 @@ error codes and response behaviors.<a href="#section-4.14.1-4" class="pilcrow">�
           <h4 id="name-recommendations">
 <a href="#section-4.14.2" class="section-number selfRef">4.14.2. </a><a href="#name-recommendations" class="section-name selfRef">Recommendations</a>
           </h4>
-<p id="section-4.14.2-1">Authorization servers SHOULD determine, based on a risk assessment,
+<p id="section-4.14.2-1">Authorization servers MUST determine, based on a risk assessment,
 whether to issue refresh tokens to a certain client. If the
 authorization server decides not to issue refresh tokens, the client
 MAY obtain a new access token by utilizing other grant types, such as the
@@ -3428,7 +3382,7 @@ breach. The authorization server cannot determine which party
 submitted the invalid refresh token, but it will revoke the
 active refresh token. This stops the attack at the cost of forcing
 the legitimate client to obtain a fresh authorization grant.<a href="#section-4.14.2-5.2.1" class="pilcrow">¶</a></p>
-<p id="section-4.14.2-5.2.2">Implementation note: the grant to which a refresh token belongs
+<p id="section-4.14.2-5.2.2">Implementation note: The grant to which a refresh token belongs
 may be encoded into the refresh token itself. This can enable an
 authorization server to efficiently determine the grant to which a
 refresh token belongs, and by extension, all refresh tokens that
@@ -3597,7 +3551,7 @@ inadvertently be sent to malicious origins or injected from malicious origins.<a
           <h4 id="name-examples">
 <a href="#section-4.18.1" class="section-number selfRef">4.18.1. </a><a href="#name-examples" class="section-name selfRef">Examples</a>
           </h4>
-<p id="section-4.18.1-1">The following examples of attacks using in-browser communication are
+<p id="section-4.18.1-1">The following JavaScript examples of attacks using in-browser communication are
 described in <span>[<a href="#research.rub" class="cite xref">research.rub</a>]</span>:<a href="#section-4.18.1-1" class="pilcrow">¶</a></p>
 <div id="insufficient-limitation-of-receiver-origins">
 <section id="section-4.18.1.1">
@@ -3838,14 +3792,6 @@ for their valuable feedback.<a href="#section-5-1" class="pilcrow">¶</a></p>
         <dd>
 <span class="refAuthor">Bradley, J.</span>, <span class="refAuthor">Lodderstedt, T.</span>, and <span class="refAuthor">H. Zandbelt</span>, <span class="refTitle">"Encoding claims in the OAuth 2 state parameter using a JWT"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-bradley-oauth-jwt-encoded-state-09</span>, <time datetime="2018-11-04" class="refDate">4 November 2018</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-bradley-oauth-jwt-encoded-state-09">https://datatracker.ietf.org/doc/html/draft-bradley-oauth-jwt-encoded-state-09</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="I-D.ietf-oauth-pop-key-distribution">[I-D.ietf-oauth-pop-key-distribution]</dt>
-        <dd>
-<span class="refAuthor">Bradley, J.</span>, <span class="refAuthor">Hunt, P.</span>, <span class="refAuthor">Jones, M.</span>, <span class="refAuthor">Tschofenig, H.</span>, and <span class="refAuthor">M. Meszaros</span>, <span class="refTitle">"OAuth 2.0 Proof-of-Possession: Authorization Server to Client Key Distribution"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-oauth-pop-key-distribution-07</span>, <time datetime="2019-03-27" class="refDate">27 March 2019</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-oauth-pop-key-distribution-07">https://datatracker.ietf.org/doc/html/draft-ietf-oauth-pop-key-distribution-07</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="I-D.ietf-oauth-signed-http-request">[I-D.ietf-oauth-signed-http-request]</dt>
-        <dd>
-<span class="refAuthor">Richer, J.</span>, <span class="refAuthor">Bradley, J.</span>, and <span class="refAuthor">H. Tschofenig</span>, <span class="refTitle">"A Method for Signing HTTP Requests for OAuth"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-oauth-signed-http-request-03</span>, <time datetime="2016-08-08" class="refDate">8 August 2016</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-oauth-signed-http-request-03">https://datatracker.ietf.org/doc/html/draft-ietf-oauth-signed-http-request-03</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="I-D.ietf-oauth-token-binding">[I-D.ietf-oauth-token-binding]</dt>
         <dd>
 <span class="refAuthor">Jones, M.</span>, <span class="refAuthor">Campbell, B.</span>, <span class="refAuthor">Bradley, J.</span>, and <span class="refAuthor">W. Denniss</span>, <span class="refTitle">"OAuth 2.0 Token Binding"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-oauth-token-binding-08</span>, <time datetime="2018-10-19" class="refDate">19 October 2018</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-oauth-token-binding-08">https://datatracker.ietf.org/doc/html/draft-ietf-oauth-token-binding-08</a>&gt;</span>. </dd>
@@ -3854,13 +3800,9 @@ for their valuable feedback.<a href="#section-5-1" class="pilcrow">¶</a></p>
         <dd>
 <span class="refAuthor">Hardt, D.</span>, <span class="refAuthor">Parecki, A.</span>, and <span class="refAuthor">T. Lodderstedt</span>, <span class="refTitle">"The OAuth 2.1 Authorization Framework"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-oauth-v2-1-09</span>, <time datetime="2023-07-10" class="refDate">10 July 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-oauth-v2-1-09">https://datatracker.ietf.org/doc/html/draft-ietf-oauth-v2-1-09</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="I-D.sakimura-oauth-jpop">[I-D.sakimura-oauth-jpop]</dt>
-        <dd>
-<span class="refAuthor">Sakimura, N.</span>, <span class="refAuthor">Li, K.</span>, and <span class="refAuthor">J. Bradley</span>, <span class="refTitle">"The OAuth 2.0 Authorization Framework: JWT Pop Token Usage"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-sakimura-oauth-jpop-05</span>, <time datetime="2019-07-22" class="refDate">22 July 2019</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-sakimura-oauth-jpop-05">https://datatracker.ietf.org/doc/html/draft-sakimura-oauth-jpop-05</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="OAuth.Post">[OAuth.Post]</dt>
         <dd>
-<span class="refAuthor">Jones, M.</span> and <span class="refAuthor">B. Campbell</span>, <span class="refTitle">"OAuth 2.0 Form Post Response Mode"</span>, <time datetime="2015-04-27" class="refDate">27 April 2015</time>, <span>&lt;<a href="http://openid.net/specs/oauth-v2-form-post-response-mode-1_0.html">http://openid.net/specs/oauth-v2-form-post-response-mode-1_0.html</a>&gt;</span>. </dd>
+<span class="refAuthor">Jones, M.</span> and <span class="refAuthor">B. Campbell</span>, <span class="refTitle">"OAuth 2.0 Form Post Response Mode"</span>, <time datetime="2015-04-27" class="refDate">27 April 2015</time>, <span>&lt;<a href="https://openid.net/specs/oauth-v2-form-post-response-mode-1_0.html">https://openid.net/specs/oauth-v2-form-post-response-mode-1_0.html</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="OpenID.Core">[OpenID.Core]</dt>
         <dd>
@@ -3878,10 +3820,6 @@ for their valuable feedback.<a href="#section-5-1" class="pilcrow">¶</a></p>
         <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="RFC7231">[RFC7231]</dt>
-        <dd>
-<span class="refAuthor">Fielding, R., Ed.</span> and <span class="refAuthor">J. Reschke, Ed.</span>, <span class="refTitle">"Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content"</span>, <span class="seriesInfo">RFC 7231</span>, <span class="seriesInfo">DOI 10.17487/RFC7231</span>, <time datetime="2014-06" class="refDate">June 2014</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7231">https://www.rfc-editor.org/info/rfc7231</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC7591">[RFC7591]</dt>
         <dd>
 <span class="refAuthor">Richer, J., Ed.</span>, <span class="refAuthor">Jones, M.</span>, <span class="refAuthor">Bradley, J.</span>, <span class="refAuthor">Machulak, M.</span>, and <span class="refAuthor">P. Hunt</span>, <span class="refTitle">"OAuth 2.0 Dynamic Client Registration Protocol"</span>, <span class="seriesInfo">RFC 7591</span>, <span class="seriesInfo">DOI 10.17487/RFC7591</span>, <time datetime="2015-07" class="refDate">July 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7591">https://www.rfc-editor.org/info/rfc7591</a>&gt;</span>. </dd>
@@ -3890,17 +3828,9 @@ for their valuable feedback.<a href="#section-5-1" class="pilcrow">¶</a></p>
         <dd>
 <span class="refAuthor">Sakimura, N., Ed.</span>, <span class="refAuthor">Bradley, J.</span>, and <span class="refAuthor">N. Agarwal</span>, <span class="refTitle">"Proof Key for Code Exchange by OAuth Public Clients"</span>, <span class="seriesInfo">RFC 7636</span>, <span class="seriesInfo">DOI 10.17487/RFC7636</span>, <time datetime="2015-09" class="refDate">September 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7636">https://www.rfc-editor.org/info/rfc7636</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="RFC7800">[RFC7800]</dt>
-        <dd>
-<span class="refAuthor">Jones, M.</span>, <span class="refAuthor">Bradley, J.</span>, and <span class="refAuthor">H. Tschofenig</span>, <span class="refTitle">"Proof-of-Possession Key Semantics for JSON Web Tokens (JWTs)"</span>, <span class="seriesInfo">RFC 7800</span>, <span class="seriesInfo">DOI 10.17487/RFC7800</span>, <time datetime="2016-04" class="refDate">April 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7800">https://www.rfc-editor.org/info/rfc7800</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
         <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC8473">[RFC8473]</dt>
-        <dd>
-<span class="refAuthor">Popov, A.</span>, <span class="refAuthor">Nystroem, M.</span>, <span class="refAuthor">Balfanz, D., Ed.</span>, <span class="refAuthor">Harper, N.</span>, and <span class="refAuthor">J. Hodges</span>, <span class="refTitle">"Token Binding over HTTP"</span>, <span class="seriesInfo">RFC 8473</span>, <span class="seriesInfo">DOI 10.17487/RFC8473</span>, <time datetime="2018-10" class="refDate">October 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8473">https://www.rfc-editor.org/info/rfc8473</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8707">[RFC8707]</dt>
         <dd>
@@ -3909,6 +3839,10 @@ for their valuable feedback.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <dt id="RFC9101">[RFC9101]</dt>
         <dd>
 <span class="refAuthor">Sakimura, N.</span>, <span class="refAuthor">Bradley, J.</span>, and <span class="refAuthor">M. Jones</span>, <span class="refTitle">"The OAuth 2.0 Authorization Framework: JWT-Secured Authorization Request (JAR)"</span>, <span class="seriesInfo">RFC 9101</span>, <span class="seriesInfo">DOI 10.17487/RFC9101</span>, <time datetime="2021-08" class="refDate">August 2021</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc9101">https://www.rfc-editor.org/info/rfc9101</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9110">[RFC9110]</dt>
+        <dd>
+<span class="refAuthor">Fielding, R., Ed.</span>, <span class="refAuthor">Nottingham, M., Ed.</span>, and <span class="refAuthor">J. Reschke, Ed.</span>, <span class="refTitle">"HTTP Semantics"</span>, <span class="seriesInfo">STD 97</span>, <span class="seriesInfo">RFC 9110</span>, <span class="seriesInfo">DOI 10.17487/RFC9110</span>, <time datetime="2022-06" class="refDate">June 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc9110">https://www.rfc-editor.org/info/rfc9110</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9126">[RFC9126]</dt>
         <dd>
@@ -3956,19 +3890,19 @@ for their valuable feedback.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <dd class="break"></dd>
 <dt id="arXiv.1508.04324v2">[arXiv.1508.04324v2]</dt>
         <dd>
-<span class="refAuthor">Mladenov, V.</span>, <span class="refAuthor">Mainka, C.</span>, and <span class="refAuthor">J. Schwenk</span>, <span class="refTitle">"On the security of modern Single Sign-On Protocols: Second-Order Vulnerabilities in OpenID Connect"</span>, <span class="seriesInfo">arXiv 1508.04324v2</span>, <time datetime="2016-01-07" class="refDate">7 January 2016</time>, <span>&lt;<a href="http://arxiv.org/abs/1508.04324v2/">http://arxiv.org/abs/1508.04324v2/</a>&gt;</span>. </dd>
+<span class="refAuthor">Mladenov, V.</span>, <span class="refAuthor">Mainka, C.</span>, and <span class="refAuthor">J. Schwenk</span>, <span class="refTitle">"On the security of modern Single Sign-On Protocols: Second-Order Vulnerabilities in OpenID Connect"</span>, <span class="seriesInfo">arXiv 1508.04324v2</span>, <time datetime="2016-01-07" class="refDate">7 January 2016</time>, <span>&lt;<a href="https://arxiv.org/abs/1508.04324v2/">https://arxiv.org/abs/1508.04324v2/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="arXiv.1601.01229">[arXiv.1601.01229]</dt>
         <dd>
-<span class="refAuthor">Fett, D.</span>, <span class="refAuthor">Küsters, R.</span>, and <span class="refAuthor">G. Schmitz</span>, <span class="refTitle">"A Comprehensive Formal Security Analysis of OAuth 2.0"</span>, <span class="seriesInfo">arXiv 1601.01229</span>, <time datetime="2016-01-06" class="refDate">6 January 2016</time>, <span>&lt;<a href="http://arxiv.org/abs/1601.01229/">http://arxiv.org/abs/1601.01229/</a>&gt;</span>. </dd>
+<span class="refAuthor">Fett, D.</span>, <span class="refAuthor">Küsters, R.</span>, and <span class="refAuthor">G. Schmitz</span>, <span class="refTitle">"A Comprehensive Formal Security Analysis of OAuth 2.0"</span>, <span class="seriesInfo">arXiv 1601.01229</span>, <time datetime="2016-01-06" class="refDate">6 January 2016</time>, <span>&lt;<a href="https://arxiv.org/abs/1601.01229/">https://arxiv.org/abs/1601.01229/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="arXiv.1704.08539">[arXiv.1704.08539]</dt>
         <dd>
-<span class="refAuthor">Fett, D.</span>, <span class="refAuthor">Küsters, R.</span>, and <span class="refAuthor">G. Schmitz</span>, <span class="refTitle">"The Web SSO Standard OpenID Connect: In-Depth Formal Security Analysis and Security Guidelines"</span>, <span class="seriesInfo">arXiv 1704.08539</span>, <time datetime="2017-04-27" class="refDate">27 April 2017</time>, <span>&lt;<a href="http://arxiv.org/abs/1704.08539/">http://arxiv.org/abs/1704.08539/</a>&gt;</span>. </dd>
+<span class="refAuthor">Fett, D.</span>, <span class="refAuthor">Küsters, R.</span>, and <span class="refAuthor">G. Schmitz</span>, <span class="refTitle">"The Web SSO Standard OpenID Connect: In-Depth Formal Security Analysis and Security Guidelines"</span>, <span class="seriesInfo">arXiv 1704.08539</span>, <time datetime="2017-04-27" class="refDate">27 April 2017</time>, <span>&lt;<a href="https://arxiv.org/abs/1704.08539/">https://arxiv.org/abs/1704.08539/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="arXiv.1901.11520">[arXiv.1901.11520]</dt>
         <dd>
-<span class="refAuthor">Fett, D.</span>, <span class="refAuthor">Hosseyni, P.</span>, and <span class="refAuthor">R. Küsters</span>, <span class="refTitle">"An Extensive Formal Security Analysis of the OpenID Financial-grade API"</span>, <span class="seriesInfo">arXiv 1901.11520</span>, <time datetime="2019-01-31" class="refDate">31 January 2019</time>, <span>&lt;<a href="http://arxiv.org/abs/1901.11520/">http://arxiv.org/abs/1901.11520/</a>&gt;</span>. </dd>
+<span class="refAuthor">Fett, D.</span>, <span class="refAuthor">Hosseyni, P.</span>, and <span class="refAuthor">R. Küsters</span>, <span class="refTitle">"An Extensive Formal Security Analysis of the OpenID Financial-grade API"</span>, <span class="seriesInfo">arXiv 1901.11520</span>, <time datetime="2019-01-31" class="refDate">31 January 2019</time>, <span>&lt;<a href="https://arxiv.org/abs/1901.11520/">https://arxiv.org/abs/1901.11520/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="bug.chromium">[bug.chromium]</dt>
         <dd>
@@ -3980,7 +3914,7 @@ for their valuable feedback.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <dd class="break"></dd>
 <dt id="research.cmu">[research.cmu]</dt>
         <dd>
-<span class="refAuthor">Chen, E.</span>, <span class="refAuthor">Pei, Y.</span>, <span class="refAuthor">Chen, S.</span>, <span class="refAuthor">Tian, Y.</span>, <span class="refAuthor">Kotcher, R.</span>, and <span class="refAuthor">P. Tague</span>, <span class="refTitle">"OAuth Demystified for Mobile Application Developers"</span>, <time datetime="2014-11" class="refDate">November 2014</time>, <span>&lt;<a href="http://css.csail.mit.edu/6.858/2012/readings/oauth-sso.pdf">http://css.csail.mit.edu/6.858/2012/readings/oauth-sso.pdf</a>&gt;</span>. </dd>
+<span class="refAuthor">Chen, E.</span>, <span class="refAuthor">Pei, Y.</span>, <span class="refAuthor">Chen, S.</span>, <span class="refAuthor">Tian, Y.</span>, <span class="refAuthor">Kotcher, R.</span>, and <span class="refAuthor">P. Tague</span>, <span class="refTitle">"OAuth Demystified for Mobile Application Developers"</span>, <time datetime="2014-11" class="refDate">November 2014</time>, <span>&lt;<a href="https://css.csail.mit.edu/6.858/2012/readings/oauth-sso.pdf">https://css.csail.mit.edu/6.858/2012/readings/oauth-sso.pdf</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="research.jcs_14">[research.jcs_14]</dt>
         <dd>
@@ -3990,9 +3924,13 @@ for their valuable feedback.<a href="#section-5-1" class="pilcrow">¶</a></p>
         <dd>
 <span class="refAuthor">Jannett, L.</span>, <span class="refAuthor">Mladenov, V.</span>, <span class="refAuthor">Mainka, C.</span>, and <span class="refAuthor">J. Schwenk</span>, <span class="refTitle">"DISTINCT: Identity Theft using In-Browser Communications in Dual-Window Single Sign-On"</span>, <span class="seriesInfo">DOI 10.1145/3548606.3560692</span>, <time datetime="2022-11-07" class="refDate">7 November 2022</time>, <span>&lt;<a href="https://distinct-sso.com/paper.pdf">https://distinct-sso.com/paper.pdf</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="research.rub2">[research.rub2]</dt>
+        <dd>
+<span class="refAuthor">Fries, C.</span>, <span class="refTitle">"Security Analysis of Real-Life OpenID Connect Implementations"</span>, <time datetime="2020-12-20" class="refDate">20 December 2020</time>, <span>&lt;<a href="https://www.nds.rub.de/media/ei/arbeiten/2021/05/03/masterthesis.pdf">https://www.nds.rub.de/media/ei/arbeiten/2021/05/03/masterthesis.pdf</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="research.ubc">[research.ubc]</dt>
         <dd>
-<span class="refAuthor">Sun, S.-T.</span> and <span class="refAuthor">K. Beznosov</span>, <span class="refTitle">"The Devil is in the (Implementation) Details: An Empirical Analysis of OAuth SSO Systems"</span>, <time datetime="2012-10" class="refDate">October 2012</time>, <span>&lt;<a href="http://passwordresearch.com/papers/paper267.html">http://passwordresearch.com/papers/paper267.html</a>&gt;</span>. </dd>
+<span class="refAuthor">Sun, S.-T.</span> and <span class="refAuthor">K. Beznosov</span>, <span class="refTitle">"The Devil is in the (Implementation) Details: An Empirical Analysis of OAuth SSO Systems"</span>, <time datetime="2012-10" class="refDate">October 2012</time>, <span>&lt;<a href="https://passwordresearch.com/papers/paper267.html">https://passwordresearch.com/papers/paper267.html</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="research.udel">[research.udel]</dt>
       <dd>
@@ -4008,9 +3946,23 @@ for their valuable feedback.<a href="#section-5-1" class="pilcrow">¶</a></p>
       </h2>
 <p id="appendix-A-1">[[ To be removed from the final specification ]]<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="appendix-A-2.1">Shepherd's writup feedback: Clarify relationship to other document.<a href="#appendix-A-2.1" class="pilcrow">¶</a>
+<li class="compact" id="appendix-A-2.1">Shepherd's writup feedback: Removed discussion on outdated POP approaches<a href="#appendix-A-2.1" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-2.2">Shepherd's writup feedback: Expand abbreviations<a href="#appendix-A-2.2" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-2.2">Shepherd's writup feedback: Clarify relationship to other document.<a href="#appendix-A-2.2" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-2.3">Shepherd's writup feedback: Expand abbreviations<a href="#appendix-A-2.3" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-2.4">Shepherd's writup feedback: Better explain attacker model<a href="#appendix-A-2.4" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-2.5">Shepherd's writup feedback: Various editorial changes<a href="#appendix-A-2.5" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-2.6">AD review: Mention updated documents in abstract<a href="#appendix-A-2.6" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-2.7">AD review: Fix HTTP reference<a href="#appendix-A-2.7" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-2.8">AD review: Clarification in the attacker model<a href="#appendix-A-2.8" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-2.9">AD review: Various editorial and minor changes<a href="#appendix-A-2.9" class="pilcrow">¶</a>
 </li>
       </ul>
 <p id="appendix-A-3">-24<a href="#appendix-A-3" class="pilcrow">¶</a></p>
