@@ -273,7 +273,7 @@
 
 <reference anchor="research.rub2" target="https://www.nds.rub.de/media/ei/arbeiten/2021/05/03/masterthesis.pdf">
   <front>
-    <title>Security Analysis of Real-Life OpenID Connect Implementations</front>
+    <title>Security Analysis of Real-Life OpenID Connect Implementations</title>
     <author fullname="Christian Fries" surname="Fries" initials="C."><organization/></author>
     <date day="20" month="December" year="2020"/>
   </front>
