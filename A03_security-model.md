@@ -7,21 +7,20 @@ for the potentially dynamic relationships involving multiple parties
 (as described in (#Introduction)), to include new types of attackers and to define
 the attacker model more clearly.
 
-OAuth MUST ensure that the authorization of the resource owner
-(with a user agent) at the authorization server and the subsequent
-usage of the access token at the resource server is protected at
-least against the following attackers:
+The goal of this document is to ensure that the authorization of a resource
+owner (with a user agent) at an authorization server and the subsequent usage of
+the access token at a resource server is protected, as good as practically
+possible, at least against the following attackers:
 
-  * (A1) Web Attackers that can set up and operate an arbitrary number
-    of network endpoints including browsers and servers (except for
-    the concrete resource owner, authorization server, and resource server). Web attackers may set up web sites
-    that are visited by the resource owner, operate their own user agents, and
-    participate in the protocol.
+  * (A1) Web Attackers that can set up and operate an arbitrary number of
+    network endpoints (besides the "honest" ones) including browsers and
+    servers. Web attackers may set up web sites that are visited by the resource
+    owner, operate their own user agents, and participate in the protocol.
 
-    Web attackers may, in particular, operate OAuth clients that are
-    registered at the authorization server, and operate their own authorization and resource
-    servers that can be used (in parallel) by the resource owner and other
-    resource owners.
+    Web attackers may, in particular, operate OAuth clients that are registered
+    at the authorization server, and operate their own authorization and
+    resource servers that can be used (in parallel to the "honest" ones) by the
+    resource owner and other resource owners.
 
     It must also be assumed that web attackers can lure the user to
     open arbitrary attacker-chosen URIs at any time. In practice, this

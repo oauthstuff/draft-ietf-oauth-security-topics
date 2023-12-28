@@ -107,7 +107,7 @@ access token.
 Additionally, implicit clients can be subject to a further kind of
 attack. It utilizes the fact that user agents re-attach fragments to
 the destination URL of a redirect if the location header does not
-contain a fragment (see [@!RFC7231], Section 9.5). The attack
+contain a fragment (see [@!RFC9110], Section 17.11). The attack
 described here combines this behavior with the client as an open
 redirector (see (#open_redirector_on_client)) in order to obtain access tokens. This allows
 circumvention even of very narrow redirect URI patterns, but not strict URL
@@ -204,10 +204,10 @@ without further checks.
 
 The contents of the authorization request URI or the authorization
 response URI can unintentionally be disclosed to attackers through the
-Referer HTTP header (see [@RFC7231], Section 5.5.2), by leaking either
+Referer HTTP header (see [@RFC9110], Section 10.1.3), by leaking either
 from the authorization server's or the client's web site, respectively. Most
 importantly, authorization codes or `state` values can be disclosed in
-this way. Although specified otherwise in [@RFC7231], Section 5.5.2,
+this way. Although specified otherwise in [@RFC9110], Section 10.1.3,
 the same may happen to access tokens conveyed in URI fragments due to
 browser implementation issues, as illustrated by Chromium Issue 168213
 [@bug.chromium].
@@ -1175,11 +1175,11 @@ is malicious, it can use the credentials to impersonate the user
 at the authorization server.
 
 The behavior might be unexpected for developers, but is defined in
-[@RFC7231], Section 6.4.7. This status code does not require the user
+[@RFC9110], Section 15.4.8. This status code does not require the user
 agent to rewrite the POST request to a GET request and thereby drop
 the form data in the POST request body.
 
-In the HTTP standard [@RFC7231], only the status code 303
+In the HTTP standard [@RFC9110], only the status code 303
 unambigiously enforces rewriting the HTTP POST request to an HTTP GET
 request. For all other status codes, including the popular 302, user
 agents can opt not to rewrite POST to GET requests and therefore to

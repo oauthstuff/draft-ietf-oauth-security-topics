@@ -2,11 +2,14 @@
 
    [[ To be removed from the final specification ]]
 
-   * Shepherd's writup feedback (Hannes): Removed discussion on outdated POP approaches
-   * Shepherd's writup feedback (Hannes): Clarify relationship to other document.
-   * Shepherd's writup feedback (Hannes): Expand abbreviations
-   * Shepherd's writup feedback (Hannes): Better explain attacker model
-   * Shepherd's writup feedback (Hannes): Various editorial changes
+   * Shepherd's writup feedback: Removed discussion on outdated POP approaches
+   * Shepherd's writup feedback: Clarify relationship to other document.
+   * Shepherd's writup feedback: Expand abbreviations
+   * Shepherd's writup feedback: Better explain attacker model
+   * Shepherd's writup feedback: Various editorial changes
+   * AD review: Mention updated documents in abstract
+   * AD review: Fix HTTP reference
+   * AD review: Clarification in the attacker model
 
    -24
 

@@ -1,7 +1,6 @@
 # Introduction {#Introduction}
 
-Since its publication in [@!RFC6749] and [@!RFC6750], OAuth 2.0
-("OAuth" in the following) has gotten massive traction in the market
+Since its publication in [@!RFC6749] and [@!RFC6750], OAuth 2.0 (referred to as simply "OAuth" in the following) has gained massive traction in the market
 and became the standard for API protection and the basis for federated
 login using OpenID Connect [@!OpenID.Core]. While OAuth is used in a
 variety of scenarios and different kinds of deployments, the following

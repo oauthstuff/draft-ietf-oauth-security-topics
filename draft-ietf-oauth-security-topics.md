@@ -49,11 +49,12 @@ organization="Authlete"
 
 .# Abstract
 
-This document describes best current security practice for OAuth 2.0.
-It updates and extends the OAuth 2.0 Security Threat Model to
-incorporate practical experiences gathered since OAuth 2.0 was
-published and covers new threats relevant due to the broader
-application of OAuth 2.0.
+This document describes best current security practice for OAuth 2.0. It updates
+and extends the threat model and security advice given in [@!RFC6749],
+[@!RFC6750], and [@!RFC6819] to incorporate practical experiences gathered since
+OAuth 2.0 was published and covers new threats relevant due to the broader
+application of OAuth 2.0. It further deprecates some modes of operation that are
+deemed less secure or even insecure.
 
 {mainmatter}
 
