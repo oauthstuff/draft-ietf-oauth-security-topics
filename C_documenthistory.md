@@ -10,6 +10,7 @@
    * AD review: Mention updated documents in abstract
    * AD review: Fix HTTP reference
    * AD review: Clarification in the attacker model
+   * AD review: Various editorial and minor changes
 
    -24
 

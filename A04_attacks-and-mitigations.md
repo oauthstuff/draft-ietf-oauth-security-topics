@@ -19,7 +19,7 @@ This approach turned out to be more complex to implement and more
 error prone to manage than exact redirect URI matching. Several
 successful attacks exploiting flaws in the pattern matching
 implementation or concrete configurations have been observed in the
-wild. Insufficient validation of the redirect URI effectively breaks
+wild (see, e.g., [@research.rub2]). Insufficient validation of the redirect URI effectively breaks
 client identification or authentication (depending on grant and client
 type) and allows the attacker to obtain an authorization code or
 access token, either
@@ -605,8 +605,8 @@ mechanisms described next.
 
 ### Countermeasures
 
-There are two good technical solutions to achieve this goal, outlined
-in the following.
+There are two good technical solutions to binding authorization codes to client
+instances, outlined in the following.
 
 #### PKCE {#pkce_as_injection_protection}
 
@@ -746,7 +746,7 @@ important to note that:
    its contents is a concern, clients MUST protect `state` against
    tampering and swapping. This can be achieved by binding the
    contents of state to the browser session and/or signed/encrypted
-   state values as discussed in the now-expired draft [@I-D.bradley-oauth-jwt-encoded-state].
+   state values. One example of this is discussed in the now-expired draft [@I-D.bradley-oauth-jwt-encoded-state].
 
 The authorization server therefore MUST provide a way to detect their support for PKCE. Using Authorization Server Metadata according to [@!RFC8414] is RECOMMENDED, but authorization servers MAY instead provide a
 deployment-specific way to ensure or determine PKCE support.
@@ -786,11 +786,11 @@ resources into a session between their victim and the client.
 
  1. The user has started an OAuth session using some client at an authorization server. In the
     authorization request, the client has set the parameter
-    `code_challenge=sha256(abc)` as the PKCE code challenge. The client is now
-    waiting to receive the authorization response from the user's browse.
+    `code_challenge=hash(abc)` as the PKCE code challenge (with the hash function and parameter encoding as defined in [@!RFC7636]). The client is now
+    waiting to receive the authorization response from the user's browser.
  2. To conduct the attack, the attacker uses their own device to start an
     authorization flow with the targeted client. The client now uses another
-    PKCE code challenge, say `code_challenge=sha256(xyz)`, in the authorization
+    PKCE code challenge, say `code_challenge=hash(xyz)`, in the authorization
     request. The attacker intercepts the request and removes the entire
     `code_challenge` parameter from the request. Since this step is performed on
     the attacker's device, the attacker has full access to the request contents,
@@ -812,7 +812,7 @@ resources into a session between their victim and the client.
 Using `state` properly would prevent this attack. However, practice has shown
 that many OAuth clients do not use or check `state` properly.
 
-Therefore, authorization servers MUST take precautions against this threat.
+Therefore, authorization servers MUST mitigate this attack.
 
 Note that from the view of the authorization server, in the attack described above, a
 `code_verifier` parameter is received at the token endpoint although no
@@ -862,10 +862,8 @@ administrator for a service that this user or company uses.
 An attacker may compromise a resource server to gain access to the
 resources of the respective deployment. Such a compromise may range
 from partial access to the system, e.g., its log files, to full
-control of the respective server.
-
-If the attacker were able to gain full control, including shell
-access, all controls can be circumvented and all resources can be
+control over the respective server, in which case all controls can be
+circumvented and all resources can be
 accessed. The attacker would also be able to obtain other access
 tokens held on the compromised system that would potentially be valid
 to access other resource servers.
@@ -888,9 +886,8 @@ order to cope with access token replay by malicious actors:
   * Audience restriction as described in (#aud_restriction) SHOULD be
     used to prevent replay of captured access tokens on other resource
     servers.
-  * The resource server MUST treat access tokens like any other
-    credentials. It is considered good practice to not log them and
-    not store them in plain text.
+  * The resource server MUST treat access tokens like other sensitive secrets
+    and not store or transfer them in plain text.
 
 The first and second recommendation also apply to other scenarios
 where access tokens leak (see Attacker A5 in (#secmodel)).
@@ -1002,7 +999,7 @@ access tokens for unknown resource server URLs.
 
 For this to work, the client needs to tell the authorization server the intended
 resource server. The mechanism in [@RFC8707] can be used for this or the
-information can be encoded in the scope value.
+information can be encoded in the scope value (Section 3.3 of [@!RFC6749]).
 
 Instead of the URL, it is also possible to utilize the fingerprint of
 the resource server's X.509 certificate as audience value. This
@@ -1180,7 +1177,7 @@ agent to rewrite the POST request to a GET request and thereby drop
 the form data in the POST request body.
 
 In the HTTP standard [@RFC9110], only the status code 303
-unambigiously enforces rewriting the HTTP POST request to an HTTP GET
+unambiguously enforces rewriting the HTTP POST request to an HTTP GET
 request. For all other status codes, including the popular 302, user
 agents can opt not to rewrite POST to GET requests and therefore to
 reveal the user's credentials to the client. (In practice, however, most
@@ -1273,7 +1270,7 @@ This specification gives recommendations beyond the scope of
 
 ### Recommendations
 
-Authorization servers SHOULD determine, based on a risk assessment,
+Authorization servers MUST determine, based on a risk assessment,
 whether to issue refresh tokens to a certain client. If the
 authorization server decides not to issue refresh tokens, the client
 MAY obtain a new access token by utilizing other grant types, such as the
@@ -1454,7 +1451,7 @@ inadvertently be sent to malicious origins or injected from malicious origins.
 
 ### Examples
 
-The following examples of attacks using in-browser communication are
+The following JavaScript examples of attacks using in-browser communication are
 described in [@research.rub]:
 
 #### Insufficient Limitation of Receiver Origins

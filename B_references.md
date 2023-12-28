@@ -76,7 +76,7 @@
   </front>
 </reference>
 
-<reference anchor="OAuth.Post" target="http://openid.net/specs/oauth-v2-form-post-response-mode-1_0.html">
+<reference anchor="OAuth.Post" target="https://openid.net/specs/oauth-v2-form-post-response-mode-1_0.html">
   <front>
     <title>OAuth 2.0 Form Post Response Mode</title>
     <author initials="M." surname="Jones" fullname="Mike Jones">
@@ -90,7 +90,7 @@
 </reference>
 
 
-<reference anchor="research.ubc" target="http://passwordresearch.com/papers/paper267.html">
+<reference anchor="research.ubc" target="https://passwordresearch.com/papers/paper267.html">
   <front>
     <title>The Devil is in the (Implementation) Details: An Empirical Analysis of OAuth SSO Systems</title>
     <author  initials="S.-T." surname="Sun" fullname="San-Tsai Sun">
@@ -101,10 +101,10 @@
     </author>
     <date month="October" year="2012"/>
   </front>
-  <format target="http://passwordresearch.com/papers/paper267.html" type="HTML" />
+  <format target="https://passwordresearch.com/papers/paper267.html" type="HTML" />
 </reference>
 
-<reference anchor="research.cmu" target="http://css.csail.mit.edu/6.858/2012/readings/oauth-sso.pdf">
+<reference anchor="research.cmu" target="https://css.csail.mit.edu/6.858/2012/readings/oauth-sso.pdf">
   <front>
     <title>OAuth Demystified for Mobile Application Developers</title>
     <author  initials="E." surname="Chen" fullname="Eric Chen">
@@ -127,11 +127,11 @@
     </author>
     <date month="November" year="2014"/>
   </front>
-  <format target="http://css.csail.mit.edu/6.858/2012/readings/oauth-sso.pdf" type="pdf" />
+  <format target="https://css.csail.mit.edu/6.858/2012/readings/oauth-sso.pdf" type="pdf" />
 </reference>
 
 <reference anchor="arXiv.1601.01229"
-           target="http://arxiv.org/abs/1601.01229/">
+           target="https://arxiv.org/abs/1601.01229/">
   <front>
     <title>A Comprehensive Formal Security Analysis of OAuth 2.0</title>
     <author fullname="Daniel Fett" surname="Fett" initials="D."><organization/></author>
@@ -143,7 +143,7 @@
 </reference>
 
 <reference anchor="arXiv.1704.08539"
-           target="http://arxiv.org/abs/1704.08539/">
+           target="https://arxiv.org/abs/1704.08539/">
   <front>
     <title>The Web SSO Standard OpenID Connect: In-Depth Formal Security Analysis and Security Guidelines</title>
     <author fullname="Daniel Fett" surname="Fett" initials="D."><organization/></author>
@@ -155,7 +155,7 @@
 </reference>
 
 <reference anchor="arXiv.1901.11520"
-           target="http://arxiv.org/abs/1901.11520/">
+           target="https://arxiv.org/abs/1901.11520/">
   <front>
     <title>An Extensive Formal Security Analysis of the OpenID Financial-grade API</title>
     <author fullname="Daniel Fett" surname="Fett" initials="D."><organization/></author>
@@ -167,7 +167,7 @@
 </reference>
 
 <reference anchor="arXiv.1508.04324v2"
-           target="http://arxiv.org/abs/1508.04324v2/">
+           target="https://arxiv.org/abs/1508.04324v2/">
   <front>
     <title>On the security of modern Single Sign-On Protocols: Second-Order Vulnerabilities in OpenID Connect</title>
     <author fullname="Vladislav Mladenov" surname="Mladenov" initials="V."><organization/></author>
@@ -268,5 +268,13 @@
     <title>Fetch Standard: CORS protocol</title>
     <author>WHATWG</author>
     <date />
+  </front>
+</reference>
+
+<reference anchor="research.rub2" target="https://www.nds.rub.de/media/ei/arbeiten/2021/05/03/masterthesis.pdf">
+  <front>
+    <title>Security Analysis of Real-Life OpenID Connect Implementations</front>
+    <author fullname="Christian Fries" surname="Fries" initials="C."><organization/></author>
+    <date day="20" month="December" year="2020"/>
   </front>
 </reference>
