@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-01-21T01:04:07.572991+00:00",
+  "timestamp": "2024-01-23T01:00:39.956396+00:00",
   "repo": "oauthstuff/draft-ietf-oauth-security-topics",
   "labels": [
     {
@@ -3160,7 +3160,7 @@
       "labels": [],
       "body": "... as discussed with @aaronpk and @danielfett  at IETF 118.",
       "createdAt": "2023-11-07T11:26:28Z",
-      "updatedAt": "2023-12-20T08:00:32Z",
+      "updatedAt": "2024-01-21T01:09:47Z",
       "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
       "baseRefName": "master",
       "baseRefOid": "1e9ae984c5d31215ce765ad89becde5c795cd814",
