@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-02-06T00:54:59.924512+00:00",
+  "timestamp": "2024-02-08T00:54:30.969769+00:00",
   "repo": "oauthstuff/draft-ietf-oauth-security-topics",
   "labels": [
     {
@@ -2206,7 +2206,7 @@
         },
         {
           "author": "panva",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "body": "I believe it would be worthwhile to link to an example mechanism that relies on postMessage to deliver responses.\r\n\r\nThis would be https://datatracker.ietf.org/doc/html/draft-sakimura-oauth-wmrm-00. This also makes use validated uris/origins passed to postMessage and its code examples take care of verifying the event origin to be the AS on the client side.",
           "createdAt": "2022-11-10T14:55:48Z",
           "updatedAt": "2022-11-10T14:55:48Z"
@@ -2220,7 +2220,7 @@
         },
         {
           "author": "panva",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "body": "The BCP already does, search for I-D.bradley-oauth-jwt-encoded-state",
           "createdAt": "2022-11-12T06:12:04Z",
           "updatedAt": "2022-11-12T06:12:04Z"
@@ -2270,7 +2270,7 @@
       "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/54",
       "state": "MERGED",
       "author": "panva",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "![image](https://user-images.githubusercontent.com/241506/205301992-aab98787-264f-4203-87e0-0856a980e838.png)\r\n",
@@ -3176,7 +3176,7 @@
       "comments": [
         {
           "author": "panva",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "body": "I am surprised to see yet another attempt to add a measure that requires state synchronization across the deployment.\r\n\r\nI wish there was more language with maybe a recommendations about how vigorous this mechanism should be, at which step it should be checking to remain effective, etc.",
           "createdAt": "2023-11-07T12:09:03Z",
           "updatedAt": "2023-11-07T12:09:03Z"
@@ -3264,7 +3264,7 @@
             "abbreviatedOid": "01bf1ab"
           },
           "author": "panva",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "state": "APPROVED",
           "body": "",
           "createdAt": "2023-12-19T08:31:09Z",
@@ -3277,7 +3277,7 @@
             "abbreviatedOid": "01bf1ab"
           },
           "author": "panva",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "state": "CHANGES_REQUESTED",
           "body": "Ah no, it seems brian's suggestion is not the one in the PR at the moment. It is in my opinion preferable. ",
           "createdAt": "2023-12-19T08:32:04Z",
@@ -3343,7 +3343,7 @@
             "abbreviatedOid": "f61f95e"
           },
           "author": "panva",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "state": "APPROVED",
           "body": "",
           "createdAt": "2023-12-20T07:15:48Z",
