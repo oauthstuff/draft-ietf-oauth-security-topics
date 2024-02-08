@@ -6,11 +6,11 @@ Web Authorization Protocol                                T. Lodderstedt
 Internet-Draft                                                    SPRIND
 Updates: 6749, 6750, 6819 (if approved)                       J. Bradley
 Intended status: Best Current Practice                            Yubico
-Expires: 30 June 2024                                        A. Labunets
+Expires: 11 August 2024                                      A. Labunets
                                                   Independent Researcher
                                                                  D. Fett
                                                                 Authlete
-                                                        28 December 2023
+                                                         8 February 2024
 
 
                 OAuth 2.0 Security Best Current Practice
@@ -52,11 +52,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 30 June 2024.
+   This Internet-Draft will expire on 11 August 2024.
 
 Copyright Notice
 
-   Copyright (c) 2023 IETF Trust and the persons identified as the
+   Copyright (c) 2024 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -480,9 +480,10 @@ Table of Contents
    servers SHOULD NOT allow clients to influence their client_id or any
    claim that could cause confusion with a genuine resource owner.
 
-   It is RECOMMENDED to use end-to-end TLS between the client and the
-   resource server.  If TLS traffic needs to be terminated at an
-   intermediary, refer to Section 4.13 for further security advice.
+   It is RECOMMENDED to use end-to-end TLS according to [BCP195] between
+   the client and the resource server.  If TLS traffic needs to be
+   terminated at an intermediary, refer to Section 4.13 for further
+   security advice.
 
    Authorization responses MUST NOT be transmitted over unencrypted
    network connections.  To this end, authorization servers MUST NOT
@@ -1570,7 +1571,9 @@ Table of Contents
    respective sections.  However, in some cases, these measures are not
    sufficient or are not implemented correctly.  Authorization servers
    therefore SHOULD ensure that access tokens are sender-constrained and
-   audience-restricted as described in the following.
+   audience-restricted as described in the following.  Architecture and
+   performance reasons may prevent the use of these measures in some
+   deployments.
 
 4.10.1.  Sender-Constrained Access Tokens
 
@@ -2125,8 +2128,8 @@ Table of Contents
 
 4.18.1.  Examples
 
-   The following JavaScript examples of attacks using in-browser
-   communication are described in [research.rub]:
+   The following non-normative pseudocode examples of attacks using in-
+   browser communication are described in [research.rub]:
 
 4.18.1.1.  Insufficient Limitation of Receiver Origins
 
@@ -2182,7 +2185,8 @@ Table of Contents
    When comparing client receiver origins against pre-registered
    origins, authorization servers MUST utilize exact string matching as
    described in Section 4.1.3.  Authorization servers MUST send
-   postMessages to trusted client receiver origins:
+   postMessages to trusted client receiver origins, as shown in the
+   following, non-normative example:
 
    window.opener.postMessage(
      {
@@ -2200,7 +2204,8 @@ Table of Contents
    Clients MUST prevent injection of in-browser messages on the client
    receiver endpoint.  Clients MUST utilize exact string matching to
    compare the initiator origin of an in-browser message with the
-   authorization server origin:
+   authorization server origin, as shown in the following, non-normative
+   example:
 
    window.addEventListener("message", (e) => {
      // validate exact authorization server origin
@@ -2240,6 +2245,8 @@ Table of Contents
 8.  References
 
 8.1.  Normative References
+
+   [BCP195]   IETF, "BCP195", <https://www.rfc-editor.org/info/bcp195>.
 
    [RFC3986]  Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
               Resource Identifier (URI): Generic Syntax", STD 66,
@@ -2309,9 +2316,9 @@ Table of Contents
    [I-D.ietf-oauth-v2-1]
               Hardt, D., Parecki, A., and T. Lodderstedt, "The OAuth 2.1
               Authorization Framework", Work in Progress, Internet-
-              Draft, draft-ietf-oauth-v2-1-09, 10 July 2023,
+              Draft, draft-ietf-oauth-v2-1-10, 9 January 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-oauth-
-              v2-1-09>.
+              v2-1-10>.
 
    [OAuth.Post]
               Jones, M. and B. Campbell, "OAuth 2.0 Form Post Response

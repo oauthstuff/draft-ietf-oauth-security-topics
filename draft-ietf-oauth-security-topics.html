@@ -17,26 +17,26 @@ OAuth 2.0 was published and covers new threats relevant due to the broader
 application of OAuth 2.0. It further deprecates some modes of operation that are
 deemed less secure or even insecure. 
     " name="description">
-<meta content="xml2rfc 3.19.0" name="generator">
+<meta content="xml2rfc 3.19.2" name="generator">
 <meta content="security" name="keyword">
 <meta content="oauth2" name="keyword">
 <meta content="best current practice" name="keyword">
 <meta content="draft-ietf-oauth-security-topics-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.19.0
+  xml2rfc 3.19.2
     Python 3.11.6
     ConfigArgParse 1.7
     google-i18n-address 3.1.0
     intervaltree 3.1.0
     Jinja2 3.1.2
     lxml 4.9.3
-    platformdirs 4.1.0
+    platformdirs 4.2.0
     pycountry 22.3.5
     PyYAML 6.0.1
     requests 2.31.0
     setuptools 68.2.2
     six 1.16.0
-    wcwidth 0.2.12
+    wcwidth 0.2.13
 -->
 <link href="draft-ietf-oauth-security-topics.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1035,11 +1035,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">OAuth 2.0 Security BCP</td>
-<td class="right">December 2023</td>
+<td class="right">February 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lodderstedt, et al.</td>
-<td class="center">Expires 30 June 2024</td>
+<td class="center">Expires 11 August 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1055,12 +1055,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc6749" class="eref">6749</a>, <a href="https://www.rfc-editor.org/rfc/rfc6750" class="eref">6750</a>, <a href="https://www.rfc-editor.org/rfc/rfc6819" class="eref">6819</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-12-28" class="published">28 December 2023</time>
+<time datetime="2024-02-08" class="published">8 February 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Best Current Practice</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-06-30">30 June 2024</time></dd>
+<dd class="expires"><time datetime="2024-08-11">11 August 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1122,7 +1122,7 @@ deemed less secure or even insecure.<a href="#section-abstract-1" class="pilcrow
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 30 June 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 11 August 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1131,7 +1131,7 @@ deemed less secure or even insecure.<a href="#section-abstract-1" class="pilcrow
 <a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
         </h2>
 <p id="section-boilerplate.2-1">
-            Copyright (c) 2023 IETF Trust and the persons identified as the
+            Copyright (c) 2024 IETF Trust and the persons identified as the
             document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.2-2">
             This document is subject to BCP 78 and the IETF Trust's Legal
@@ -1774,7 +1774,7 @@ when available.<a href="#section-2.6-3" class="pilcrow">¶</a></p>
 <p id="section-2.6-4">Under the conditions described in <a href="#client_impersonating_countermeasures" class="auto internal xref">Section 4.15.1</a>,
 authorization servers SHOULD NOT allow clients to influence their <code>client_id</code> or
 any claim that could cause confusion with a genuine resource owner.<a href="#section-2.6-4" class="pilcrow">¶</a></p>
-<p id="section-2.6-5">It is RECOMMENDED to use end-to-end TLS between the client and the resource server. If TLS
+<p id="section-2.6-5">It is RECOMMENDED to use end-to-end TLS according to <span>[<a href="#BCP195" class="cite xref">BCP195</a>]</span> between the client and the resource server. If TLS
 traffic needs to be terminated at an intermediary, refer to
 <a href="#tls_terminating" class="auto internal xref">Section 4.13</a> for further security advice.<a href="#section-2.6-5" class="pilcrow">¶</a></p>
 <p id="section-2.6-6">Authorization responses MUST NOT be transmitted over unencrypted network
@@ -2960,7 +2960,8 @@ specific security measures, as described in the respective sections.
 However, in some cases, these measures are not sufficient or are not
 implemented correctly. Authorization servers therefore SHOULD ensure that
 access tokens are sender-constrained and audience-restricted as described
-in the following.<a href="#section-4.10-1" class="pilcrow">¶</a></p>
+in the following. Architecture and performance reasons may
+prevent the use of these measures in some deployments.<a href="#section-4.10-1" class="pilcrow">¶</a></p>
 <div id="pop_tokens">
 <section id="section-4.10.1">
           <h4 id="name-sender-constrained-access-t">
@@ -3551,8 +3552,8 @@ inadvertently be sent to malicious origins or injected from malicious origins.<a
           <h4 id="name-examples">
 <a href="#section-4.18.1" class="section-number selfRef">4.18.1. </a><a href="#name-examples" class="section-name selfRef">Examples</a>
           </h4>
-<p id="section-4.18.1-1">The following JavaScript examples of attacks using in-browser communication are
-described in <span>[<a href="#research.rub" class="cite xref">research.rub</a>]</span>:<a href="#section-4.18.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.18.1-1">The following non-normative pseudocode examples of attacks using in-browser
+communication are described in <span>[<a href="#research.rub" class="cite xref">research.rub</a>]</span>:<a href="#section-4.18.1-1" class="pilcrow">¶</a></p>
 <div id="insufficient-limitation-of-receiver-origins">
 <section id="section-4.18.1.1">
             <h5 id="name-insufficient-limitation-of-">
@@ -3627,7 +3628,7 @@ generally required.<a href="#section-4.18.1.3-3" class="pilcrow">¶</a></p>
 <p id="section-4.18.2-1">When comparing client receiver origins against pre-registered origins,
 authorization servers MUST utilize exact string matching as described in
 <a href="#iuv_countermeasures" class="auto internal xref">Section 4.1.3</a>. Authorization servers MUST send postMessages to
-trusted client receiver origins:<a href="#section-4.18.2-1" class="pilcrow">¶</a></p>
+trusted client receiver origins, as shown in the following, non-normative example:<a href="#section-4.18.2-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.18.2-2">
 <pre>window.opener.postMessage(
   {
@@ -3646,7 +3647,7 @@ access tokens (see <a href="#insufficient_uri_validation" class="auto internal x
 <p id="section-4.18.2-4">Clients MUST prevent injection of in-browser messages on the client
 receiver endpoint. Clients MUST utilize exact string matching to compare
 the initiator origin of an in-browser message with the authorization
-server origin:<a href="#section-4.18.2-4" class="pilcrow">¶</a></p>
+server origin, as shown in the following, non-normative example:<a href="#section-4.18.2-4" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.18.2-5">
 <pre>window.addEventListener("message", (e) =&gt; {
   // validate exact authorization server origin
@@ -3741,6 +3742,10 @@ for their valuable feedback.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
+<dt id="BCP195">[BCP195]</dt>
+        <dd>
+<span class="refAuthor">IETF</span>, <span class="refTitle">"BCP195"</span>, <span>&lt;<a href="https://www.rfc-editor.org/info/bcp195">https://www.rfc-editor.org/info/bcp195</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC3986">[RFC3986]</dt>
         <dd>
 <span class="refAuthor">Berners-Lee, T.</span>, <span class="refAuthor">Fielding, R.</span>, and <span class="refAuthor">L. Masinter</span>, <span class="refTitle">"Uniform Resource Identifier (URI): Generic Syntax"</span>, <span class="seriesInfo">STD 66</span>, <span class="seriesInfo">RFC 3986</span>, <span class="seriesInfo">DOI 10.17487/RFC3986</span>, <time datetime="2005-01" class="refDate">January 2005</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc3986">https://www.rfc-editor.org/info/rfc3986</a>&gt;</span>. </dd>
@@ -3798,7 +3803,7 @@ for their valuable feedback.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <dd class="break"></dd>
 <dt id="I-D.ietf-oauth-v2-1">[I-D.ietf-oauth-v2-1]</dt>
         <dd>
-<span class="refAuthor">Hardt, D.</span>, <span class="refAuthor">Parecki, A.</span>, and <span class="refAuthor">T. Lodderstedt</span>, <span class="refTitle">"The OAuth 2.1 Authorization Framework"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-oauth-v2-1-09</span>, <time datetime="2023-07-10" class="refDate">10 July 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-oauth-v2-1-09">https://datatracker.ietf.org/doc/html/draft-ietf-oauth-v2-1-09</a>&gt;</span>. </dd>
+<span class="refAuthor">Hardt, D.</span>, <span class="refAuthor">Parecki, A.</span>, and <span class="refAuthor">T. Lodderstedt</span>, <span class="refTitle">"The OAuth 2.1 Authorization Framework"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-oauth-v2-1-10</span>, <time datetime="2024-01-09" class="refDate">9 January 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-oauth-v2-1-10">https://datatracker.ietf.org/doc/html/draft-ietf-oauth-v2-1-10</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="OAuth.Post">[OAuth.Post]</dt>
         <dd>
