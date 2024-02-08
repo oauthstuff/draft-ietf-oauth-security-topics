@@ -480,9 +480,10 @@ Table of Contents
    servers SHOULD NOT allow clients to influence their client_id or any
    claim that could cause confusion with a genuine resource owner.
 
-   It is RECOMMENDED to use end-to-end TLS between the client and the
-   resource server.  If TLS traffic needs to be terminated at an
-   intermediary, refer to Section 4.13 for further security advice.
+   It is RECOMMENDED to use end-to-end TLS according to [BCP195] between
+   the client and the resource server.  If TLS traffic needs to be
+   terminated at an intermediary, refer to Section 4.13 for further
+   security advice.
 
    Authorization responses MUST NOT be transmitted over unencrypted
    network connections.  To this end, authorization servers MUST NOT
@@ -2244,6 +2245,8 @@ Table of Contents
 8.  References
 
 8.1.  Normative References
+
+   [BCP195]   IETF, "BCP195", <https://www.rfc-editor.org/info/bcp195>.
 
    [RFC3986]  Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
               Resource Identifier (URI): Generic Syntax", STD 66,

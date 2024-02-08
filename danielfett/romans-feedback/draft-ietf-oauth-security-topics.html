@@ -1774,7 +1774,7 @@ when available.<a href="#section-2.6-3" class="pilcrow">¶</a></p>
 <p id="section-2.6-4">Under the conditions described in <a href="#client_impersonating_countermeasures" class="auto internal xref">Section 4.15.1</a>,
 authorization servers SHOULD NOT allow clients to influence their <code>client_id</code> or
 any claim that could cause confusion with a genuine resource owner.<a href="#section-2.6-4" class="pilcrow">¶</a></p>
-<p id="section-2.6-5">It is RECOMMENDED to use end-to-end TLS between the client and the resource server. If TLS
+<p id="section-2.6-5">It is RECOMMENDED to use end-to-end TLS according to <span>[<a href="#BCP195" class="cite xref">BCP195</a>]</span> between the client and the resource server. If TLS
 traffic needs to be terminated at an intermediary, refer to
 <a href="#tls_terminating" class="auto internal xref">Section 4.13</a> for further security advice.<a href="#section-2.6-5" class="pilcrow">¶</a></p>
 <p id="section-2.6-6">Authorization responses MUST NOT be transmitted over unencrypted network
@@ -3742,6 +3742,10 @@ for their valuable feedback.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
+<dt id="BCP195">[BCP195]</dt>
+        <dd>
+<span class="refAuthor">IETF</span>, <span class="refTitle">"BCP195"</span>, <span>&lt;<a href="https://www.rfc-editor.org/info/bcp195">https://www.rfc-editor.org/info/bcp195</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC3986">[RFC3986]</dt>
         <dd>
 <span class="refAuthor">Berners-Lee, T.</span>, <span class="refAuthor">Fielding, R.</span>, and <span class="refAuthor">L. Masinter</span>, <span class="refTitle">"Uniform Resource Identifier (URI): Generic Syntax"</span>, <span class="seriesInfo">STD 66</span>, <span class="seriesInfo">RFC 3986</span>, <span class="seriesInfo">DOI 10.17487/RFC3986</span>, <time datetime="2005-01" class="refDate">January 2005</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc3986">https://www.rfc-editor.org/info/rfc3986</a>&gt;</span>. </dd>
