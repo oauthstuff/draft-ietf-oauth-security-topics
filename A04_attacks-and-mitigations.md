@@ -902,7 +902,8 @@ specific security measures, as described in the respective sections.
 However, in some cases, these measures are not sufficient or are not
 implemented correctly. Authorization servers therefore SHOULD ensure that
 access tokens are sender-constrained and audience-restricted as described
-in the following.
+in the following. Architecture and performance reasons may
+prevent the use of these measures in some deployments.
 
 
 ### Sender-Constrained Access Tokens {#pop_tokens}
@@ -1451,8 +1452,8 @@ inadvertently be sent to malicious origins or injected from malicious origins.
 
 ### Examples
 
-The following JavaScript examples of attacks using in-browser communication are
-described in [@research.rub]:
+The following non-normative pseudocode examples of attacks using in-browser
+communication are described in [@research.rub]:
 
 #### Insufficient Limitation of Receiver Origins
 
@@ -1512,7 +1513,7 @@ generally required.
 When comparing client receiver origins against pre-registered origins,
 authorization servers MUST utilize exact string matching as described in
 (#iuv_countermeasures). Authorization servers MUST send postMessages to
-trusted client receiver origins:
+trusted client receiver origins, as shown in the following, non-normative example:
 
 ```
 window.opener.postMessage(
@@ -1532,7 +1533,7 @@ access tokens (see (#insufficient_uri_validation)).
 Clients MUST prevent injection of in-browser messages on the client
 receiver endpoint. Clients MUST utilize exact string matching to compare
 the initiator origin of an in-browser message with the authorization
-server origin:
+server origin, as shown in the following, non-normative example:
 
 ```
 window.addEventListener("message", (e) => {

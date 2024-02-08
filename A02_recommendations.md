@@ -230,7 +230,7 @@ Under the conditions described in (#client_impersonating_countermeasures),
 authorization servers SHOULD NOT allow clients to influence their `client_id` or
 any claim that could cause confusion with a genuine resource owner.
 
-It is RECOMMENDED to use end-to-end TLS between the client and the resource server. If TLS
+It is RECOMMENDED to use end-to-end TLS according to [@!BCP195] between the client and the resource server. If TLS
 traffic needs to be terminated at an intermediary, refer to
 (#tls_terminating) for further security advice.
 
