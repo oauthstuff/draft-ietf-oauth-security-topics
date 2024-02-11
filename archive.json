@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-02-08T00:54:30.969769+00:00",
+  "timestamp": "2024-02-11T00:59:19.387093+00:00",
   "repo": "oauthstuff/draft-ietf-oauth-security-topics",
   "labels": [
     {
@@ -3406,6 +3406,34 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 88,
+      "id": "PR_kwDODGW6jc5mZwZK",
+      "title": "Address Roman's comments",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/88",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-02-08T16:59:58Z",
+      "updatedAt": "2024-02-08T17:01:20Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "e8f38033b4afb200f89ab54fc705b84c13958d15",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "danielfett/romans-feedback",
+      "headRefOid": "0ec325ad2340ce1fe6bbbfd4cb11e5047fc30449",
+      "closedAt": "2024-02-08T17:01:20Z",
+      "mergedAt": "2024-02-08T17:01:20Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "584860fe6a9c360360b0aab7b69047a086e7d814"
+      },
+      "comments": [],
+      "reviews": []
     }
   ]
 }
