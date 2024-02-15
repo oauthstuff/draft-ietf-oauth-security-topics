@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-02-13T00:55:29.577871+00:00",
+  "timestamp": "2024-02-15T00:55:26.852175+00:00",
   "repo": "oauthstuff/draft-ietf-oauth-security-topics",
   "labels": [
     {
@@ -1326,6 +1326,24 @@
           "updatedAt": "2023-10-23T13:18:21Z"
         }
       ]
+    },
+    {
+      "number": 89,
+      "id": "I_kwDODGW6jc5_OVdI",
+      "title": "offline_access",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/89",
+      "state": "OPEN",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "BCP V2"
+      ],
+      "body": "Via email:\r\n\r\n> Hi,\r\n> \r\n> I think there is at least one more important topic to address in the document - the offline_access scope value.\r\n> \r\n> Especially with a SPA application, where the scope attribute value is under web browser control, it can be manipulated. If an attacker can do that and can ask refresh_token without the `exp` parameter, it means, it never expires (from the JWT point of view).\r\n> \r\n> * https://openid.net/specs/openid-connect-core-1_0.html#OfflineAccess\r\n> * https://www.keycloak.org/docs/latest/server_admin/#_offline-access\r\n> \r\n> regards,\r\n> Elar Lang",
+      "createdAt": "2024-02-14T14:19:47Z",
+      "updatedAt": "2024-02-14T14:19:47Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
