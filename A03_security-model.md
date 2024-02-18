@@ -90,5 +90,5 @@ act as one. For example, such an attacker can use their own browser to replay
 tokens or authorization codes obtained by any of the attacks described
 above at the client or resource server.
 
-This document focusses on threats resulting from attackers (A1) to (A5).
+This document focuses on threats resulting from attackers (A1) to (A5).
 
