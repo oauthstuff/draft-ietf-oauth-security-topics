@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-02-18T00:58:26.070038+00:00",
+  "timestamp": "2024-02-20T00:54:08.288309+00:00",
   "repo": "oauthstuff/draft-ietf-oauth-security-topics",
   "labels": [
     {
@@ -3450,6 +3450,32 @@
       "mergeCommit": {
         "oid": "584860fe6a9c360360b0aab7b69047a086e7d814"
       },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 90,
+      "id": "PR_kwDODGW6jc5nN5Fv",
+      "title": "Gen-ART review (typo fixes)",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/90",
+      "state": "OPEN",
+      "author": "thomas-fossati",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "A few typos I've found while doing my Gen-ART review of the document.",
+      "createdAt": "2024-02-18T14:35:28Z",
+      "updatedAt": "2024-02-18T14:35:28Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "a790095c6b3d48755d55fb07e75a2e076861073d",
+      "headRepository": "thomas-fossati/draft-ietf-oauth-security-topics",
+      "headRefName": "master",
+      "headRefOid": "9e38b1decc6bf87190c2a2197e7a10895a88d08f",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
       "comments": [],
       "reviews": []
     }
