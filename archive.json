@@ -1,0 +1,3483 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2024-03-05T00:54:27.201826+00:00",
+  "repo": "oauthstuff/draft-ietf-oauth-security-topics",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    },
+    {
+      "name": "addressed-in-dash-20",
+      "description": "",
+      "color": "04C6B7"
+    },
+    {
+      "name": "priority",
+      "description": "",
+      "color": "591650"
+    },
+    {
+      "name": "has-pr",
+      "description": "",
+      "color": "F98B6C"
+    },
+    {
+      "name": "BCP V2",
+      "description": "",
+      "color": "4EDABD"
+    }
+  ],
+  "issues": [
+    {
+      "number": 1,
+      "id": "MDU6SXNzdWU1MjQ4MDUyMzk=",
+      "title": "Mix-Up",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/1",
+      "state": "CLOSED",
+      "author": "tlodderstedt",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "danielfett"
+      ],
+      "labels": [],
+      "body": "Review feedback from Hans.\r\n\r\nAbout the description of the mixup attack: as long as the attacker is able to trigger a request (by having the user click a link) and read the query/POST parameters on the A-AS (perhaps from the logs) he can execute a mixup attack by starting from the A-AS rather than the H-AS (as demonstrated in the OAuth 2.0 security workshop in Darmstadt December 2016). Perhaps this can be made more explicit.",
+      "createdAt": "2019-11-19T06:35:39Z",
+      "updatedAt": "2020-01-24T13:23:01Z",
+      "closedAt": "2020-01-24T13:23:01Z",
+      "comments": [
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Made this more explicit.",
+          "createdAt": "2020-01-24T13:23:01Z",
+          "updatedAt": "2020-01-24T13:23:01Z"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "MDU6SXNzdWU1MjQ4MDU2MDU=",
+      "title": "Introduction",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/2",
+      "state": "CLOSED",
+      "author": "tlodderstedt",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Review feedback from Hans:\r\n\r\nOverall:\r\n- grammar in the first sections: there's a lot of comma-separated sentences that could/should be reworked by a native speaker\r\n-\tperhaps readers guidance pointing developers straight to section 3. as Torsten said on the call would be useful\r\n-\tas also discussed on the call, perhaps it would be good to spell out how this BCP relates to the original OAuth 2.0 security considerations in the RFC(s)",
+      "createdAt": "2019-11-19T06:36:39Z",
+      "updatedAt": "2020-01-27T11:14:23Z",
+      "closedAt": "2020-01-27T11:14:23Z",
+      "comments": [
+        {
+          "author": "tlodderstedt",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "P3 1. Introduction\r\nUsage of OAuth vs. OAuth 2.0 across the document: perhaps explain that in the remainder OAuth refers to OAuth 2.0.\r\n\r\nFirst bullet:\r\n-\tCSRF and referrer header are being mentioned without explaining the abbreviation, context or reference. And btw, it is the \u201creferer\u201d header\u2026\r\n-\t\u201cdefense in depth\u201d -> \u201cin depth defense\u201d ?\r\nThird bullet:\r\n-\tI believe those higher security use cases were considered from the start, but they were not acted upon before (e.g. MAC spec was left abandoned).\r\n\r\nP4 first paragraph, in the middle:\r\n\u201cThis way the same..\u201d -> \u201cIn this way the same\u2026\u201d\r\n\u201cserves as a frontend\u2026\u201d -> \u201cserve as a frontend\u2026\u201d\r\n\u201cin a multi-tenancy.\u201d -> \u201cin multi-tenant environment.\u201d\r\n\r\nIn general there are a lot of sentences broken up by comma\u2019s that could be rearranged and do without the comma\u2019s.\r\n\r\n1.1 the whole section is comprised of comma-split sentences that could be re-arranged..",
+          "createdAt": "2019-11-19T06:37:29Z",
+          "updatedAt": "2019-11-19T06:37:29Z"
+        },
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I tried to fix all these things when doing editorial changes over the last days.",
+          "createdAt": "2020-01-27T11:14:21Z",
+          "updatedAt": "2020-01-27T11:14:21Z"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "id": "MDU6SXNzdWU1MjQ5MTYwNjc=",
+      "title": "make recommendations more concise and to the point ",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/3",
+      "state": "CLOSED",
+      "author": "tlodderstedt",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2019-11-19T10:27:55Z",
+      "updatedAt": "2020-02-10T13:12:38Z",
+      "closedAt": "2020-02-10T13:12:38Z",
+      "comments": [
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I went through the \"Attacks and Mitigations\" sections and made many points more concise and tried to remove some discussions that did make a point. \r\n\r\nI think that the \"Recommendations\" section is fine. Some explanation is needed in order to convey the importance of the recommendations.",
+          "createdAt": "2020-01-24T13:25:01Z",
+          "updatedAt": "2020-01-24T13:25:01Z"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "MDU6SXNzdWU1NDE3MTU5NzY=",
+      "title": "make-v2.sh fails",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/4",
+      "state": "CLOSED",
+      "author": "travisspencer",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Using the newest version of mmark (2.2.0) and the version available on HEAD of master from the referenced repo, the `make-v2.sh` fails with the following error:\r\n\r\n```\r\n./make-v2.sh\r\nflag provided but not defined: -2\r\n```",
+      "createdAt": "2019-12-23T11:34:26Z",
+      "updatedAt": "2023-06-05T13:54:38Z",
+      "closedAt": "2023-06-05T13:54:38Z",
+      "comments": []
+    },
+    {
+      "number": 7,
+      "id": "MDU6SXNzdWU1NTM1NTY0ODM=",
+      "title": "Refresh tokens: what is the ID?",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/7",
+      "state": "CLOSED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "danielfett"
+      ],
+      "labels": [],
+      "body": "Comment from Mike Jones:\r\n\r\n> 4.12. Refresh Token Protection \u2013 The draft says \u201crefresh tokens belonging to the same grant may share a common id\u201d.  Augment this description to say what this ID is and where it is located, and if there\u2019s a pertinent standard or other reference for this ID, please include a citation.\r\n\r\nThe text in question is this:\r\n\r\n    Implementation note: refresh tokens belonging to the same grant\r\n    may share a common id. If any of those refresh tokens is used at\r\n    the authorization server, the authorization server uses this\r\n    common id to look up the currently active refresh token and can\r\n    revoke it.\r\n\r\nI'm not sure what the original intention of that text is. Torsten?",
+      "createdAt": "2020-01-22T13:54:22Z",
+      "updatedAt": "2020-01-24T13:17:30Z",
+      "closedAt": "2020-01-24T13:17:29Z",
+      "comments": [
+        {
+          "author": "tlodderstedt",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "It gives a hint how one could implement replay detection. A naive implementation (like our first implementation at DT) would store all refresh tokens ever issued and match them if an invalid token is presented to the AS. The most effective implementation I have ever seen (the second DT implementation :-)) works differently. First of all, the grant is represented as an object independent of refresh tokens. Every refresh token refers to the underlying grant using its grant id. Since every refresh token is just a database handle, the grant id is made a part of that handle. This is necessary since invalidating a refresh token means deleting it from the database. \r\nMaking the grant id part of the refresh token (handle) makes it easy to detect replay and what active refresh token belongs to that particular grant. \r\n\r\n1) check the RT\r\n2) if the RT is invalid, get the grant id and search for the active refresh token with the same grant id and revoke if\r\n\r\nNote: depending on the implementation, it is possible to have multiple active refresh tokens per grant id.",
+          "createdAt": "2020-01-23T00:16:16Z",
+          "updatedAt": "2020-01-23T00:16:16Z"
+        },
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Fixed in 783dadf.",
+          "createdAt": "2020-01-24T13:17:29Z",
+          "updatedAt": "2020-01-24T13:17:29Z"
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "id": "MDU6SXNzdWU1NTM1NzcyODA=",
+      "title": "Add citations",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/8",
+      "state": "CLOSED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "From Mike Jones:\r\n> 4.1. Insufficient Redirect URI Validation \u2013 Add citations for the \u201cSeveral successful attacks\u2026\u201d mentioned.",
+      "createdAt": "2020-01-22T14:28:08Z",
+      "updatedAt": "2020-01-24T13:22:37Z",
+      "closedAt": "2020-01-24T13:22:37Z",
+      "comments": []
+    },
+    {
+      "number": 9,
+      "id": "MDU6SXNzdWU1NTM1Nzk4MTI=",
+      "title": "Fix restrictive and non-restrictive which / replace by that",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/9",
+      "state": "CLOSED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "danielfett"
+      ],
+      "labels": [],
+      "body": "From Mike Jones:\r\n\r\nMany locations \u2013 The draft often uses the word \u201cwhich\u201d when you mean \u201cthat\u201d.  For instance, in 4.9.2, please change \u201cwhich could\u201d to \u201cthat could\u201d and in 4.11 change \u201cwhich are\u201d to \u201cthat are\u201d.  There\u2019s lots of places to look up the difference in meaning, but a rule of thumb that\u2019s usually right is that if you don\u2019t have a comma before the \u201cwhich\u201d, it should probably be \u201cthat\u201d.",
+      "createdAt": "2020-01-22T14:32:18Z",
+      "updatedAt": "2020-01-24T13:22:30Z",
+      "closedAt": "2020-01-24T13:22:30Z",
+      "comments": []
+    },
+    {
+      "number": 10,
+      "id": "MDU6SXNzdWU1NTQxNzA1NjU=",
+      "title": "Relationship to RFC6819",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/10",
+      "state": "CLOSED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "# Proposal:\r\nWe remove, from the \"Recommendations\" section, the following sentence:\r\n> Authorization servers SHOULD furthermore consider the recommendations given in [@!RFC6819], Section 4.4.1.1, on authorization code replay prevention.\r\n\r\n(and potentially other advice that is redundant to existing recommendations)\r\n\r\nand replace it by a general note at the end of the introduction:\r\n> This document does not supplant the security advice given in [@RFC6749], [@RFC6750], and [@RFC6819], but complements those documents.",
+      "createdAt": "2020-01-23T13:52:43Z",
+      "updatedAt": "2020-01-27T11:19:26Z",
+      "closedAt": "2020-01-27T11:19:26Z",
+      "comments": [
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "At the start of the Attacks and Mitigations section, we have\r\n\r\n> This section complements and enhances the description given in [RFC6819].\r\n\r\nThis could then be removed as well.",
+          "createdAt": "2020-01-23T14:26:27Z",
+          "updatedAt": "2020-01-23T14:26:27Z"
+        },
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I removed the sentence from Recommendations; the intro to Attacks and Mitigations now reads: \r\n\r\n> This section gives a detailed description of attacks on OAuth\r\nimplementations, along with potential countermeasures. Attacks and\r\nmitigations already covered in [@!RFC6819] are not listed here, except\r\nwhere new recommendations are made.",
+          "createdAt": "2020-01-27T11:19:26Z",
+          "updatedAt": "2020-01-27T11:19:26Z"
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "id": "MDU6SXNzdWU1NTQyMDUxMjg=",
+      "title": "Improve example for insufficient redirect URI matching",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/11",
+      "state": "CLOSED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Current example:\r\n\r\n```\r\nAssume the redirect URL pattern `https://*.somesite.example/*` has\r\nbeen registered for the client with the client ID `s6BhdRkqt3`. This\r\npattern allows redirect URIs pointing to any host residing in the\r\ndomain somesite.example. So if an attacker manages to establish a host\r\nor subdomain in somesite.example he can impersonate the legitimate\r\nclient. Assume the attacker sets up the host `evil.somesite.example`.\r\n```\r\nI think that a more illustrative example would be the one where `https://*.somesite.example/*` is *intended* to match any subdomain of somesite.example, but since `*` matches all characters, the attacker can use `https://attacker.com/.somesite.example` as redirect URI.",
+      "createdAt": "2020-01-23T14:49:15Z",
+      "updatedAt": "2020-01-27T11:12:15Z",
+      "closedAt": "2020-01-27T11:12:15Z",
+      "comments": []
+    },
+    {
+      "number": 13,
+      "id": "MDU6SXNzdWU2MTYwNTgyODA=",
+      "title": "exact redirect URI matching for local URLs with dynamic port numbers",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/13",
+      "state": "CLOSED",
+      "author": "tlodderstedt",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "https://mailarchive.ietf.org/arch/msg/oauth/cwJuRoDNf8XIFngoam-7IqwpHHc/",
+      "createdAt": "2020-05-11T17:37:25Z",
+      "updatedAt": "2020-10-05T15:24:12Z",
+      "closedAt": "2020-10-05T15:24:12Z",
+      "comments": []
+    },
+    {
+      "number": 14,
+      "id": "MDU6SXNzdWU2MTYwNTk5Mjc=",
+      "title": "Adapt Security BCP to PKCE vs nonce discussion",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/14",
+      "state": "CLOSED",
+      "author": "tlodderstedt",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "danielfett"
+      ],
+      "labels": [],
+      "body": "",
+      "createdAt": "2020-05-11T17:40:00Z",
+      "updatedAt": "2020-10-05T15:24:12Z",
+      "closedAt": "2020-10-05T15:24:12Z",
+      "comments": [
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "See PR #16",
+          "createdAt": "2020-10-04T13:08:13Z",
+          "updatedAt": "2020-10-04T13:08:13Z"
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "id": "MDU6SXNzdWU2MTYwNjA1ODI=",
+      "title": "Migrate to markdown2rfc",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/15",
+      "state": "OPEN",
+      "author": "tlodderstedt",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [
+        "BCP V2"
+      ],
+      "body": "",
+      "createdAt": "2020-05-11T17:40:59Z",
+      "updatedAt": "2023-06-05T13:49:14Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The repository should at some point also be moved to the markdown build pipeline. We will not address this for the first version.",
+          "createdAt": "2023-06-05T13:49:09Z",
+          "updatedAt": "2023-06-05T13:49:09Z"
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "id": "MDU6SXNzdWU4MzMwNDA3MTA=",
+      "title": "should HTTPS be a MUST?",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/20",
+      "state": "CLOSED",
+      "author": "tlodderstedt",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2021-03-16T17:29:01Z",
+      "updatedAt": "2021-06-08T06:39:44Z",
+      "closedAt": "2021-06-08T06:39:44Z",
+      "comments": []
+    },
+    {
+      "number": 22,
+      "id": "MDU6SXNzdWU4NzEyODI0MDA=",
+      "title": "clarify binding of refresh token",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/22",
+      "state": "CLOSED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "![Screenshot_20210429-194705_Twitter](https://user-images.githubusercontent.com/89476/116595550-b9bc3180-a923-11eb-946e-b0b60554be38.jpg)\r\n",
+      "createdAt": "2021-04-29T17:47:36Z",
+      "updatedAt": "2021-12-16T08:08:18Z",
+      "closedAt": "2021-12-16T08:08:18Z",
+      "comments": [
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "See also: https://bitbucket.org/openid/fapi/issues/413/fapi2-baseline-sender-constrained",
+          "createdAt": "2021-06-02T14:58:54Z",
+          "updatedAt": "2021-06-02T14:58:54Z"
+        }
+      ]
+    },
+    {
+      "number": 23,
+      "id": "MDU6SXNzdWU4ODM4MDY3OTc=",
+      "title": "private_key_jwt or RFC7523",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/23",
+      "state": "CLOSED",
+      "author": "ioggstream",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "## Question\r\n\r\nthis spec mentions private_key_jwt which iiuc is not defined in an RFC.\r\nShouldn't we mention RFC 7523? ",
+      "createdAt": "2021-05-10T09:21:06Z",
+      "updatedAt": "2022-07-28T11:34:28Z",
+      "closedAt": "2022-07-28T11:31:58Z",
+      "comments": [
+        {
+          "author": "tlodderstedt",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "The spec references the OIDC Core Spec that defines this method. Why isn't that appropriate?",
+          "createdAt": "2021-12-16T08:14:34Z",
+          "updatedAt": "2021-12-16T08:14:34Z"
+        },
+        {
+          "author": "peppelinux",
+          "authorAssociation": "NONE",
+          "body": "@ioggstream at the time private_key_jwt was included in the oidc core rfc7523 did not yet exist, it was just a draft.\r\nin any case the links in the section \"19.1. Normative References\" correctly points to current RFCs",
+          "createdAt": "2021-12-17T00:16:34Z",
+          "updatedAt": "2021-12-17T00:16:34Z"
+        },
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I think there is nothing to do here - closing.",
+          "createdAt": "2022-07-28T11:31:56Z",
+          "updatedAt": "2022-07-28T11:31:56Z"
+        },
+        {
+          "author": "aaronpk",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I was dealing with this with OAuth 2.1 as well and updated the reference to the IETF RFC since the OIDC spec basically just references it too. I'd suggest referencing RFC7523 as well",
+          "createdAt": "2022-07-28T11:34:28Z",
+          "updatedAt": "2022-07-28T11:34:28Z"
+        }
+      ]
+    },
+    {
+      "number": 26,
+      "id": "I_kwDODGW6jc5GPlGn",
+      "title": "Note that new requirements can break existing ecosystems",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/26",
+      "state": "CLOSED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "We need to mention that implementing the new requirements (e.g., precise redirect_uri matching) can break existing ecosystems.",
+      "createdAt": "2022-03-23T18:11:09Z",
+      "updatedAt": "2022-07-28T11:59:45Z",
+      "closedAt": "2022-07-28T11:59:45Z",
+      "comments": [
+        {
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The spec should also be clear that if servers reject OpenID Connect requests not using PKCE, they will potentially be incompatible with nearly every OpenID Connect Relying Party.  Note that the OpenID Certification program https://openid.net/certification/#RPs does not require OPs or RPs to implement PKCE (since `nonce` is used).\r\n\r\nGiven that there's not a security reason for PKCE when `nonce` is used (at least for Confidential Clients), requiring PKCE would be an unnecessary breaking change.  The spec should be clear on this point.",
+          "createdAt": "2022-05-28T05:18:10Z",
+          "updatedAt": "2022-05-28T05:18:10Z"
+        },
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "My initial concern had already been addressed in the intro. I clarified in https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/49\r\n\r\nThe PKCE issue has been discussed and better explained in the other changes since the issue was opened.",
+          "createdAt": "2022-07-28T11:59:45Z",
+          "updatedAt": "2022-07-28T11:59:45Z"
+        }
+      ]
+    },
+    {
+      "number": 27,
+      "id": "I_kwDODGW6jc5GPlRv",
+      "title": "Provide rationale for PKCE rules",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/27",
+      "state": "CLOSED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Explain what we explained in the informal OAuth WG session at IETF 113.",
+      "createdAt": "2022-03-23T18:11:57Z",
+      "updatedAt": "2022-07-22T08:42:19Z",
+      "closedAt": "2022-07-22T08:42:19Z",
+      "comments": [
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Also: \"Clients MUST prevent **misuse of authorization codes and** injection (replay) of authorization codes into the authorization response \u2026\"",
+          "createdAt": "2022-03-24T08:11:50Z",
+          "updatedAt": "2022-03-24T08:11:50Z"
+        },
+        {
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The rationale for this text at https://tools.ietf.org/id/draft-ietf-oauth-security-topics-19.html#name-authorization-code-grant \"Public clients MUST use PKCE [[RFC7636](https://tools.ietf.org/id/draft-ietf-oauth-security-topics-19.html#RFC7636)] to this end. For confidential clients, the use of PKCE [[RFC7636](https://tools.ietf.org/id/draft-ietf-oauth-security-topics-19.html#RFC7636)] is RECOMMENDED.\" is not at all obvious, as discussed in Vienna.\r\n\r\nAt a minimum, the spec needs to say why the use of `nonce` is insufficient for public clients, versus it being sufficient for confidential clients.  (The slides presented in the side meetings in Vienna may contain these answers.)\r\n\r\nKnowing *why* will help developers to be informed about the threats and help them make rational choices.",
+          "createdAt": "2022-05-28T04:55:00Z",
+          "updatedAt": "2022-05-28T04:55:00Z"
+        },
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This has been covered in https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/28 ",
+          "createdAt": "2022-07-22T08:42:19Z",
+          "updatedAt": "2022-07-22T08:42:19Z"
+        }
+      ]
+    },
+    {
+      "number": 29,
+      "id": "I_kwDODGW6jc5HiGWL",
+      "title": "Nits & old references from Rifaat's review",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/29",
+      "state": "CLOSED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "addressed-in-dash-20"
+      ],
+      "body": "Section 2.1, 3rd paragraph, 3rd sentence: \u201cMAY rely the\u201d to \u201c, MAY rely on the\u201d\r\n\r\nSection 2.3, second paragraph: replace ietf-oauth-resource-indicators with RFC8707\r\n\r\nSection 4.1.3. Last paragraph: replace the jwsreq and PAR draft references with rfc9101 and rfc9126 respectively.\r\n\r\nWho might want to sweep through the document and update the various references, as there seem to be too many old references",
+      "createdAt": "2022-04-11T15:12:50Z",
+      "updatedAt": "2022-09-29T07:58:35Z",
+      "closedAt": "2022-09-29T07:58:35Z",
+      "comments": [
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Addressed in -20.",
+          "createdAt": "2022-07-28T11:30:38Z",
+          "updatedAt": "2022-07-28T11:30:38Z"
+        }
+      ]
+    },
+    {
+      "number": 30,
+      "id": "I_kwDODGW6jc5KmAFP",
+      "title": "Unconditional AS support for PKCE is overkill",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/30",
+      "state": "CLOSED",
+      "author": "selfissued",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "addressed-in-dash-20"
+      ],
+      "body": "https://tools.ietf.org/id/draft-ietf-oauth-security-topics-19.html#name-authorization-code-grant says: \"Authorization servers MUST support PKCE [[RFC7636](https://tools.ietf.org/id/draft-ietf-oauth-security-topics-19.html#RFC7636)]\".  Yet PKCE is unnecessary, even from a security point of view, when the AS is only used for OpenID Connect - which supports the `nonce`, and it's particularly unnecessary for Confidential Clients.\r\n\r\nPlease change this unconditional statement to instead say:\r\n\"Authorization servers used for non-OpenID Connect clients MUST support PKCE [RFC7636].\"\r\n\r\nOr at least, to say:\r\n\"Authorization servers used for non-OpenID Connect clients or public clients MUST support PKCE [RFC7636].\"",
+      "createdAt": "2022-05-28T05:12:06Z",
+      "updatedAt": "2022-09-29T07:58:36Z",
+      "closedAt": "2022-09-29T07:58:36Z",
+      "comments": [
+        {
+          "author": "brockallen",
+          "authorAssociation": "NONE",
+          "body": "If the AS implements/requires PKCE, then hybrid flow/nonce is no longer necessary, right? There is something nice to only needing a single flow (code+PKCE) for both OIDC and OAuth interactive workflows (consistency, less for people to learn/remember, simpler implementations).",
+          "createdAt": "2022-05-31T19:16:19Z",
+          "updatedAt": "2022-05-31T19:16:19Z"
+        },
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "PKCE provides a robust defense against CSRF as discussed at IETF113 and now also described in the text: https://github.com/oauthstuff/draft-ietf-oauth-security-topics/blob/master/attacks-and-mitigations.md#countermeasures-csrf_countermeasures\r\n\r\nNeither nonce nor state provide the same level of protection. Additionally, state is often not used correctly, so a robust alternative is required.\r\n\r\nEdited to add: Having reliable PKCE support on the AS side is what allows client to shift from state to PKCE completely.",
+          "createdAt": "2022-07-22T11:58:10Z",
+          "updatedAt": "2022-07-22T12:00:31Z"
+        },
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "We agreed at IETF114 to say something like: \"If the client sends a PKCE parameter in the authorization request, the server must enforce it in the token endpoint.\"",
+          "createdAt": "2022-07-26T20:18:15Z",
+          "updatedAt": "2022-07-26T20:18:15Z"
+        }
+      ]
+    },
+    {
+      "number": 31,
+      "id": "I_kwDODGW6jc5KmA3K",
+      "title": "Overreaching statement about access tokens in the implicit flow",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/31",
+      "state": "CLOSED",
+      "author": "selfissued",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "addressed-in-dash-20"
+      ],
+      "body": "https://tools.ietf.org/id/draft-ietf-oauth-security-topics-19.html#name-implicit-grant says \"no viable mechanism exists to cryptographically bind access tokens issued in the authorization response to a certain client as it is recommended in [Section 2.2](https://tools.ietf.org/id/draft-ietf-oauth-security-topics-19.html#token_replay_prevention). This makes replay detection for such access tokens at resource servers impossible.\"\r\n\r\nThis is not true when OpenID Connect is used.  The `at_hash` claim in the ID Token together with the `aud` claim accomplish exactly that.\r\n\r\nAt a minimum, please amend the first sentence to say \"no viable mechanism exists to cryptographically bind access tokens issued in the authorization response to a certain client *unless OpenID Connect is used*\".  Or if you want to be more comprehensive, also explain how  `at_hash`  and `aud` accomplish this.",
+      "createdAt": "2022-05-28T05:26:11Z",
+      "updatedAt": "2022-09-29T07:58:36Z",
+      "closedAt": "2022-09-29T07:58:36Z",
+      "comments": [
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Please correct me if I'm wrong, but even with `at_hash` and `aud`, the access token is not bound to the client. Anybody that gets hold of the AT can use it immediately. Unlike with DPoP and MTLS, where one would need a private key to use the AT. ",
+          "createdAt": "2022-07-22T14:07:44Z",
+          "updatedAt": "2022-07-22T14:07:44Z"
+        },
+        {
+          "author": "aaronpk",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "That is my understanding as well. The reason it's not possible in the implicit flow is because there is no way for the client to provide a proof of possession mechanism when the token is delivered, in contrast to the authorization code flow where the client can provide a PoP proof in the POST request. Perhaps this reasoning could be clarified to support this statement.",
+          "createdAt": "2022-07-22T14:27:24Z",
+          "updatedAt": "2022-07-22T14:27:24Z"
+        },
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "We discussed at IETF 114 side-side meeting to change the paragraph to roughly something like this:\r\n\r\n> Moreover, no viable mechanism exists to cryptographically bind access tokens to a specific client ( as it is recommended in [Section 2.2](https://tools.ietf.org/id/draft-ietf-oauth-security-topics-19.html#token_replay_prevention)) when they are issued in the authorization response. This means that leaked or stolen access tokens can be used at resource servers.",
+          "createdAt": "2022-07-26T20:31:07Z",
+          "updatedAt": "2022-07-26T20:31:07Z"
+        }
+      ]
+    },
+    {
+      "number": 32,
+      "id": "I_kwDODGW6jc5KmBQX",
+      "title": "Include DPoP as a means of sender-constraining tokens",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/32",
+      "state": "CLOSED",
+      "author": "selfissued",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "addressed-in-dash-20"
+      ],
+      "body": "https://tools.ietf.org/id/draft-ietf-oauth-security-topics-19.html#section-2.2.1 says \"Authorization and resource servers SHOULD use mechanisms for sender-constraining access tokens to prevent token replay, such as Mutual TLS for OAuth 2.0 [[RFC8705](https://tools.ietf.org/id/draft-ietf-oauth-security-topics-19.html#RFC8705)] (see [Section 4.9.1.1.2](https://tools.ietf.org/id/draft-ietf-oauth-security-topics-19.html#pop_tokens)).\"\r\n\r\nPlease add \"or OAuth Demonstration of Proof of Possession (DPoP) [citation]\" to the end of this sentence.\r\n\r\n(DPoP is nearly done, as publication has been requested by the working group.)",
+      "createdAt": "2022-05-28T05:34:23Z",
+      "updatedAt": "2022-09-29T07:58:36Z",
+      "closedAt": "2022-09-29T07:58:36Z",
+      "comments": [
+        {
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Also add DPoP to the list in the first bullet point at https://tools.ietf.org/id/draft-ietf-oauth-security-topics-19.html#name-recommendations-2, titled \"Sender-constrained refresh tokens\".",
+          "createdAt": "2022-05-28T07:52:55Z",
+          "updatedAt": "2022-05-28T07:52:55Z"
+        }
+      ]
+    },
+    {
+      "number": 33,
+      "id": "I_kwDODGW6jc5KmBfZ",
+      "title": "List JWT Access Token \"aud\" claim as a means of audience restriction",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/33",
+      "state": "CLOSED",
+      "author": "selfissued",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "addressed-in-dash-20"
+      ],
+      "body": "In https://tools.ietf.org/id/draft-ietf-oauth-security-topics-19.html#name-access-token-privilege-rest, please add the [RFC 9068: JWT Profile for OAuth 2.0 Access Tokens] `aud` claim as a means of restricting the audience of access tokens.",
+      "createdAt": "2022-05-28T05:39:52Z",
+      "updatedAt": "2022-09-29T07:58:37Z",
+      "closedAt": "2022-09-29T07:58:37Z",
+      "comments": []
+    },
+    {
+      "number": 34,
+      "id": "I_kwDODGW6jc5KmBui",
+      "title": "Use standard OpenID citation tags",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/34",
+      "state": "CLOSED",
+      "author": "selfissued",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "addressed-in-dash-20"
+      ],
+      "body": "Please change [OpenID] to [OpenID.Core] and [OpenIDDisc] to [OpenID.Discovery].",
+      "createdAt": "2022-05-28T05:45:17Z",
+      "updatedAt": "2022-09-29T07:58:37Z",
+      "closedAt": "2022-09-29T07:58:37Z",
+      "comments": [
+        {
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Likewise, please change [oauth-v2-form-post-response-mode] to [OAuth.Post].\r\n\r\nPlease change [webcrypto] to [WebCrypto].\r\n\r\nPlease change [webauthn] to [WebAuthn].",
+          "createdAt": "2022-05-28T08:24:53Z",
+          "updatedAt": "2022-05-28T08:24:53Z"
+        }
+      ]
+    },
+    {
+      "number": 35,
+      "id": "I_kwDODGW6jc5KmCRz",
+      "title": "Quizzical \"sub\" claim reference",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/35",
+      "state": "CLOSED",
+      "author": "selfissued",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "addressed-in-dash-20"
+      ],
+      "body": "https://tools.ietf.org/id/draft-ietf-oauth-security-topics-19.html#name-other-recommendations says \"Authorization servers SHOULD NOT allow clients to influence their client_id or sub value or any other Claim if that can cause confusion with a genuine resource owner\".  This is good advice, but it puzzles me why the `sub` claim is referenced here, since `sub` isn't present with pure OAuth 2.0.  Were you thinking of an ID Token `sub` claim?  If so, please explain that in the document so as to eliminate the sense of surprise.",
+      "createdAt": "2022-05-28T05:50:58Z",
+      "updatedAt": "2022-09-29T07:58:37Z",
+      "closedAt": "2022-09-29T07:58:37Z",
+      "comments": [
+        {
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The quizzical reference to the `sub` claim rears its ugly head again in https://tools.ietf.org/id/draft-ietf-oauth-security-topics-19.html#name-client-impersonating-resour.  What logic are you assuming is associated with the `sub` claim returned from the introspection endpoint?  If you keep these `sub` references, the spec should be clearer about what `sub` is intended to be used for in OAuth 2.0 and what its possible security implications are.  (Note that RFC 7662 doesn't provide these answers - I checked.)",
+          "createdAt": "2022-05-28T08:06:19Z",
+          "updatedAt": "2022-05-28T08:06:19Z"
+        }
+      ]
+    },
+    {
+      "number": 36,
+      "id": "I_kwDODGW6jc5KmClz",
+      "title": "Update references to refer to current drafts, especially for new RFCs",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/36",
+      "state": "CLOSED",
+      "author": "selfissued",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "addressed-in-dash-20"
+      ],
+      "body": "Both draft-ietf-oauth-jwsreq and draft-ietf-oauth-par are now RFCs.  Please update the references accordingly.\r\n\r\nLikewise, DPoP and RAR have published new drafts.  Please update the draft version numbers to the current ones.\r\n\r\nThere may be other such updates needed.  Those were the obvious ones to me.",
+      "createdAt": "2022-05-28T05:57:43Z",
+      "updatedAt": "2022-09-29T07:58:38Z",
+      "closedAt": "2022-09-29T07:58:38Z",
+      "comments": [
+        {
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "body": "draft-ietf-oauth-iss-auth-resp is also now an RFC.",
+          "createdAt": "2022-05-28T06:03:53Z",
+          "updatedAt": "2022-05-28T06:03:53Z"
+        },
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "References to drafts (RAR, DPoP) will automatically point to latest version when generating the XML.",
+          "createdAt": "2022-07-28T11:27:53Z",
+          "updatedAt": "2022-07-28T11:27:53Z"
+        }
+      ]
+    },
+    {
+      "number": 37,
+      "id": "I_kwDODGW6jc5KmDE5",
+      "title": "Token binding reference missing",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/37",
+      "state": "CLOSED",
+      "author": "selfissued",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "addressed-in-dash-20"
+      ],
+      "body": "https://tools.ietf.org/id/draft-ietf-oauth-security-topics-19.html#section-4.5.3.3 is the first use of the term \"token binding\" but doesn't include a reference.  Please add a citation.",
+      "createdAt": "2022-05-28T06:06:27Z",
+      "updatedAt": "2022-09-29T07:58:38Z",
+      "closedAt": "2022-09-29T07:58:38Z",
+      "comments": []
+    },
+    {
+      "number": 38,
+      "id": "I_kwDODGW6jc5KmDcF",
+      "title": "Explain how \"nonce\" and \"at_hash\" are a countermeasure against access token injection",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/38",
+      "state": "CLOSED",
+      "author": "selfissued",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "addressed-in-dash-20"
+      ],
+      "body": "In https://tools.ietf.org/id/draft-ietf-oauth-security-topics-19.html#section-4.6.1, please add a description of how using the OpenID Connect `nonce` in the request and the `nonce` and `at_hash` claims in the ID Token are an effective countermeasure against access token injection.",
+      "createdAt": "2022-05-28T06:12:41Z",
+      "updatedAt": "2022-09-29T07:58:38Z",
+      "closedAt": "2022-09-29T07:58:38Z",
+      "comments": []
+    },
+    {
+      "number": 39,
+      "id": "I_kwDODGW6jc5KmFdz",
+      "title": "What are \"CSRF tokens\"?",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/39",
+      "state": "CLOSED",
+      "author": "selfissued",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "addressed-in-dash-20"
+      ],
+      "body": "https://tools.ietf.org/id/draft-ietf-oauth-security-topics-19.html#name-countermeasures-6 says \"The traditional countermeasure are CSRF tokens\".  What is a \"CSRF token\"?  This is a confusing term.  Please clarify or reword.\r\n\r\n(Also, syntactically, you probably wanted to say \"The traditional countermeasure *is*\".)",
+      "createdAt": "2022-05-28T06:45:07Z",
+      "updatedAt": "2022-09-29T07:58:38Z",
+      "closedAt": "2022-09-29T07:58:38Z",
+      "comments": []
+    },
+    {
+      "number": 40,
+      "id": "I_kwDODGW6jc5KmFuV",
+      "title": "Confusing reference \"(see Attackers A1 and A5)\"",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/40",
+      "state": "CLOSED",
+      "author": "selfissued",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "addressed-in-dash-20"
+      ],
+      "body": "https://tools.ietf.org/id/draft-ietf-oauth-security-topics-19.html#section-4.9.1 says \"(see Attackers A1 and A5)\".  I have no idea what this is referring to and A1 and A5 are not hyperlinks.  Please revise so that the action for the reader is comprehensible.",
+      "createdAt": "2022-05-28T06:50:19Z",
+      "updatedAt": "2022-09-29T07:58:39Z",
+      "closedAt": "2022-09-29T07:58:39Z",
+      "comments": [
+        {
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "body": "https://tools.ietf.org/id/draft-ietf-oauth-security-topics-19.html#name-compromised-resource-server also contains \"(see Attacker A5)\".",
+          "createdAt": "2022-05-28T07:09:08Z",
+          "updatedAt": "2022-05-28T07:09:08Z"
+        }
+      ]
+    },
+    {
+      "number": 41,
+      "id": "I_kwDODGW6jc5KmKBT",
+      "title": "Example of Client as Open Redirector?",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/41",
+      "state": "CLOSED",
+      "author": "selfissued",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "addressed-in-dash-20"
+      ],
+      "body": "https://tools.ietf.org/id/draft-ietf-oauth-security-topics-19.html#name-client-as-open-redirector prohibits clients exposing open redirectors.  That's obviously good advice, but gives the reader no intuition as to when or why clients might be tempted to do so.\r\n\r\nCan you elaborate by perhaps giving an example of this bad practice in practice?",
+      "createdAt": "2022-05-28T07:42:53Z",
+      "updatedAt": "2022-09-29T07:58:39Z",
+      "closedAt": "2022-09-29T07:58:39Z",
+      "comments": []
+    },
+    {
+      "number": 42,
+      "id": "I_kwDODGW6jc5KmN-n",
+      "title": "Term \"clickjacking\" used without being defined",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/42",
+      "state": "CLOSED",
+      "author": "selfissued",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "addressed-in-dash-20"
+      ],
+      "body": "https://tools.ietf.org/id/draft-ietf-oauth-security-topics-19.html#name-clickjacking uses the term \"clickjacking\" without defining it or providing a reference to its definition.  Most readers won't know what this is.  Please define it or reference its definition.",
+      "createdAt": "2022-05-28T08:10:38Z",
+      "updatedAt": "2022-09-29T07:58:39Z",
+      "closedAt": "2022-09-29T07:58:39Z",
+      "comments": []
+    },
+    {
+      "number": 43,
+      "id": "I_kwDODGW6jc5KmOgr",
+      "title": "Acknowledgment for Tim W\u00c3\u00bcrtele clearly wrong",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/43",
+      "state": "CLOSED",
+      "author": "selfissued",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "addressed-in-dash-20"
+      ],
+      "body": "This renders in the HTML as \"Tim W&#252;rtele\".  Please correct.",
+      "createdAt": "2022-05-28T08:15:06Z",
+      "updatedAt": "2022-09-29T07:58:39Z",
+      "closedAt": "2022-09-29T07:58:39Z",
+      "comments": []
+    },
+    {
+      "number": 44,
+      "id": "I_kwDODGW6jc5KmOvU",
+      "title": "Alphabetize Acknowledgements",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/44",
+      "state": "CLOSED",
+      "author": "selfissued",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "addressed-in-dash-20"
+      ],
+      "body": "Please alphabetize the acknowledgments by last name, then first name.  The first acknowledgment should be Brock Allen.  The last should be Hans Zandbelt.  Etc.",
+      "createdAt": "2022-05-28T08:17:09Z",
+      "updatedAt": "2022-09-29T07:58:40Z",
+      "closedAt": "2022-09-29T07:58:40Z",
+      "comments": []
+    },
+    {
+      "number": 45,
+      "id": "I_kwDODGW6jc5KmPNH",
+      "title": "What is the \"functional specification\"?",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/45",
+      "state": "CLOSED",
+      "author": "selfissued",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "addressed-in-dash-20"
+      ],
+      "body": "https://tools.ietf.org/id/draft-ietf-oauth-security-topics-19.html#name-security-considerations says \"All relevant security considerations have been given in the functional specification.\"  What is the \"functional specification\"?\r\n\r\nPlease clarify so that this section becomes actionable.",
+      "createdAt": "2022-05-28T08:19:52Z",
+      "updatedAt": "2022-09-29T07:58:40Z",
+      "closedAt": "2022-09-29T07:58:40Z",
+      "comments": []
+    },
+    {
+      "number": 48,
+      "id": "I_kwDODGW6jc5OsXgA",
+      "title": "\"Recommendations\" should really be \"Requirements\"",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/48",
+      "state": "CLOSED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "addressed-in-dash-20"
+      ],
+      "body": "The section currently starts with:\r\n\r\n> # Recommendations\r\n>     \r\n> This section describes the set of security mechanisms the OAuth\r\n> working group recommends to OAuth implementers.\r\n\r\nBut these are not only recommendations. \r\n\r\nI propose to change this to:\r\n\r\n> # Best Practices\r\n>     \r\n> This section describes the set of security mechanisms the OAuth\r\n> working group considers current best practices.\r\n\r\nThis will be followed by the text for Issue #26 \r\n\r\n",
+      "createdAt": "2022-07-28T00:33:36Z",
+      "updatedAt": "2022-09-29T07:58:40Z",
+      "closedAt": "2022-09-29T07:58:40Z",
+      "comments": [
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Addressed in https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/49",
+          "createdAt": "2022-07-28T12:00:00Z",
+          "updatedAt": "2022-07-28T12:00:00Z"
+        }
+      ]
+    },
+    {
+      "number": 50,
+      "id": "I_kwDODGW6jc5QcUgv",
+      "title": "Lifetime of authorization codes",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/50",
+      "state": "OPEN",
+      "author": "jogu",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [
+        "BCP V2"
+      ],
+      "body": "I couldn't find any text in the current document about the lifetime of authorization codes, but this may be worth mentioning?\r\n\r\nThe only guidance we\u2019re aware of on authorization code lifetimes is RFC 6749, 4.1.2:\r\n\r\n> A maximum authorization code lifetime of 10 minutes is RECOMMENDED.\r\n\r\nFeedback from vendors (on the FAPI WG) seemed to be that they default to shorter lifetimes.\r\n\r\nShorter lifetimes seem like they can prevent various attacks, particularly if the AS isn't enforcing single-use of authorization code.",
+      "createdAt": "2022-08-24T15:12:03Z",
+      "updatedAt": "2023-06-05T14:05:17Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "jogu",
+          "authorAssociation": "NONE",
+          "body": "Also raised on mailing list here: https://mailarchive.ietf.org/arch/msg/oauth/L7GX7kwlrKauoOyRqtnYrwC0LuY/",
+          "createdAt": "2022-09-21T08:39:36Z",
+          "updatedAt": "2022-09-21T08:39:36Z"
+        },
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Since I don't think that there is a general recommendation we could provide and there was no resonance on the mailing list, I'll postpone this topic for a potential second version of the security BCP.",
+          "createdAt": "2023-06-05T13:53:23Z",
+          "updatedAt": "2023-06-05T13:53:23Z"
+        },
+        {
+          "author": "tlodderstedt",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "+1",
+          "createdAt": "2023-06-05T14:05:17Z",
+          "updatedAt": "2023-06-05T14:05:17Z"
+        }
+      ]
+    },
+    {
+      "number": 52,
+      "id": "I_kwDODGW6jc5S4EWc",
+      "title": "Clients SHOULD blacklist authorization codes they have seen",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/52",
+      "state": "OPEN",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "BCP V2"
+      ],
+      "body": "![Presentation_Home Room_2022-09-29T07_58_10 067Z](https://user-images.githubusercontent.com/89476/192974593-61e68d68-d6cb-4adc-b863-85e99417c532.png)\r\n",
+      "createdAt": "2022-09-29T07:59:40Z",
+      "updatedAt": "2023-04-20T08:20:59Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 55,
+      "id": "I_kwDODGW6jc5cVrb-",
+      "title": "S. 2.4: ROPCG should be mentioned by RFC number",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/55",
+      "state": "CLOSED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "has-pr"
+      ],
+      "body": "",
+      "createdAt": "2023-01-19T13:42:25Z",
+      "updatedAt": "2023-06-05T13:48:17Z",
+      "closedAt": "2023-06-05T13:48:17Z",
+      "comments": [
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Merged.",
+          "createdAt": "2023-06-05T13:48:17Z",
+          "updatedAt": "2023-06-05T13:48:17Z"
+        }
+      ]
+    },
+    {
+      "number": 56,
+      "id": "I_kwDODGW6jc5cVsaV",
+      "title": "\"MUST register redirect URI\"",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/56",
+      "state": "CLOSED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "see notes",
+      "createdAt": "2023-01-19T13:44:32Z",
+      "updatedAt": "2023-06-05T16:34:51Z",
+      "closedAt": "2023-06-05T16:34:51Z",
+      "comments": [
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Won't fix: This is already implied by RFC6749 together with the Security BCP. While 2.1 clarifies this point, there is not much value in adding this wording here as well.",
+          "createdAt": "2023-06-05T16:34:51Z",
+          "updatedAt": "2023-06-05T16:34:51Z"
+        }
+      ]
+    },
+    {
+      "number": 57,
+      "id": "I_kwDODGW6jc5cVslA",
+      "title": "Add section on CORS headers",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/57",
+      "state": "CLOSED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "has-pr"
+      ],
+      "body": "auth EP should not have them",
+      "createdAt": "2023-01-19T13:44:53Z",
+      "updatedAt": "2023-06-05T15:47:14Z",
+      "closedAt": "2023-06-05T15:47:14Z",
+      "comments": [
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This is waiting for text from Vittorio.",
+          "createdAt": "2023-04-20T07:57:39Z",
+          "updatedAt": "2023-04-20T07:57:39Z"
+        },
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "See PR #78 ",
+          "createdAt": "2023-06-05T14:12:17Z",
+          "updatedAt": "2023-06-05T14:12:17Z"
+        },
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Merged.",
+          "createdAt": "2023-06-05T15:47:14Z",
+          "updatedAt": "2023-06-05T15:47:14Z"
+        }
+      ]
+    },
+    {
+      "number": 58,
+      "id": "I_kwDODGW6jc5cVsrt",
+      "title": "private_key_jwt should refer to RFC7523",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/58",
+      "state": "CLOSED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "has-pr"
+      ],
+      "body": "",
+      "createdAt": "2023-01-19T13:45:08Z",
+      "updatedAt": "2023-01-25T09:33:09Z",
+      "closedAt": "2023-01-25T09:33:09Z",
+      "comments": []
+    },
+    {
+      "number": 59,
+      "id": "I_kwDODGW6jc5cVs1g",
+      "title": "Section 4.7.1: Say that this is called CSRF tokens",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/59",
+      "state": "CLOSED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "priority",
+        "has-pr"
+      ],
+      "body": "",
+      "createdAt": "2023-01-19T13:45:29Z",
+      "updatedAt": "2023-01-25T09:33:05Z",
+      "closedAt": "2023-01-25T09:33:05Z",
+      "comments": []
+    },
+    {
+      "number": 60,
+      "id": "I_kwDODGW6jc5cVs_O",
+      "title": "S. 4.9.1.1.2 is too nested - find better place higher in the hierarchy",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/60",
+      "state": "CLOSED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "priority",
+        "has-pr"
+      ],
+      "body": "",
+      "createdAt": "2023-01-19T13:45:52Z",
+      "updatedAt": "2023-01-25T09:33:02Z",
+      "closedAt": "2023-01-25T09:33:02Z",
+      "comments": []
+    },
+    {
+      "number": 61,
+      "id": "I_kwDODGW6jc5cVtHF",
+      "title": "TLS Reverse Proxy: Link to httpbis-client-cert-field",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/61",
+      "state": "CLOSED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "priority",
+        "has-pr"
+      ],
+      "body": "",
+      "createdAt": "2023-01-19T13:46:10Z",
+      "updatedAt": "2023-01-25T09:32:56Z",
+      "closedAt": "2023-01-25T09:32:56Z",
+      "comments": []
+    },
+    {
+      "number": 62,
+      "id": "I_kwDODGW6jc5cVtdF",
+      "title": "Rotation for refresh tokens should be a SHOULD, distinguish native apps vs. browser-based",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/62",
+      "state": "CLOSED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "as has been discussed already",
+      "createdAt": "2023-01-19T13:47:01Z",
+      "updatedAt": "2023-06-05T16:19:24Z",
+      "closedAt": "2023-06-05T16:19:23Z",
+      "comments": [
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "As discussed with @aaronpk, there is no fix needed here. The current wording in OAuth 2.1 is aligned with the Security BCP (except for an editorial mistake that will be fixed in OAuth 2.1).",
+          "createdAt": "2023-06-05T16:19:23Z",
+          "updatedAt": "2023-06-05T16:19:23Z"
+        }
+      ]
+    },
+    {
+      "number": 63,
+      "id": "I_kwDODGW6jc5cVtwk",
+      "title": "S. 4.10.2: Duplicate paragraph starting with \"however\" in 4.16",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/63",
+      "state": "CLOSED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "priority",
+        "has-pr"
+      ],
+      "body": "",
+      "createdAt": "2023-01-19T13:47:46Z",
+      "updatedAt": "2023-01-25T09:32:39Z",
+      "closedAt": "2023-01-25T09:32:38Z",
+      "comments": []
+    },
+    {
+      "number": 70,
+      "id": "I_kwDODGW6jc5cvQt7",
+      "title": "Client impersonating resource owner",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/70",
+      "state": "CLOSED",
+      "author": "aaronpk",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [
+        "has-pr"
+      ],
+      "body": "In [Section 4.14.1](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics#section-4.14.1) it currently says:\r\n\r\n> Authorization servers SHOULD NOT allow clients to influence their client_id or any other Claim if that can cause confusion with a genuine resource owner. Where this cannot be avoided, authorization servers MUST provide other means for the resource server to distinguish between access tokens authorized by a resource owner from access tokens authorized by the client itself.\r\n\r\nAt the last IETF meeting, we agreed to change the description of a client ID in OAuth 2.1 to include this: \r\n\r\n> While the Authorization Server typically issues the client identifier itself, it may also serve clients whose client identifier was created by a party other than the Authorization Server.\r\n\r\nI think we should flip the language around on the Security BCP section to make it more clear when the \"SHOULD NOT\" applies. So something like: \r\n\r\n> If the authorization server has a common namespace for client IDs and user identifiers, causing the resource server to be unable to distinguish an access token authorized by a resource owner from an access token authorized by a client itself, the authorization server SHOULD NOT allow clients to influence their `client_id` or any other claim that could cause confusion with a genuine resource owner. Where this cannot be avoided, authorization servers MUST provide other means for the resource server to distinguish between the two types of access tokens.\r\n",
+      "createdAt": "2023-01-25T00:52:17Z",
+      "updatedAt": "2023-06-05T13:47:21Z",
+      "closedAt": "2023-06-05T13:47:20Z",
+      "comments": [
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "See PR #75. I changed \"any other claims\" to \"any claims\" since the client ID is not (only) a claim.",
+          "createdAt": "2023-04-20T07:46:08Z",
+          "updatedAt": "2023-04-20T07:46:08Z"
+        },
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Merged.",
+          "createdAt": "2023-06-05T13:47:20Z",
+          "updatedAt": "2023-06-05T13:47:20Z"
+        }
+      ]
+    },
+    {
+      "number": 71,
+      "id": "I_kwDODGW6jc5epYXD",
+      "title": "Redirect URI matching is not defined well",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/71",
+      "state": "CLOSED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "has-pr"
+      ],
+      "body": "We currently say:\r\n\r\n> This means the authorization server MUST compare the two URIs using simple string comparison as defined in [[RFC3986](https://www.rfc-editor.org/info/rfc3986)], Section 6.2.1.\r\n\r\nBut 3986 does not actually contain a good description of the matching. We need to improve that.",
+      "createdAt": "2023-02-16T15:31:02Z",
+      "updatedAt": "2023-06-05T15:48:25Z",
+      "closedAt": "2023-06-05T15:48:25Z",
+      "comments": [
+        {
+          "author": "CheariX",
+          "authorAssociation": "NONE",
+          "body": "I just looked into [Section 6.2.1](https://www.rfc-editor.org/rfc/rfc3986#section-6.2.1). It says:\r\n\r\n> If two URIs, when considered as character strings, are identical, then it is safe to conclude that they are equivalent.\r\n\r\nFor me, this is very clear. What are you referring to?\r\nDo you want to laxify the comparison?",
+          "createdAt": "2023-02-17T07:55:37Z",
+          "updatedAt": "2023-02-17T07:55:37Z"
+        }
+      ]
+    },
+    {
+      "number": 72,
+      "id": "I_kwDODGW6jc5epY3k",
+      "title": "Redirect URIs must not contain code and state and iss parameters",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/72",
+      "state": "OPEN",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "BCP V2"
+      ],
+      "body": "",
+      "createdAt": "2023-02-16T15:31:45Z",
+      "updatedAt": "2023-06-05T15:20:12Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 73,
+      "id": "I_kwDODGW6jc5gIy06",
+      "title": "Wrong Client Domain in Example (4.1.2 Redirect URI Validation Attacks on Implicit Grant)",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/73",
+      "state": "CLOSED",
+      "author": "kmzs",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [
+        "has-pr"
+      ],
+      "body": "A minor mistake in [4.1.2 Redirect URI Validation Attacks on Implicit Grant](https://www.ietf.org/archive/id/draft-ietf-oauth-security-topics-21.html#name-redirect-uri-validation-atta):\r\n\r\nThroughout the example the client's domain is `client.somesite.example`. In Line 153 `example.com` is used instead:\r\nhttps://github.com/oauthstuff/draft-ietf-oauth-security-topics/blob/70562d72adaa189b083b106fb9c194364be8f7b0/attacks-and-mitigations.md?plain=1#L153",
+      "createdAt": "2023-03-07T07:56:33Z",
+      "updatedAt": "2023-06-05T13:48:07Z",
+      "closedAt": "2023-06-05T13:48:06Z",
+      "comments": [
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Merged.",
+          "createdAt": "2023-06-05T13:48:06Z",
+          "updatedAt": "2023-06-05T13:48:06Z"
+        }
+      ]
+    },
+    {
+      "number": 81,
+      "id": "I_kwDODGW6jc5oevcB",
+      "title": "After DPoP has become an RFC, update Security BCP",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/81",
+      "state": "CLOSED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "> At the time of writing, OAuth Mutual TLS is the most widely implemented and the only standardized sender-constraining method.\r\n\r\nShould be updated.",
+      "createdAt": "2023-06-12T14:24:42Z",
+      "updatedAt": "2023-10-23T13:18:22Z",
+      "closedAt": "2023-10-23T13:18:21Z",
+      "comments": [
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The PR has been merged.",
+          "createdAt": "2023-10-23T13:18:21Z",
+          "updatedAt": "2023-10-23T13:18:21Z"
+        }
+      ]
+    },
+    {
+      "number": 89,
+      "id": "I_kwDODGW6jc5_OVdI",
+      "title": "offline_access",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/89",
+      "state": "OPEN",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "BCP V2"
+      ],
+      "body": "Via email:\r\n\r\n> Hi,\r\n> \r\n> I think there is at least one more important topic to address in the document - the offline_access scope value.\r\n> \r\n> Especially with a SPA application, where the scope attribute value is under web browser control, it can be manipulated. If an attacker can do that and can ask refresh_token without the `exp` parameter, it means, it never expires (from the JWT point of view).\r\n> \r\n> * https://openid.net/specs/openid-connect-core-1_0.html#OfflineAccess\r\n> * https://www.keycloak.org/docs/latest/server_admin/#_offline-access\r\n> \r\n> regards,\r\n> Elar Lang",
+      "createdAt": "2024-02-14T14:19:47Z",
+      "updatedAt": "2024-02-14T14:19:47Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
+  "pulls": [
+    {
+      "number": 5,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzU2MzM3NDQ1",
+      "title": "Added info about CSP",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/5",
+      "state": "MERGED",
+      "author": "travisspencer",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2019-12-23T13:53:18Z",
+      "updatedAt": "2020-02-10T17:22:42Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "a338796b06b943def334d262f59ebfe95349116b",
+      "headRepository": "travisspencer/draft-ietf-oauth-security-topics",
+      "headRefName": "master",
+      "headRefOid": "ef94ccd0784341e4fedb4c6fdc5afb4fea058cd4",
+      "closedAt": "2020-02-10T17:22:42Z",
+      "mergedAt": "2020-02-10T17:22:42Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "ef94ccd0784341e4fedb4c6fdc5afb4fea058cd4"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzM1ODY4NzYz",
+          "commit": {
+            "abbreviatedOid": "ef94ccd"
+          },
+          "author": "travisspencer",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-12-23T13:54:13Z",
+          "updatedAt": "2019-12-23T13:54:13Z",
+          "comments": [
+            {
+              "originalPosition": 14,
+              "body": "Couldn't figure out how to make this a normative reference using the MD tool ",
+              "createdAt": "2019-12-23T13:54:13Z",
+              "updatedAt": "2019-12-23T13:54:13Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzYyNzAxMTUw",
+      "title": "WGLC Feedback - Part 1",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/6",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "These are the lowish-hanging fruits of the WGLC feedback, i.e., smaller changes. Please review these before the next PR, where I will make larger structural changes. ",
+      "createdAt": "2020-01-14T15:39:00Z",
+      "updatedAt": "2020-01-27T15:17:13Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "a338796b06b943def334d262f59ebfe95349116b",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "wglcfeedback",
+      "headRefOid": "8307784439d5c5584542e3308b287265fb2edaa9",
+      "closedAt": "2020-01-27T15:17:13Z",
+      "mergedAt": "2020-01-27T15:17:13Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "d1759ecd10fb860bb4f236cc0935bf0e797b68d7"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzQzNTkxODE3",
+          "commit": {
+            "abbreviatedOid": "bf6a4fa"
+          },
+          "author": "isciurus",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "To me this looks good, thank you",
+          "createdAt": "2020-01-15T23:31:58Z",
+          "updatedAt": "2020-01-15T23:31:58Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzcyNDYwOTA2",
+      "title": "Final changes after WGLC incl. Travis' CSP recommendations.",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/12",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2020-02-07T15:13:01Z",
+      "updatedAt": "2021-03-01T17:28:58Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "d1759ecd10fb860bb4f236cc0935bf0e797b68d7",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "wglcfeedback-bis",
+      "headRefOid": "e75bfb0207bec80d1b33c464de5b63b0572890c6",
+      "closedAt": "2020-02-10T17:22:41Z",
+      "mergedAt": "2020-02-10T17:22:41Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "2c16689ad02df805caed850a0d28762da2549ae1"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzU2MTA4NzAw",
+          "commit": {
+            "abbreviatedOid": "e75bfb0"
+          },
+          "author": "tlodderstedt",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-02-10T17:05:41Z",
+          "updatedAt": "2020-02-10T17:05:41Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDk3NDMwODEw",
+      "title": "PKCE vs. Nonce and other changes",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/16",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2020-10-04T13:07:58Z",
+      "updatedAt": "2021-03-01T17:28:59Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "e1aec2a00edc8723118ee6a9bd622d76ff2c2c97",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "dfett/pkce-nonce",
+      "headRefOid": "0a4480498c39c538548dababf784c686d6dc3c3d",
+      "closedAt": "2020-10-05T15:24:12Z",
+      "mergedAt": "2020-10-05T15:24:12Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "1c9682d1214cbdc77b7d3d296d6078d45864918b"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 17,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTEwNTIxMzAx",
+      "title": "Text proposal for metadata change",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/17",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2020-10-27T06:55:03Z",
+      "updatedAt": "2021-04-05T10:22:59Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "d5772258f22ce65abb9954d7541936723b35d0cc",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "dfett/metadata-mandatory",
+      "headRefOid": "a7fa40b7f5842889c6fc7c1fad70a8bda125cfd4",
+      "closedAt": "2021-04-05T10:22:59Z",
+      "mergedAt": "2021-04-05T10:22:59Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "7d20b1eba85a10e498e6c225caa8807c6b22c989"
+      },
+      "comments": [
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@tlodderstedt Can you please review this?",
+          "createdAt": "2021-03-01T17:28:14Z",
+          "updatedAt": "2021-03-01T17:28:14Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTE4ODk3MTA0",
+          "commit": {
+            "abbreviatedOid": "40516f7"
+          },
+          "author": "isciurus",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Looks reasonable to me",
+          "createdAt": "2020-10-28T17:08:23Z",
+          "updatedAt": "2020-10-28T17:08:23Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTgyMjQzMTM1",
+      "title": "Dfett/collaborative attacks",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/18",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Only added the sentence \"Attackers can collaborate to reach a common goal.\" to clarify the attacker model.",
+      "createdAt": "2021-03-01T17:25:30Z",
+      "updatedAt": "2021-04-05T10:19:54Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "76250163d4788f0970291d6a69779cd3599a5072",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "dfett/collaborative-attacks",
+      "headRefOid": "6b041d0f115216e431e649b265483950db929b6d",
+      "closedAt": "2021-04-05T10:19:53Z",
+      "mergedAt": "2021-04-05T10:19:53Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "d5772258f22ce65abb9954d7541936723b35d0cc"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 19,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTgyMjczMzA3",
+      "title": "Dfett/iss defense",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/19",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Updated to rely on [@draft-ietf-oauth-iss-auth-resp], which describes several cases much better than we can do here.",
+      "createdAt": "2021-03-01T18:11:29Z",
+      "updatedAt": "2021-04-05T10:19:05Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "1c9682d1214cbdc77b7d3d296d6078d45864918b",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "dfett/iss-defense",
+      "headRefOid": "8c791b9973480c65e532e4666ad2a22479f84124",
+      "closedAt": "2021-04-05T10:19:05Z",
+      "mergedAt": "2021-04-05T10:19:05Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "76250163d4788f0970291d6a69779cd3599a5072"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 21,
+      "id": "MDExOlB1bGxSZXF1ZXN0NjA4ODc1ODgx",
+      "title": "Proposal to address Issue #20",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/21",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2021-04-05T10:39:21Z",
+      "updatedAt": "2021-04-06T12:47:29Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "7d20b1eba85a10e498e6c225caa8807c6b22c989",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "dfett/tls-redirect-mandatory",
+      "headRefOid": "14b90186b89dc50a885339dded5a3d9ac1345ccb",
+      "closedAt": "2021-04-06T12:47:29Z",
+      "mergedAt": "2021-04-06T12:47:29Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "6991ae7729557544a860e8bb4d556df7824740a4"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 24,
+      "id": "MDExOlB1bGxSZXF1ZXN0NjY0MzU0MTI3",
+      "title": "Clarification for refresh token protection (closes #22)",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/24",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2021-06-08T06:52:55Z",
+      "updatedAt": "2021-12-16T08:08:18Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "2b5b7de2d3f0fe020a18987a5421bd2fe9c76ca8",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "dfett/client-binding",
+      "headRefOid": "edd41bc4c7a7790192f947a215ba8f6699859151",
+      "closedAt": "2021-12-16T08:08:18Z",
+      "mergedAt": "2021-12-16T08:08:18Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "c4dce5bdd17110b3af672d3fe94352f3813eba19"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3Njk0MTEyMTE2",
+          "commit": {
+            "abbreviatedOid": "922ef32"
+          },
+          "author": "tlodderstedt",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2021-06-28T15:41:37Z",
+          "updatedAt": "2021-06-28T15:41:47Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "I would change order of the sentences.",
+              "createdAt": "2021-06-28T15:41:37Z",
+              "updatedAt": "2021-06-28T15:41:47Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc4xshKz",
+          "commit": {
+            "abbreviatedOid": "922ef32"
+          },
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2021-12-16T08:06:05Z",
+          "updatedAt": "2021-12-16T08:06:05Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "I played around with the order of sentences, but I think this order is better to ensure that there is no confusion what is mandated by RFC6749 and what is the new part. ",
+              "createdAt": "2021-12-16T08:06:05Z",
+              "updatedAt": "2021-12-16T08:06:05Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 25,
+      "id": "PR_kwDODGW6jc4uOLC-",
+      "title": "Affiliation: Independent Researcher",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/25",
+      "state": "MERGED",
+      "author": "isciurus",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Changed affiliation",
+      "createdAt": "2021-11-08T11:41:25Z",
+      "updatedAt": "2021-12-16T07:59:32Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "2b5b7de2d3f0fe020a18987a5421bd2fe9c76ca8",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "isciurus/affiliation",
+      "headRefOid": "117d75ea0897e0f66beb0a68d9e27eabe1bededd",
+      "closedAt": "2021-12-16T07:59:32Z",
+      "mergedAt": "2021-12-16T07:59:32Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "04c02ea4f40c50e0f7770279af36271de98311b9"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 28,
+      "id": "PR_kwDODGW6jc41BE28",
+      "title": "Improve description of PKCE use",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/28",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "As discussed at IETF113, this PR improves the rationale behind the new requirements regarding PKCE. ",
+      "createdAt": "2022-03-25T13:09:56Z",
+      "updatedAt": "2022-07-22T07:32:56Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "c4dce5bdd17110b3af672d3fe94352f3813eba19",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "dfett/improve-code-protection-description",
+      "headRefOid": "ebdd0a947f740d9082093b9e30bc26647df64200",
+      "closedAt": "2022-07-22T07:32:56Z",
+      "mergedAt": "2022-07-22T07:32:56Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "98653475076933864a85ef6317eccc5575607aea"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDODGW6jc427usC",
+          "commit": {
+            "abbreviatedOid": "6a19ca6"
+          },
+          "author": "aaronpk",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-03-25T13:15:08Z",
+          "updatedAt": "2022-03-25T13:15:09Z",
+          "comments": [
+            {
+              "originalPosition": 12,
+              "body": "I would swap these because the \"and\" is kind of ambiguous this way.\r\n\r\n> Clients MUST prevent authorization code injection attacks and misuse of authorization codes (see (#code_injection)) using...\r\n",
+              "createdAt": "2022-03-25T13:15:09Z",
+              "updatedAt": "2022-03-25T13:15:09Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc427u-H",
+          "commit": {
+            "abbreviatedOid": "6a19ca6"
+          },
+          "author": "aaronpk",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-03-25T13:16:05Z",
+          "updatedAt": "2022-03-25T13:16:05Z",
+          "comments": [
+            {
+              "originalPosition": 22,
+              "body": "Shouldn't we mention `c_hash` here as well? Since checking the nonce by itself doesn't prevent authorization code injection for `response_type=code+id_token`",
+              "createdAt": "2022-03-25T13:16:05Z",
+              "updatedAt": "2022-03-25T13:16:05Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc427vUq",
+          "commit": {
+            "abbreviatedOid": "6a19ca6"
+          },
+          "author": "aaronpk",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-03-25T13:17:20Z",
+          "updatedAt": "2022-03-25T13:17:20Z",
+          "comments": [
+            {
+              "originalPosition": 190,
+              "body": "This is interesting. What is the protection against this attack?",
+              "createdAt": "2022-03-25T13:17:20Z",
+              "updatedAt": "2022-03-25T13:17:20Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc428OJW",
+          "commit": {
+            "abbreviatedOid": "6a19ca6"
+          },
+          "author": "b---c",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-03-25T14:51:53Z",
+          "updatedAt": "2022-03-25T14:51:53Z",
+          "comments": [
+            {
+              "originalPosition": 153,
+              "body": "The way I think about it, the OP doesn't 'bind' anything with the nonce. It just puts the nonce value it received into the ID token. It's just a bit of state that is carried though. The client does the binding and checking. ",
+              "createdAt": "2022-03-25T14:51:53Z",
+              "updatedAt": "2022-03-25T14:51:54Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc428OqJ",
+          "commit": {
+            "abbreviatedOid": "6a19ca6"
+          },
+          "author": "b---c",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-03-25T14:53:23Z",
+          "updatedAt": "2022-03-25T14:53:23Z",
+          "comments": [
+            {
+              "originalPosition": 12,
+              "body": "^ makes sense ",
+              "createdAt": "2022-03-25T14:53:23Z",
+              "updatedAt": "2022-03-25T14:53:24Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc429GWP",
+          "commit": {
+            "abbreviatedOid": "6a19ca6"
+          },
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-03-25T18:05:01Z",
+          "updatedAt": "2022-03-25T18:05:01Z",
+          "comments": [
+            {
+              "originalPosition": 22,
+              "body": "It does when you take the ID Token from the backend into consideration as well (which is always a good idea). This is described in (#csrf_countermeasures).",
+              "createdAt": "2022-03-25T18:05:01Z",
+              "updatedAt": "2022-03-25T18:05:01Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc429GYE",
+          "commit": {
+            "abbreviatedOid": "6a19ca6"
+          },
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-03-25T18:05:09Z",
+          "updatedAt": "2022-03-25T18:05:10Z",
+          "comments": [
+            {
+              "originalPosition": 12,
+              "body": "+1",
+              "createdAt": "2022-03-25T18:05:09Z",
+              "updatedAt": "2022-03-25T18:05:10Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc429GpP",
+          "commit": {
+            "abbreviatedOid": "6a19ca6"
+          },
+          "author": "aaronpk",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-03-25T18:06:21Z",
+          "updatedAt": "2022-03-25T18:06:21Z",
+          "comments": [
+            {
+              "originalPosition": 22,
+              "body": "that seems worth pointing out explicitly then. in other words, OIDC with `response_type=code` only needs nonce, but `response_type=code+id_token` needs nonce + c_hash",
+              "createdAt": "2022-03-25T18:06:21Z",
+              "updatedAt": "2022-03-25T18:06:49Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc429G4e",
+          "commit": {
+            "abbreviatedOid": "6a19ca6"
+          },
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-03-25T18:07:19Z",
+          "updatedAt": "2022-03-25T18:07:19Z",
+          "comments": [
+            {
+              "originalPosition": 190,
+              "body": "As far as I see, only PKCE protects against this.\r\n\r\nI was about to say that the attacker model (A3) is relatively strong for a CSRF attack; but when we agree that (A3) is not uncommon (which we did for the code misuse discussion), then that would mean we need PKCE for everyone, always.",
+              "createdAt": "2022-03-25T18:07:19Z",
+              "updatedAt": "2022-03-25T18:07:19Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc429HLR",
+          "commit": {
+            "abbreviatedOid": "6a19ca6"
+          },
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-03-25T18:08:35Z",
+          "updatedAt": "2022-03-25T18:08:35Z",
+          "comments": [
+            {
+              "originalPosition": 153,
+              "body": "I agree. The wording is slightly strange. Will fix.",
+              "createdAt": "2022-03-25T18:08:35Z",
+              "updatedAt": "2022-03-25T18:08:35Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc4361-2",
+          "commit": {
+            "abbreviatedOid": "6a19ca6"
+          },
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-04-11T15:15:10Z",
+          "updatedAt": "2022-04-11T15:15:10Z",
+          "comments": [
+            {
+              "originalPosition": 22,
+              "body": "There's no need for c_hash actually. The backend-ID-Token will contain the wrong nonce. (#csrf_countermeasures) recommends to check both.",
+              "createdAt": "2022-04-11T15:15:10Z",
+              "updatedAt": "2022-04-11T15:15:10Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 46,
+      "id": "PR_kwDODGW6jc44n7r3",
+      "title": "Mike's simple corrections to draft 19",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/46",
+      "state": "MERGED",
+      "author": "selfissued",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "These changes are all obvious wording and grammar corrections to the draft.  I put them in a PR to make life easier for the editors.",
+      "createdAt": "2022-05-28T08:37:16Z",
+      "updatedAt": "2022-07-22T07:16:01Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "c4dce5bdd17110b3af672d3fe94352f3813eba19",
+      "headRepository": "selfissued/draft-ietf-oauth-security-topics",
+      "headRefName": "mbj-simple-corrections-to-draft-19",
+      "headRefOid": "83fc684a1b52752d4493a9a7de0c05e0d3243ad7",
+      "closedAt": "2022-07-22T07:16:01Z",
+      "mergedAt": "2022-07-22T07:16:01Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "898cbaa6e912f89e1155cd2a544340cf93ed1c7a"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDODGW6jc4-b2fV",
+          "commit": {
+            "abbreviatedOid": "83fc684"
+          },
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2022-07-22T07:15:55Z",
+          "updatedAt": "2022-07-22T07:15:55Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 47,
+      "id": "PR_kwDODGW6jc48IzXz",
+      "title": "Changes for -20",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/47",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2022-07-26T20:34:46Z",
+      "updatedAt": "2022-07-28T18:37:20Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "98653475076933864a85ef6317eccc5575607aea",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "dfett/changes-for-20",
+      "headRefOid": "a72e7e0aa140978afa2fdf77ef81b0824ca1657d",
+      "closedAt": "2022-07-28T18:37:20Z",
+      "mergedAt": "2022-07-28T18:37:20Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "2c0574cc9a8b9929f48454434064e193a4f93eb9"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDODGW6jc4-rhn5",
+          "commit": {
+            "abbreviatedOid": "abaa15d"
+          },
+          "author": "aaronpk",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-07-26T20:49:38Z",
+          "updatedAt": "2022-07-26T20:49:38Z",
+          "comments": [
+            {
+              "originalPosition": 38,
+              "body": "Another instance of \"replay\u201d that should be changed to something else\r\n",
+              "createdAt": "2022-07-26T20:49:38Z",
+              "updatedAt": "2022-07-26T20:49:38Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc4-2pMB",
+          "commit": {
+            "abbreviatedOid": "a72e7e0"
+          },
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "LGTM",
+          "createdAt": "2022-07-28T17:38:22Z",
+          "updatedAt": "2022-07-28T17:38:22Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 49,
+      "id": "PR_kwDODGW6jc48Poee",
+      "title": "Fix Issue #48 and Issue #26",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/49",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2022-07-28T11:57:53Z",
+      "updatedAt": "2022-07-28T18:38:12Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "98653475076933864a85ef6317eccc5575607aea",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "dfett/recommendations-should-be-best-practices",
+      "headRefOid": "253ad876de2f987d70c0a1d82175703c9bde1abb",
+      "closedAt": "2022-07-28T18:38:12Z",
+      "mergedAt": "2022-07-28T18:38:12Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "7de8dc2b995d0c625a433cece0718dd3cd7c3291"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDODGW6jc4-0riu",
+          "commit": {
+            "abbreviatedOid": "e466837"
+          },
+          "author": "aaronpk",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-07-28T12:23:54Z",
+          "updatedAt": "2022-07-28T12:23:55Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "```suggestion\r\ncompatible with the new requirements and following the best practices described in\r\n```",
+              "createdAt": "2022-07-28T12:23:54Z",
+              "updatedAt": "2022-07-28T12:23:55Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc4-2qle",
+          "commit": {
+            "abbreviatedOid": "253ad87"
+          },
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "LGTM",
+          "createdAt": "2022-07-28T17:43:23Z",
+          "updatedAt": "2022-07-28T17:43:23Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 51,
+      "id": "PR_kwDODGW6jc4-8vO4",
+      "title": "Incorporate Rifaat's text on phishing via AS",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/51",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2022-09-14T14:11:35Z",
+      "updatedAt": "2022-09-27T11:21:36Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "7de8dc2b995d0c625a433cece0718dd3cd7c3291",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "dfett/redirection-attacks",
+      "headRefOid": "493a8a618205a3fef62be190e52a23fa20fbde64",
+      "closedAt": "2022-09-27T11:21:36Z",
+      "mergedAt": "2022-09-27T11:21:36Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "ab8fe34d7eaf21e3367c2c23764e343f2b89ae7e"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 53,
+      "id": "PR_kwDODGW6jc5AfP8n",
+      "title": "Incorporate in-browser communication security considerations",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/53",
+      "state": "MERGED",
+      "author": "iphoneintosh",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Hi,\r\n\r\nWe would like to request the inclusion of _in-browser communication security considerations_ in the BCP. As the paper \"DISTINCT: Identity Theft using In-Browser Communications in Dual-Window Single Sign-On\" shows, in-browser communications like the [postMessage API](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) are widely used by Clients and Authorization Servers as an alternative to HTTP redirects. In some cases, they are used insecurely, leading to OAuth tokens leaks and injections. The paper will be published soon at ACM CCS in November 2022 and is accessible [here](https://distinct-sso.com/paper.pdf). This is a joint work with @mladevbb, @CheariX, and @joergschwenk.\r\n\r\nWe think that the paragraph added in this pull request helps developers in understanding the risks and best practices of using in-browser communications in OAuth. Please do not hesitate to ask further questions or provide feedback. We will be happy to answer and discuss them.\r\n\r\nBest,\r\nLouis\r\n\r\n/cc @CheariX @mladevbb",
+      "createdAt": "2022-10-10T11:55:47Z",
+      "updatedAt": "2023-01-19T16:30:37Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "967579c022934df27efe65ab8b35ad4d7dbf1264",
+      "headRepository": "iphoneintosh/draft-ietf-oauth-security-topics",
+      "headRefName": "in-browser-communication-security",
+      "headRefOid": "fd683b0d7d5e1f8b57ca74f6567f276afe1d8768",
+      "closedAt": "2023-01-19T16:30:37Z",
+      "mergedAt": "2023-01-19T16:30:37Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "ba5f8ff727c3908019df5080ec0c88f2881fa008"
+      },
+      "comments": [
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Please feel free to add the names of those who provided this PR to the contributors section (if not already there). ",
+          "createdAt": "2022-11-09T11:26:37Z",
+          "updatedAt": "2022-11-09T11:26:37Z"
+        },
+        {
+          "author": "iphoneintosh",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Thanks, I just added the names and combined all commits into a single commit to increase clarity.",
+          "createdAt": "2022-11-09T21:01:47Z",
+          "updatedAt": "2022-11-09T21:01:47Z"
+        },
+        {
+          "author": "panva",
+          "authorAssociation": "MEMBER",
+          "body": "I believe it would be worthwhile to link to an example mechanism that relies on postMessage to deliver responses.\r\n\r\nThis would be https://datatracker.ietf.org/doc/html/draft-sakimura-oauth-wmrm-00. This also makes use validated uris/origins passed to postMessage and its code examples take care of verifying the event origin to be the AS on the client side.",
+          "createdAt": "2022-11-10T14:55:48Z",
+          "updatedAt": "2022-11-10T14:55:48Z"
+        },
+        {
+          "author": "CheariX",
+          "authorAssociation": "NONE",
+          "body": "@panva Do we really want to link to an expired draft?",
+          "createdAt": "2022-11-12T00:38:52Z",
+          "updatedAt": "2022-11-12T00:38:52Z"
+        },
+        {
+          "author": "panva",
+          "authorAssociation": "MEMBER",
+          "body": "The BCP already does, search for I-D.bradley-oauth-jwt-encoded-state",
+          "createdAt": "2022-11-12T06:12:04Z",
+          "updatedAt": "2022-11-12T06:12:04Z"
+        },
+        {
+          "author": "iphoneintosh",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@panva We added examples of the secure use of postMessage in OAuth. We are happy for any feedback.",
+          "createdAt": "2022-11-29T13:08:36Z",
+          "updatedAt": "2022-11-29T13:08:36Z"
+        },
+        {
+          "author": "CheariX",
+          "authorAssociation": "NONE",
+          "body": "Can we do anything else to push this further?",
+          "createdAt": "2023-01-18T16:26:56Z",
+          "updatedAt": "2023-01-18T16:26:56Z"
+        },
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thank you for providing the PR, it will be included in the next published version.",
+          "createdAt": "2023-01-19T16:30:30Z",
+          "updatedAt": "2023-01-19T16:30:30Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDODGW6jc5LOsbs",
+          "commit": {
+            "abbreviatedOid": "fd683b0"
+          },
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-01-19T16:27:21Z",
+          "updatedAt": "2023-01-19T16:27:21Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 54,
+      "id": "PR_kwDODGW6jc5EJFKm",
+      "title": "update attacks-and-mitigations.md",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/54",
+      "state": "MERGED",
+      "author": "panva",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "![image](https://user-images.githubusercontent.com/241506/205301992-aab98787-264f-4203-87e0-0856a980e838.png)\r\n",
+      "createdAt": "2022-12-02T13:21:15Z",
+      "updatedAt": "2023-01-19T16:25:53Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "967579c022934df27efe65ab8b35ad4d7dbf1264",
+      "headRepository": null,
+      "headRefName": "patch-1",
+      "headRefOid": "60dd188ced830890107c9ae8133ff669db1890a1",
+      "closedAt": "2023-01-19T16:25:48Z",
+      "mergedAt": "2023-01-19T16:25:48Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "8143106d8683aa563344eaed301071a41d311c54"
+      },
+      "comments": [
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thank you for fixing this!",
+          "createdAt": "2023-01-19T16:25:43Z",
+          "updatedAt": "2023-01-19T16:25:43Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDODGW6jc5LOrRV",
+          "commit": {
+            "abbreviatedOid": "60dd188"
+          },
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-01-19T16:25:15Z",
+          "updatedAt": "2023-01-19T16:25:15Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 64,
+      "id": "PR_kwDODGW6jc5IJbYl",
+      "title": "Proposal to incorporate section on in-browser communication better into the text",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/64",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I made some changes to the text, moved the new section to the appropriate place and added a short description of the attacks. @iphoneintosh @chearix Your feedback would be welcome!",
+      "createdAt": "2023-01-19T17:09:13Z",
+      "updatedAt": "2023-01-25T09:32:20Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "d4adc56550f5fbc20bb4a54c34f1f96801526019",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "dfett/editorial-ibc",
+      "headRefOid": "0ed3a05804b9c51f670eb5bcfc9cce6c40b22ec1",
+      "closedAt": "2023-01-25T09:32:20Z",
+      "mergedAt": "2023-01-25T09:32:20Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "49c044d15aff19424a6f8f432ef6472fb1b2d405"
+      },
+      "comments": [
+        {
+          "author": "iphoneintosh",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@danielfett Thanks for your changes, looks good to us.\r\nOne question: We don't see any use cases regarding sending the *token response* with in-browser communication, as this may be implemented with the `fetch()` API in SPAs. Do you have anything in particular in mind?\r\n\r\n/cc @CheariX",
+          "createdAt": "2023-01-20T13:14:31Z",
+          "updatedAt": "2023-01-20T13:14:31Z"
+        },
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "No specific use case - just a general thought. Someone might just transpose the whole protocol from HTTP to window-to-window communication.",
+          "createdAt": "2023-01-20T13:16:48Z",
+          "updatedAt": "2023-01-20T13:16:48Z"
+        },
+        {
+          "author": "iphoneintosh",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Alright, that sounds reasonable to us.",
+          "createdAt": "2023-01-20T13:19:24Z",
+          "updatedAt": "2023-01-20T13:19:24Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 65,
+      "id": "PR_kwDODGW6jc5IJhdT",
+      "title": "Merged section on phishing via AS into existing section on open redirectors",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/65",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes Issue #63 ",
+      "createdAt": "2023-01-19T17:24:10Z",
+      "updatedAt": "2023-01-25T09:30:02Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "74126ef5c771dd2e32df491cb34a38b830424bfb",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "dfett/fix-63",
+      "headRefOid": "ca8da7ed62094696a6877f0c66f7ffdec0c4a426",
+      "closedAt": "2023-01-25T09:30:02Z",
+      "mergedAt": "2023-01-25T09:30:02Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "d4adc56550f5fbc20bb4a54c34f1f96801526019"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDODGW6jc5Lm50y",
+          "commit": {
+            "abbreviatedOid": "ecce1eb"
+          },
+          "author": "aaronpk",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-01-24T23:40:28Z",
+          "updatedAt": "2023-01-24T23:40:28Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDODGW6jc5LnF2b",
+          "commit": {
+            "abbreviatedOid": "ecce1eb"
+          },
+          "author": "aaronpk",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-01-25T00:25:45Z",
+          "updatedAt": "2023-01-25T00:25:46Z",
+          "comments": [
+            {
+              "originalPosition": 8,
+              "body": "Isn't the internal link syntax curly quotes? `{{open_redirection}}`",
+              "createdAt": "2023-01-25T00:25:45Z",
+              "updatedAt": "2023-01-25T00:27:01Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc5Lod3o",
+          "commit": {
+            "abbreviatedOid": "ecce1eb"
+          },
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-01-25T08:34:21Z",
+          "updatedAt": "2023-01-25T08:34:22Z",
+          "comments": [
+            {
+              "originalPosition": 8,
+              "body": "Mmark wants parentheses: https://github.com/mmarkdown/mmark/blob/master/Syntax.md#cross-references",
+              "createdAt": "2023-01-25T08:34:21Z",
+              "updatedAt": "2023-01-25T08:34:22Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 66,
+      "id": "PR_kwDODGW6jc5INCZ9",
+      "title": "New location for discussion on sender-constrained tokens",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/66",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "fixes Issue #60 ",
+      "createdAt": "2023-01-20T10:59:02Z",
+      "updatedAt": "2023-01-25T09:29:21Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "a4bcf6602379fc31e02dad1d3a6bc2664d09f975",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "dfett/fix-structure-sender-constrained",
+      "headRefOid": "74b9a2f7579bc3aaa94e0185c3703b8e73034501",
+      "closedAt": "2023-01-25T09:29:20Z",
+      "mergedAt": "2023-01-25T09:29:20Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "74126ef5c771dd2e32df491cb34a38b830424bfb"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDODGW6jc5Lm9LH",
+          "commit": {
+            "abbreviatedOid": "1c60224"
+          },
+          "author": "aaronpk",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-01-24T23:58:21Z",
+          "updatedAt": "2023-01-24T23:58:21Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 67,
+      "id": "PR_kwDODGW6jc5ING9v",
+      "title": "Mention CSRF Token to fix Issue #59",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/67",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-01-20T11:15:37Z",
+      "updatedAt": "2023-01-25T09:28:43Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "7fa81955339d7b4814b399a2e60338eb4cf0c5c2",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "dfett/fix-59",
+      "headRefOid": "18883c62836fae445349ed90c41e42e54a33e064",
+      "closedAt": "2023-01-25T09:28:43Z",
+      "mergedAt": "2023-01-25T09:28:43Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "a4bcf6602379fc31e02dad1d3a6bc2664d09f975"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDODGW6jc5Lm-tu",
+          "commit": {
+            "abbreviatedOid": "2407b9f"
+          },
+          "author": "aaronpk",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-01-25T00:01:22Z",
+          "updatedAt": "2023-01-25T00:01:23Z",
+          "comments": [
+            {
+              "originalPosition": 9,
+              "body": "I would say \"also known as a CSRF Token\" instead of \"so-called\"",
+              "createdAt": "2023-01-25T00:01:22Z",
+              "updatedAt": "2023-01-25T00:01:23Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 68,
+      "id": "PR_kwDODGW6jc5INJJs",
+      "title": "Fix Issue #61",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/68",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-01-20T11:24:52Z",
+      "updatedAt": "2023-01-25T09:26:44Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "7fa81955339d7b4814b399a2e60338eb4cf0c5c2",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "dfett/fix-61",
+      "headRefOid": "4ffdb0f7143cff3ab8310802ea9cdccc7fa1e0ba",
+      "closedAt": "2023-01-25T09:26:44Z",
+      "mergedAt": "2023-01-25T09:26:43Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "d2ce654c37b1adcaa03703264ff9c84e554c65ca"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDODGW6jc5Lm_BO",
+          "commit": {
+            "abbreviatedOid": "4ffdb0f"
+          },
+          "author": "aaronpk",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-01-25T00:02:00Z",
+          "updatedAt": "2023-01-25T00:02:00Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 69,
+      "id": "PR_kwDODGW6jc5IUK4j",
+      "title": "Proper reference for private_key_jwt, fixes Issue #58",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/69",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-01-23T10:45:34Z",
+      "updatedAt": "2023-01-25T09:26:33Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "7fa81955339d7b4814b399a2e60338eb4cf0c5c2",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "dfett/fix-58",
+      "headRefOid": "3bcab44f9d6f5d920be17106d11489f034d59573",
+      "closedAt": "2023-01-25T09:26:32Z",
+      "mergedAt": "2023-01-25T09:26:32Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "07a224c5f355b5b60db02cc9f626ac8e50e61335"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDODGW6jc5LnCuY",
+          "commit": {
+            "abbreviatedOid": "3bcab44"
+          },
+          "author": "aaronpk",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-01-25T00:10:18Z",
+          "updatedAt": "2023-01-25T00:10:18Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 74,
+      "id": "PR_kwDODGW6jc5Od529",
+      "title": "Fix Issue #73",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/74",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-04-17T11:42:37Z",
+      "updatedAt": "2023-06-05T13:47:45Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "70562d72adaa189b083b106fb9c194364be8f7b0",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "dfett/fix-73",
+      "headRefOid": "53fb7da1a476618cd06cb37fe08b2d79e95a5e23",
+      "closedAt": "2023-06-05T13:47:45Z",
+      "mergedAt": "2023-06-05T13:47:45Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "1399efcd0e003b79d1238ae6b7a0de0ca14a3a3d"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 75,
+      "id": "PR_kwDODGW6jc5OvWLo",
+      "title": "Aaron's proposal to reword restrictions on client_ids",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/75",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-04-20T07:42:56Z",
+      "updatedAt": "2023-06-05T13:46:58Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "6d0ce4f3a159b0c5716db5342afed11f3e0a89db",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "dfett/fix-70",
+      "headRefOid": "5304119949adaa3f14c044abd2d6ba85fe1bf734",
+      "closedAt": "2023-06-05T13:46:58Z",
+      "mergedAt": "2023-06-05T13:46:58Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "66ab591caf8305b9fc7226942e5d8d42a48b0779"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDODGW6jc5TO68B",
+          "commit": {
+            "abbreviatedOid": "5304119"
+          },
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-04-21T21:35:44Z",
+          "updatedAt": "2023-04-21T21:35:44Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 76,
+      "id": "PR_kwDODGW6jc5Ovgrz",
+      "title": "Add reference to RFC6749 for ROPCG to fix Issue #55",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/76",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-04-20T08:16:39Z",
+      "updatedAt": "2023-06-05T13:46:32Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "6d0ce4f3a159b0c5716db5342afed11f3e0a89db",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "dfett/fix-55",
+      "headRefOid": "68fcbec1a910683c3f5e08dadb4716b30b16fa9f",
+      "closedAt": "2023-06-05T13:46:32Z",
+      "mergedAt": "2023-06-05T13:46:32Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "86f4f87e45ffc6a20ab4c1af8978b84378b1d1a1"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDODGW6jc5TO7NL",
+          "commit": {
+            "abbreviatedOid": "138836a"
+          },
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-04-21T21:37:26Z",
+          "updatedAt": "2023-04-21T21:37:27Z",
+          "comments": [
+            {
+              "originalPosition": 10,
+              "body": "Delete \"as defined in\".",
+              "createdAt": "2023-04-21T21:37:26Z",
+              "updatedAt": "2023-04-21T21:37:27Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc5XLVr6",
+          "commit": {
+            "abbreviatedOid": "138836a"
+          },
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-06-05T13:46:06Z",
+          "updatedAt": "2023-06-05T13:46:06Z",
+          "comments": [
+            {
+              "originalPosition": 10,
+              "body": "```suggestion\r\nThe resource owner password credentials grant [@!RFC6749] MUST NOT\r\n```",
+              "createdAt": "2023-06-05T13:46:06Z",
+              "updatedAt": "2023-06-05T13:46:06Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 77,
+      "id": "PR_kwDODGW6jc5RRQZb",
+      "title": "clarify refresh token recommendation",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/77",
+      "state": "MERGED",
+      "author": "aaronpk",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-05-24T16:44:09Z",
+      "updatedAt": "2023-06-05T13:45:35Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "6d0ce4f3a159b0c5716db5342afed11f3e0a89db",
+      "headRepository": "aaronpk/draft-ietf-oauth-security-topics",
+      "headRefName": "master",
+      "headRefOid": "a586ed6a2edd7e023cb2791b00e048b4720bed9e",
+      "closedAt": "2023-06-05T13:45:35Z",
+      "mergedAt": "2023-06-05T13:45:35Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "578cc32e5312ebc266b730f1f6995b21752bbc0b"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDODGW6jc5XLVX9",
+          "commit": {
+            "abbreviatedOid": "a586ed6"
+          },
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-06-05T13:45:27Z",
+          "updatedAt": "2023-06-05T13:45:27Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 78,
+      "id": "PR_kwDODGW6jc5SMzyN",
+      "title": "Proposal for CORS language (and added document history)",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/78",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-06-05T14:11:20Z",
+      "updatedAt": "2023-06-05T15:12:02Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "80ddf6696fc1f6d0bb1aece23417345be5b41707",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "danielfett/cors",
+      "headRefOid": "39c70e68be1034fc774da86a2abce1bff475a7c2",
+      "closedAt": "2023-06-05T15:12:02Z",
+      "mergedAt": "2023-06-05T15:12:02Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "43adb63ce2d4a85e09b205e5f0ced690a699cecb"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDODGW6jc5XMD8M",
+          "commit": {
+            "abbreviatedOid": "4b431b3"
+          },
+          "author": "aaronpk",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-06-05T15:10:53Z",
+          "updatedAt": "2023-06-05T15:10:54Z",
+          "comments": [
+            {
+              "originalPosition": 9,
+              "body": "```suggestion\r\nsupported at the Authorization Endpoint as the client does not access this\r\n```",
+              "createdAt": "2023-06-05T15:10:53Z",
+              "updatedAt": "2023-06-05T15:10:54Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc5XMD9_",
+          "commit": {
+            "abbreviatedOid": "4b431b3"
+          },
+          "author": "aaronpk",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-06-05T15:10:57Z",
+          "updatedAt": "2023-06-05T15:10:58Z",
+          "comments": [
+            {
+              "originalPosition": 10,
+              "body": "```suggestion\r\nendpoint directly, instead the client redirects the user agent to it.\r\n```",
+              "createdAt": "2023-06-05T15:10:57Z",
+              "updatedAt": "2023-06-05T15:10:58Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc5XMEXp",
+          "commit": {
+            "abbreviatedOid": "39c70e6"
+          },
+          "author": "aaronpk",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-06-05T15:11:49Z",
+          "updatedAt": "2023-06-05T15:11:49Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 79,
+      "id": "PR_kwDODGW6jc5SM6Kh",
+      "title": "Update RAR reference",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/79",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-06-05T14:27:39Z",
+      "updatedAt": "2023-06-05T15:12:46Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "80ddf6696fc1f6d0bb1aece23417345be5b41707",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "danielfett/update-references",
+      "headRefOid": "b3738a138823ecc230f0a517fa0f62186bd25300",
+      "closedAt": "2023-06-05T15:12:45Z",
+      "mergedAt": "2023-06-05T15:12:45Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "68cac3bc12c71fb1eb43a81fec041bd4f1360420"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDODGW6jc5XMExb",
+          "commit": {
+            "abbreviatedOid": "b3738a1"
+          },
+          "author": "aaronpk",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-06-05T15:12:37Z",
+          "updatedAt": "2023-06-05T15:12:37Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 80,
+      "id": "PR_kwDODGW6jc5SNbs_",
+      "title": "Editorial change to fix #71",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/80",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-06-05T15:46:48Z",
+      "updatedAt": "2023-06-05T15:48:23Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "68cac3bc12c71fb1eb43a81fec041bd4f1360420",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "danielfett/fix-71",
+      "headRefOid": "43506cd74ef2bf74f14ecd4005650ae16bd764df",
+      "closedAt": "2023-06-05T15:48:23Z",
+      "mergedAt": "2023-06-05T15:48:23Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "1d550e38730b978426db49bb1165396861734721"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDODGW6jc5XMZ4E",
+          "commit": {
+            "abbreviatedOid": "43506cd"
+          },
+          "author": "aaronpk",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-06-05T15:48:14Z",
+          "updatedAt": "2023-06-05T15:48:14Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 82,
+      "id": "PR_kwDODGW6jc5TAAcg",
+      "title": "update description of implicit grant mixup",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/82",
+      "state": "MERGED",
+      "author": "aaronpk",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "addresses mailing list comment here https://mailarchive.ietf.org/arch/msg/oauth/7k9JnyaC8Ww5m3kIymY1h1WC0Y4/",
+      "createdAt": "2023-06-14T14:14:00Z",
+      "updatedAt": "2023-06-14T16:32:23Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "296f0056fd182482ac47e8be8176a8423a14b7a5",
+      "headRepository": "aaronpk/draft-ietf-oauth-security-topics",
+      "headRefName": "master",
+      "headRefOid": "e2ea71cd43ca9ff6b8246e24e1777beb269ab6e6",
+      "closedAt": "2023-06-14T16:18:34Z",
+      "mergedAt": "2023-06-14T16:18:34Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "225d52d1544647b4379654499fe7f222fc9ab3fe"
+      },
+      "comments": [
+        {
+          "author": "esmega26",
+          "authorAssociation": "NONE",
+          "body": "aaronpk:master",
+          "createdAt": "2023-06-14T16:32:23Z",
+          "updatedAt": "2023-06-14T16:32:23Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDODGW6jc5YMTgI",
+          "commit": {
+            "abbreviatedOid": "33ad323"
+          },
+          "author": "esmega26",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-06-14T14:31:53Z",
+          "updatedAt": "2023-06-14T14:31:54Z",
+          "comments": [
+            {
+              "originalPosition": 1,
+              "body": "How ",
+              "createdAt": "2023-06-14T14:31:53Z",
+              "updatedAt": "2023-06-14T14:31:54Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc5YMg-y",
+          "commit": {
+            "abbreviatedOid": "33ad323"
+          },
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-06-14T14:54:48Z",
+          "updatedAt": "2023-06-14T14:54:49Z",
+          "comments": [
+            {
+              "originalPosition": 8,
+              "body": "```suggestion\r\n    token instead of the code in Step 4. The attacker's AS receives the access token\r\n    when the client makes a request to the A-AS userinfo endpoint, or since the\r\n    client believes it has completed the flow with A-AS, a request to the\r\n    attacker's resource server.\r\n```",
+              "createdAt": "2023-06-14T14:54:48Z",
+              "updatedAt": "2023-06-14T14:54:49Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 83,
+      "id": "PR_kwDODGW6jc5aXsvu",
+      "title": "update refs for recently published RFCs",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/83",
+      "state": "MERGED",
+      "author": "bc-pi",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "DPoP is now RFC9449 and ietf-httpbis-client-cert-field is now RFC9440",
+      "createdAt": "2023-09-14T18:16:47Z",
+      "updatedAt": "2023-09-18T16:05:41Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "f165261388daeffff1363f901255e16278965e23",
+      "headRepository": "bc-pi/fork-draft-oauth-security",
+      "headRefName": "master",
+      "headRefOid": "3818004a44e0f53c40c899e87158b66f4b0905e2",
+      "closedAt": "2023-09-18T16:05:41Z",
+      "mergedAt": "2023-09-18T16:05:41Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "2e0911544b908b31ca49f358494ba6d93c4fc0f7"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDODGW6jc5hPd6w",
+          "commit": {
+            "abbreviatedOid": "3818004"
+          },
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-09-18T16:05:01Z",
+          "updatedAt": "2023-09-18T16:05:01Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 84,
+      "id": "PR_kwDODGW6jc5dhHYi",
+      "title": "Various fixes for release -24",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/84",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "- [Completed the acknowledgements section](https://github.com/oauthstuff/draft-ietf-oauth-security-topics/commit/509e258b9e9a97350d4fcc47d301a71cfcab3c80)\r\n- [Fix Issue](https://github.com/oauthstuff/draft-ietf-oauth-security-topics/commit/e69986dfec4dca5be6095e10733f273e0092ba63) https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/81\r\n- [Add document history entry](https://github.com/oauthstuff/draft-ietf-oauth-security-topics/commit/69c3aee1ec9e091c9c8bbf6a58a0ffa9aed127a8)",
+      "createdAt": "2023-10-23T11:12:25Z",
+      "updatedAt": "2023-10-23T13:17:51Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "2e0911544b908b31ca49f358494ba6d93c4fc0f7",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "danielfett/pre-ietf-118",
+      "headRefOid": "69c3aee1ec9e091c9c8bbf6a58a0ffa9aed127a8",
+      "closedAt": "2023-10-23T13:17:51Z",
+      "mergedAt": "2023-10-23T13:17:51Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "2986bc37e2ced1d3b0189603219d90d9d53e3e3f"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 85,
+      "id": "PR_kwDODGW6jc5dhIl7",
+      "title": "Shepherd's writeup feedback",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/85",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-10-23T11:15:39Z",
+      "updatedAt": "2023-10-23T13:18:01Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "2e0911544b908b31ca49f358494ba6d93c4fc0f7",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "danielfett/writeup-feedback",
+      "headRefOid": "50b745608dfbb4082af33b7f157b1d6b828d11df",
+      "closedAt": "2023-10-23T13:18:01Z",
+      "mergedAt": "2023-10-23T13:18:01Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "c4be86cd6cc784364514952d0ab76976aa01da1f"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 86,
+      "id": "PR_kwDODGW6jc5ey26D",
+      "title": "Prevent use of constant challenge value",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/86",
+      "state": "MERGED",
+      "author": "selfissued",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "danielfett",
+        "panva",
+        "jogu",
+        "tlodderstedt",
+        "bc-pi"
+      ],
+      "labels": [],
+      "body": "... as discussed with @aaronpk and @danielfett  at IETF 118.",
+      "createdAt": "2023-11-07T11:26:28Z",
+      "updatedAt": "2024-01-21T01:09:47Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "1e9ae984c5d31215ce765ad89becde5c795cd814",
+      "headRepository": "selfissued/draft-ietf-oauth-security-topics",
+      "headRefName": "mbj-prevent-constants",
+      "headRefOid": "f61f95e730d33a23dcb9da078b97c12f2e613650",
+      "closedAt": "2023-12-20T08:00:32Z",
+      "mergedAt": "2023-12-20T08:00:32Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "30ce0bbefb0e99ab464f17b1b30047eb690e46ac"
+      },
+      "comments": [
+        {
+          "author": "panva",
+          "authorAssociation": "MEMBER",
+          "body": "I am surprised to see yet another attempt to add a measure that requires state synchronization across the deployment.\r\n\r\nI wish there was more language with maybe a recommendations about how vigorous this mechanism should be, at which step it should be checking to remain effective, etc.",
+          "createdAt": "2023-11-07T12:09:03Z",
+          "updatedAt": "2023-11-07T12:09:03Z"
+        },
+        {
+          "author": "jogu",
+          "authorAssociation": "NONE",
+          "body": "I agree with Filip. I don't think it's necessary to detect every case of re-use. This is really a measure to stop client developers deploying clients into production systems that have poor security, and a 'best efforts' style detection that will eventually stop some requests from clients that are reusing nonces/PKCE challenges is probably okay.\r\n\r\nI also think it should not be explicit about it being the PKCE challenge - some authorization servers may prefer to detect reuse of code_verifier instead (they're almost equivalent statements, but referring to PKCE challenges may imply that the detection should be at the authorization endpoint).",
+          "createdAt": "2023-11-07T17:01:18Z",
+          "updatedAt": "2023-11-07T17:01:18Z"
+        },
+        {
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "body": "What if I changed the language to:\r\n> Authorization servers SHOULD detect and prevent the use of constant PKCE challenge or OpenID Connect `nonce` values.\r\n\r\nThen synchronization isn't required.\r\n\r\nI believe we need to say something about this possibility, which actually occurs in practice.  If you have different language in mind, please propose text.",
+          "createdAt": "2023-11-28T20:43:06Z",
+          "updatedAt": "2023-11-28T20:43:06Z"
+        },
+        {
+          "author": "bc-pi",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Perhaps something like this might be a more realistic statement and be less objectionable?\r\n\r\n> Authorization servers are encouraged to make a reasonable effort at detecting and preventing the use of constant PKCE challenge or OpenID Connect nonce values. ",
+          "createdAt": "2023-12-19T03:55:51Z",
+          "updatedAt": "2023-12-19T03:55:51Z"
+        },
+        {
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I applied the suggested wording to the PR.",
+          "createdAt": "2023-12-19T04:29:06Z",
+          "updatedAt": "2023-12-19T04:29:06Z"
+        },
+        {
+          "author": "bc-pi",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> Ah no, it seems brian's suggestion is not the one in the PR at the moment. It is in my opinion preferable.\r\n\r\nThanks for catching that Filip. I'd overlooked it in my flu induced and sleep deprived stupor. ",
+          "createdAt": "2023-12-19T08:53:35Z",
+          "updatedAt": "2023-12-19T08:53:35Z"
+        },
+        {
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I've applied Brian's wording suggestion.",
+          "createdAt": "2023-12-20T01:10:51Z",
+          "updatedAt": "2023-12-20T01:10:51Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDODGW6jc5qk-4Y",
+          "commit": {
+            "abbreviatedOid": "45fae5a"
+          },
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-12-19T04:27:48Z",
+          "updatedAt": "2023-12-19T04:27:48Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "```suggestion\r\nAuthorization servers SHOULD detect and prevent the use of constant PKCE challenge or OpenID Connect `nonce` values.\r\n```",
+              "createdAt": "2023-12-19T04:27:48Z",
+              "updatedAt": "2023-12-19T04:27:48Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc5qk_ij",
+          "commit": {
+            "abbreviatedOid": "01bf1ab"
+          },
+          "author": "bc-pi",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-19T04:32:10Z",
+          "updatedAt": "2023-12-19T04:32:10Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDODGW6jc5ql_Xh",
+          "commit": {
+            "abbreviatedOid": "01bf1ab"
+          },
+          "author": "panva",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-19T08:31:09Z",
+          "updatedAt": "2023-12-19T08:31:09Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDODGW6jc5ql_vb",
+          "commit": {
+            "abbreviatedOid": "01bf1ab"
+          },
+          "author": "panva",
+          "authorAssociation": "MEMBER",
+          "state": "CHANGES_REQUESTED",
+          "body": "Ah no, it seems brian's suggestion is not the one in the PR at the moment. It is in my opinion preferable. ",
+          "createdAt": "2023-12-19T08:32:04Z",
+          "updatedAt": "2023-12-19T08:33:17Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDODGW6jc5qmHWl",
+          "commit": {
+            "abbreviatedOid": "01bf1ab"
+          },
+          "author": "bc-pi",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2023-12-19T08:47:23Z",
+          "updatedAt": "2023-12-19T08:48:39Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "```suggestion\r\nAuthorization servers are encouraged to make a reasonable effort at detecting and\r\npreventing the use of constant PKCE challenge or OpenID Connect nonce values.\r\n```",
+              "createdAt": "2023-12-19T08:47:23Z",
+              "updatedAt": "2023-12-19T08:48:39Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc5qsBBa",
+          "commit": {
+            "abbreviatedOid": "4d90e27"
+          },
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-12-20T01:09:00Z",
+          "updatedAt": "2023-12-20T01:09:00Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "```suggestion\r\npreventing the use of constant PKCE challenge or OpenID Connect `nonce` values.\r\n```",
+              "createdAt": "2023-12-20T01:09:00Z",
+              "updatedAt": "2023-12-20T01:09:00Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc5qsU3z",
+          "commit": {
+            "abbreviatedOid": "f61f95e"
+          },
+          "author": "bc-pi",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-20T01:55:21Z",
+          "updatedAt": "2023-12-20T01:55:21Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDODGW6jc5qtcn3",
+          "commit": {
+            "abbreviatedOid": "f61f95e"
+          },
+          "author": "panva",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-20T07:15:48Z",
+          "updatedAt": "2023-12-20T07:15:48Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDODGW6jc5qtrLL",
+          "commit": {
+            "abbreviatedOid": "f61f95e"
+          },
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-20T07:59:41Z",
+          "updatedAt": "2023-12-20T07:59:41Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 87,
+      "id": "PR_kwDODGW6jc5fCDAP",
+      "title": "Update attacks-and-mitigations.md",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/87",
+      "state": "MERGED",
+      "author": "aaronpk",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "add missing Countermeasures header",
+      "createdAt": "2023-11-09T13:00:44Z",
+      "updatedAt": "2023-11-09T13:07:56Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "1e9ae984c5d31215ce765ad89becde5c795cd814",
+      "headRepository": "aaronpk/draft-ietf-oauth-security-topics",
+      "headRefName": "patch-1",
+      "headRefOid": "8f4e77655d8d1708bf9b8f0480958f19e38dfb13",
+      "closedAt": "2023-11-09T13:07:56Z",
+      "mergedAt": "2023-11-09T13:07:56Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "4373cdfd31abc1d88efa0badf34767c44b8ba8c6"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDODGW6jc5mqykP",
+          "commit": {
+            "abbreviatedOid": "8f4e776"
+          },
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-11-09T13:07:48Z",
+          "updatedAt": "2023-11-09T13:07:48Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 88,
+      "id": "PR_kwDODGW6jc5mZwZK",
+      "title": "Address Roman's comments",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/88",
+      "state": "MERGED",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-02-08T16:59:58Z",
+      "updatedAt": "2024-02-08T17:01:20Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "e8f38033b4afb200f89ab54fc705b84c13958d15",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "danielfett/romans-feedback",
+      "headRefOid": "0ec325ad2340ce1fe6bbbfd4cb11e5047fc30449",
+      "closedAt": "2024-02-08T17:01:20Z",
+      "mergedAt": "2024-02-08T17:01:20Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "584860fe6a9c360360b0aab7b69047a086e7d814"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 90,
+      "id": "PR_kwDODGW6jc5nN5Fv",
+      "title": "Gen-ART review (typo fixes)",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/90",
+      "state": "OPEN",
+      "author": "thomas-fossati",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "A few typos I've found while doing my Gen-ART review of the document.",
+      "createdAt": "2024-02-18T14:35:28Z",
+      "updatedAt": "2024-02-18T14:35:28Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "a790095c6b3d48755d55fb07e75a2e076861073d",
+      "headRepository": "thomas-fossati/draft-ietf-oauth-security-topics",
+      "headRefName": "master",
+      "headRefOid": "9e38b1decc6bf87190c2a2197e7a10895a88d08f",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    }
+  ]
+}
