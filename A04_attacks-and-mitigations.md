@@ -18,15 +18,15 @@ URI parameters or to register a single pattern for multiple
 redirect URIs.
 
 This approach turned out to be more complex to implement and more
-error prone to manage than exact redirect URI matching. Several
-successful attacks exploiting flaws in the pattern matching
+error-prone to manage than exact redirect URI matching. Several
+successful attacks exploiting flaws in the pattern-matching
 implementation or concrete configurations have been observed in the
 wild (see, e.g., [@research.rub2]). Insufficient validation of the redirect URI effectively breaks
 client identification or authentication (depending on grant and client
 type) and allows the attacker to obtain an authorization code or
 access token, either
 
-  * by directly sending the user agent to a URI under the attackers
+  * by directly sending the user agent to a URI under the attacker's
     control, or
   * by exposing the OAuth credentials to an attacker by utilizing an
     open redirector at the client in conjunction with the way user
@@ -77,7 +77,7 @@ domain. If an automatic approval of the authorization is enabled
 [@!RFC6749]), the attack can be performed even without user
 interaction.
 
-If the attacker impersonated a public client, the attacker can
+If the attacker impersonates a public client, the attacker can
 exchange the code for tokens at the respective token endpoint.
 
 This attack will not work as easily for confidential clients, since
@@ -172,10 +172,10 @@ fragment and obtain the access token.
 ### Countermeasures {#iuv_countermeasures}
 
 The complexity of implementing and managing pattern matching correctly obviously
-causes security issues. This document therefore advises to simplify the required
+causes security issues. This document therefore advises simplifying the required
 logic and configuration by using exact redirect URI matching. This means the
 authorization server MUST ensure that the two URIs are equal, see [@!RFC3986],
-Section 6.2.1, Simple String Comparison, for details. The only exception are
+Section 6.2.1, Simple String Comparison, for details. The only exception is
 native apps using a `localhost` URI: In this case, the authorization server MUST allow variable
 port numbers as described in [@!RFC8252], Section 7.3.
 
@@ -190,7 +190,7 @@ Additional recommendations:
     for example `#_`, to URLs in Location headers.
   * Clients SHOULD use the authorization code response type instead of
     response types causing access token issuance at the authorization
-    endpoint. This offers countermeasures against reuse of leaked
+    endpoint. This offers countermeasures against the reuse of leaked
     credentials through the exchange process with the authorization
     server and token replay through sender-constraining of the access
     tokens.
@@ -207,7 +207,7 @@ without further checks.
 The contents of the authorization request URI or the authorization
 response URI can unintentionally be disclosed to attackers through the
 Referer HTTP header (see [@RFC9110], Section 10.1.3), by leaking either
-from the authorization server's or the client's web site, respectively. Most
+from the authorization server's or the client's website, respectively. Most
 importantly, authorization codes or `state` values can be disclosed in
 this way. Although specified otherwise in [@RFC9110], Section 10.1.3,
 the same may happen to access tokens conveyed in URI fragments due to
@@ -222,7 +222,7 @@ a successful authorization request, renders a page that
   * contains links to other pages under the attacker's control and a
     user clicks on such a link, or
   * includes third-party content (advertisements in iframes, images,
-    etc.), for example if the page contains user-generated content
+    etc.), for example, if the page contains user-generated content
     (blog).
 
 As soon as the browser navigates to the attacker's page or loads the
@@ -267,7 +267,7 @@ The following measures further reduce the chances of a successful attack:
   * As described in [@!RFC6749], Section 4.1.2, authorization codes
     MUST be invalidated by the authorization server after their first use at the token
     endpoint. For example, if an authorization server invalidated the code after the
-    legitimate client redeemed it, the attacker would fail exchanging
+    legitimate client redeemed it, the attacker would fail to exchange
     this code later.
 
     This does not mitigate the attack if the attacker manages to
@@ -278,10 +278,10 @@ The following measures further reduce the chances of a successful attack:
   * The `state` value SHOULD be invalidated by the client after its
     first use at the redirection endpoint. If this is implemented, and
     an attacker receives a token through the Referer header from the
-    client's web site, the `state` was already used, invalidated by
+    client's website, the `state` was already used, invalidated by
     the client and cannot be used again by the attacker. (This does
     not help if the `state` leaks from the
-    authorization server's web site, since then the `state`
+    authorization server's website, since then the `state`
     has not been used at the redirection endpoint at the client yet.)
   * Use the form post response mode instead of a redirect for the
     authorization response (see [@!OAuth.Post]).
@@ -314,11 +314,11 @@ Countermeasures:
 An access token may end up in the browser history if a client or a web
 site that already has a token deliberately navigates to a page like
 `provider.com/get_user_profile?access_token=abcdef`. [@!RFC6750]
-discourages this practice and advises to transfer tokens via a header,
+discourages this practice and advises transferring tokens via a header,
 but in practice web sites often pass access tokens in query
 parameters.
 
-In case of the implicit grant, a URL like
+In the case of implicit grant, a URL like
 `client.example/redirection_endpoint#access_token=abcdef` may also end
 up in the browser history as a result of a redirect from a provider's
 authorization endpoint.
@@ -354,7 +354,7 @@ variants of the attack outlined below.
 
 Preconditions: For this variant of the attack to work, it is assumed that
 
-  * the implicit or authorization code grant are used with multiple authorization servers
+  * the implicit or authorization code grant is used with multiple authorization servers
     of which one is considered "honest" (H-AS) and one is operated by
     the attacker (A-AS), and
   * the client stores the authorization server chosen by the user in a session bound to
@@ -364,12 +364,12 @@ Preconditions: For this variant of the attack to work, it is assumed that
 In the following, it is further assumed that the client is registered with H-AS (URI:
 `https://honest.as.example`, client ID: `7ZGZldHQ`) and with A-AS (URI:
 `https://attacker.example`, client ID: `666RVZJTA`). URLs shown in the following
-example are shortened for presentation to only include parameters relevant for the
+example are shortened for presentation to only include parameters relevant to the
 attack.
 
 Attack on the authorization code grant:
 
- 1. The user selects to start the grant using A-AS (e.g., by clicking on a button at the
+ 1. The user selects to start the grant using A-AS (e.g., by clicking on a button on the
     client's website).
  2. The client stores in the user's session that the user selected
     "A-AS" and redirects the user to A-AS's authorization endpoint
@@ -415,7 +415,7 @@ Variants:
     do not check the redirect URIs properly, attackers can mount an attack
     called "Cross-Social Network Request Forgery". These attacks have been
     observed in practice. Refer to [@research.jcs_14] for details.
-  * OpenID Connect: There are variants that can be used to attack OpenID
+  * OpenID Connect: Some variants can be used to attack OpenID
     Connect. In these attacks, the attacker misuses features of the OpenID
     Connect Discovery [@OpenID.Discovery] mechanism or replays access tokens or ID
     Tokens to conduct a mix-up attack. The attacks are described in detail in
@@ -434,7 +434,7 @@ issuer they sent the authorization request to and bind this information to the
 user agent. The issuer serves, via the associated metadata, as an abstract
 identifier for the combination of the authorization endpoint and token endpoint
 that are to be used in the flow. If an issuer identifier is not available, for
-example, if neither OAuth Authorization Server Metadata [@RFC8414] nor OpenID Connect Discovery [@OpenID.Discovery] are
+example, if neither OAuth Authorization Server Metadata [@RFC8414] nor OpenID Connect Discovery [@OpenID.Discovery] is
 used, a different unique identifier for this tuple or the tuple itself can be
 used instead. For brevity of presentation, such a deployment-specific identifier
 will be subsumed under the issuer (or issuer identifier) in the following.
@@ -487,7 +487,7 @@ This defense SHOULD therefore only be used if other options are not available.
 
 ## Authorization Code Injection {#code_injection}
 
-An attacker that has gained access to an authorization code contained in an
+An attacker who has gained access to an authorization code contained in an
 authorization response (see Attacker A3 in (#secmodel)) can try to redeem the
 authorization code for an access token or otherwise make use of the
 authorization code.
@@ -511,12 +511,12 @@ use cases for this attack include:
 
   * The attacker wants to access certain functions in this particular
     client. As an example, the attacker wants to impersonate their
-    victim in a certain app or on a certain web site.
+    victim in a certain app or on a certain website.
   * The authorization or resource servers are limited to certain
     networks that the attacker is unable to access directly.
 
 Except in these special cases, authorization code injection is usually not
-interesting when the code was created for a public client, as sending the code
+interesting when the code is created for a public client, as sending the code
 to the token endpoint is a simpler and more powerful attack, as described above.
 
 ### Attack Description
@@ -524,7 +524,7 @@ The authorization code injection attack works as follows:
 
  1. The attacker obtains an authorization code (see attacker A3 in (#secmodel)). For the rest
     of the attack, only the capabilities of a web attacker (A1) are required.
- 2. From the attacker's own device, the attacker starts a regular OAuth authorization
+ 2. From the attacker's device, the attacker starts a regular OAuth authorization
     process with the legitimate client.
  3. In the response of the authorization server to the legitimate client, the
     attacker replaces the newly created authorization code with the stolen
@@ -545,7 +545,7 @@ The authorization code injection attack works as follows:
     and/or identity.
 
 ### Discussion
-Obviously, the check in step (5.) will fail if the code was issued to
+Obviously, the check-in step (5.) will fail if the code was issued to
 another client ID, e.g., a client set up by the attacker. The check
 will also fail if the authorization code was already redeemed by the
 legitimate user and was one-time use only.
@@ -563,19 +563,19 @@ identical.". In the attack scenario described above, the legitimate
 client would use the correct redirect URI it always uses for
 authorization requests. But this URI would not match the tampered
 redirect URI used by the attacker (otherwise, the redirect would not
-land at the attackers page). So the authorization server would detect
+land at the attacker's page). So the authorization server would detect
 the attack and refuse to exchange the code.
 
 This check could also detect attempts to inject an authorization
 code that had been obtained from another instance of the same client
-on another device, if certain conditions are fulfilled:
+on another device if certain conditions are fulfilled:
 
   * the redirect URI itself needs to contain a nonce or another kind
     of one-time use, secret data and
   * the client has bound this data to this particular instance of the
     client.
 
-But this approach conflicts with the idea to enforce exact redirect
+But this approach conflicts with the idea of enforcing exact redirect
 URI matching at the authorization endpoint. Moreover, it has been
 observed that providers very often ignore the `redirect_uri` check
 requirement at this stage, maybe because it doesn't seem to be
@@ -600,7 +600,7 @@ to the token endpoint.
 Asymmetric methods for client authentication do not stop this attack, as the
 legitimate client authenticates at the token endpoint.
 
-This document therefore recommends to instead bind every authorization
+This document therefore recommends instead binding every authorization
 code to a certain client instance on a certain device (or in a certain
 user agent) in the context of a certain transaction using one of the
 mechanisms described next.
@@ -619,7 +619,7 @@ associated with a `code_challenge` that does not match this verifier. PKCE is a
 deployed OAuth feature, although its originally intended use was solely focused
 on securing native apps, not the broader use recommended by this document.
 
-PKCE does not only protect against the autorization code injection attack, but
+PKCE does not only protect against the autorization code injection attack but
 also protects authorization codes created for public clients: PKCE ensures that
 an attacker cannot redeem a stolen authorization code at the token endpoint of
 the authorization server without knowledge of the `code_verifier`.
@@ -627,10 +627,10 @@ the authorization server without knowledge of the `code_verifier`.
 #### Nonce {#nonce_as_injection_protection}
 
 OpenID Connect's existing `nonce` parameter can protect against authorization
-code injection attacks. The `nonce` value is one-time use and created by the
-client. The client is supposed to bind it to the user agent session and sends it
+code injection attacks. The `nonce` value is a one-time use and is created by the
+client. The client is supposed to bind it to the user agent session and send it
 with the initial request to the OpenID Provider (OP). The OP puts the received `nonce` value into the ID Token that is issued
-as part of the code exchange at the token endpoint. If an attacker injected an
+as part of the code exchange at the token endpoint. If an attacker injects an
 authorization code in the authorization response, the nonce value in the client
 session and the nonce value in the ID token will not match and the attack is
 detected. The assumption is that an attacker cannot get hold of the user agent
@@ -640,7 +640,7 @@ code.
 It is important to note that this countermeasure only works if the client
 properly checks the `nonce` parameter in the ID Token and does not use any
 issued token until this check has succeeded. More precisely, a client protecting
-itself against code injection using the `nonce` parameter,
+itself against code injection using the `nonce` parameter
 
   1. MUST validate the `nonce` in the ID Token obtained from the token endpoint,
      even if another ID Token was obtained from the authorization response
@@ -694,7 +694,7 @@ client.
 To conduct the attack, the attacker starts an OAuth flow with the
 client using the implicit grant and modifies the authorization
 response by replacing the access token issued by the authorization
-server or directly makes up an authorization server response including
+server or directly making up an authorization server response including
 the leaked access token. Since the response includes the `state` value
 generated by the client for this particular transaction, the client
 does not treat the response as a CSRF attack and uses the access token
@@ -703,7 +703,7 @@ injected by the attacker.
 ### Countermeasures
 
 There is no way to detect such an injection attack in pure-OAuth
-flows, since the token is issued without any binding to the
+flows since the token is issued without any binding to the
 transaction or the particular user agent.
 
 In OpenID Connect, the attack can be mitigated, as the authorization response
@@ -722,7 +722,7 @@ endpoint directly.
 The recommendations in (#implicit_grant_recommendation) follow from this.
 
 
-## Cross Site Request Forgery {#csrf}
+## Cross-Site Request Forgery {#csrf}
 
 An attacker might attempt to inject a request to the redirect URI of
 the legitimate client on the victim's device, e.g., to cause the
@@ -744,7 +744,7 @@ important to note that:
    CSRF protection. If an authorization server does not support PKCE,
    `state` or `nonce` MUST be used for CSRF protection.
 
- * If `state` is used for carrying application state, and integrity of
+ * If `state` is used for carrying application state, and the integrity of
    its contents is a concern, clients MUST protect `state` against
    tampering and swapping. This can be achieved by binding the
    contents of state to the browser session and/or signed/encrypted
@@ -845,7 +845,7 @@ circumstances.
 
 ### Access Token Phishing by Counterfeit Resource Server {#counterfeit_res_server}
 
-An attacker may setup their own resource server and trick a client into
+An attacker may set up their own resource server and trick a client into
 sending access tokens to it that are valid for other resource servers
 (see Attackers A1 and A5 in (#secmodel)). If the client sends a valid access token to
 this counterfeit resource server, the attacker in turn may use that
@@ -855,7 +855,7 @@ This attack assumes the client is not bound to one specific resource
 server (and its URL) at development time, but client instances are
 provided with the resource server URL at runtime. This kind of late
 binding is typical in situations where the client uses a service
-implementing a standardized API (e.g., for e-Mail, calendar, health,
+implementing a standardized API (e.g., for e-mail, calendar, health,
 or banking) and where the client is configured by a user or
 administrator for a service that this user or company uses.
 
@@ -891,7 +891,7 @@ order to cope with access token replay by malicious actors:
   * The resource server MUST treat access tokens like other sensitive secrets
     and not store or transfer them in plain text.
 
-The first and second recommendation also apply to other scenarios
+The first and second recommendations also apply to other scenarios
 where access tokens leak (see Attacker A5 in (#secmodel)).
 
 ## Misuse of Stolen Access Tokens
@@ -912,7 +912,7 @@ prevent the use of these measures in some deployments.
 
 As the name suggests, sender-constrained access tokens scope the
 applicability of an access token to a certain sender. This sender is
-obliged to demonstrate knowledge of a certain secret as prerequisite
+obliged to demonstrate knowledge of a certain secret as a prerequisite
 for the acceptance of that token at a resource server.
 
 
@@ -920,7 +920,7 @@ A typical flow looks like this:
 
  1. The authorization server associates data with the access token
     that binds this particular token to a certain client. The binding
-    can utilize the client identity, but in most cases the authorization server utilizes
+    can utilize the client's identity, but in most cases, the authorization server utilizes
     key material (or data derived from the key material) known to the
     client.
  2. This key material must be distributed somehow. Either the key
@@ -935,28 +935,31 @@ A typical flow looks like this:
  3. The resource server must implement the actual proof of possession check. This
     is typically done on the application level, often tied to specific
     material provided by transport layer (e.g., TLS). The resource server must also
-    ensure that replay of the proof of possession is not possible.
+    ensure that a replay of the proof of possession is not possible.
 
 Two methods for sender-constrained access tokens using proof-of-possession have
 been defined by the OAuth working group and are in use in practice:
 
-  * OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound Access
-    Tokens ([@!RFC8705]): The approach as specified in this document allows the
-    use of mutual TLS (mTLS) for both client authentication and
-    sender-constrained access tokens. For the purpose of sender-constrained
-    access tokens, the client is identified towards the resource server by the
-    fingerprint of its public key. During processing of an access token request,
-    the authorization server obtains the client's public key from the TLS stack
-    and associates its fingerprint with the respective access tokens. The
-    resource server in the same way obtains the public key from the TLS stack
-    and compares its fingerprint with the fingerprint associated with the access
-    token.
-  * OAuth 2.0 Demonstrating Proof of Possession (DPoP) ([@!RFC9449]): DPoP
-    outlines an application-level sender-constraining for access and refresh
-    tokens. It uses proof-of-possession based on a public/private key pair and
-    application-level signing. DPoP can be used with public clients and, in case
-    of confidential clients, can be combined with any client authentication
-    method.
+  * OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound
+    Access Tokens ([@!RFC8705]): The approach as specified in this
+    document allows the use of mutual TLS (mTLS) for both client
+    authentication and sender-constrained access tokens. For the
+    purpose of sender-constrained access tokens, the client is
+    identified towards the resource server by the fingerprint of its
+    public key. During the processing of an access token request, the
+    authorization server obtains the client's public key from the TLS
+    stack and associates its fingerprint with the respective access
+    tokens. The resource server in the same way obtains the public key
+    from the TLS stack and compares its fingerprint with the
+    fingerprint associated with the access token.
+  * OAuth 2.0 Demonstrating Proof of Possession (DPoP) ([@!RFC9449]):
+    DPoP outlines an
+    application-level sender-constraining for access and refresh
+    tokens. It uses
+    proof-of-possession based on a public/private key pair and
+    application-level signing. DPoP can be used with public clients
+    and, in the case of confidential clients, can be combined with any
+    client authentication method.
 
 Note that the security of sender-constrained tokens is undermined when
 an attacker gets access to the token and the key material. This is, in
@@ -964,7 +967,7 @@ particular, the case for corrupted client software and cross-site
 scripting attacks (when the client is running in the browser). If the
 key material is protected in a hardware or software security module or
 only indirectly accessible (like in a TLS stack), sender-constrained
-tokens at least protect against a use of the token when the client is
+tokens at least protect against the use of the token when the client is
 offline, i.e., when the security module or interface is not available
 to the attacker. This applies to access tokens as well as to refresh
 tokens (see (#refresh_token_protection)).
@@ -1003,7 +1006,7 @@ information can be encoded in the scope value (Section 3.3 of [@!RFC6749]).
 
 Instead of the URL, it is also possible to utilize the fingerprint of
 the resource server's X.509 certificate as audience value. This
-variant would also allow to detect an attempt to spoof the legitimate
+variant would also allow detection of an attempt to spoof the legitimate
 resource server's URL by using a valid TLS certificate obtained from a
 different CA. It might also be considered a privacy benefit to hide
 the resource server URL from the authorization server.
@@ -1015,15 +1018,15 @@ single resource server-specific access token when accessing several resource
 servers. (Resource indicators, as specified in
 [@RFC8707], can help to achieve this.)
 [@I-D.ietf-oauth-token-binding] has the same property since different
-token binding IDs must be associated with the access token. Using
+token-binding IDs must be associated with the access token. Using
 [@!RFC8705], on the other hand, allows a client to use the
 access token at multiple resource servers.
 
 It should be noted that audience restrictions, or generally speaking an
 indication by the client to the authorization server where it wants to
-use the access token, has additional benefits beyond the scope of
+use the access token, have additional benefits beyond the scope of
 token leakage prevention. It allows the authorization server to create
-a different access token whose format and content is specifically minted
+a different access token whose format and content are specifically minted
 for the respective server. This has huge functional and privacy
 advantages in deployments using structured access tokens.
 
@@ -1082,7 +1085,7 @@ clients to prevent access token phishing is likely to fail as well.
 Moreover, given the ratio of clients to authorization and resource
 servers, it is considered the more viable approach to move as much as
 possible security-related logic to those entities. Clearly, the client
-has to contribute to the overall security. But there are alternative
+has to contribute to the overall security. However, there are alternative
 countermeasures, as described before, that provide a
 better balance between the involved parties.
 
@@ -1102,10 +1105,10 @@ redirectors to produce URLs pointing to the client and utilize them to
 exfiltrate authorization codes and access tokens, as described in
 (#redir_uri_open_redir). Another abuse case is to produce URLs that
 appear to point to the client. This might trick users into trusting the URL
-and follow it in their browser. This can be abused for phishing.
+and following it in their browser. This can be abused for phishing.
 
 In order to prevent open redirection, clients should only redirect if
-the target URLs are allowlisted or if the origin and integrity of a
+the target URLs are allowed or if the origin and integrity of a
 request can be authenticated. Countermeasures against open redirection
 are described by OWASP [@owasp.redir].
 
@@ -1114,7 +1117,7 @@ are described by OWASP [@owasp.redir].
 Just as with clients, attackers could try to utilize a user's trust in
 the authorization server (and its URL in particular) for performing
 phishing attacks. OAuth authorization servers regularly redirect users
-to other web sites (the clients), but must do so in a safe way.
+to other websites (the clients), but must do so in a safe way.
 
 [@!RFC6749], Section 4.1.2.1, already prevents open redirects by
 stating that the authorization server MUST NOT automatically redirect the user agent in case
@@ -1145,7 +1148,7 @@ use case, prompt the user for credentials when needed, before redirecting the
 user. Based on its risk assessment, the authorization server needs to decide whether it can trust
 the redirect URI or not. It could take into account  URI analytics done
 internally or through some external service to evaluate the credibility and
-trustworthiness content behind the URI, and the source of the redirect URI and
+trustworthiness of content behind the URI, and the source of the redirect URI and
 other client data.
 
 The authorization server SHOULD only automatically redirect the user agent if it trusts the
@@ -1171,7 +1174,7 @@ This discloses the sensitive credentials to the client. If the client
 is malicious, it can use the credentials to impersonate the user
 at the authorization server.
 
-The behavior might be unexpected for developers, but is defined in
+The behavior might be unexpected for developers but is defined in
 [@RFC9110], Section 15.4.8. This status code does not require the user
 agent to rewrite the POST request to a GET request and thereby drop
 the form data in the POST request body.
@@ -1202,31 +1205,31 @@ security controls.
 
 In some situations, the reverse proxy needs to pass security-related
 data to the upstream application servers for further processing.
-Examples include the IP address of the request originator, token binding
-ids, and authenticated TLS client certificates. This data is usually
+Examples include the IP address of the request originator, token-binding
+IDs, and authenticated TLS client certificates. This data is usually
 passed in HTTP headers added to the upstream request. While the headers
 are often custom, application-specific headers, standardized header
 fields for client certificates and client certificate chains are defined
 in [@RFC9440].
 
-If the reverse proxy would pass through any header sent from the
+If the reverse proxy passes through any header sent from the
 outside, an attacker could try to directly send the faked header
 values through the proxy to the application server in order to
 circumvent security controls that way. For example, it is standard
 practice of reverse proxies to accept `X-Forwarded-For` headers and just
 add the origin of the inbound request (making it a list). Depending on
 the logic performed in the application server, the attacker could
-simply add an allowlisted IP address to the header and render the protection useless.
+simply add an allowed IP address to the header and render the protection useless.
 
 A reverse proxy MUST therefore sanitize any inbound requests to ensure
 the authenticity and integrity of all header values relevant for the
 security of the application servers.
 
 If an attacker were able to get access to the internal network between
-proxy and application server, the attacker could also try to
+the proxy and application server, the attacker could also try to
 circumvent security controls in place. It is, therefore, essential to
 ensure the authenticity of the communicating entities. Furthermore,
-the communication link between reverse proxy and application server
+the communication link between the reverse proxy and application server
 MUST be protected against eavesdropping, injection, and replay of
 messages.
 
@@ -1242,14 +1245,14 @@ potential impact of access token leakage.
 
 ### Discussion
 
-Refresh tokens are an attractive target for attackers, since they
+Refresh tokens are an attractive target for attackers since they
 represent the overall grant a resource owner delegated to a certain
 client. If an attacker is able to exfiltrate and successfully replay a
 refresh token, the attacker will be able to mint access tokens and use
 them to access resource servers on behalf of the resource owner.
 
 
-[@!RFC6749] already provides a robust baseline protection by requiring
+[@!RFC6749] already provides robust baseline protection by requiring
 
   * confidentiality of the refresh tokens in transit and storage,
   * the transmission of refresh tokens over TLS-protected connections between
@@ -1259,8 +1262,8 @@ them to access resource servers on behalf of the resource owner.
     if possible, and
   * that refresh tokens cannot be generated, modified, or guessed.
 
-[@!RFC6749] also lays the foundation for further (implementation
-specific) security measures, such as refresh token expiration and
+[@!RFC6749] also lays the foundation for further
+(implementation-specific) security measures, such as refresh token expiration and
 revocation as well as refresh token rotation by defining respective
 error codes and response behaviors.
 
@@ -1358,7 +1361,7 @@ As described in Section 4.4.1.9 of [@!RFC6819], the authorization request is
 susceptible to clickjacking attacks, also called user interface redressing. In
 such an attack, an attacker embeds the authorization endpoint user interface in
 an innocuous context. A user believing to interact with that context, for
-example, clicking on buttons, inadvertently interacts with the authorization
+example, by clicking on buttons, inadvertently interacts with the authorization
 endpoint user interface instead. The opposite can be achieved as well: A user
 believing to interact with the authorization endpoint might inadvertently type a
 password into an attacker-provided input field overlaid over the original user

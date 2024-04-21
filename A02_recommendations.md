@@ -59,9 +59,9 @@ injection attacks (see (#code_injection)) and misuse of authorization codes usin
  * Public clients MUST use PKCE [@!RFC7636] to this end, as motivated in
    (#pkce_as_injection_protection).
  * For confidential clients, the use of PKCE [@!RFC7636] is RECOMMENDED, as it
-   provides a strong protection against misuse and injection of authorization
+   provides strong protection against misuse and injection of authorization
    codes as described in (#pkce_as_injection_protection) and, as a side-effect,
-   prevents CSRF even in presence of strong attackers as described in
+   prevents CSRF even in the presence of strong attackers as described in
    (#csrf_countermeasures).
  * With additional precautions, described in (#nonce_as_injection_protection),
    confidential OpenID Connect [@!OpenID.Core] clients MAY use the `nonce` parameter and the
@@ -113,7 +113,7 @@ access token replay as described in (#insufficient_uri_validation),
 Moreover, no viable method for sender-constraining exists to
 bind access tokens to a specific client (as recommended in
 (#token_replay_prevention)) when the access tokens are issued in the
-authorization response. This means that an attacker can use leaked or stolen
+authorization response. This means that an attacker can use the leaked or stolen
 access token at a resource endpoint.
 
 In order to avoid these issues, clients SHOULD NOT use the implicit
@@ -137,7 +137,7 @@ sender-constrain the issued tokens (see next section).
 
 A sender-constrained access token scopes the applicability of an access
 token to a certain sender. This sender is obliged to demonstrate knowledge
-of a certain secret as prerequisite for the acceptance of that token at
+of a certain secret as a prerequisite for the acceptance of that token at
 the recipient (e.g., a resource server).
 
 Authorization and resource servers SHOULD use mechanisms for sender-constraining
@@ -252,4 +252,4 @@ including the Token Endpoint, Authorization Server Metadata Endpoint, `jwks_uri`
 Endpoint, and the Dynamic Client Registration Endpoint MAY support the use of
 Cross-Origin Resource Sharing (CORS, [@WHATWG.CORS]). However, CORS MUST NOT be
 supported at the Authorization Endpoint as the client does not access this
-endpoint directly, instead the client redirects the user agent to it.
+endpoint directly, instead, the client redirects the user agent to it.
