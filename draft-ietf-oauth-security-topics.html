@@ -1286,7 +1286,7 @@ deemed less secure or even insecure.<a href="#section-abstract-1" class="pilcrow
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.7">
-                <p id="section-toc.1-1.4.2.7.1"><a href="#section-4.7" class="auto internal xref">4.7</a>.  <a href="#name-cross-site-request-forgery" class="internal xref">Cross Site Request Forgery</a></p>
+                <p id="section-toc.1-1.4.2.7.1"><a href="#section-4.7" class="auto internal xref">4.7</a>.  <a href="#name-cross-site-request-forgery" class="internal xref">Cross-Site Request Forgery</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.7.2.1">
                     <p id="section-toc.1-1.4.2.7.2.1.1"><a href="#section-4.7.1" class="auto internal xref">4.7.1</a>.  <a href="#name-countermeasures-6" class="internal xref">Countermeasures</a></p>
@@ -1581,9 +1581,9 @@ injection attacks (see <a href="#code_injection" class="auto internal xref">Sect
 <a href="#pkce_as_injection_protection" class="auto internal xref">Section 4.5.3.1</a>.<a href="#section-2.1.1-2.1" class="pilcrow">¶</a>
 </li>
             <li class="compact" id="section-2.1.1-2.2">For confidential clients, the use of PKCE <span>[<a href="#RFC7636" class="cite xref">RFC7636</a>]</span> is RECOMMENDED, as it
-provides a strong protection against misuse and injection of authorization
+provides strong protection against misuse and injection of authorization
 codes as described in <a href="#pkce_as_injection_protection" class="auto internal xref">Section 4.5.3.1</a> and, as a side-effect,
-prevents CSRF even in presence of strong attackers as described in
+prevents CSRF even in the presence of strong attackers as described in
 <a href="#csrf_countermeasures" class="auto internal xref">Section 4.7.1</a>.<a href="#section-2.1.1-2.2" class="pilcrow">¶</a>
 </li>
             <li class="compact" id="section-2.1.1-2.3">With additional precautions, described in <a href="#nonce_as_injection_protection" class="auto internal xref">Section 4.5.3.2</a>,
@@ -1634,7 +1634,7 @@ access token replay as described in <a href="#insufficient_uri_validation" class
 <p id="section-2.1.2-2">Moreover, no viable method for sender-constraining exists to
 bind access tokens to a specific client (as recommended in
 <a href="#token_replay_prevention" class="auto internal xref">Section 2.2</a>) when the access tokens are issued in the
-authorization response. This means that an attacker can use leaked or stolen
+authorization response. This means that an attacker can use the leaked or stolen
 access token at a resource endpoint.<a href="#section-2.1.2-2" class="pilcrow">¶</a></p>
 <p id="section-2.1.2-3">In order to avoid these issues, clients SHOULD NOT use the implicit
 grant (response type "token") or other response types issuing
@@ -1665,7 +1665,7 @@ sender-constrain the issued tokens (see next section).<a href="#section-2.1.2-4"
           </h4>
 <p id="section-2.2.1-1">A sender-constrained access token scopes the applicability of an access
 token to a certain sender. This sender is obliged to demonstrate knowledge
-of a certain secret as prerequisite for the acceptance of that token at
+of a certain secret as a prerequisite for the acceptance of that token at
 the recipient (e.g., a resource server).<a href="#section-2.2.1-1" class="pilcrow">¶</a></p>
 <p id="section-2.2.1-2">Authorization and resource servers SHOULD use mechanisms for sender-constraining
 access tokens, such as Mutual TLS for OAuth 2.0 <span>[<a href="#RFC8705" class="cite xref">RFC8705</a>]</span> or OAuth 2.0
@@ -1794,7 +1794,7 @@ including the Token Endpoint, Authorization Server Metadata Endpoint, <code>jwks
 Endpoint, and the Dynamic Client Registration Endpoint MAY support the use of
 Cross-Origin Resource Sharing (CORS, <span>[<a href="#WHATWG.CORS" class="cite xref">WHATWG.CORS</a>]</span>). However, CORS MUST NOT be
 supported at the Authorization Endpoint as the client does not access this
-endpoint directly, instead the client redirects the user agent to it.<a href="#section-2.6-8" class="pilcrow">¶</a></p>
+endpoint directly, instead, the client redirects the user agent to it.<a href="#section-2.6-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1920,15 +1920,15 @@ allows clients to encode transaction state into additional redirect
 URI parameters or to register a single pattern for multiple
 redirect URIs.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 <p id="section-4.1-2">This approach turned out to be more complex to implement and more
-error prone to manage than exact redirect URI matching. Several
-successful attacks exploiting flaws in the pattern matching
+error-prone to manage than exact redirect URI matching. Several
+successful attacks exploiting flaws in the pattern-matching
 implementation or concrete configurations have been observed in the
 wild (see, e.g., <span>[<a href="#research.rub2" class="cite xref">research.rub2</a>]</span>). Insufficient validation of the redirect URI effectively breaks
 client identification or authentication (depending on grant and client
 type) and allows the attacker to obtain an authorization code or
 access token, either<a href="#section-4.1-2" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="section-4.1-3.1">by directly sending the user agent to a URI under the attackers
+<li class="compact" id="section-4.1-3.1">by directly sending the user agent to a URI under the attacker's
 control, or<a href="#section-4.1-3.1" class="pilcrow">¶</a>
 </li>
           <li class="compact" id="section-4.1-3.2">by exposing the OAuth credentials to an attacker by utilizing an
@@ -1979,7 +1979,7 @@ domain. If an automatic approval of the authorization is enabled
 (which is not recommended for public clients according to
 <span>[<a href="#RFC6749" class="cite xref">RFC6749</a>]</span>), the attack can be performed even without user
 interaction.<a href="#section-4.1.1-8" class="pilcrow">¶</a></p>
-<p id="section-4.1.1-9">If the attacker impersonated a public client, the attacker can
+<p id="section-4.1.1-9">If the attacker impersonates a public client, the attacker can
 exchange the code for tokens at the respective token endpoint.<a href="#section-4.1.1-9" class="pilcrow">¶</a></p>
 <p id="section-4.1.1-10">This attack will not work as easily for confidential clients, since
 the code exchange requires authentication with the legitimate client's
@@ -2081,10 +2081,10 @@ fragment and obtain the access token.<a href="#section-4.1.2-14" class="pilcrow"
 <a href="#section-4.1.3" class="section-number selfRef">4.1.3. </a><a href="#name-countermeasures" class="section-name selfRef">Countermeasures</a>
           </h4>
 <p id="section-4.1.3-1">The complexity of implementing and managing pattern matching correctly obviously
-causes security issues. This document therefore advises to simplify the required
+causes security issues. This document therefore advises simplifying the required
 logic and configuration by using exact redirect URI matching. This means the
 authorization server MUST ensure that the two URIs are equal, see <span>[<a href="#RFC3986" class="cite xref">RFC3986</a>]</span>,
-Section 6.2.1, Simple String Comparison, for details. The only exception are
+Section 6.2.1, Simple String Comparison, for details. The only exception is
 native apps using a <code>localhost</code> URI: In this case, the authorization server MUST allow variable
 port numbers as described in <span>[<a href="#RFC8252" class="cite xref">RFC8252</a>]</span>, Section 7.3.<a href="#section-4.1.3-1" class="pilcrow">¶</a></p>
 <p id="section-4.1.3-2">Additional recommendations:<a href="#section-4.1.3-2" class="pilcrow">¶</a></p>
@@ -2100,7 +2100,7 @@ for example <code>#_</code>, to URLs in Location headers.<a href="#section-4.1.3
 </li>
             <li class="compact" id="section-4.1.3-3.3">Clients SHOULD use the authorization code response type instead of
 response types causing access token issuance at the authorization
-endpoint. This offers countermeasures against reuse of leaked
+endpoint. This offers countermeasures against the reuse of leaked
 credentials through the exchange process with the authorization
 server and token replay through sender-constraining of the access
 tokens.<a href="#section-4.1.3-3.3" class="pilcrow">¶</a>
@@ -2123,7 +2123,7 @@ without further checks.<a href="#section-4.1.3-4" class="pilcrow">¶</a></p>
 <p id="section-4.2-1">The contents of the authorization request URI or the authorization
 response URI can unintentionally be disclosed to attackers through the
 Referer HTTP header (see <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span>, Section 10.1.3), by leaking either
-from the authorization server's or the client's web site, respectively. Most
+from the authorization server's or the client's website, respectively. Most
 importantly, authorization codes or <code>state</code> values can be disclosed in
 this way. Although specified otherwise in <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span>, Section 10.1.3,
 the same may happen to access tokens conveyed in URI fragments due to
@@ -2141,7 +2141,7 @@ a successful authorization request, renders a page that<a href="#section-4.2.1-1
 user clicks on such a link, or<a href="#section-4.2.1-2.1" class="pilcrow">¶</a>
 </li>
             <li class="compact" id="section-4.2.1-2.2">includes third-party content (advertisements in iframes, images,
-etc.), for example if the page contains user-generated content
+etc.), for example, if the page contains user-generated content
 (blog).<a href="#section-4.2.1-2.2" class="pilcrow">¶</a>
 </li>
           </ul>
@@ -2201,7 +2201,7 @@ the code exchange.<a href="#section-4.2.4-3.3" class="pilcrow">¶</a>
               <p id="section-4.2.4-3.4.1">As described in <span>[<a href="#RFC6749" class="cite xref">RFC6749</a>]</span>, Section 4.1.2, authorization codes
 MUST be invalidated by the authorization server after their first use at the token
 endpoint. For example, if an authorization server invalidated the code after the
-legitimate client redeemed it, the attacker would fail exchanging
+legitimate client redeemed it, the attacker would fail to exchange
 this code later.<a href="#section-4.2.4-3.4.1" class="pilcrow">¶</a></p>
 <p id="section-4.2.4-3.4.2">This does not mitigate the attack if the attacker manages to
 exchange the code for a token before the legitimate client does
@@ -2213,10 +2213,10 @@ tokens issued previously based on that code.<a href="#section-4.2.4-3.4.2" class
               <p id="section-4.2.4-3.5.1">The <code>state</code> value SHOULD be invalidated by the client after its
 first use at the redirection endpoint. If this is implemented, and
 an attacker receives a token through the Referer header from the
-client's web site, the <code>state</code> was already used, invalidated by
+client's website, the <code>state</code> was already used, invalidated by
 the client and cannot be used again by the attacker. (This does
 not help if the <code>state</code> leaks from the
-authorization server's web site, since then the <code>state</code>
+authorization server's website, since then the <code>state</code>
 has not been used at the redirection endpoint at the client yet.)<a href="#section-4.2.4-3.5.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4.2.4-3.6">
@@ -2266,10 +2266,10 @@ response (see <span>[<a href="#OAuth.Post" class="cite xref">OAuth.Post</a>]</sp
 <p id="section-4.3.2-1">An access token may end up in the browser history if a client or a web
 site that already has a token deliberately navigates to a page like
 <code>provider.com/get_user_profile?access_token=abcdef</code>. <span>[<a href="#RFC6750" class="cite xref">RFC6750</a>]</span>
-discourages this practice and advises to transfer tokens via a header,
+discourages this practice and advises transferring tokens via a header,
 but in practice web sites often pass access tokens in query
 parameters.<a href="#section-4.3.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.3.2-2">In case of the implicit grant, a URL like
+<p id="section-4.3.2-2">In the case of implicit grant, a URL like
 <code>client.example/redirection_endpoint#access_token=abcdef</code> may also end
 up in the browser history as a result of a redirect from a provider's
 authorization endpoint.<a href="#section-4.3.2-2" class="pilcrow">¶</a></p>
@@ -2312,7 +2312,7 @@ server.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
 variants of the attack outlined below.<a href="#section-4.4.1-1" class="pilcrow">¶</a></p>
 <p id="section-4.4.1-2">Preconditions: For this variant of the attack to work, it is assumed that<a href="#section-4.4.1-2" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="section-4.4.1-3.1">the implicit or authorization code grant are used with multiple authorization servers
+<li class="compact" id="section-4.4.1-3.1">the implicit or authorization code grant is used with multiple authorization servers
 of which one is considered "honest" (H-AS) and one is operated by
 the attacker (A-AS), and<a href="#section-4.4.1-3.1" class="pilcrow">¶</a>
 </li>
@@ -2324,11 +2324,11 @@ each authorization server.<a href="#section-4.4.1-3.2" class="pilcrow">¶</a>
 <p id="section-4.4.1-4">In the following, it is further assumed that the client is registered with H-AS (URI:
 <code>https://honest.as.example</code>, client ID: <code>7ZGZldHQ</code>) and with A-AS (URI:
 <code>https://attacker.example</code>, client ID: <code>666RVZJTA</code>). URLs shown in the following
-example are shortened for presentation to only include parameters relevant for the
+example are shortened for presentation to only include parameters relevant to the
 attack.<a href="#section-4.4.1-4" class="pilcrow">¶</a></p>
 <p id="section-4.4.1-5">Attack on the authorization code grant:<a href="#section-4.4.1-5" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-4.4.1-6">
-<li id="section-4.4.1-6.1">The user selects to start the grant using A-AS (e.g., by clicking on a button at the
+<li id="section-4.4.1-6.1">The user selects to start the grant using A-AS (e.g., by clicking on a button on the
 client's website).<a href="#section-4.4.1-6.1" class="pilcrow">¶</a>
 </li>
             <li id="section-4.4.1-6.2">The client stores in the user's session that the user selected
@@ -2383,7 +2383,7 @@ do not check the redirect URIs properly, attackers can mount an attack
 called "Cross-Social Network Request Forgery". These attacks have been
 observed in practice. Refer to <span>[<a href="#research.jcs_14" class="cite xref">research.jcs_14</a>]</span> for details.<a href="#section-4.4.1-8.3" class="pilcrow">¶</a>
 </li>
-            <li class="compact" id="section-4.4.1-8.4">OpenID Connect: There are variants that can be used to attack OpenID
+            <li class="compact" id="section-4.4.1-8.4">OpenID Connect: Some variants can be used to attack OpenID
 Connect. In these attacks, the attacker misuses features of the OpenID
 Connect Discovery <span>[<a href="#OpenID.Discovery" class="cite xref">OpenID.Discovery</a>]</span> mechanism or replays access tokens or ID
 Tokens to conduct a mix-up attack. The attacks are described in detail in
@@ -2407,7 +2407,7 @@ issuer they sent the authorization request to and bind this information to the
 user agent. The issuer serves, via the associated metadata, as an abstract
 identifier for the combination of the authorization endpoint and token endpoint
 that are to be used in the flow. If an issuer identifier is not available, for
-example, if neither OAuth Authorization Server Metadata <span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span> nor OpenID Connect Discovery <span>[<a href="#OpenID.Discovery" class="cite xref">OpenID.Discovery</a>]</span> are
+example, if neither OAuth Authorization Server Metadata <span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span> nor OpenID Connect Discovery <span>[<a href="#OpenID.Discovery" class="cite xref">OpenID.Discovery</a>]</span> is
 used, a different unique identifier for this tuple or the tuple itself can be
 used instead. For brevity of presentation, such a deployment-specific identifier
 will be subsumed under the issuer (or issuer identifier) in the following.<a href="#section-4.4.2-2" class="pilcrow">¶</a></p>
@@ -2471,7 +2471,7 @@ client ID with the client ID of their newly created client.<a href="#section-4.4
         <h3 id="name-authorization-code-injectio">
 <a href="#section-4.5" class="section-number selfRef">4.5. </a><a href="#name-authorization-code-injectio" class="section-name selfRef">Authorization Code Injection</a>
         </h3>
-<p id="section-4.5-1">An attacker that has gained access to an authorization code contained in an
+<p id="section-4.5-1">An attacker who has gained access to an authorization code contained in an
 authorization response (see Attacker A3 in <a href="#secmodel" class="auto internal xref">Section 3</a>) can try to redeem the
 authorization code for an access token or otherwise make use of the
 authorization code.<a href="#section-4.5-1" class="pilcrow">¶</a></p>
@@ -2491,14 +2491,14 @@ use cases for this attack include:<a href="#section-4.5-5" class="pilcrow">¶</a
 <ul class="compact">
 <li class="compact" id="section-4.5-6.1">The attacker wants to access certain functions in this particular
 client. As an example, the attacker wants to impersonate their
-victim in a certain app or on a certain web site.<a href="#section-4.5-6.1" class="pilcrow">¶</a>
+victim in a certain app or on a certain website.<a href="#section-4.5-6.1" class="pilcrow">¶</a>
 </li>
           <li class="compact" id="section-4.5-6.2">The authorization or resource servers are limited to certain
 networks that the attacker is unable to access directly.<a href="#section-4.5-6.2" class="pilcrow">¶</a>
 </li>
         </ul>
 <p id="section-4.5-7">Except in these special cases, authorization code injection is usually not
-interesting when the code was created for a public client, as sending the code
+interesting when the code is created for a public client, as sending the code
 to the token endpoint is a simpler and more powerful attack, as described above.<a href="#section-4.5-7" class="pilcrow">¶</a></p>
 <div id="attack-description-1">
 <section id="section-4.5.1">
@@ -2510,7 +2510,7 @@ to the token endpoint is a simpler and more powerful attack, as described above.
 <li id="section-4.5.1-2.1">The attacker obtains an authorization code (see attacker A3 in <a href="#secmodel" class="auto internal xref">Section 3</a>). For the rest
 of the attack, only the capabilities of a web attacker (A1) are required.<a href="#section-4.5.1-2.1" class="pilcrow">¶</a>
 </li>
-            <li id="section-4.5.1-2.2">From the attacker's own device, the attacker starts a regular OAuth authorization
+            <li id="section-4.5.1-2.2">From the attacker's device, the attacker starts a regular OAuth authorization
 process with the legitimate client.<a href="#section-4.5.1-2.2" class="pilcrow">¶</a>
 </li>
             <li id="section-4.5.1-2.3">In the response of the authorization server to the legitimate client, the
@@ -2542,7 +2542,7 @@ and/or identity.<a href="#section-4.5.1-2.6" class="pilcrow">¶</a>
           <h4 id="name-discussion">
 <a href="#section-4.5.2" class="section-number selfRef">4.5.2. </a><a href="#name-discussion" class="section-name selfRef">Discussion</a>
           </h4>
-<p id="section-4.5.2-1">Obviously, the check in step (5.) will fail if the code was issued to
+<p id="section-4.5.2-1">Obviously, the check-in step (5.) will fail if the code was issued to
 another client ID, e.g., a client set up by the attacker. The check
 will also fail if the authorization code was already redeemed by the
 legitimate user and was one-time use only.<a href="#section-4.5.2-1" class="pilcrow">¶</a></p>
@@ -2558,11 +2558,11 @@ identical.". In the attack scenario described above, the legitimate
 client would use the correct redirect URI it always uses for
 authorization requests. But this URI would not match the tampered
 redirect URI used by the attacker (otherwise, the redirect would not
-land at the attackers page). So the authorization server would detect
+land at the attacker's page). So the authorization server would detect
 the attack and refuse to exchange the code.<a href="#section-4.5.2-3" class="pilcrow">¶</a></p>
 <p id="section-4.5.2-4">This check could also detect attempts to inject an authorization
 code that had been obtained from another instance of the same client
-on another device, if certain conditions are fulfilled:<a href="#section-4.5.2-4" class="pilcrow">¶</a></p>
+on another device if certain conditions are fulfilled:<a href="#section-4.5.2-4" class="pilcrow">¶</a></p>
 <ul class="compact">
 <li class="compact" id="section-4.5.2-5.1">the redirect URI itself needs to contain a nonce or another kind
 of one-time use, secret data and<a href="#section-4.5.2-5.1" class="pilcrow">¶</a>
@@ -2571,7 +2571,7 @@ of one-time use, secret data and<a href="#section-4.5.2-5.1" class="pilcrow">¶<
 client.<a href="#section-4.5.2-5.2" class="pilcrow">¶</a>
 </li>
           </ul>
-<p id="section-4.5.2-6">But this approach conflicts with the idea to enforce exact redirect
+<p id="section-4.5.2-6">But this approach conflicts with the idea of enforcing exact redirect
 URI matching at the authorization endpoint. Moreover, it has been
 observed that providers very often ignore the <code>redirect_uri</code> check
 requirement at this stage, maybe because it doesn't seem to be
@@ -2592,7 +2592,7 @@ need to store or re-construct the correct redirect URI for the call
 to the token endpoint.<a href="#section-4.5.2-8" class="pilcrow">¶</a></p>
 <p id="section-4.5.2-9">Asymmetric methods for client authentication do not stop this attack, as the
 legitimate client authenticates at the token endpoint.<a href="#section-4.5.2-9" class="pilcrow">¶</a></p>
-<p id="section-4.5.2-10">This document therefore recommends to instead bind every authorization
+<p id="section-4.5.2-10">This document therefore recommends instead binding every authorization
 code to a certain client instance on a certain device (or in a certain
 user agent) in the context of a certain transaction using one of the
 mechanisms described next.<a href="#section-4.5.2-10" class="pilcrow">¶</a></p>
@@ -2616,7 +2616,7 @@ When the attacker attempts to inject an authorization code, the check of the
 associated with a <code>code_challenge</code> that does not match this verifier. PKCE is a
 deployed OAuth feature, although its originally intended use was solely focused
 on securing native apps, not the broader use recommended by this document.<a href="#section-4.5.3.1-1" class="pilcrow">¶</a></p>
-<p id="section-4.5.3.1-2">PKCE does not only protect against the autorization code injection attack, but
+<p id="section-4.5.3.1-2">PKCE does not only protect against the autorization code injection attack but
 also protects authorization codes created for public clients: PKCE ensures that
 an attacker cannot redeem a stolen authorization code at the token endpoint of
 the authorization server without knowledge of the <code>code_verifier</code>.<a href="#section-4.5.3.1-2" class="pilcrow">¶</a></p>
@@ -2628,10 +2628,10 @@ the authorization server without knowledge of the <code>code_verifier</code>.<a 
 <a href="#section-4.5.3.2" class="section-number selfRef">4.5.3.2. </a><a href="#name-nonce" class="section-name selfRef">Nonce</a>
             </h5>
 <p id="section-4.5.3.2-1">OpenID Connect's existing <code>nonce</code> parameter can protect against authorization
-code injection attacks. The <code>nonce</code> value is one-time use and created by the
-client. The client is supposed to bind it to the user agent session and sends it
+code injection attacks. The <code>nonce</code> value is a one-time use and is created by the
+client. The client is supposed to bind it to the user agent session and send it
 with the initial request to the OpenID Provider (OP). The OP puts the received <code>nonce</code> value into the ID Token that is issued
-as part of the code exchange at the token endpoint. If an attacker injected an
+as part of the code exchange at the token endpoint. If an attacker injects an
 authorization code in the authorization response, the nonce value in the client
 session and the nonce value in the ID token will not match and the attack is
 detected. The assumption is that an attacker cannot get hold of the user agent
@@ -2640,7 +2640,7 @@ code.<a href="#section-4.5.3.2-1" class="pilcrow">¶</a></p>
 <p id="section-4.5.3.2-2">It is important to note that this countermeasure only works if the client
 properly checks the <code>nonce</code> parameter in the ID Token and does not use any
 issued token until this check has succeeded. More precisely, a client protecting
-itself against code injection using the <code>nonce</code> parameter,<a href="#section-4.5.3.2-2" class="pilcrow">¶</a></p>
+itself against code injection using the <code>nonce</code> parameter<a href="#section-4.5.3.2-2" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="compact type-1" id="section-4.5.3.2-3">
 <li id="section-4.5.3.2-3.1">MUST validate the <code>nonce</code> in the ID Token obtained from the token endpoint,
  even if another ID Token was obtained from the authorization response
@@ -2709,7 +2709,7 @@ client.<a href="#section-4.6-1" class="pilcrow">¶</a></p>
 <p id="section-4.6-2">To conduct the attack, the attacker starts an OAuth flow with the
 client using the implicit grant and modifies the authorization
 response by replacing the access token issued by the authorization
-server or directly makes up an authorization server response including
+server or directly making up an authorization server response including
 the leaked access token. Since the response includes the <code>state</code> value
 generated by the client for this particular transaction, the client
 does not treat the response as a CSRF attack and uses the access token
@@ -2720,7 +2720,7 @@ injected by the attacker.<a href="#section-4.6-2" class="pilcrow">¶</a></p>
 <a href="#section-4.6.1" class="section-number selfRef">4.6.1. </a><a href="#name-countermeasures-5" class="section-name selfRef">Countermeasures</a>
           </h4>
 <p id="section-4.6.1-1">There is no way to detect such an injection attack in pure-OAuth
-flows, since the token is issued without any binding to the
+flows since the token is issued without any binding to the
 transaction or the particular user agent.<a href="#section-4.6.1-1" class="pilcrow">¶</a></p>
 <p id="section-4.6.1-2">In OpenID Connect, the attack can be mitigated, as the authorization response
 additionally contains an ID Token containing the <code>at_hash</code> claim. The attacker
@@ -2741,7 +2741,7 @@ endpoint directly.<a href="#section-4.6.1-3" class="pilcrow">¶</a></p>
 <div id="csrf">
 <section id="section-4.7">
         <h3 id="name-cross-site-request-forgery">
-<a href="#section-4.7" class="section-number selfRef">4.7. </a><a href="#name-cross-site-request-forgery" class="section-name selfRef">Cross Site Request Forgery</a>
+<a href="#section-4.7" class="section-number selfRef">4.7. </a><a href="#name-cross-site-request-forgery" class="section-name selfRef">Cross-Site Request Forgery</a>
         </h3>
 <p id="section-4.7-1">An attacker might attempt to inject a request to the redirect URI of
 the legitimate client on the victim's device, e.g., to cause the
@@ -2766,7 +2766,7 @@ CSRF protection. If an authorization server does not support PKCE,
 <code>state</code> or <code>nonce</code> MUST be used for CSRF protection.<a href="#section-4.7.1-3.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4.7.1-3.2">
-              <p id="section-4.7.1-3.2.1">If <code>state</code> is used for carrying application state, and integrity of
+              <p id="section-4.7.1-3.2.1">If <code>state</code> is used for carrying application state, and the integrity of
 its contents is a concern, clients MUST protect <code>state</code> against
 tampering and swapping. This can be achieved by binding the
 contents of state to the browser session and/or signed/encrypted
@@ -2888,7 +2888,7 @@ circumstances.<a href="#section-4.9-1" class="pilcrow">¶</a></p>
           <h4 id="name-access-token-phishing-by-co">
 <a href="#section-4.9.1" class="section-number selfRef">4.9.1. </a><a href="#name-access-token-phishing-by-co" class="section-name selfRef">Access Token Phishing by Counterfeit Resource Server</a>
           </h4>
-<p id="section-4.9.1-1">An attacker may setup their own resource server and trick a client into
+<p id="section-4.9.1-1">An attacker may set up their own resource server and trick a client into
 sending access tokens to it that are valid for other resource servers
 (see Attackers A1 and A5 in <a href="#secmodel" class="auto internal xref">Section 3</a>). If the client sends a valid access token to
 this counterfeit resource server, the attacker in turn may use that
@@ -2897,7 +2897,7 @@ token to access other services on behalf of the resource owner.<a href="#section
 server (and its URL) at development time, but client instances are
 provided with the resource server URL at runtime. This kind of late
 binding is typical in situations where the client uses a service
-implementing a standardized API (e.g., for e-Mail, calendar, health,
+implementing a standardized API (e.g., for e-mail, calendar, health,
 or banking) and where the client is configured by a user or
 administrator for a service that this user or company uses.<a href="#section-4.9.1-2" class="pilcrow">¶</a></p>
 </section>
@@ -2943,7 +2943,7 @@ servers.<a href="#section-4.9.3-2.2" class="pilcrow">¶</a>
 and not store or transfer them in plain text.<a href="#section-4.9.3-2.3" class="pilcrow">¶</a>
 </li>
           </ul>
-<p id="section-4.9.3-3">The first and second recommendation also apply to other scenarios
+<p id="section-4.9.3-3">The first and second recommendations also apply to other scenarios
 where access tokens leak (see Attacker A5 in <a href="#secmodel" class="auto internal xref">Section 3</a>).<a href="#section-4.9.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2971,13 +2971,13 @@ prevent the use of these measures in some deployments.<a href="#section-4.10-1" 
           </h4>
 <p id="section-4.10.1-1">As the name suggests, sender-constrained access tokens scope the
 applicability of an access token to a certain sender. This sender is
-obliged to demonstrate knowledge of a certain secret as prerequisite
+obliged to demonstrate knowledge of a certain secret as a prerequisite
 for the acceptance of that token at a resource server.<a href="#section-4.10.1-1" class="pilcrow">¶</a></p>
 <p id="section-4.10.1-2">A typical flow looks like this:<a href="#section-4.10.1-2" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="compact type-1" id="section-4.10.1-3">
 <li id="section-4.10.1-3.1">The authorization server associates data with the access token
 that binds this particular token to a certain client. The binding
-can utilize the client identity, but in most cases the authorization server utilizes
+can utilize the client's identity, but in most cases, the authorization server utilizes
 key material (or data derived from the key material) known to the
 client.<a href="#section-4.10.1-3.1" class="pilcrow">¶</a>
 </li>
@@ -2994,30 +2994,33 @@ connection.<a href="#section-4.10.1-3.2" class="pilcrow">¶</a>
             <li id="section-4.10.1-3.3">The resource server must implement the actual proof of possession check. This
 is typically done on the application level, often tied to specific
 material provided by transport layer (e.g., TLS). The resource server must also
-ensure that replay of the proof of possession is not possible.<a href="#section-4.10.1-3.3" class="pilcrow">¶</a>
+ensure that a replay of the proof of possession is not possible.<a href="#section-4.10.1-3.3" class="pilcrow">¶</a>
 </li>
           </ol>
 <p id="section-4.10.1-4">Two methods for sender-constrained access tokens using proof-of-possession have
 been defined by the OAuth working group and are in use in practice:<a href="#section-4.10.1-4" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="section-4.10.1-5.1">OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound Access
-Tokens (<span>[<a href="#RFC8705" class="cite xref">RFC8705</a>]</span>): The approach as specified in this document allows the
-use of mutual TLS (mTLS) for both client authentication and
-sender-constrained access tokens. For the purpose of sender-constrained
-access tokens, the client is identified towards the resource server by the
-fingerprint of its public key. During processing of an access token request,
-the authorization server obtains the client's public key from the TLS stack
-and associates its fingerprint with the respective access tokens. The
-resource server in the same way obtains the public key from the TLS stack
-and compares its fingerprint with the fingerprint associated with the access
-token.<a href="#section-4.10.1-5.1" class="pilcrow">¶</a>
+<li class="compact" id="section-4.10.1-5.1">OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound
+Access Tokens (<span>[<a href="#RFC8705" class="cite xref">RFC8705</a>]</span>): The approach as specified in this
+document allows the use of mutual TLS (mTLS) for both client
+authentication and sender-constrained access tokens. For the
+purpose of sender-constrained access tokens, the client is
+identified towards the resource server by the fingerprint of its
+public key. During the processing of an access token request, the
+authorization server obtains the client's public key from the TLS
+stack and associates its fingerprint with the respective access
+tokens. The resource server in the same way obtains the public key
+from the TLS stack and compares its fingerprint with the
+fingerprint associated with the access token.<a href="#section-4.10.1-5.1" class="pilcrow">¶</a>
 </li>
-            <li class="compact" id="section-4.10.1-5.2">OAuth 2.0 Demonstrating Proof of Possession (DPoP) (<span>[<a href="#RFC9449" class="cite xref">RFC9449</a>]</span>): DPoP
-outlines an application-level sender-constraining for access and refresh
-tokens. It uses proof-of-possession based on a public/private key pair and
-application-level signing. DPoP can be used with public clients and, in case
-of confidential clients, can be combined with any client authentication
-method.<a href="#section-4.10.1-5.2" class="pilcrow">¶</a>
+            <li class="compact" id="section-4.10.1-5.2">OAuth 2.0 Demonstrating Proof of Possession (DPoP) (<span>[<a href="#RFC9449" class="cite xref">RFC9449</a>]</span>):
+DPoP outlines an
+application-level sender-constraining for access and refresh
+tokens. It uses
+proof-of-possession based on a public/private key pair and
+application-level signing. DPoP can be used with public clients
+and, in the case of confidential clients, can be combined with any
+client authentication method.<a href="#section-4.10.1-5.2" class="pilcrow">¶</a>
 </li>
           </ul>
 <p id="section-4.10.1-6">Note that the security of sender-constrained tokens is undermined when
@@ -3026,7 +3029,7 @@ particular, the case for corrupted client software and cross-site
 scripting attacks (when the client is running in the browser). If the
 key material is protected in a hardware or software security module or
 only indirectly accessible (like in a TLS stack), sender-constrained
-tokens at least protect against a use of the token when the client is
+tokens at least protect against the use of the token when the client is
 offline, i.e., when the security module or interface is not available
 to the attacker. This applies to access tokens as well as to refresh
 tokens (see <a href="#refresh_token_protection" class="auto internal xref">Section 4.14</a>).<a href="#section-4.10.1-6" class="pilcrow">¶</a></p>
@@ -3063,7 +3066,7 @@ resource server. The mechanism in <span>[<a href="#RFC8707" class="cite xref">RF
 information can be encoded in the scope value (Section 3.3 of <span>[<a href="#RFC6749" class="cite xref">RFC6749</a>]</span>).<a href="#section-4.10.2-5" class="pilcrow">¶</a></p>
 <p id="section-4.10.2-6">Instead of the URL, it is also possible to utilize the fingerprint of
 the resource server's X.509 certificate as audience value. This
-variant would also allow to detect an attempt to spoof the legitimate
+variant would also allow detection of an attempt to spoof the legitimate
 resource server's URL by using a valid TLS certificate obtained from a
 different CA. It might also be considered a privacy benefit to hide
 the resource server URL from the authorization server.<a href="#section-4.10.2-6" class="pilcrow">¶</a></p>
@@ -3074,14 +3077,14 @@ single resource server-specific access token when accessing several resource
 servers. (Resource indicators, as specified in
 <span>[<a href="#RFC8707" class="cite xref">RFC8707</a>]</span>, can help to achieve this.)
 <span>[<a href="#I-D.ietf-oauth-token-binding" class="cite xref">I-D.ietf-oauth-token-binding</a>]</span> has the same property since different
-token binding IDs must be associated with the access token. Using
+token-binding IDs must be associated with the access token. Using
 <span>[<a href="#RFC8705" class="cite xref">RFC8705</a>]</span>, on the other hand, allows a client to use the
 access token at multiple resource servers.<a href="#section-4.10.2-7" class="pilcrow">¶</a></p>
 <p id="section-4.10.2-8">It should be noted that audience restrictions, or generally speaking an
 indication by the client to the authorization server where it wants to
-use the access token, has additional benefits beyond the scope of
+use the access token, have additional benefits beyond the scope of
 token leakage prevention. It allows the authorization server to create
-a different access token whose format and content is specifically minted
+a different access token whose format and content are specifically minted
 for the respective server. This has huge functional and privacy
 advantages in deployments using structured access tokens.<a href="#section-4.10.2-8" class="pilcrow">¶</a></p>
 </section>
@@ -3144,7 +3147,7 @@ clients to prevent access token phishing is likely to fail as well.
 Moreover, given the ratio of clients to authorization and resource
 servers, it is considered the more viable approach to move as much as
 possible security-related logic to those entities. Clearly, the client
-has to contribute to the overall security. But there are alternative
+has to contribute to the overall security. However, there are alternative
 countermeasures, as described before, that provide a
 better balance between the involved parties.<a href="#section-4.10.3-6" class="pilcrow">¶</a></p>
 </section>
@@ -3170,9 +3173,9 @@ redirectors to produce URLs pointing to the client and utilize them to
 exfiltrate authorization codes and access tokens, as described in
 <a href="#redir_uri_open_redir" class="auto internal xref">Section 4.1.2</a>. Another abuse case is to produce URLs that
 appear to point to the client. This might trick users into trusting the URL
-and follow it in their browser. This can be abused for phishing.<a href="#section-4.11.1-1" class="pilcrow">¶</a></p>
+and following it in their browser. This can be abused for phishing.<a href="#section-4.11.1-1" class="pilcrow">¶</a></p>
 <p id="section-4.11.1-2">In order to prevent open redirection, clients should only redirect if
-the target URLs are allowlisted or if the origin and integrity of a
+the target URLs are allowed or if the origin and integrity of a
 request can be authenticated. Countermeasures against open redirection
 are described by OWASP <span>[<a href="#owasp.redir" class="cite xref">owasp.redir</a>]</span>.<a href="#section-4.11.1-2" class="pilcrow">¶</a></p>
 </section>
@@ -3185,7 +3188,7 @@ are described by OWASP <span>[<a href="#owasp.redir" class="cite xref">owasp.red
 <p id="section-4.11.2-1">Just as with clients, attackers could try to utilize a user's trust in
 the authorization server (and its URL in particular) for performing
 phishing attacks. OAuth authorization servers regularly redirect users
-to other web sites (the clients), but must do so in a safe way.<a href="#section-4.11.2-1" class="pilcrow">¶</a></p>
+to other websites (the clients), but must do so in a safe way.<a href="#section-4.11.2-1" class="pilcrow">¶</a></p>
 <p id="section-4.11.2-2"><span>[<a href="#RFC6749" class="cite xref">RFC6749</a>]</span>, Section 4.1.2.1, already prevents open redirects by
 stating that the authorization server MUST NOT automatically redirect the user agent in case
 of an invalid combination of <code>client_id</code> and <code>redirect_uri</code>.<a href="#section-4.11.2-2" class="pilcrow">¶</a></p>
@@ -3217,7 +3220,7 @@ use case, prompt the user for credentials when needed, before redirecting the
 user. Based on its risk assessment, the authorization server needs to decide whether it can trust
 the redirect URI or not. It could take into account  URI analytics done
 internally or through some external service to evaluate the credibility and
-trustworthiness content behind the URI, and the source of the redirect URI and
+trustworthiness of content behind the URI, and the source of the redirect URI and
 other client data.<a href="#section-4.11.2-5" class="pilcrow">¶</a></p>
 <p id="section-4.11.2-6">The authorization server SHOULD only automatically redirect the user agent if it trusts the
 redirect URI.  If the URI is not trusted, the authorization server MAY inform the user and rely on
@@ -3244,7 +3247,7 @@ HTTP POST to the client.<a href="#section-4.12-2" class="pilcrow">¶</a></p>
 <p id="section-4.12-3">This discloses the sensitive credentials to the client. If the client
 is malicious, it can use the credentials to impersonate the user
 at the authorization server.<a href="#section-4.12-3" class="pilcrow">¶</a></p>
-<p id="section-4.12-4">The behavior might be unexpected for developers, but is defined in
+<p id="section-4.12-4">The behavior might be unexpected for developers but is defined in
 <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span>, Section 15.4.8. This status code does not require the user
 agent to rewrite the POST request to a GET request and thereby drop
 the form data in the POST request body.<a href="#section-4.12-4" class="pilcrow">¶</a></p>
@@ -3274,28 +3277,28 @@ architecture with relevance to OAuth and gives recommendations for
 security controls.<a href="#section-4.13-2" class="pilcrow">¶</a></p>
 <p id="section-4.13-3">In some situations, the reverse proxy needs to pass security-related
 data to the upstream application servers for further processing.
-Examples include the IP address of the request originator, token binding
-ids, and authenticated TLS client certificates. This data is usually
+Examples include the IP address of the request originator, token-binding
+IDs, and authenticated TLS client certificates. This data is usually
 passed in HTTP headers added to the upstream request. While the headers
 are often custom, application-specific headers, standardized header
 fields for client certificates and client certificate chains are defined
 in <span>[<a href="#RFC9440" class="cite xref">RFC9440</a>]</span>.<a href="#section-4.13-3" class="pilcrow">¶</a></p>
-<p id="section-4.13-4">If the reverse proxy would pass through any header sent from the
+<p id="section-4.13-4">If the reverse proxy passes through any header sent from the
 outside, an attacker could try to directly send the faked header
 values through the proxy to the application server in order to
 circumvent security controls that way. For example, it is standard
 practice of reverse proxies to accept <code>X-Forwarded-For</code> headers and just
 add the origin of the inbound request (making it a list). Depending on
 the logic performed in the application server, the attacker could
-simply add an allowlisted IP address to the header and render the protection useless.<a href="#section-4.13-4" class="pilcrow">¶</a></p>
+simply add an allowed IP address to the header and render the protection useless.<a href="#section-4.13-4" class="pilcrow">¶</a></p>
 <p id="section-4.13-5">A reverse proxy MUST therefore sanitize any inbound requests to ensure
 the authenticity and integrity of all header values relevant for the
 security of the application servers.<a href="#section-4.13-5" class="pilcrow">¶</a></p>
 <p id="section-4.13-6">If an attacker were able to get access to the internal network between
-proxy and application server, the attacker could also try to
+the proxy and application server, the attacker could also try to
 circumvent security controls in place. It is, therefore, essential to
 ensure the authenticity of the communicating entities. Furthermore,
-the communication link between reverse proxy and application server
+the communication link between the reverse proxy and application server
 MUST be protected against eavesdropping, injection, and replay of
 messages.<a href="#section-4.13-6" class="pilcrow">¶</a></p>
 </section>
@@ -3315,12 +3318,12 @@ potential impact of access token leakage.<a href="#section-4.14-1" class="pilcro
           <h4 id="name-discussion-2">
 <a href="#section-4.14.1" class="section-number selfRef">4.14.1. </a><a href="#name-discussion-2" class="section-name selfRef">Discussion</a>
           </h4>
-<p id="section-4.14.1-1">Refresh tokens are an attractive target for attackers, since they
+<p id="section-4.14.1-1">Refresh tokens are an attractive target for attackers since they
 represent the overall grant a resource owner delegated to a certain
 client. If an attacker is able to exfiltrate and successfully replay a
 refresh token, the attacker will be able to mint access tokens and use
 them to access resource servers on behalf of the resource owner.<a href="#section-4.14.1-1" class="pilcrow">¶</a></p>
-<p id="section-4.14.1-2"><span>[<a href="#RFC6749" class="cite xref">RFC6749</a>]</span> already provides a robust baseline protection by requiring<a href="#section-4.14.1-2" class="pilcrow">¶</a></p>
+<p id="section-4.14.1-2"><span>[<a href="#RFC6749" class="cite xref">RFC6749</a>]</span> already provides robust baseline protection by requiring<a href="#section-4.14.1-2" class="pilcrow">¶</a></p>
 <ul class="compact">
 <li class="compact" id="section-4.14.1-3.1">confidentiality of the refresh tokens in transit and storage,<a href="#section-4.14.1-3.1" class="pilcrow">¶</a>
 </li>
@@ -3334,8 +3337,8 @@ if possible, and<a href="#section-4.14.1-3.3" class="pilcrow">¶</a>
             <li class="compact" id="section-4.14.1-3.4">that refresh tokens cannot be generated, modified, or guessed.<a href="#section-4.14.1-3.4" class="pilcrow">¶</a>
 </li>
           </ul>
-<p id="section-4.14.1-4"><span>[<a href="#RFC6749" class="cite xref">RFC6749</a>]</span> also lays the foundation for further (implementation
-specific) security measures, such as refresh token expiration and
+<p id="section-4.14.1-4"><span>[<a href="#RFC6749" class="cite xref">RFC6749</a>]</span> also lays the foundation for further
+(implementation-specific) security measures, such as refresh token expiration and
 revocation as well as refresh token rotation by defining respective
 error codes and response behaviors.<a href="#section-4.14.1-4" class="pilcrow">¶</a></p>
 <p id="section-4.14.1-5">This specification gives recommendations beyond the scope of
@@ -3448,7 +3451,7 @@ tokens.<a href="#section-4.15.1-1" class="pilcrow">¶</a></p>
 susceptible to clickjacking attacks, also called user interface redressing. In
 such an attack, an attacker embeds the authorization endpoint user interface in
 an innocuous context. A user believing to interact with that context, for
-example, clicking on buttons, inadvertently interacts with the authorization
+example, by clicking on buttons, inadvertently interacts with the authorization
 endpoint user interface instead. The opposite can be achieved as well: A user
 believing to interact with the authorization endpoint might inadvertently type a
 password into an attacker-provided input field overlaid over the original user
