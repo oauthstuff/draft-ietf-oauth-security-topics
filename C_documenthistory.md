@@ -5,6 +5,7 @@
    -26
 
    * Feedback from ARTART review incorporated
+   * Gen-ART review (typo fixes)
 
    -25
 
