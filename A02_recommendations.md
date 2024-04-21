@@ -1,8 +1,9 @@
 # Best Practices {#recommendations}
 
-This section describes the set of security mechanisms and measures the OAuth
-working group considers best practices at the time of writing. Details about
-these mechanisms and measures, including attack descriptions, are provided in
+This section describes the core set of security mechanisms and measures the
+OAuth working group considers best practices at the time of writing. Details
+about these security mechanisms and measures (including detailed attack
+descriptions) and requirements for less commonly used options are provided in
 (#attacks_and_mitigations).
 
 ## Protecting Redirect-Based Flows {#rec_redirect}
@@ -166,7 +167,7 @@ server, or, if that is not feasible, to a small set of resource servers. To put 
 the access token with certain resource servers and every resource
 server is obliged to verify, for every request, whether the access
 token sent with that request was meant to be used for that particular
-resource server. If not, the resource server MUST refuse to serve the
+resource server. If it was not, the resource server MUST refuse to serve the
 respective request. The `aud` claim as defined in [@!RFC9068] MAY be
 used to audience-restrict access tokens. Clients and authorization servers MAY utilize the
 parameters `scope` or `resource` as specified in [@!RFC6749] and
@@ -199,7 +200,9 @@ multiple user interaction steps. Authentication with cryptographic credentials
 to implement with this grant type, as it is usually bound to a specific web origin.
 
 ## Client Authentication
-Authorization servers SHOULD enforce client authentication if possible.
+Authorization servers SHOULD enforce client authentication if it is feasible, in
+the particular deployment, to establish a process for issuance/registration of
+credentials for clients and ensuring the confidentiality of those credentials.
 
 It is RECOMMENDED to use asymmetric cryptography for
 client authentication, such as mTLS [@!RFC8705] or signed JWTs

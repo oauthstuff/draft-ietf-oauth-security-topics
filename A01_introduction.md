@@ -7,10 +7,11 @@ variety of scenarios and different kinds of deployments, the following
 challenges can be observed:
 
   * OAuth implementations are being attacked through known implementation
-	  weaknesses and anti-patterns. Although most of these threats are discussed
-	  in the OAuth 2.0 Threat Model and Security Considerations [@!RFC6819],
-   	continued exploitation demonstrates a need for more specific
-	  recommendations, easier to implement mitigations, and more defense in depth.
+	  weaknesses and anti-patterns (i.e., well-known patterns that are considered
+    insecure). Although most of these threats are discussed in the OAuth 2.0
+	  Threat Model and Security Considerations [@!RFC6819], continued exploitation
+   	demonstrates a need for more specific recommendations, easier to implement
+	  mitigations, and more defense in depth.
 
   * OAuth is being used in environments with higher security requirements than
     considered initially, such as Open Banking, eHealth, eGovernment, and
@@ -25,7 +26,7 @@ challenges can be observed:
     authorization server, and resource servers. The URLs of the servers were
     known to the client at deployment time and built an anchor for the
     trust relationships among those parties. The validation of whether the
-    client talks to a legitimate server was based on TLS server
+    client is talking to a legitimate server was based on TLS server
     authentication (see [@!RFC6819], Section 4.5.4). With the increasing
     adoption of OAuth, this simple model dissolved and, in several
     scenarios, was replaced by a dynamic establishment of the relationship
@@ -53,7 +54,7 @@ insecure. However, this document does not supplant the security advice given in
 Naturally, not all existing ecosystems and implementations are
 compatible with the new requirements and following the best practices described in
 this document may break interoperability. Nonetheless, it is RECOMMENDED that
-implementers upgrade their implementations and ecosystems when feasible.
+implementers upgrade their implementations and ecosystems as soon as feasible.
 
 OAuth 2.1, under developement as [@I-D.ietf-oauth-v2-1], will incorporate the
 security recommendations of this document.

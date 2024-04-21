@@ -1,9 +1,11 @@
 # Attacks and Mitigations {#attacks_and_mitigations}
 
-This section gives a detailed description of attacks on OAuth
-implementations, along with potential countermeasures. Attacks and
-mitigations already covered in [@!RFC6819] are not listed here, except
-where new recommendations are made.
+This section gives a detailed description of attacks on OAuth implementations,
+along with potential countermeasures. Attacks and mitigations already covered in
+[@!RFC6819] are not listed here, except where new recommendations are made.
+
+This section further defines additional requirements beyond those defined in
+Section (#recommendations) for certain cases and protocol options.
 
 ## Insufficient Redirect URI Validation {#insufficient_uri_validation}
 
@@ -51,7 +53,7 @@ controlled by a malicious party.
 
 The attack can then be conducted as follows:
 
-First, the attacker needs to trick the user into opening a tampered
+To begin, the attacker needs to trick the user into opening a tampered
 URL in their browser that launches a page under the attacker's
 control, say `https://www.evil.example` (see Attacker A1 in (#secmodel)).
 
@@ -122,7 +124,7 @@ browser to this URL using an HTTP Location header redirect 303.
 
 The attack can now be conducted as follows:
 
-First, and as above, the attacker needs to trick the user into opening
+To begin, as above, the attacker needs to trick the user into opening
 a tampered URL in their browser that launches a page under the
 attacker's control, say `https://www.evil.example`.
 
@@ -395,7 +397,7 @@ Attack on the authorization code grant:
 
 Variants:
 
-  * **Mix-Up With Interception**: This variant works only if the attacker can
+  * Mix-Up With Interception: This variant works only if the attacker can
     intercept and manipulate the first request/response pair from a user's
     browser to the client (in which the user selects a certain authorization server and is then
     redirected by the client to that authorization server), as in Attacker A2 (see (#secmodel)). This capability
@@ -403,17 +405,17 @@ Variants:
     connection to the client. In the attack, the user starts the flow with H-AS.
     The attacker intercepts this request and changes the user's selection to
     A-AS. The rest of the attack proceeds as in Steps 2 and following above.
-  * **Implicit Grant**: In the implicit grant, the attacker receives an access
+  * Implicit Grant: In the implicit grant, the attacker receives an access
     token instead of the code in Step 4. The attacker's authorization server receives the access token
     when the client makes a request to the A-AS userinfo endpoint, or since the
     client believes it has completed the flow with A-AS, a request to the
     attacker's resource server.
-  * **Per-AS Redirect URIs**: If clients use different redirect URIs for
+  * Per-AS Redirect URIs: If clients use different redirect URIs for
     different authorization servers, do not store the selected authorization server in the user's session, and authorization servers
     do not check the redirect URIs properly, attackers can mount an attack
     called "Cross-Social Network Request Forgery". These attacks have been
     observed in practice. Refer to [@research.jcs_14] for details.
-  * **OpenID Connect**: Some variants can be used to attack OpenID
+  * OpenID Connect: Some variants can be used to attack OpenID
     Connect. In these attacks, the attacker misuses features of the OpenID
     Connect Discovery [@OpenID.Discovery] mechanism or replays access tokens or ID
     Tokens to conduct a mix-up attack. The attacks are described in detail in
@@ -938,8 +940,8 @@ A typical flow looks like this:
 Two methods for sender-constrained access tokens using proof-of-possession have
 been defined by the OAuth working group and are in use in practice:
 
-  * **OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound
-    Access Tokens** ([@!RFC8705]): The approach as specified in this
+  * OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound
+    Access Tokens ([@!RFC8705]): The approach as specified in this
     document allows the use of mutual TLS (mTLS) for both client
     authentication and sender-constrained access tokens. For the
     purpose of sender-constrained access tokens, the client is
@@ -950,7 +952,7 @@ been defined by the OAuth working group and are in use in practice:
     tokens. The resource server in the same way obtains the public key
     from the TLS stack and compares its fingerprint with the
     fingerprint associated with the access token.
-  * **OAuth 2.0 Demonstrating Proof of Possession (DPoP)** ([@!RFC9449]):
+  * OAuth 2.0 Demonstrating Proof of Possession (DPoP) ([@!RFC9449]):
     DPoP outlines an
     application-level sender-constraining for access and refresh
     tokens. It uses
