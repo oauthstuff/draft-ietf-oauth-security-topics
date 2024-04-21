@@ -11,20 +11,20 @@
 <meta content="Daniel Fett" name="author">
 <meta content="
        This document describes best current security practice for OAuth 2.0. It updates
-and extends the threat model and security advice given in  ,
- , and   to incorporate practical experiences gathered since
+and extends the threat model and security advice given in RFC 6749,
+RFC 6750, and RFC 6819 to incorporate practical experiences gathered since
 OAuth 2.0 was published and covers new threats relevant due to the broader
 application of OAuth 2.0. It further deprecates some modes of operation that are
 deemed less secure or even insecure. 
     " name="description">
-<meta content="xml2rfc 3.19.2" name="generator">
+<meta content="xml2rfc 3.21.0" name="generator">
 <meta content="security" name="keyword">
 <meta content="oauth2" name="keyword">
 <meta content="best current practice" name="keyword">
 <meta content="draft-ietf-oauth-security-topics-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.19.2
-    Python 3.11.6
+  xml2rfc 3.21.0
+    Python 3.11.9
     ConfigArgParse 1.7
     google-i18n-address 3.1.0
     intervaltree 3.1.0
@@ -1035,11 +1035,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">OAuth 2.0 Security BCP</td>
-<td class="right">February 2024</td>
+<td class="right">April 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lodderstedt, et al.</td>
-<td class="center">Expires 11 August 2024</td>
+<td class="center">Expires 23 October 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1055,12 +1055,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc6749" class="eref">6749</a>, <a href="https://www.rfc-editor.org/rfc/rfc6750" class="eref">6750</a>, <a href="https://www.rfc-editor.org/rfc/rfc6819" class="eref">6819</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-02-08" class="published">8 February 2024</time>
+<time datetime="2024-04-21" class="published">21 April 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Best Current Practice</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-08-11">11 August 2024</time></dd>
+<dd class="expires"><time datetime="2024-10-23">23 October 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1086,8 +1086,8 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">This document describes best current security practice for OAuth 2.0. It updates
-and extends the threat model and security advice given in <span>[<a href="#RFC6749" class="cite xref">RFC6749</a>]</span>,
-<span>[<a href="#RFC6750" class="cite xref">RFC6750</a>]</span>, and <span>[<a href="#RFC6819" class="cite xref">RFC6819</a>]</span> to incorporate practical experiences gathered since
+and extends the threat model and security advice given in RFC 6749,
+RFC 6750, and RFC 6819 to incorporate practical experiences gathered since
 OAuth 2.0 was published and covers new threats relevant due to the broader
 application of OAuth 2.0. It further deprecates some modes of operation that are
 deemed less secure or even insecure.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
@@ -1122,7 +1122,7 @@ deemed less secure or even insecure.<a href="#section-abstract-1" class="pilcrow
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 11 August 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 23 October 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1430,10 +1430,11 @@ challenges can be observed:<a href="#section-1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-1-2.1">
           <p id="section-1-2.1.1">OAuth implementations are being attacked through known implementation
-  weaknesses and anti-patterns. Although most of these threats are discussed
-  in the OAuth 2.0 Threat Model and Security Considerations <span>[<a href="#RFC6819" class="cite xref">RFC6819</a>]</span>,
- continued exploitation demonstrates a need for more specific
-  recommendations, easier to implement mitigations, and more defense in depth.<a href="#section-1-2.1.1" class="pilcrow">¶</a></p>
+  weaknesses and anti-patterns (i.e., well-known patterns that are considered
+insecure). Although most of these threats are discussed in the OAuth 2.0
+  Threat Model and Security Considerations <span>[<a href="#RFC6819" class="cite xref">RFC6819</a>]</span>, continued exploitation
+ demonstrates a need for more specific recommendations, easier to implement
+  mitigations, and more defense in depth.<a href="#section-1-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-1-2.2">
           <p id="section-1-2.2.1">OAuth is being used in environments with higher security requirements than
@@ -1449,7 +1450,7 @@ additional protection.<a href="#section-1-2.2.1" class="pilcrow">¶</a></p>
 authorization server, and resource servers. The URLs of the servers were
 known to the client at deployment time and built an anchor for the
 trust relationships among those parties. The validation of whether the
-client talks to a legitimate server was based on TLS server
+client is talking to a legitimate server was based on TLS server
 authentication (see <span>[<a href="#RFC6819" class="cite xref">RFC6819</a>]</span>, Section 4.5.4). With the increasing
 adoption of OAuth, this simple model dissolved and, in several
 scenarios, was replaced by a dynamic establishment of the relationship
@@ -1478,7 +1479,7 @@ insecure. However, this document does not supplant the security advice given in
 <p id="section-1-4">Naturally, not all existing ecosystems and implementations are
 compatible with the new requirements and following the best practices described in
 this document may break interoperability. Nonetheless, it is RECOMMENDED that
-implementers upgrade their implementations and ecosystems when feasible.<a href="#section-1-4" class="pilcrow">¶</a></p>
+implementers upgrade their implementations and ecosystems as soon as feasible.<a href="#section-1-4" class="pilcrow">¶</a></p>
 <p id="section-1-5">OAuth 2.1, under developement as <span>[<a href="#I-D.ietf-oauth-v2-1" class="cite xref">I-D.ietf-oauth-v2-1</a>]</span>, will incorporate the
 security recommendations of this document.<a href="#section-1-5" class="pilcrow">¶</a></p>
 <div id="structure">
@@ -1519,9 +1520,10 @@ browser to an arbitrary URI obtained from a query parameter.<a href="#section-1.
       <h2 id="name-best-practices">
 <a href="#section-2" class="section-number selfRef">2. </a><a href="#name-best-practices" class="section-name selfRef">Best Practices</a>
       </h2>
-<p id="section-2-1">This section describes the set of security mechanisms and measures the OAuth
-working group considers best practices at the time of writing. Details about
-these mechanisms and measures, including attack descriptions, are provided in
+<p id="section-2-1">This section describes the core set of security mechanisms and measures the
+OAuth working group considers best practices at the time of writing. Details
+about these security mechanisms and measures (including detailed attack
+descriptions) and requirements for less commonly used options are provided in
 <a href="#attacks_and_mitigations" class="auto internal xref">Section 4</a>.<a href="#section-2-1" class="pilcrow">¶</a></p>
 <div id="rec_redirect">
 <section id="section-2.1">
@@ -1700,7 +1702,7 @@ server, or, if that is not feasible, to a small set of resource servers. To put 
 the access token with certain resource servers and every resource
 server is obliged to verify, for every request, whether the access
 token sent with that request was meant to be used for that particular
-resource server. If not, the resource server MUST refuse to serve the
+resource server. If it was not, the resource server MUST refuse to serve the
 respective request. The <code>aud</code> claim as defined in <span>[<a href="#RFC9068" class="cite xref">RFC9068</a>]</span> MAY be
 used to audience-restrict access tokens. Clients and authorization servers MAY utilize the
 parameters <code>scope</code> or <code>resource</code> as specified in <span>[<a href="#RFC6749" class="cite xref">RFC6749</a>]</span> and
@@ -1740,7 +1742,9 @@ to implement with this grant type, as it is usually bound to a specific web orig
         <h3 id="name-client-authentication">
 <a href="#section-2.5" class="section-number selfRef">2.5. </a><a href="#name-client-authentication" class="section-name selfRef">Client Authentication</a>
         </h3>
-<p id="section-2.5-1">Authorization servers SHOULD enforce client authentication if possible.<a href="#section-2.5-1" class="pilcrow">¶</a></p>
+<p id="section-2.5-1">Authorization servers SHOULD enforce client authentication if it is feasible, in
+the particular deployment, to establish a process for issuance/registration of
+credentials for clients and ensuring the confidentiality of those credentials.<a href="#section-2.5-1" class="pilcrow">¶</a></p>
 <p id="section-2.5-2">It is RECOMMENDED to use asymmetric cryptography for
 client authentication, such as mTLS <span>[<a href="#RFC8705" class="cite xref">RFC8705</a>]</span> or signed JWTs
 ("Private Key JWT") in accordance with <span>[<a href="#RFC7521" class="cite xref">RFC7521</a>]</span> and <span>[<a href="#RFC7523" class="cite xref">RFC7523</a>]</span>
@@ -1800,12 +1804,13 @@ endpoint directly, instead the client redirects the user agent to it.<a href="#s
       <h2 id="name-the-updated-oauth-20-attack">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-the-updated-oauth-20-attack" class="section-name selfRef">The Updated OAuth 2.0 Attacker Model</a>
       </h2>
-<p id="section-3-1">In <span>[<a href="#RFC6819" class="cite xref">RFC6819</a>]</span>, an attacker model is laid out that describes the
-capabilities of attackers against which OAuth deployments must be
-protected. In the following, this attacker model is updated to account
-for the potentially dynamic relationships involving multiple parties
-(as described in <a href="#Introduction" class="auto internal xref">Section 1</a>), to include new types of attackers and to define
-the attacker model more clearly.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-1">In <span>[<a href="#RFC6819" class="cite xref">RFC6819</a>]</span>, a threat model is laid out that describes the threats against
+which OAuth deployments must be protected. While doing so, <span>[<a href="#RFC6819" class="cite xref">RFC6819</a>]</span> makes
+certain assumptions about attackers and their capabilities, i.e., implicitly
+establishes an attacker model. In the following, this attacker model is made
+explicit and is updated and expanded to account for the potentially dynamic
+relationships involving multiple parties (as described in <a href="#Introduction" class="auto internal xref">Section 1</a>), to
+include new types of attackers and to define the attacker model more clearly.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <p id="section-3-2">The goal of this document is to ensure that the authorization of a resource
 owner (with a user agent) at an authorization server and the subsequent usage of
 the access token at a resource server is protected, as good as practically
@@ -1844,7 +1849,7 @@ Network attackers can also block arbitrary messages.<a href="#section-3-3.2.1" c
       </ul>
 <p id="section-3-4">While an example for a web attacker would be a customer of an internet
 service provider, network attackers could be the internet service
-provider itself, an attacker in a public (wifi) network using ARP
+provider itself, an attacker in a public (Wi-Fi) network using ARP
 spoofing, or a state-sponsored attacker with access to internet
 exchange points, for instance.<a href="#section-3-4" class="pilcrow">¶</a></p>
 <p id="section-3-5">The aforementioned attackers (A1) and (A2) conform to the attacker model that was used in formal analysis
@@ -1889,7 +1894,7 @@ Attackers can collaborate to reach a common goal.<a href="#section-3-8" class="p
 act as one. For example, such an attacker can use their own browser to replay
 tokens or authorization codes obtained by any of the attacks described
 above at the client or resource server.<a href="#section-3-9" class="pilcrow">¶</a></p>
-<p id="section-3-10">This document focusses on threats resulting from attackers (A1) to (A5).<a href="#section-3-10" class="pilcrow">¶</a></p>
+<p id="section-3-10">This document focuses on threats resulting from attackers (A1) to (A5).<a href="#section-3-10" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="attacks_and_mitigations">
@@ -1897,10 +1902,11 @@ above at the client or resource server.<a href="#section-3-9" class="pilcrow">¶
       <h2 id="name-attacks-and-mitigations">
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-attacks-and-mitigations" class="section-name selfRef">Attacks and Mitigations</a>
       </h2>
-<p id="section-4-1">This section gives a detailed description of attacks on OAuth
-implementations, along with potential countermeasures. Attacks and
-mitigations already covered in <span>[<a href="#RFC6819" class="cite xref">RFC6819</a>]</span> are not listed here, except
-where new recommendations are made.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-1">This section gives a detailed description of attacks on OAuth implementations,
+along with potential countermeasures. Attacks and mitigations already covered in
+<span>[<a href="#RFC6819" class="cite xref">RFC6819</a>]</span> are not listed here, except where new recommendations are made.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-2">This section further defines additional requirements beyond those defined in
+Section <a href="#recommendations" class="auto internal xref">Section 2</a> for certain cases and protocol options.<a href="#section-4-2" class="pilcrow">¶</a></p>
 <div id="insufficient_uri_validation">
 <section id="section-4.1">
         <h3 id="name-insufficient-redirect-uri-v">
@@ -1950,7 +1956,7 @@ authorization server, therefore, might permit
 although <code>attacker.example</code> is a different domain potentially
 controlled by a malicious party.<a href="#section-4.1.1-2" class="pilcrow">¶</a></p>
 <p id="section-4.1.1-3">The attack can then be conducted as follows:<a href="#section-4.1.1-3" class="pilcrow">¶</a></p>
-<p id="section-4.1.1-4">First, the attacker needs to trick the user into opening a tampered
+<p id="section-4.1.1-4">To begin, the attacker needs to trick the user into opening a tampered
 URL in their browser that launches a page under the attacker's
 control, say <code>https://www.evil.example</code> (see Attacker A1 in <a href="#secmodel" class="auto internal xref">Section 3</a>).<a href="#section-4.1.1-4" class="pilcrow">¶</a></p>
 <p id="section-4.1.1-5">This URL initiates the following authorization request with the client
@@ -2017,7 +2023,7 @@ the client exposes an open redirector. This endpoint supports a
 parameter <code>redirect_to</code> which takes a target URL and will send the
 browser to this URL using an HTTP Location header redirect 303.<a href="#section-4.1.2-3" class="pilcrow">¶</a></p>
 <p id="section-4.1.2-4">The attack can now be conducted as follows:<a href="#section-4.1.2-4" class="pilcrow">¶</a></p>
-<p id="section-4.1.2-5">First, and as above, the attacker needs to trick the user into opening
+<p id="section-4.1.2-5">To begin, as above, the attacker needs to trick the user into opening
 a tampered URL in their browser that launches a page under the
 attacker's control, say <code>https://www.evil.example</code>.<a href="#section-4.1.2-5" class="pilcrow">¶</a></p>
 <p id="section-4.1.2-6">Afterwards, the website initiates an authorization request that is
@@ -2356,8 +2362,7 @@ authorization code injection attack as described in
           </ol>
 <p id="section-4.4.1-7">Variants:<a href="#section-4.4.1-7" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="section-4.4.1-8.1">
-              <strong>Mix-Up With Interception</strong>: This variant works only if the attacker can
+<li class="compact" id="section-4.4.1-8.1">Mix-Up With Interception: This variant works only if the attacker can
 intercept and manipulate the first request/response pair from a user's
 browser to the client (in which the user selects a certain authorization server and is then
 redirected by the client to that authorization server), as in Attacker A2 (see <a href="#secmodel" class="auto internal xref">Section 3</a>). This capability
@@ -2366,22 +2371,19 @@ connection to the client. In the attack, the user starts the flow with H-AS.
 The attacker intercepts this request and changes the user's selection to
 A-AS. The rest of the attack proceeds as in Steps 2 and following above.<a href="#section-4.4.1-8.1" class="pilcrow">¶</a>
 </li>
-            <li class="compact" id="section-4.4.1-8.2">
-              <strong>Implicit Grant</strong>: In the implicit grant, the attacker receives an access
+            <li class="compact" id="section-4.4.1-8.2">Implicit Grant: In the implicit grant, the attacker receives an access
 token instead of the code in Step 4. The attacker's authorization server receives the access token
 when the client makes a request to the A-AS userinfo endpoint, or since the
 client believes it has completed the flow with A-AS, a request to the
 attacker's resource server.<a href="#section-4.4.1-8.2" class="pilcrow">¶</a>
 </li>
-            <li class="compact" id="section-4.4.1-8.3">
-              <strong>Per-AS Redirect URIs</strong>: If clients use different redirect URIs for
+            <li class="compact" id="section-4.4.1-8.3">Per-AS Redirect URIs: If clients use different redirect URIs for
 different authorization servers, do not store the selected authorization server in the user's session, and authorization servers
 do not check the redirect URIs properly, attackers can mount an attack
 called "Cross-Social Network Request Forgery". These attacks have been
 observed in practice. Refer to <span>[<a href="#research.jcs_14" class="cite xref">research.jcs_14</a>]</span> for details.<a href="#section-4.4.1-8.3" class="pilcrow">¶</a>
 </li>
-            <li class="compact" id="section-4.4.1-8.4">
-              <strong>OpenID Connect</strong>: There are variants that can be used to attack OpenID
+            <li class="compact" id="section-4.4.1-8.4">OpenID Connect: There are variants that can be used to attack OpenID
 Connect. In these attacks, the attacker misuses features of the OpenID
 Connect Discovery <span>[<a href="#OpenID.Discovery" class="cite xref">OpenID.Discovery</a>]</span> mechanism or replays access tokens or ID
 Tokens to conduct a mix-up attack. The attacks are described in detail in
@@ -2998,29 +3000,24 @@ ensure that replay of the proof of possession is not possible.<a href="#section-
 <p id="section-4.10.1-4">Two methods for sender-constrained access tokens using proof-of-possession have
 been defined by the OAuth working group and are in use in practice:<a href="#section-4.10.1-4" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="section-4.10.1-5.1">
-              <strong>OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound
-Access Tokens</strong> (<span>[<a href="#RFC8705" class="cite xref">RFC8705</a>]</span>): The approach as specified in this
-document allows the use of mutual TLS (mTLS) for both client
-authentication and sender-constrained access tokens. For the
-purpose of sender-constrained access tokens, the client is
-identified towards the resource server by the fingerprint of its
-public key. During processing of an access token request, the
-authorization server obtains the client's public key from the TLS
-stack and associates its fingerprint with the respective access
-tokens. The resource server in the same way obtains the public key
-from the TLS stack and compares its fingerprint with the
-fingerprint associated with the access token.<a href="#section-4.10.1-5.1" class="pilcrow">¶</a>
+<li class="compact" id="section-4.10.1-5.1">OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound Access
+Tokens (<span>[<a href="#RFC8705" class="cite xref">RFC8705</a>]</span>): The approach as specified in this document allows the
+use of mutual TLS (mTLS) for both client authentication and
+sender-constrained access tokens. For the purpose of sender-constrained
+access tokens, the client is identified towards the resource server by the
+fingerprint of its public key. During processing of an access token request,
+the authorization server obtains the client's public key from the TLS stack
+and associates its fingerprint with the respective access tokens. The
+resource server in the same way obtains the public key from the TLS stack
+and compares its fingerprint with the fingerprint associated with the access
+token.<a href="#section-4.10.1-5.1" class="pilcrow">¶</a>
 </li>
-            <li class="compact" id="section-4.10.1-5.2">
-              <strong>OAuth 2.0 Demonstrating Proof of Possession (DPoP)</strong> (<span>[<a href="#RFC9449" class="cite xref">RFC9449</a>]</span>):
-DPoP outlines an
-application-level sender-constraining for access and refresh
-tokens. It uses
-proof-of-possession based on a public/private key pair and
-application-level signing. DPoP can be used with public clients
-and, in case of confidential clients, can be combined with any
-client authentication method.<a href="#section-4.10.1-5.2" class="pilcrow">¶</a>
+            <li class="compact" id="section-4.10.1-5.2">OAuth 2.0 Demonstrating Proof of Possession (DPoP) (<span>[<a href="#RFC9449" class="cite xref">RFC9449</a>]</span>): DPoP
+outlines an application-level sender-constraining for access and refresh
+tokens. It uses proof-of-possession based on a public/private key pair and
+application-level signing. DPoP can be used with public clients and, in case
+of confidential clients, can be combined with any client authentication
+method.<a href="#section-4.10.1-5.2" class="pilcrow">¶</a>
 </li>
           </ul>
 <p id="section-4.10.1-6">Note that the security of sender-constrained tokens is undermined when
@@ -3950,306 +3947,311 @@ for their valuable feedback.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-document-history" class="section-name selfRef">Document History</a>
       </h2>
 <p id="appendix-A-1">[[ To be removed from the final specification ]]<a href="#appendix-A-1" class="pilcrow">¶</a></p>
-<p id="appendix-A-2">-25<a href="#appendix-A-2" class="pilcrow">¶</a></p>
+<p id="appendix-A-2">-26<a href="#appendix-A-2" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="appendix-A-3.1">Shepherd's writup feedback: Removed discussion on outdated POP approaches<a href="#appendix-A-3.1" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-3.2">Shepherd's writup feedback: Clarify relationship to other document.<a href="#appendix-A-3.2" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-3.3">Shepherd's writup feedback: Expand abbreviations<a href="#appendix-A-3.3" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-3.4">Shepherd's writup feedback: Better explain attacker model<a href="#appendix-A-3.4" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-3.5">Shepherd's writup feedback: Various editorial changes<a href="#appendix-A-3.5" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-3.6">AD review: Mention updated documents in abstract<a href="#appendix-A-3.6" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-3.7">AD review: Fix HTTP reference<a href="#appendix-A-3.7" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-3.8">AD review: Clarification in the attacker model<a href="#appendix-A-3.8" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-3.9">AD review: Various editorial and minor changes<a href="#appendix-A-3.9" class="pilcrow">¶</a>
+<li class="compact" id="appendix-A-3.1">Feedback from ARTART review incorporated<a href="#appendix-A-3.1" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="appendix-A-4">-24<a href="#appendix-A-4" class="pilcrow">¶</a></p>
+<p id="appendix-A-4">-25<a href="#appendix-A-4" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="appendix-A-5.1">Some feedback from shepherd's writeup incorporated<a href="#appendix-A-5.1" class="pilcrow">¶</a>
+<li class="compact" id="appendix-A-5.1">Shepherd's writeup feedback: Removed discussion on outdated POP approaches<a href="#appendix-A-5.1" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-5.2">Cleaned up references<a href="#appendix-A-5.2" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-5.2">Shepherd's writeup feedback: Clarify relationship to other document.<a href="#appendix-A-5.2" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-5.3">Clarification on mix-up attack<a href="#appendix-A-5.3" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-5.3">Shepherd's writeup feedback: Expand abbreviations<a href="#appendix-A-5.3" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-5.4">Add researcher names to acknowledgements<a href="#appendix-A-5.4" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-5.4">Shepherd's writeup feedback: Better explain attacker model<a href="#appendix-A-5.4" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-5.5">Removed sentence stating that only MTLS is standardized; DPoP is now as well<a href="#appendix-A-5.5" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-5.5">Shepherd's writeup feedback: Various editorial changes<a href="#appendix-A-5.5" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-5.6">AD review: Mention updated documents in abstract<a href="#appendix-A-5.6" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-5.7">AD review: Fix HTTP reference<a href="#appendix-A-5.7" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-5.8">AD review: Clarification in the attacker model<a href="#appendix-A-5.8" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-5.9">AD review: Various editorial and minor changes<a href="#appendix-A-5.9" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="appendix-A-6">-23<a href="#appendix-A-6" class="pilcrow">¶</a></p>
+<p id="appendix-A-6">-24<a href="#appendix-A-6" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="appendix-A-7.1">Added CORS considerations<a href="#appendix-A-7.1" class="pilcrow">¶</a>
+<li class="compact" id="appendix-A-7.1">Some feedback from shepherd's writeup incorporated<a href="#appendix-A-7.1" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-7.2">Reworded <a href="#client_impersonating_countermeasures" class="auto internal xref">Section 4.15.1</a> to be more in line with OAuth 2.1<a href="#appendix-A-7.2" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-7.2">Cleaned up references<a href="#appendix-A-7.2" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-7.3">Editorial changes<a href="#appendix-A-7.3" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-7.3">Clarification on mix-up attack<a href="#appendix-A-7.3" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-7.4">Clarifications and updated references<a href="#appendix-A-7.4" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-7.4">Add researcher names to acknowledgements<a href="#appendix-A-7.4" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-7.5">Removed sentence stating that only MTLS is standardized; DPoP is now as well<a href="#appendix-A-7.5" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="appendix-A-8">-22<a href="#appendix-A-8" class="pilcrow">¶</a></p>
+<p id="appendix-A-8">-23<a href="#appendix-A-8" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="appendix-A-9.1">Added section on securing in-browser communication<a href="#appendix-A-9.1" class="pilcrow">¶</a>
+<li class="compact" id="appendix-A-9.1">Added CORS considerations<a href="#appendix-A-9.1" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-9.2">Merged section on phishing via AS into existing section on open redirectors<a href="#appendix-A-9.2" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-9.2">Reworded <a href="#client_impersonating_countermeasures" class="auto internal xref">Section 4.15.1</a> to be more in line with OAuth 2.1<a href="#appendix-A-9.2" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-9.3">Restructure and move section on sender-constrained tokens<a href="#appendix-A-9.3" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-9.3">Editorial changes<a href="#appendix-A-9.3" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-9.4">Mention RFCs for Private Key JWK method<a href="#appendix-A-9.4" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-9.4">Clarifications and updated references<a href="#appendix-A-9.4" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="appendix-A-10">-21<a href="#appendix-A-10" class="pilcrow">¶</a></p>
+<p id="appendix-A-10">-22<a href="#appendix-A-10" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="appendix-A-11.1">Improved wording on phishing via AS<a href="#appendix-A-11.1" class="pilcrow">¶</a>
+<li class="compact" id="appendix-A-11.1">Added section on securing in-browser communication<a href="#appendix-A-11.1" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-11.2">Merged section on phishing via AS into existing section on open redirectors<a href="#appendix-A-11.2" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-11.3">Restructure and move section on sender-constrained tokens<a href="#appendix-A-11.3" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-11.4">Mention RFCs for Private Key JWK method<a href="#appendix-A-11.4" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="appendix-A-12">-20<a href="#appendix-A-12" class="pilcrow">¶</a></p>
+<p id="appendix-A-12">-21<a href="#appendix-A-12" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="appendix-A-13.1">Improved description of authorization code injection attacks and PKCE protection<a href="#appendix-A-13.1" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-13.2">Removed recommendation for MTLS in discussion (not reflected in actual Recommendations section)<a href="#appendix-A-13.2" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-13.3">Reworded "placeholder" text in security considerations.<a href="#appendix-A-13.3" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-13.4">Alphabetized list of names and fixed unicode problem<a href="#appendix-A-13.4" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-13.5">Explained Clickjacking<a href="#appendix-A-13.5" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-13.6">Explained Open Redirectors<a href="#appendix-A-13.6" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-13.7">Clarified references to attacker model by including a link to <a href="#secmodel" class="auto internal xref">Section 3</a><a href="#appendix-A-13.7" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-13.8">Clarified description of "CSRF tokens" and reference to RFC6819<a href="#appendix-A-13.8" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-13.9">Described that OIDC can prevent access token injection<a href="#appendix-A-13.9" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-13.10">Updated references<a href="#appendix-A-13.10" class="pilcrow">¶</a>
+<li class="compact" id="appendix-A-13.1">Improved wording on phishing via AS<a href="#appendix-A-13.1" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="appendix-A-14">-19<a href="#appendix-A-14" class="pilcrow">¶</a></p>
+<p id="appendix-A-14">-20<a href="#appendix-A-14" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="appendix-A-15.1">Changed affiliation of Andrey Labunets<a href="#appendix-A-15.1" class="pilcrow">¶</a>
+<li class="compact" id="appendix-A-15.1">Improved description of authorization code injection attacks and PKCE protection<a href="#appendix-A-15.1" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-15.2">Editorial change to clarify the new recommendations for refresh tokens<a href="#appendix-A-15.2" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-15.2">Removed recommendation for MTLS in discussion (not reflected in actual Recommendations section)<a href="#appendix-A-15.2" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-15.3">Reworded "placeholder" text in security considerations.<a href="#appendix-A-15.3" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-15.4">Alphabetized list of names and fixed unicode problem<a href="#appendix-A-15.4" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-15.5">Explained Clickjacking<a href="#appendix-A-15.5" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-15.6">Explained Open Redirectors<a href="#appendix-A-15.6" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-15.7">Clarified references to attacker model by including a link to <a href="#secmodel" class="auto internal xref">Section 3</a><a href="#appendix-A-15.7" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-15.8">Clarified description of "CSRF tokens" and reference to RFC6819<a href="#appendix-A-15.8" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-15.9">Described that OIDC can prevent access token injection<a href="#appendix-A-15.9" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-15.10">Updated references<a href="#appendix-A-15.10" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="appendix-A-16">-18<a href="#appendix-A-16" class="pilcrow">¶</a></p>
+<p id="appendix-A-16">-19<a href="#appendix-A-16" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="appendix-A-17.1">Fix editorial and spelling issues.<a href="#appendix-A-17.1" class="pilcrow">¶</a>
+<li class="compact" id="appendix-A-17.1">Changed affiliation of Andrey Labunets<a href="#appendix-A-17.1" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-17.2">Change wording for disallowing HTTP redirect URIs.<a href="#appendix-A-17.2" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-17.2">Editorial change to clarify the new recommendations for refresh tokens<a href="#appendix-A-17.2" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="appendix-A-18">-17<a href="#appendix-A-18" class="pilcrow">¶</a></p>
+<p id="appendix-A-18">-18<a href="#appendix-A-18" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="appendix-A-19.1">Make the use of metadata RECOMMENDED for both servers and clients<a href="#appendix-A-19.1" class="pilcrow">¶</a>
+<li class="compact" id="appendix-A-19.1">Fix editorial and spelling issues.<a href="#appendix-A-19.1" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-19.2">Make announcing PKCE support in metadata the RECOMMENDED way (before: either metadata or deployment-specific way)<a href="#appendix-A-19.2" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-19.3">AS also MUST NOT expose open redirectors.<a href="#appendix-A-19.3" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-19.4">Mention that attackers can collaborate.<a href="#appendix-A-19.4" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-19.5">Update recommendations regarding mix-up defense, building upon <span>[<a href="#RFC9207" class="cite xref">RFC9207</a>]</span>.<a href="#appendix-A-19.5" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-19.6">Improve description of mix-up attack.<a href="#appendix-A-19.6" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-19.7">Make HTTPS mandatory for most redirect URIs.<a href="#appendix-A-19.7" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-19.2">Change wording for disallowing HTTP redirect URIs.<a href="#appendix-A-19.2" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="appendix-A-20">-16<a href="#appendix-A-20" class="pilcrow">¶</a></p>
+<p id="appendix-A-20">-17<a href="#appendix-A-20" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="appendix-A-21.1">Make MTLS a suggestion, not RECOMMENDED.<a href="#appendix-A-21.1" class="pilcrow">¶</a>
+<li class="compact" id="appendix-A-21.1">Make the use of metadata RECOMMENDED for both servers and clients<a href="#appendix-A-21.1" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-21.2">Add important requirements when using nonce for code injection protection.<a href="#appendix-A-21.2" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-21.2">Make announcing PKCE support in metadata the RECOMMENDED way (before: either metadata or deployment-specific way)<a href="#appendix-A-21.2" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-21.3">Highlight requirements for refresh token sender-constraining.<a href="#appendix-A-21.3" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-21.3">AS also MUST NOT expose open redirectors.<a href="#appendix-A-21.3" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-21.4">Make PKCE a MUST for public clients.<a href="#appendix-A-21.4" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-21.4">Mention that attackers can collaborate.<a href="#appendix-A-21.4" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-21.5">Describe PKCE Downgrade Attacks and countermeasures.<a href="#appendix-A-21.5" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-21.5">Update recommendations regarding mix-up defense, building upon <span>[<a href="#RFC9207" class="cite xref">RFC9207</a>]</span>.<a href="#appendix-A-21.5" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-21.6">Allow variable port numbers in localhost redirect URIs as in RFC8252, Section 7.3.<a href="#appendix-A-21.6" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-21.6">Improve description of mix-up attack.<a href="#appendix-A-21.6" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-21.7">Make HTTPS mandatory for most redirect URIs.<a href="#appendix-A-21.7" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="appendix-A-22">-15<a href="#appendix-A-22" class="pilcrow">¶</a></p>
+<p id="appendix-A-22">-16<a href="#appendix-A-22" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="appendix-A-23.1">Update reference to DPoP<a href="#appendix-A-23.1" class="pilcrow">¶</a>
+<li class="compact" id="appendix-A-23.1">Make MTLS a suggestion, not RECOMMENDED.<a href="#appendix-A-23.1" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-23.2">Fix reference to RFC8414<a href="#appendix-A-23.2" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-23.2">Add important requirements when using nonce for code injection protection.<a href="#appendix-A-23.2" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-23.3">Move to xml2rfcv3<a href="#appendix-A-23.3" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-23.3">Highlight requirements for refresh token sender-constraining.<a href="#appendix-A-23.3" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-23.4">Make PKCE a MUST for public clients.<a href="#appendix-A-23.4" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-23.5">Describe PKCE Downgrade Attacks and countermeasures.<a href="#appendix-A-23.5" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-23.6">Allow variable port numbers in localhost redirect URIs as in RFC8252, Section 7.3.<a href="#appendix-A-23.6" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="appendix-A-24">-14<a href="#appendix-A-24" class="pilcrow">¶</a></p>
+<p id="appendix-A-24">-15<a href="#appendix-A-24" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="appendix-A-25.1">Added info about using CSP to prevent clickjacking<a href="#appendix-A-25.1" class="pilcrow">¶</a>
+<li class="compact" id="appendix-A-25.1">Update reference to DPoP<a href="#appendix-A-25.1" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-25.2">Changes from WGLC feedback<a href="#appendix-A-25.2" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-25.2">Fix reference to RFC8414<a href="#appendix-A-25.2" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-25.3">Editorial changes<a href="#appendix-A-25.3" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-25.4">AS MUST announce PKCE support either in metadata or using deployment-specific ways (before: SHOULD)<a href="#appendix-A-25.4" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-25.3">Move to xml2rfcv3<a href="#appendix-A-25.3" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="appendix-A-26">-13<a href="#appendix-A-26" class="pilcrow">¶</a></p>
+<p id="appendix-A-26">-14<a href="#appendix-A-26" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="appendix-A-27.1">Discourage use of Resource Owner Password Credentials Grant<a href="#appendix-A-27.1" class="pilcrow">¶</a>
+<li class="compact" id="appendix-A-27.1">Added info about using CSP to prevent clickjacking<a href="#appendix-A-27.1" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-27.2">Added text on client impersonating resource owner<a href="#appendix-A-27.2" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-27.2">Changes from WGLC feedback<a href="#appendix-A-27.2" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-27.3">Recommend asymmetric methods for client authentication<a href="#appendix-A-27.3" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-27.3">Editorial changes<a href="#appendix-A-27.3" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-27.4">Encourage use of PKCE mode "S256"<a href="#appendix-A-27.4" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-27.5">PKCE may replace state for CSRF protection<a href="#appendix-A-27.5" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-27.6">AS SHOULD publish PKCE support<a href="#appendix-A-27.6" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-27.7">Cleaned up discussion on auth code injection<a href="#appendix-A-27.7" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-27.8">AS MUST support PKCE<a href="#appendix-A-27.8" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-27.4">AS MUST announce PKCE support either in metadata or using deployment-specific ways (before: SHOULD)<a href="#appendix-A-27.4" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="appendix-A-28">-12<a href="#appendix-A-28" class="pilcrow">¶</a></p>
+<p id="appendix-A-28">-13<a href="#appendix-A-28" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="appendix-A-29.1">Added updated attacker model<a href="#appendix-A-29.1" class="pilcrow">¶</a>
+<li class="compact" id="appendix-A-29.1">Discourage use of Resource Owner Password Credentials Grant<a href="#appendix-A-29.1" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-29.2">Added text on client impersonating resource owner<a href="#appendix-A-29.2" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-29.3">Recommend asymmetric methods for client authentication<a href="#appendix-A-29.3" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-29.4">Encourage use of PKCE mode "S256"<a href="#appendix-A-29.4" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-29.5">PKCE may replace state for CSRF protection<a href="#appendix-A-29.5" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-29.6">AS SHOULD publish PKCE support<a href="#appendix-A-29.6" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-29.7">Cleaned up discussion on auth code injection<a href="#appendix-A-29.7" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-29.8">AS MUST support PKCE<a href="#appendix-A-29.8" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="appendix-A-30">-11<a href="#appendix-A-30" class="pilcrow">¶</a></p>
+<p id="appendix-A-30">-12<a href="#appendix-A-30" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="appendix-A-31.1">Adapted section 2.1.2 to outcome of consensus call<a href="#appendix-A-31.1" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-31.2">more text on refresh token inactivity and implementation note on refresh token replay detection via refresh token rotation<a href="#appendix-A-31.2" class="pilcrow">¶</a>
+<li class="compact" id="appendix-A-31.1">Added updated attacker model<a href="#appendix-A-31.1" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="appendix-A-32">-10<a href="#appendix-A-32" class="pilcrow">¶</a></p>
+<p id="appendix-A-32">-11<a href="#appendix-A-32" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="appendix-A-33.1">incorporated feedback by Joseph Heenan<a href="#appendix-A-33.1" class="pilcrow">¶</a>
+<li class="compact" id="appendix-A-33.1">Adapted section 2.1.2 to outcome of consensus call<a href="#appendix-A-33.1" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-33.2">changed occurrences of SHALL to MUST<a href="#appendix-A-33.2" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-33.2">more text on refresh token inactivity and implementation note on refresh token replay detection via refresh token rotation<a href="#appendix-A-33.2" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-33.3">added text on lack of token/cert binding support tokens issued in
+      </ul>
+<p id="appendix-A-34">-10<a href="#appendix-A-34" class="pilcrow">¶</a></p>
+<ul class="compact">
+<li class="compact" id="appendix-A-35.1">incorporated feedback by Joseph Heenan<a href="#appendix-A-35.1" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-35.2">changed occurrences of SHALL to MUST<a href="#appendix-A-35.2" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-35.3">added text on lack of token/cert binding support tokens issued in
   the authorization response as justification to not recommend
-  issuing tokens there at all<a href="#appendix-A-33.3" class="pilcrow">¶</a>
+  issuing tokens there at all<a href="#appendix-A-35.3" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-33.4">added requirement to authenticate clients during code exchange
-  (PKCE or client credential) to 2.1.1.<a href="#appendix-A-33.4" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-35.4">added requirement to authenticate clients during code exchange
+  (PKCE or client credential) to 2.1.1.<a href="#appendix-A-35.4" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-33.5">added section on refresh tokens<a href="#appendix-A-33.5" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-35.5">added section on refresh tokens<a href="#appendix-A-35.5" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-33.6">editorial enhancements to 2.1.2 based on feedback<a href="#appendix-A-33.6" class="pilcrow">¶</a>
-</li>
-      </ul>
-<p id="appendix-A-34">-09<a href="#appendix-A-34" class="pilcrow">¶</a></p>
-<ul class="compact">
-<li class="compact" id="appendix-A-35.1">changed text to recommend not to use implicit but code<a href="#appendix-A-35.1" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-35.2">added section on access token injection<a href="#appendix-A-35.2" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-35.3">reworked sections 3.1 through 3.3 to be more specific on implicit
-  grant issues<a href="#appendix-A-35.3" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-35.6">editorial enhancements to 2.1.2 based on feedback<a href="#appendix-A-35.6" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="appendix-A-36">-08<a href="#appendix-A-36" class="pilcrow">¶</a></p>
+<p id="appendix-A-36">-09<a href="#appendix-A-36" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="appendix-A-37.1">added recommendations re implicit and token injection<a href="#appendix-A-37.1" class="pilcrow">¶</a>
+<li class="compact" id="appendix-A-37.1">changed text to recommend not to use implicit but code<a href="#appendix-A-37.1" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-37.2">uppercased key words in Section 2 according to RFC 2119<a href="#appendix-A-37.2" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-37.2">added section on access token injection<a href="#appendix-A-37.2" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-37.3">reworked sections 3.1 through 3.3 to be more specific on implicit
+  grant issues<a href="#appendix-A-37.3" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="appendix-A-38">-07<a href="#appendix-A-38" class="pilcrow">¶</a></p>
+<p id="appendix-A-38">-08<a href="#appendix-A-38" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="appendix-A-39.1">incorporated findings of Doug McDorman<a href="#appendix-A-39.1" class="pilcrow">¶</a>
+<li class="compact" id="appendix-A-39.1">added recommendations re implicit and token injection<a href="#appendix-A-39.1" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-39.2">added section on HTTP status codes for redirects<a href="#appendix-A-39.2" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-39.3">added new section on access token privilege restriction based on
-  comments from Johan Peeters<a href="#appendix-A-39.3" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-39.2">uppercased key words in Section 2 according to RFC 2119<a href="#appendix-A-39.2" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="appendix-A-40">-06<a href="#appendix-A-40" class="pilcrow">¶</a></p>
+<p id="appendix-A-40">-07<a href="#appendix-A-40" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="appendix-A-41.1">reworked section 3.8.1<a href="#appendix-A-41.1" class="pilcrow">¶</a>
+<li class="compact" id="appendix-A-41.1">incorporated findings of Doug McDorman<a href="#appendix-A-41.1" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-41.2">incorporated Phil Hunt's feedback<a href="#appendix-A-41.2" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-41.2">added section on HTTP status codes for redirects<a href="#appendix-A-41.2" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-41.3">reworked section on mix-up<a href="#appendix-A-41.3" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-41.4">extended section on code leakage via referrer header to also cover
-  state leakage<a href="#appendix-A-41.4" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-41.5">added Daniel Fett as author<a href="#appendix-A-41.5" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-41.6">replaced text intended to inform WG discussion by recommendations
-  to implementors<a href="#appendix-A-41.6" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-41.7">modified example URLs to conform to RFC 2606<a href="#appendix-A-41.7" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-41.3">added new section on access token privilege restriction based on
+  comments from Johan Peeters<a href="#appendix-A-41.3" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="appendix-A-42">-05<a href="#appendix-A-42" class="pilcrow">¶</a></p>
+<p id="appendix-A-42">-06<a href="#appendix-A-42" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="appendix-A-43.1">Completed sections on code leakage via referrer header, attacks in
-  browser, mix-up, and CSRF<a href="#appendix-A-43.1" class="pilcrow">¶</a>
+<li class="compact" id="appendix-A-43.1">reworked section 3.8.1<a href="#appendix-A-43.1" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-43.2">Reworked Code Injection Section<a href="#appendix-A-43.2" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-43.2">incorporated Phil Hunt's feedback<a href="#appendix-A-43.2" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-43.3">Added reference to OpenID Connect spec<a href="#appendix-A-43.3" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-43.3">reworked section on mix-up<a href="#appendix-A-43.3" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-43.4">removed refresh token leakage as respective considerations have
-  been given in section 10.4 of RFC 6749<a href="#appendix-A-43.4" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-43.4">extended section on code leakage via referrer header to also cover
+  state leakage<a href="#appendix-A-43.4" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-43.5">first version on open redirection<a href="#appendix-A-43.5" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-43.5">added Daniel Fett as author<a href="#appendix-A-43.5" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-43.6">incorporated Christian Mainka's review feedback<a href="#appendix-A-43.6" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-43.6">replaced text intended to inform WG discussion by recommendations
+  to implementors<a href="#appendix-A-43.6" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-43.7">modified example URLs to conform to RFC 2606<a href="#appendix-A-43.7" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="appendix-A-44">-04<a href="#appendix-A-44" class="pilcrow">¶</a></p>
+<p id="appendix-A-44">-05<a href="#appendix-A-44" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="appendix-A-45.1">Restructured document for better readability<a href="#appendix-A-45.1" class="pilcrow">¶</a>
+<li class="compact" id="appendix-A-45.1">Completed sections on code leakage via referrer header, attacks in
+  browser, mix-up, and CSRF<a href="#appendix-A-45.1" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-45.2">Added best practices on Token Leakage prevention<a href="#appendix-A-45.2" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-45.2">Reworked Code Injection Section<a href="#appendix-A-45.2" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-45.3">Added reference to OpenID Connect spec<a href="#appendix-A-45.3" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-45.4">removed refresh token leakage as respective considerations have
+  been given in section 10.4 of RFC 6749<a href="#appendix-A-45.4" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-45.5">first version on open redirection<a href="#appendix-A-45.5" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-45.6">incorporated Christian Mainka's review feedback<a href="#appendix-A-45.6" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="appendix-A-46">-03<a href="#appendix-A-46" class="pilcrow">¶</a></p>
+<p id="appendix-A-46">-04<a href="#appendix-A-46" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="appendix-A-47.1">Added section on Access Token Leakage at Resource Server<a href="#appendix-A-47.1" class="pilcrow">¶</a>
+<li class="compact" id="appendix-A-47.1">Restructured document for better readability<a href="#appendix-A-47.1" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-47.2">incorporated Brian Campbell's findings<a href="#appendix-A-47.2" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-47.2">Added best practices on Token Leakage prevention<a href="#appendix-A-47.2" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="appendix-A-48">-02<a href="#appendix-A-48" class="pilcrow">¶</a></p>
+<p id="appendix-A-48">-03<a href="#appendix-A-48" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="appendix-A-49.1">Folded Mix up and Access Token leakage through a bad AS into new
-  section for dynamic OAuth threats<a href="#appendix-A-49.1" class="pilcrow">¶</a>
+<li class="compact" id="appendix-A-49.1">Added section on Access Token Leakage at Resource Server<a href="#appendix-A-49.1" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-49.2">reworked dynamic OAuth section<a href="#appendix-A-49.2" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-49.2">incorporated Brian Campbell's findings<a href="#appendix-A-49.2" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="appendix-A-50">-01<a href="#appendix-A-50" class="pilcrow">¶</a></p>
+<p id="appendix-A-50">-02<a href="#appendix-A-50" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="appendix-A-51.1">Added references to mitigation methods for token leakage<a href="#appendix-A-51.1" class="pilcrow">¶</a>
+<li class="compact" id="appendix-A-51.1">Folded Mix up and Access Token leakage through a bad AS into new
+  section for dynamic OAuth threats<a href="#appendix-A-51.1" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-51.2">Added reference to Token Binding for Authorization Code<a href="#appendix-A-51.2" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-51.3">incorporated feedback of Phil Hunt<a href="#appendix-A-51.3" class="pilcrow">¶</a>
-</li>
-        <li class="compact" id="appendix-A-51.4">fixed numbering issue in attack descriptions in section 2<a href="#appendix-A-51.4" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-51.2">reworked dynamic OAuth section<a href="#appendix-A-51.2" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="appendix-A-52">-00 (WG document)<a href="#appendix-A-52" class="pilcrow">¶</a></p>
+<p id="appendix-A-52">-01<a href="#appendix-A-52" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="appendix-A-53.1">turned the ID into a WG document and a BCP<a href="#appendix-A-53.1" class="pilcrow">¶</a>
+<li class="compact" id="appendix-A-53.1">Added references to mitigation methods for token leakage<a href="#appendix-A-53.1" class="pilcrow">¶</a>
 </li>
-        <li class="compact" id="appendix-A-53.2">Added federated app login as topic in Other Topics<a href="#appendix-A-53.2" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-A-53.2">Added reference to Token Binding for Authorization Code<a href="#appendix-A-53.2" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-53.3">incorporated feedback of Phil Hunt<a href="#appendix-A-53.3" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-53.4">fixed numbering issue in attack descriptions in section 2<a href="#appendix-A-53.4" class="pilcrow">¶</a>
+</li>
+      </ul>
+<p id="appendix-A-54">-00 (WG document)<a href="#appendix-A-54" class="pilcrow">¶</a></p>
+<ul class="compact">
+<li class="compact" id="appendix-A-55.1">turned the ID into a WG document and a BCP<a href="#appendix-A-55.1" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-A-55.2">Added federated app login as topic in Other Topics<a href="#appendix-A-55.2" class="pilcrow">¶</a>
 </li>
       </ul>
 </section>

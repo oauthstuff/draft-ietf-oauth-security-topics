@@ -6,11 +6,11 @@ Web Authorization Protocol                                T. Lodderstedt
 Internet-Draft                                                    SPRIND
 Updates: 6749, 6750, 6819 (if approved)                       J. Bradley
 Intended status: Best Current Practice                            Yubico
-Expires: 11 August 2024                                      A. Labunets
+Expires: 23 October 2024                                     A. Labunets
                                                   Independent Researcher
                                                                  D. Fett
                                                                 Authlete
-                                                         8 February 2024
+                                                           21 April 2024
 
 
                 OAuth 2.0 Security Best Current Practice
@@ -20,11 +20,11 @@ Abstract
 
    This document describes best current security practice for OAuth 2.0.
    It updates and extends the threat model and security advice given in
-   [RFC6749], [RFC6750], and [RFC6819] to incorporate practical
-   experiences gathered since OAuth 2.0 was published and covers new
-   threats relevant due to the broader application of OAuth 2.0.  It
-   further deprecates some modes of operation that are deemed less
-   secure or even insecure.
+   RFC 6749, RFC 6750, and RFC 6819 to incorporate practical experiences
+   gathered since OAuth 2.0 was published and covers new threats
+   relevant due to the broader application of OAuth 2.0.  It further
+   deprecates some modes of operation that are deemed less secure or
+   even insecure.
 
 Discussion Venues
 
@@ -52,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 August 2024.
+   This Internet-Draft will expire on 23 October 2024.
 
 Copyright Notice
 
@@ -156,11 +156,12 @@ Table of Contents
    the following challenges can be observed:
 
    *  OAuth implementations are being attacked through known
-      implementation weaknesses and anti-patterns.  Although most of
-      these threats are discussed in the OAuth 2.0 Threat Model and
-      Security Considerations [RFC6819], continued exploitation
-      demonstrates a need for more specific recommendations, easier to
-      implement mitigations, and more defense in depth.
+      implementation weaknesses and anti-patterns (i.e., well-known
+      patterns that are considered insecure).  Although most of these
+      threats are discussed in the OAuth 2.0 Threat Model and Security
+      Considerations [RFC6819], continued exploitation demonstrates a
+      need for more specific recommendations, easier to implement
+      mitigations, and more defense in depth.
 
    *  OAuth is being used in environments with higher security
       requirements than considered initially, such as Open Banking,
@@ -176,19 +177,20 @@ Table of Contents
       authorization server, and resource servers.  The URLs of the
       servers were known to the client at deployment time and built an
       anchor for the trust relationships among those parties.  The
-      validation of whether the client talks to a legitimate server was
-      based on TLS server authentication (see [RFC6819], Section 4.5.4).
-      With the increasing adoption of OAuth, this simple model dissolved
-      and, in several scenarios, was replaced by a dynamic establishment
-      of the relationship between clients on one side and the
-      authorization and resource servers of a particular deployment on
-      the other side.  This way, the same client could be used to access
-      services of different providers (in case of standard APIs, such as
-      e-mail or OpenID Connect) or serve as a front end to a particular
-      tenant in a multi-tenant environment.  Extensions of OAuth, such
-      as the OAuth 2.0 Dynamic Client Registration Protocol [RFC7591]
-      and OAuth 2.0 Authorization Server Metadata [RFC8414] were
-      developed to support the use of OAuth in dynamic scenarios.
+      validation of whether the client is talking to a legitimate server
+      was based on TLS server authentication (see [RFC6819],
+      Section 4.5.4).  With the increasing adoption of OAuth, this
+      simple model dissolved and, in several scenarios, was replaced by
+      a dynamic establishment of the relationship between clients on one
+      side and the authorization and resource servers of a particular
+      deployment on the other side.  This way, the same client could be
+      used to access services of different providers (in case of
+      standard APIs, such as e-mail or OpenID Connect) or serve as a
+      front end to a particular tenant in a multi-tenant environment.
+      Extensions of OAuth, such as the OAuth 2.0 Dynamic Client
+      Registration Protocol [RFC7591] and OAuth 2.0 Authorization Server
+      Metadata [RFC8414] were developed to support the use of OAuth in
+      dynamic scenarios.
 
    *  Technology has changed.  For example, the way browsers treat
       fragments when redirecting requests has changed, and with it, the
@@ -206,7 +208,7 @@ Table of Contents
    compatible with the new requirements and following the best practices
    described in this document may break interoperability.  Nonetheless,
    it is RECOMMENDED that implementers upgrade their implementations and
-   ecosystems when feasible.
+   ecosystems as soon as feasible.
 
    OAuth 2.1, under developement as [I-D.ietf-oauth-v2-1], will
    incorporate the security recommendations of this document.
@@ -239,10 +241,11 @@ Table of Contents
 
 2.  Best Practices
 
-   This section describes the set of security mechanisms and measures
-   the OAuth working group considers best practices at the time of
-   writing.  Details about these mechanisms and measures, including
-   attack descriptions, are provided in Section 4.
+   This section describes the core set of security mechanisms and
+   measures the OAuth working group considers best practices at the time
+   of writing.  Details about these security mechanisms and measures
+   (including detailed attack descriptions) and requirements for less
+   commonly used options are provided in Section 4.
 
 2.1.  Protecting Redirect-Based Flows
 
@@ -408,8 +411,8 @@ Table of Contents
    server associates the access token with certain resource servers and
    every resource server is obliged to verify, for every request,
    whether the access token sent with that request was meant to be used
-   for that particular resource server.  If not, the resource server
-   MUST refuse to serve the respective request.  The aud claim as
+   for that particular resource server.  If it was not, the resource
+   server MUST refuse to serve the respective request.  The aud claim as
    defined in [RFC9068] MAY be used to audience-restrict access tokens.
    Clients and authorization servers MAY utilize the parameters scope or
    resource as specified in [RFC6749] and [RFC8707], respectively, to
@@ -447,8 +450,10 @@ Table of Contents
 
 2.5.  Client Authentication
 
-   Authorization servers SHOULD enforce client authentication if
-   possible.
+   Authorization servers SHOULD enforce client authentication if it is
+   feasible, in the particular deployment, to establish a process for
+   issuance/registration of credentials for clients and ensuring the
+   confidentiality of those credentials.
 
    It is RECOMMENDED to use asymmetric cryptography for client
    authentication, such as mTLS [RFC8705] or signed JWTs ("Private Key
@@ -506,12 +511,14 @@ Table of Contents
 
 3.  The Updated OAuth 2.0 Attacker Model
 
-   In [RFC6819], an attacker model is laid out that describes the
-   capabilities of attackers against which OAuth deployments must be
-   protected.  In the following, this attacker model is updated to
-   account for the potentially dynamic relationships involving multiple
-   parties (as described in Section 1), to include new types of
-   attackers and to define the attacker model more clearly.
+   In [RFC6819], a threat model is laid out that describes the threats
+   against which OAuth deployments must be protected.  While doing so,
+   [RFC6819] makes certain assumptions about attackers and their
+   capabilities, i.e., implicitly establishes an attacker model.  In the
+   following, this attacker model is made explicit and is updated and
+   expanded to account for the potentially dynamic relationships
+   involving multiple parties (as described in Section 1), to include
+   new types of attackers and to define the attacker model more clearly.
 
    The goal of this document is to ensure that the authorization of a
    resource owner (with a user agent) at an authorization server and the
@@ -555,9 +562,9 @@ Table of Contents
 
    While an example for a web attacker would be a customer of an
    internet service provider, network attackers could be the internet
-   service provider itself, an attacker in a public (wifi) network using
-   ARP spoofing, or a state-sponsored attacker with access to internet
-   exchange points, for instance.
+   service provider itself, an attacker in a public (Wi-Fi) network
+   using ARP spoofing, or a state-sponsored attacker with access to
+   internet exchange points, for instance.
 
    The aforementioned attackers (A1) and (A2) conform to the attacker
    model that was used in formal analysis efforts for OAuth
@@ -606,7 +613,7 @@ Table of Contents
    replay tokens or authorization codes obtained by any of the attacks
    described above at the client or resource server.
 
-   This document focusses on threats resulting from attackers (A1) to
+   This document focuses on threats resulting from attackers (A1) to
    (A5).
 
 4.  Attacks and Mitigations
@@ -615,6 +622,9 @@ Table of Contents
    implementations, along with potential countermeasures.  Attacks and
    mitigations already covered in [RFC6819] are not listed here, except
    where new recommendations are made.
+
+   This section further defines additional requirements beyond those
+   defined in Section Section 2 for certain cases and protocol options.
 
 4.1.  Insufficient Redirect URI Validation
 
@@ -662,9 +672,10 @@ Table of Contents
 
    The attack can then be conducted as follows:
 
-   First, the attacker needs to trick the user into opening a tampered
-   URL in their browser that launches a page under the attacker's
-   control, say https://www.evil.example (see Attacker A1 in Section 3).
+   To begin, the attacker needs to trick the user into opening a
+   tampered URL in their browser that launches a page under the
+   attacker's control, say https://www.evil.example (see Attacker A1 in
+   Section 3).
 
    This URL initiates the following authorization request with the
    client ID of a legitimate client to the authorization endpoint (line
@@ -733,9 +744,9 @@ Table of Contents
 
    The attack can now be conducted as follows:
 
-   First, and as above, the attacker needs to trick the user into
-   opening a tampered URL in their browser that launches a page under
-   the attacker's control, say https://www.evil.example.
+   To begin, as above, the attacker needs to trick the user into opening
+   a tampered URL in their browser that launches a page under the
+   attacker's control, say https://www.evil.example.
 
    Afterwards, the website initiates an authorization request that is
    very similar to the one in the attack on the code flow.  Different to
@@ -1015,30 +1026,30 @@ Table of Contents
 
    Variants:
 
-   *  *Mix-Up With Interception*: This variant works only if the
-      attacker can intercept and manipulate the first request/response
-      pair from a user's browser to the client (in which the user
-      selects a certain authorization server and is then redirected by
-      the client to that authorization server), as in Attacker A2 (see
-      Section 3).  This capability can, for example, be the result of a
-      man-in-the-middle attack on the user's connection to the client.
-      In the attack, the user starts the flow with H-AS.  The attacker
+   *  Mix-Up With Interception: This variant works only if the attacker
+      can intercept and manipulate the first request/response pair from
+      a user's browser to the client (in which the user selects a
+      certain authorization server and is then redirected by the client
+      to that authorization server), as in Attacker A2 (see Section 3).
+      This capability can, for example, be the result of a man-in-the-
+      middle attack on the user's connection to the client.  In the
+      attack, the user starts the flow with H-AS.  The attacker
       intercepts this request and changes the user's selection to A-AS.
       The rest of the attack proceeds as in Steps 2 and following above.
-   *  *Implicit Grant*: In the implicit grant, the attacker receives an
+   *  Implicit Grant: In the implicit grant, the attacker receives an
       access token instead of the code in Step 4.  The attacker's
       authorization server receives the access token when the client
       makes a request to the A-AS userinfo endpoint, or since the client
       believes it has completed the flow with A-AS, a request to the
       attacker's resource server.
-   *  *Per-AS Redirect URIs*: If clients use different redirect URIs for
+   *  Per-AS Redirect URIs: If clients use different redirect URIs for
       different authorization servers, do not store the selected
       authorization server in the user's session, and authorization
       servers do not check the redirect URIs properly, attackers can
       mount an attack called "Cross-Social Network Request Forgery".
       These attacks have been observed in practice.  Refer to
       [research.jcs_14] for details.
-   *  *OpenID Connect*: There are variants that can be used to attack
+   *  OpenID Connect: There are variants that can be used to attack
       OpenID Connect.  In these attacks, the attacker misuses features
       of the OpenID Connect Discovery [OpenID.Discovery] mechanism or
       replays access tokens or ID Tokens to conduct a mix-up attack.
@@ -1608,8 +1619,8 @@ Table of Contents
    possession have been defined by the OAuth working group and are in
    use in practice:
 
-   *  *OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound
-      Access Tokens* ([RFC8705]): The approach as specified in this
+   *  OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound
+      Access Tokens ([RFC8705]): The approach as specified in this
       document allows the use of mutual TLS (mTLS) for both client
       authentication and sender-constrained access tokens.  For the
       purpose of sender-constrained access tokens, the client is
@@ -1620,7 +1631,7 @@ Table of Contents
       tokens.  The resource server in the same way obtains the public
       key from the TLS stack and compares its fingerprint with the
       fingerprint associated with the access token.
-   *  *OAuth 2.0 Demonstrating Proof of Possession (DPoP)* ([RFC9449]):
+   *  OAuth 2.0 Demonstrating Proof of Possession (DPoP) ([RFC9449]):
       DPoP outlines an application-level sender-constraining for access
       and refresh tokens.  It uses proof-of-possession based on a
       public/private key pair and application-level signing.  DPoP can
@@ -2505,15 +2516,19 @@ Appendix A.  Document History
 
    [[ To be removed from the final specification ]]
 
+   -26
+
+   *  Feedback from ARTART review incorporated
+
    -25
 
-   *  Shepherd's writup feedback: Removed discussion on outdated POP
+   *  Shepherd's writeup feedback: Removed discussion on outdated POP
       approaches
-   *  Shepherd's writup feedback: Clarify relationship to other
+   *  Shepherd's writeup feedback: Clarify relationship to other
       document.
-   *  Shepherd's writup feedback: Expand abbreviations
-   *  Shepherd's writup feedback: Better explain attacker model
-   *  Shepherd's writup feedback: Various editorial changes
+   *  Shepherd's writeup feedback: Expand abbreviations
+   *  Shepherd's writeup feedback: Better explain attacker model
+   *  Shepherd's writeup feedback: Various editorial changes
    *  AD review: Mention updated documents in abstract
    *  AD review: Fix HTTP reference
    *  AD review: Clarification in the attacker model
