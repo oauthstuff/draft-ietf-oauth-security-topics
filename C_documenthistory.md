@@ -2,13 +2,17 @@
 
    [[ To be removed from the final specification ]]
 
+   -26
+
+   * Feedback from ARTART review incorporated
+
    -25
 
-   * Shepherd's writup feedback: Removed discussion on outdated POP approaches
-   * Shepherd's writup feedback: Clarify relationship to other document.
-   * Shepherd's writup feedback: Expand abbreviations
-   * Shepherd's writup feedback: Better explain attacker model
-   * Shepherd's writup feedback: Various editorial changes
+   * Shepherd's writeup feedback: Removed discussion on outdated POP approaches
+   * Shepherd's writeup feedback: Clarify relationship to other document.
+   * Shepherd's writeup feedback: Expand abbreviations
+   * Shepherd's writeup feedback: Better explain attacker model
+   * Shepherd's writeup feedback: Various editorial changes
    * AD review: Mention updated documents in abstract
    * AD review: Fix HTTP reference
    * AD review: Clarification in the attacker model

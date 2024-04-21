@@ -1,11 +1,12 @@
 # The Updated OAuth 2.0 Attacker Model {#secmodel}
 
-In [@RFC6819], an attacker model is laid out that describes the
-capabilities of attackers against which OAuth deployments must be
-protected. In the following, this attacker model is updated to account
-for the potentially dynamic relationships involving multiple parties
-(as described in (#Introduction)), to include new types of attackers and to define
-the attacker model more clearly.
+In [@RFC6819], a threat model is laid out that describes the threats against
+which OAuth deployments must be protected. While doing so, [@RFC6819] makes
+certain assumptions about attackers and their capabilities, i.e., implicitly
+establishes an attacker model. In the following, this attacker model is made
+explicit and is updated and expanded to account for the potentially dynamic
+relationships involving multiple parties (as described in (#Introduction)), to
+include new types of attackers and to define the attacker model more clearly.
 
 The goal of this document is to ensure that the authorization of a resource
 owner (with a user agent) at an authorization server and the subsequent usage of
@@ -46,7 +47,7 @@ possible, at least against the following attackers:
 
 While an example for a web attacker would be a customer of an internet
 service provider, network attackers could be the internet service
-provider itself, an attacker in a public (wifi) network using ARP
+provider itself, an attacker in a public (Wi-Fi) network using ARP
 spoofing, or a state-sponsored attacker with access to internet
 exchange points, for instance.
 
@@ -90,5 +91,5 @@ act as one. For example, such an attacker can use their own browser to replay
 tokens or authorization codes obtained by any of the attacks described
 above at the client or resource server.
 
-This document focusses on threats resulting from attackers (A1) to (A5).
+This document focuses on threats resulting from attackers (A1) to (A5).
 
