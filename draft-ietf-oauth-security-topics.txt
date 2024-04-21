@@ -2521,6 +2521,7 @@ Appendix A.  Document History
    -26
 
    *  Feedback from ARTART review incorporated
+   *  Gen-ART review (typo fixes)
 
    -25
 
