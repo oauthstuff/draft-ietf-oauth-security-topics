@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-04-21T01:00:57.105388+00:00",
+  "timestamp": "2024-04-23T00:57:43.649757+00:00",
   "repo": "oauthstuff/draft-ietf-oauth-security-topics",
   "labels": [
     {
@@ -3458,26 +3458,42 @@
       "id": "PR_kwDODGW6jc5nN5Fv",
       "title": "Gen-ART review (typo fixes)",
       "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/90",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "thomas-fossati",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "A few typos I've found while doing my Gen-ART review of the document.",
       "createdAt": "2024-02-18T14:35:28Z",
-      "updatedAt": "2024-02-18T14:35:28Z",
+      "updatedAt": "2024-04-21T15:10:13Z",
       "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
       "baseRefName": "master",
-      "baseRefOid": "a790095c6b3d48755d55fb07e75a2e076861073d",
+      "baseRefOid": "e9aaeb05cec0605fad39003027bda3411c873a2c",
       "headRepository": "thomas-fossati/draft-ietf-oauth-security-topics",
       "headRefName": "master",
-      "headRefOid": "9e38b1decc6bf87190c2a2197e7a10895a88d08f",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "2b2503688fd9407ec0b970be40ab28d11b21fa92",
+      "closedAt": "2024-04-21T15:10:13Z",
+      "mergedAt": "2024-04-21T15:10:12Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "c05cfa6eec5bdefa633665a5cf75e5ff0de2646e"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDODGW6jc54AvCR",
+          "commit": {
+            "abbreviatedOid": "9e38b1d"
+          },
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-04-21T15:08:25Z",
+          "updatedAt": "2024-04-21T15:08:25Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
