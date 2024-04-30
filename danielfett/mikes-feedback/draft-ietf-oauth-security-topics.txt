@@ -6,11 +6,11 @@ Web Authorization Protocol                                T. Lodderstedt
 Internet-Draft                                                    SPRIND
 Updates: 6749, 6750, 6819 (if approved)                       J. Bradley
 Intended status: Best Current Practice                            Yubico
-Expires: 31 October 2024                                     A. Labunets
+Expires: 1 November 2024                                     A. Labunets
                                                   Independent Researcher
                                                                  D. Fett
                                                                 Authlete
-                                                           29 April 2024
+                                                           30 April 2024
 
 
                 OAuth 2.0 Security Best Current Practice
@@ -52,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 31 October 2024.
+   This Internet-Draft will expire on 1 November 2024.
 
 Copyright Notice
 
@@ -632,7 +632,7 @@ Table of Contents
    where new recommendations are made.
 
    This section further defines additional requirements beyond those
-   defined in Section Section 2 for certain cases and protocol options.
+   defined in Section 2 for certain cases and protocol options.
 
 4.1.  Insufficient Redirect URI Validation
 
