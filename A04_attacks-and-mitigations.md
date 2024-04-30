@@ -5,7 +5,7 @@ along with potential countermeasures. Attacks and mitigations already covered in
 [@!RFC6819] are not listed here, except where new recommendations are made.
 
 This section further defines additional requirements beyond those defined in
-Section (#recommendations) for certain cases and protocol options.
+(#recommendations) for certain cases and protocol options.
 
 ## Insufficient Redirect URI Validation {#insufficient_uri_validation}
 
