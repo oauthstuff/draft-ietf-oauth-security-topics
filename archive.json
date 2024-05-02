@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-04-30T00:57:12.037376+00:00",
+  "timestamp": "2024-05-02T00:57:05.776460+00:00",
   "repo": "oauthstuff/draft-ietf-oauth-security-topics",
   "labels": [
     {
@@ -1342,6 +1342,70 @@
       "body": "Via email:\r\n\r\n> Hi,\r\n> \r\n> I think there is at least one more important topic to address in the document - the offline_access scope value.\r\n> \r\n> Especially with a SPA application, where the scope attribute value is under web browser control, it can be manipulated. If an attacker can do that and can ask refresh_token without the `exp` parameter, it means, it never expires (from the JWT point of view).\r\n> \r\n> * https://openid.net/specs/openid-connect-core-1_0.html#OfflineAccess\r\n> * https://www.keycloak.org/docs/latest/server_admin/#_offline-access\r\n> \r\n> regards,\r\n> Elar Lang",
       "createdAt": "2024-02-14T14:19:47Z",
       "updatedAt": "2024-02-14T14:19:47Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 92,
+      "id": "I_kwDODGW6jc6Hh_s8",
+      "title": "Language around sender constraints and implicit flow gives a misleading impression",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/92",
+      "state": "OPEN",
+      "author": "will-bartlett",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "In my opinion, this language (from 2.1.2):\r\n\r\n> no viable method for sender-constraining exists to bind access tokens to a specific client (as recommended in Section 2.2) when the access tokens are issued in the authorization response\r\n\r\nleads the reader to the wrong conclusion. I'm not sure it's even literally true.\r\n\r\nIt's true that the IETF has not standardized a sender-constraining mechanism for the implicit flow. However, this fact is a result of the priorities of IETF contributors more-so than a technical limitation. On Microsoft Entra, we do have a viable method for sender-constraining the implicit flow (since 2018). It's not technically complex to define such a mechanism. Taking the form serialization method defined in [Open ID Connect Core](https://openid.net/specs/openid-connect-core-1_0.html) Section 13.2, the DPoP proof can be passed directly to the authorization endpoint in a POST request, e.g. in a parameter \"dpop\". This is all it really takes to define a viable method for sender-constraining access tokens issued from the authorization endpoint.\r\n\r\nMy suggestion would be to drop the word \"viable\" which leads the reader to think about technical viability and replace it with the word \"standardized\":\r\n\r\n> no **standardized** method for sender-constraining exists to bind access tokens to a specific client (as recommended in Section 2.2) when the access tokens are issued in the authorization response\r\n\r\nThis gives the correct impression - that the gap is around collaboration and interoperability.",
+      "createdAt": "2024-05-01T17:02:13Z",
+      "updatedAt": "2024-05-01T18:02:48Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 93,
+      "id": "I_kwDODGW6jc6HiGSN",
+      "title": "\"4.2 Credential Leakage via Referer Headers\" is out of date",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/93",
+      "state": "OPEN",
+      "author": "will-bartlett",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Browsers largely mitigated the referer header threat in 2020 and 2021 when they updated the default Referrer Policy to \"strict-origin-when-cross-origin\". See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy#browser_compatibility. The BCP makes no mention of this fact.\r\n\r\nOddly, the BCP makes mention of a security bug that is more than a decade old and hasn't existed in any supported software stack in nearly as long (\"Chromium Issue 168213\"). These browser versions are vulnerable to many other techniques - e.g. they predate Spectre and the [Post-Spectre Threat Model Re-Think](https://chromium.googlesource.com/chromium/src/+/master/docs/security/side-channel-threat-model.md) and TLS 1.0 deprecation.\r\n\r\nI'd suggest moving the entirety of 4.2 to a separate section or appendix about historical attacks that are of limited relevance in contemporary software environments. If this is too large a change, 4.2 should at least explain the current context - that most forms of this attack are mitigated by default by the browser, and only same-origin attacks or attacks on ancient browser versions are relevant.\r\n\r\nI'd suggest striking all mentions of Chromium Issue 168213 - this bug isn't notable enough.",
+      "createdAt": "2024-05-01T17:15:01Z",
+      "updatedAt": "2024-05-01T17:15:01Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 94,
+      "id": "I_kwDODGW6jc6HiINz",
+      "title": "4.5.3 Countermeasures to Authorization Code Injection omits original technique",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/94",
+      "state": "OPEN",
+      "author": "will-bartlett",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "The original technique for mitigating authorization code injection is through the use of the state parameter containing the hash of the session cookie. This technique is described in [RFC 6479 The OAuth 2.0 Authorization Framework Section 10.12](https://www.rfc-editor.org/rfc/rfc6749#section-10.12) but missing from 4.5.3. It should be included, as it's the most common pattern for mitigating this attack. It's equally effective to the technique in 4.5.3.2 (Nonce) - if the attacker can observe the state/none, the mitigation is ineffective - if the attacker can't observe the state/nonce, the mitigation is effective.",
+      "createdAt": "2024-05-01T17:18:51Z",
+      "updatedAt": "2024-05-01T17:18:51Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 95,
+      "id": "I_kwDODGW6jc6HiMc6",
+      "title": "Asymmetry in 4.5 (\"authorization code injection\") and 4.6 (\"access token injection\") gives misleading impression",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/95",
+      "state": "OPEN",
+      "author": "will-bartlett",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "The underlying facts around authorization code injection and access token injection are basically identical. If the attacker can observe the parameter values used for CSRF (state, nonce, code_challenge, or even dpop_jkt), the attacker can use the same values when generating their own artifact, and be successful at injection. If the attacker cannot observe these values, and the client implements a proper CSRF check, injection is not possible. For most threat models, the attacker cannot observe the parameter values used for CSRF, and so secure implementations needs only choose any one technique to mitigate this threat to the maximum extent possible.\r\n\r\n4.5 communicates these facts effectively (apart from omitting one very well-known mitigation method, see #94 ). It describes the attack if the client doesn't mitigate CSRF, describes countermeasures, and describes the limitations of these countermeasures for attackers who can observe the parameter values.\r\n\r\n4.6 communicates these facts less effectively. It begin with a statement that I don't think is really true (\"There is no way to detect such an injection attack in pure-OAuth flows\") - see #94 again. While it does go on to describe one of the mitigation techniques from 4.5, nonce mitigation from 4.5.3.2, the similarity of the analysis in 4.5 and 4.6 does not jump out of the text. \r\n\r\nI'd suggest rewriting 4.6 following the pattern of 4.5. That is - describe the attack first, list countermeasures, and then list limitations of those countermeasures. This sequence of explanation should lead readers of 4.6 to draw the same (correct) conclusion as readers of 4.5 - that secure implementations must pick one of these mitigation techniques, and that this mitigation is effective for all but the on-box threat (which most implementors are not concerned about anyway).",
+      "createdAt": "2024-05-01T17:30:16Z",
+      "updatedAt": "2024-05-01T17:30:16Z",
       "closedAt": null,
       "comments": []
     }
@@ -3507,19 +3571,133 @@
       "labels": [],
       "body": "",
       "createdAt": "2024-04-29T13:00:59Z",
-      "updatedAt": "2024-04-29T13:01:00Z",
+      "updatedAt": "2024-04-30T17:59:23Z",
       "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
       "baseRefName": "master",
       "baseRefOid": "30b85244b78832d2f1847bac93fb59c4818cd276",
       "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
       "headRefName": "danielfett/mikes-feedback",
-      "headRefOid": "30f03a1fa9b4fb9f1f1287cd4986930ac1f20838",
+      "headRefOid": "eba8c94293b746b4757d35e7ff54666a288f0c99",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDODGW6jc55Ah4C",
+          "commit": {
+            "abbreviatedOid": "30f03a1"
+          },
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-04-30T04:26:55Z",
+          "updatedAt": "2024-04-30T04:26:55Z",
+          "comments": [
+            {
+              "originalPosition": 178,
+              "body": "This is better.  But I'm still slightly puzzled because the end-user being a person isn't a protocol participant.  Therefore, I don't know what is meant by \"resources belonging to the end-user\", or how they would manifest themselves in the protocol.",
+              "createdAt": "2024-04-30T04:26:55Z",
+              "updatedAt": "2024-04-30T04:26:55Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc55Ai1a",
+          "commit": {
+            "abbreviatedOid": "30f03a1"
+          },
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-04-30T04:32:34Z",
+          "updatedAt": "2024-04-30T04:32:35Z",
+          "comments": [
+            {
+              "originalPosition": 188,
+              "body": "This evokes the same confusion as above.  Maybe reply in this GitHub comment thread giving examples of end-user resources and client resources to help us work out less confusing wording together.\r\n\r\nIn my (maybe overly simplistic view), resources are accessed by clients at resource servers, having been issued an access token by an authorization server, possibly with end-user approval.  Neither of the descriptions \"end-user resources\" or \"resources for a specific client\" map cleanly to this model, at least as I see it.",
+              "createdAt": "2024-04-30T04:32:35Z",
+              "updatedAt": "2024-04-30T04:32:35Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc55AjbW",
+          "commit": {
+            "abbreviatedOid": "30f03a1"
+          },
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "Thanks for doing this.  I asked two questions in comments, both about the distinction being made between end-user resources and client resources.",
+          "createdAt": "2024-04-30T04:35:01Z",
+          "updatedAt": "2024-04-30T04:35:01Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDODGW6jc55BY1V",
+          "commit": {
+            "abbreviatedOid": "30f03a1"
+          },
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-04-30T07:18:33Z",
+          "updatedAt": "2024-04-30T07:18:34Z",
+          "comments": [
+            {
+              "originalPosition": 188,
+              "body": "The original concern that was raised was roughly the following:\r\n\r\nIn RFC9068 (JWT access token profile), the following is defined:\r\n\r\n> `sub` REQUIRED - as defined in [Section 4.1.2](https://www.rfc-editor.org/rfc/rfc7519#section-4.1.2) of [[RFC7519](https://datatracker.ietf.org/doc/html/rfc7519)]. In cases of access tokens obtained through grants where a resource owner is involved, such as the authorization code grant, the value of \"sub\" SHOULD correspond to the subject identifier of the resource owner. In cases of access tokens obtained through grants where no resource owner is involved, such as the client credentials grant, the value of \"sub\" SHOULD correspond to an identifier the authorization server uses to indicate the client application.\r\n\r\nThis distinguishes between two cases - grants with involvement of the resource owner, and those without. In the first case, the subject value is an identifier for the resource owner, in the second case, for a client.\r\n\r\nThe potential attack is as follows: If a client can freely choose its client id, and therefore the `sub` value that ends up in the access token, this might lead to confusion at the resource server, who might accidentally give the client access to the resource owner's resources as both are indistinguishable from just looking at the `sub` value.\r\n\r\nThe current text in the BCP tries to describe this in a generic way, as there might be bespoke mechanisms out there that work similar to RFC9068 .",
+              "createdAt": "2024-04-30T07:18:33Z",
+              "updatedAt": "2024-04-30T07:18:34Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc55BZEt",
+          "commit": {
+            "abbreviatedOid": "30f03a1"
+          },
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-04-30T07:18:50Z",
+          "updatedAt": "2024-04-30T07:18:51Z",
+          "comments": [
+            {
+              "originalPosition": 178,
+              "body": "Thanks, I tried to clarify below.",
+              "createdAt": "2024-04-30T07:18:51Z",
+              "updatedAt": "2024-04-30T07:18:51Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc55IALe",
+          "commit": {
+            "abbreviatedOid": "30f03a1"
+          },
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-04-30T17:59:22Z",
+          "updatedAt": "2024-04-30T17:59:23Z",
+          "comments": [
+            {
+              "originalPosition": 188,
+              "body": "The generic language didn't work for me, as I couldn't figure out what the issue was or how it could occur.  I also didn't realize that the cited text on `sub` from 9068 existed.\r\n\r\nI suggest citing at least some of that text in the BCP and describing the problem/attack with respect to it.  Then if you want to say that there may be more general forms of this scenario, do so.\r\n\r\nI'm trying to have us get this description to a state where normal readers familiar with OAuth will understand both the problem and how the proposed solution relates to it.  Thanks.",
+              "createdAt": "2024-04-30T17:59:23Z",
+              "updatedAt": "2024-04-30T17:59:23Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
