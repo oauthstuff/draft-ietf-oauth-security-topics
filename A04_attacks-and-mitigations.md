@@ -1334,27 +1334,38 @@ on the client policy or the grant associated with the refresh token
 ## Client Impersonating Resource Owner {#client_impersonating}
 
 Resource servers may make access control decisions based on the identity of a
-resource owner for which an access token was issued, or based on the identity
-of a client in the client credentials grant. If both options are possible,
-depending on the details of the implementation, a resource server may mistake
-a client's identity for the identity of a resource owner. For example, if a client is able
-to choose its own `client_id` during registration with the authorization server,
-a malicious client may set it to a value identifying an end-user (e.g., a `sub`
-value if OpenID Connect is used). If the resource server cannot properly
-distinguish between access tokens linked to client resources and access tokens linked to
-end-user resources, the client may then be able to access resources belonging to the end-user.
+resource owner for which an access token was issued, or based on the identity of
+a client in the client credentials grant. For example, [@!RFC9068] (JSON Web
+Token (JWT) Profile for OAuth 2.0 Access Tokens) describes a data structure for
+access tokens containing a `sub` claim defined as follows:
 
+> In cases of access tokens obtained through grants where a resource owner is
+> involved, such as the authorization code grant, the value of `sub` SHOULD
+> correspond to the subject identifier of the resource owner. In cases of access
+> tokens obtained through grants where no resource owner is involved, such as
+> the client credentials grant, the value of `sub` SHOULD correspond to an
+> identifier the authorization server uses to indicate the client application.
+
+If both options are possible, a resource server may mistake a client's identity
+for the identity of a resource owner. For example, if a client is able to choose
+its own `client_id` during registration with the authorization server, a
+malicious client may set it to a value identifying a resource owner (e.g., a
+`sub` value if OpenID Connect is used). If the resource server cannot properly
+distinguish between access tokens obtained with involvement of the resource
+owner and those without, the client may accidentally be able to access resources
+belonging to the resource owner.
+
+This attack potentially affects not only implementations using [@!RFC9068], but
+also similar, bespoke solutions.
 
 ### Countermeasures {#client_impersonating_countermeasures}
 
-If the authorization server has a common namespace for client IDs and user
-identifiers, causing the resource server to be unable to distinguish whether an access
-token is meant to give access to end-user resources or resources for specific client,
-the authorization server SHOULD NOT allow clients to influence their
-`client_id` or any claim that could cause confusion with a genuine resource
-owner. Where this cannot be avoided, authorization servers MUST provide other
-means for the resource server to distinguish between the two types of access
-tokens.
+Authorization servers SHOULD NOT allow clients to influence their `client_id` or
+any claim that could cause confusion with a genuine resource owner if a common
+namespace for client IDs and user identifiers exists, such as in the `sub` claim
+shown above. Where this cannot be avoided, authorization servers MUST provide
+other means for the resource server to distinguish between the two types of
+access tokens.
 
 ## Clickjacking {#clickjacking}
 
