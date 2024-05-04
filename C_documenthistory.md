@@ -2,6 +2,10 @@
 
    [[ To be removed from the final specification ]]
 
+   -27
+
+   * Mostly editorial feedback from Microsoft incorporated
+
    -26
 
    * Feedback from ARTART review incorporated

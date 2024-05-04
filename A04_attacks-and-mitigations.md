@@ -211,8 +211,7 @@ from the authorization server's or the client's website, respectively. Most
 importantly, authorization codes or `state` values can be disclosed in
 this way. Although specified otherwise in [@RFC9110], Section 10.1.3,
 the same may happen to access tokens conveyed in URI fragments due to
-browser implementation issues, as illustrated by Chromium Issue 168213
-[@bug.chromium].
+browser implementation issues, as illustrated by a (now fixed) issue in the Chromium project [@bug.chromium].
 
 ### Leakage from the OAuth Client
 

@@ -110,7 +110,7 @@ access token replay as described in (#insufficient_uri_validation),
 (#credential_leakage_referrer), (#browser_history), and
 (#access_token_injection).
 
-Moreover, no viable method for sender-constraining exists to
+Moreover, no standardized method for sender-constraining exists to
 bind access tokens to a specific client (as recommended in
 (#token_replay_prevention)) when the access tokens are issued in the
 authorization response. This means that an attacker can use the leaked or stolen
