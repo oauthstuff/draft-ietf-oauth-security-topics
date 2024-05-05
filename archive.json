@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-05-02T00:57:05.776460+00:00",
+  "timestamp": "2024-05-05T01:01:40.446931+00:00",
   "repo": "oauthstuff/draft-ietf-oauth-security-topics",
   "labels": [
     {
@@ -3571,13 +3571,13 @@
       "labels": [],
       "body": "",
       "createdAt": "2024-04-29T13:00:59Z",
-      "updatedAt": "2024-04-30T17:59:23Z",
+      "updatedAt": "2024-05-04T17:33:47Z",
       "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
       "baseRefName": "master",
       "baseRefOid": "30b85244b78832d2f1847bac93fb59c4818cd276",
       "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
       "headRefName": "danielfett/mikes-feedback",
-      "headRefOid": "eba8c94293b746b4757d35e7ff54666a288f0c99",
+      "headRefOid": "323c4639c7259ad9bbfff58df7dcd64e21d4e039",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -3696,8 +3696,67 @@
               "updatedAt": "2024-04-30T17:59:23Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc55jQxl",
+          "commit": {
+            "abbreviatedOid": "30f03a1"
+          },
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-05-04T08:22:10Z",
+          "updatedAt": "2024-05-04T08:22:10Z",
+          "comments": [
+            {
+              "originalPosition": 188,
+              "body": "I made a proposal based on the text from RFC9068, please re-review.",
+              "createdAt": "2024-05-04T08:22:10Z",
+              "updatedAt": "2024-05-04T08:22:10Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc55kJ0l",
+          "commit": {
+            "abbreviatedOid": "323c463"
+          },
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Thanks for these improvements.  Once this is merged and published, I will update the SecDir review to say that the specification is READY.",
+          "createdAt": "2024-05-04T17:33:47Z",
+          "updatedAt": "2024-05-04T17:33:47Z",
+          "comments": []
         }
       ]
+    },
+    {
+      "number": 96,
+      "id": "PR_kwDODGW6jc5uiQDr",
+      "title": "Microsoft feedback",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/96",
+      "state": "OPEN",
+      "author": "danielfett",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-05-04T08:44:47Z",
+      "updatedAt": "2024-05-04T08:44:47Z",
+      "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "baseRefName": "master",
+      "baseRefOid": "30b85244b78832d2f1847bac93fb59c4818cd276",
+      "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
+      "headRefName": "danielfett/ms-feedback",
+      "headRefOid": "4321830a0c9137539b2303a770a114204bacfdee",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
