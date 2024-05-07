@@ -2035,7 +2035,7 @@ points to an external DNS name that does no longer exist (say,
 <p id="section-4.1.2-1">The attack described above works for the implicit grant as well. If
 the attacker is able to send the authorization response to an attacker-controlled URI, the attacker will directly get access to the fragment carrying the
 access token.<a href="#section-4.1.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.1.2-2">Additionally, implicit grants (and also other grants when using <code>response_mode=fragment</code> as defined in <span>[<a href="#OpenID.MRT" class="cite xref">OpenID.MRT</a>]</span>) can be subject to a further kind of
+<p id="section-4.1.2-2">Additionally, implicit grants (and also other grants when using <code>response_mode=fragment</code> as defined in <span>[<a href="#OAuth.Responses" class="cite xref">OAuth.Responses</a>]</span>) can be subject to a further kind of
 attack. It utilizes the fact that user agents re-attach fragments to
 the destination URL of a redirect if the location header does not
 contain a fragment (see <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span>, Section 17.11). The attack
@@ -3807,6 +3807,10 @@ for their valuable feedback.<a href="#section-5-1" class="pilcrow">¶</a></p>
         <dd>
 <span class="refAuthor">Jones, M.</span> and <span class="refAuthor">B. Campbell</span>, <span class="refTitle">"OAuth 2.0 Form Post Response Mode"</span>, <time datetime="2015-04-27" class="refDate">27 April 2015</time>, <span>&lt;<a href="https://openid.net/specs/oauth-v2-form-post-response-mode-1_0.html">https://openid.net/specs/oauth-v2-form-post-response-mode-1_0.html</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="OAuth.Responses">[OAuth.Responses]</dt>
+        <dd>
+<span class="refAuthor">de Medeiros, B.</span>, <span class="refAuthor">Scurtescu, M.</span>, <span class="refAuthor">Tarjan, P.</span>, and <span class="refAuthor">M. Jones</span>, <span class="refTitle">"OAuth 2.0 Multiple Response Type Encoding Practices"</span>, <time datetime="2014-02-25" class="refDate">25 February 2014</time>, <span>&lt;<a href="https://openid.net/specs/oauth-v2-multiple-response-types-1_0.html">https://openid.net/specs/oauth-v2-multiple-response-types-1_0.html</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="OpenID.Core">[OpenID.Core]</dt>
         <dd>
 <span class="refAuthor">Sakimura, N.</span>, <span class="refAuthor">Bradley, J.</span>, <span class="refAuthor">Jones, M.</span>, <span class="refAuthor">de Medeiros, B.</span>, and <span class="refAuthor">C. Mortimore</span>, <span class="refTitle">"OpenID Connect Core 1.0 incorporating errata set 2"</span>, <time datetime="2023-12-15" class="refDate">15 December 2023</time>, <span>&lt;<a href="https://openid.net/specs/openid-connect-core-1_0.html">https://openid.net/specs/openid-connect-core-1_0.html</a>&gt;</span>. </dd>
@@ -3818,10 +3822,6 @@ for their valuable feedback.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <dt id="OpenID.JARM">[OpenID.JARM]</dt>
         <dd>
 <span class="refAuthor">Lodderstedt, T.</span> and <span class="refAuthor">B. Campbell</span>, <span class="refTitle">"Financial-grade API: JWT Secured Authorization Response Mode for OAuth 2.0 (JARM)"</span>, <time datetime="2018-10-17" class="refDate">17 October 2018</time>, <span>&lt;<a href="https://openid.net/specs/openid-financial-api-jarm.html">https://openid.net/specs/openid-financial-api-jarm.html</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="OpenID.MRT">[OpenID.MRT]</dt>
-        <dd>
-<span class="refAuthor">de Medeiros, B.</span>, <span class="refAuthor">Scurtescu, M.</span>, <span class="refAuthor">Tarjan, P.</span>, and <span class="refAuthor">M. Jones</span>, <span class="refTitle">"OAuth 2.0 Multiple Response Type Encoding Practices"</span>, <time datetime="2014-02-25" class="refDate">25 February 2014</time>, <span>&lt;<a href="https://openid.net/specs/oauth-v2-multiple-response-types-1_0.html">https://openid.net/specs/oauth-v2-multiple-response-types-1_0.html</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>

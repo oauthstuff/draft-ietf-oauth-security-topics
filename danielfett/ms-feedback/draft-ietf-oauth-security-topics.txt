@@ -735,14 +735,14 @@ Table of Contents
    fragment carrying the access token.
 
    Additionally, implicit grants (and also other grants when using
-   response_mode=fragment as defined in [OpenID.MRT]) can be subject to
-   a further kind of attack.  It utilizes the fact that user agents re-
-   attach fragments to the destination URL of a redirect if the location
-   header does not contain a fragment (see [RFC9110], Section 17.11).
-   The attack described here combines this behavior with the client as
-   an open redirector (see Section 4.11.1) in order to obtain access
-   tokens.  This allows circumvention even of very narrow redirect URI
-   patterns, but not strict URL matching.
+   response_mode=fragment as defined in [OAuth.Responses]) can be
+   subject to a further kind of attack.  It utilizes the fact that user
+   agents re-attach fragments to the destination URL of a redirect if
+   the location header does not contain a fragment (see [RFC9110],
+   Section 17.11).  The attack described here combines this behavior
+   with the client as an open redirector (see Section 4.11.1) in order
+   to obtain access tokens.  This allows circumvention even of very
+   narrow redirect URI patterns, but not strict URL matching.
 
    Assume the registered URL pattern for client s6BhdRkqt3 is
    https://client.somesite.example/cb?*, i.e., any parameter is allowed
@@ -2324,6 +2324,12 @@ Table of Contents
               Mode", 27 April 2015, <https://openid.net/specs/oauth-v2-
               form-post-response-mode-1_0.html>.
 
+   [OAuth.Responses]
+              de Medeiros, B., Scurtescu, M., Tarjan, P., and M. Jones,
+              "OAuth 2.0 Multiple Response Type Encoding Practices", 25
+              February 2014, <https://openid.net/specs/oauth-v2-
+              multiple-response-types-1_0.html>.
+
    [OpenID.Core]
               Sakimura, N., Bradley, J., Jones, M., de Medeiros, B., and
               C. Mortimore, "OpenID Connect Core 1.0 incorporating
@@ -2341,12 +2347,6 @@ Table of Contents
               Secured Authorization Response Mode for OAuth 2.0 (JARM)",
               17 October 2018,
               <https://openid.net/specs/openid-financial-api-jarm.html>.
-
-   [OpenID.MRT]
-              de Medeiros, B., Scurtescu, M., Tarjan, P., and M. Jones,
-              "OAuth 2.0 Multiple Response Type Encoding Practices", 25
-              February 2014, <https://openid.net/specs/oauth-v2-
-              multiple-response-types-1_0.html>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
