@@ -106,7 +106,7 @@ The attack described above works for the implicit grant as well. If
 the attacker is able to send the authorization response to an attacker-controlled URI, the attacker will directly get access to the fragment carrying the
 access token.
 
-Additionally, implicit clients can be subject to a further kind of
+Additionally, implicit grants (and also other grants when using `response_mode=fragment` as defined in [@OAuth.Responses]) can be subject to a further kind of
 attack. It utilizes the fact that user agents re-attach fragments to
 the destination URL of a redirect if the location header does not
 contain a fragment (see [@!RFC9110], Section 17.11). The attack
@@ -211,8 +211,7 @@ from the authorization server's or the client's website, respectively. Most
 importantly, authorization codes or `state` values can be disclosed in
 this way. Although specified otherwise in [@RFC9110], Section 10.1.3,
 the same may happen to access tokens conveyed in URI fragments due to
-browser implementation issues, as illustrated by Chromium Issue 168213
-[@bug.chromium].
+browser implementation issues, as illustrated by a (now fixed) issue in the Chromium project [@bug.chromium].
 
 ### Leakage from the OAuth Client
 

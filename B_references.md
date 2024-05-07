@@ -53,7 +53,24 @@
   </front>
 </reference>
 
-
+<reference anchor="OAuth.Responses" target="https://openid.net/specs/oauth-v2-multiple-response-types-1_0.html">
+  <front>
+    <title>OAuth 2.0 Multiple Response Type Encoding Practices</title>
+    <author initials="B." surname="de Medeiros" fullname="Breno de Medeiros">
+      <organization>Google</organization>
+    </author>
+    <author initials="M." surname="Scurtescu" fullname="Mihai Scurtescu">
+      <organization>Google</organization>
+    </author>
+    <author initals="P." surname="Tarjan" fullname="Peter Tarjan">
+      <organization>Facebook</organization>
+    </author>
+    <author initials="M." surname="Jones" fullname="Mike Jones">
+      <organization>Microsoft</organization>
+    </author>
+    <date day="25" month="Feb" year="2014"/>
+  </front>
+</reference>
 
 <reference anchor="owasp.redir" target="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">
   <front>
@@ -190,7 +207,7 @@
   <format target="https://www.doc.ic.ac.uk/~maffeis/papers/jcs14.pdf" type="pdf" />
 </reference>
 
-<reference anchor="bug.chromium" target="https://bugs.chromium.org/p/chromium/issues/detail?id=168213/">
+<reference anchor="bug.chromium" target="https://issues.chromium.org/issues/40076763/">
   <front>
     <title>Referer header includes URL fragment when opening link using New Tab</title>
     <author></author>
