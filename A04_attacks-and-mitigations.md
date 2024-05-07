@@ -106,7 +106,7 @@ The attack described above works for the implicit grant as well. If
 the attacker is able to send the authorization response to an attacker-controlled URI, the attacker will directly get access to the fragment carrying the
 access token.
 
-Additionally, implicit grants (and also other grants when using `response_mode=fragment` as defined in [@OpenID.MRT]) can be subject to a further kind of
+Additionally, implicit grants (and also other grants when using `response_mode=fragment` as defined in [@OAuth.Responses]) can be subject to a further kind of
 attack. It utilizes the fact that user agents re-attach fragments to
 the destination URL of a redirect if the location header does not
 contain a fragment (see [@!RFC9110], Section 17.11). The attack
