@@ -6,11 +6,11 @@ Web Authorization Protocol                                T. Lodderstedt
 Internet-Draft                                                    SPRIND
 Updates: 6749, 6750, 6819 (if approved)                       J. Bradley
 Intended status: Best Current Practice                            Yubico
-Expires: 5 November 2024                                     A. Labunets
+Expires: 8 November 2024                                     A. Labunets
                                                   Independent Researcher
                                                                  D. Fett
                                                                 Authlete
-                                                              4 May 2024
+                                                              7 May 2024
 
 
                 OAuth 2.0 Security Best Current Practice
@@ -22,7 +22,7 @@ Abstract
    It updates and extends the threat model and security advice given in
    RFC 6749, RFC 6750, and RFC 6819 to incorporate practical experiences
    gathered since OAuth 2.0 was published and covers new threats
-   relevant due to the broader application of OAuth 2.0.  It further
+   relevant due to the broader application of OAuth 2.0.  Further, it
    deprecates some modes of operation that are deemed less secure or
    even insecure.
 
@@ -52,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 November 2024.
+   This Internet-Draft will expire on 8 November 2024.
 
 Copyright Notice
 
@@ -102,10 +102,15 @@ Table of Contents
      4.4.  Mix-Up Attacks
        4.4.1.  Attack Description
        4.4.2.  Countermeasures
+         4.4.2.1.  Mix-Up Defense via Issuer Identification
+         4.4.2.2.  Mix-Up Defense via Distinct Redirect URIs
      4.5.  Authorization Code Injection
        4.5.1.  Attack Description
        4.5.2.  Discussion
        4.5.3.  Countermeasures
+         4.5.3.1.  PKCE
+         4.5.3.2.  Nonce
+         4.5.3.3.  Other Solutions
        4.5.4.  Limitations
      4.6.  Access Token Injection
        4.6.1.  Countermeasures
@@ -133,10 +138,13 @@ Table of Contents
      4.15. Client Impersonating Resource Owner
        4.15.1.  Countermeasures
      4.16. Clickjacking
-     4.17. Authorization Server Redirecting to Phishing Site
-     4.18. Attacks on In-Browser Communication Flows
-       4.18.1.  Examples
-       4.18.2.  Recommendations
+     4.17. Attacks on In-Browser Communication Flows
+       4.17.1.  Examples
+         4.17.1.1.  Insufficient Limitation of Receiver Origins
+         4.17.1.2.  Insufficient URI Validation
+         4.17.1.3.  Injection after Insufficient Validation of Sender
+                 Origin
+       4.17.2.  Recommendations
    5.  Acknowledgements
    6.  IANA Considerations
    7.  Security Considerations
@@ -173,8 +181,8 @@ Table of Contents
       Those challenges go beyond the original scope of [RFC6749],
       [RFC6750], and [RFC6819].
 
-      OAuth initially assumed static relationships between client,
-      authorization server, and resource servers.  The URLs of the
+      OAuth initially assumed static relationships between clients,
+      authorization servers, and resource servers.  The URLs of the
       servers were known to the client at deployment time and built an
       anchor for the trust relationships among those parties.  The
       validation of whether the client is talking to a legitimate server
@@ -211,7 +219,7 @@ Table of Contents
    ecosystems as soon as feasible.
 
    OAuth 2.1, under developement as [I-D.ietf-oauth-v2-1], will
-   incorporate the security recommendations of this document.
+   incorporate security recommendations from this document.
 
 1.1.  Structure
 
@@ -242,24 +250,24 @@ Table of Contents
 2.  Best Practices
 
    This section describes the core set of security mechanisms and
-   measures the OAuth working group considers best practices at the time
-   of writing.  Details about these security mechanisms and measures
-   (including detailed attack descriptions) and requirements for less
-   commonly used options are provided in Section 4.
+   measures the OAuth working group considers to be best practices at
+   the time of writing.  Details about these security mechanisms and
+   measures (including detailed attack descriptions) and requirements
+   for less commonly used options are provided in Section 4.
 
 2.1.  Protecting Redirect-Based Flows
 
    When comparing client redirect URIs against pre-registered URIs,
    authorization servers MUST utilize exact string matching except for
-   port numbers in localhost redirection URIs of native apps, see
-   Section 4.1.3.  This measure contributes to the prevention of leakage
-   of authorization codes and access tokens (see Section 4.1).  It can
-   also help to detect mix-up attacks (see Section 4.4).
+   port numbers in localhost redirection URIs of native apps (see
+   #iuv_countermeasures).  This measure contributes to the prevention of
+   leakage of authorization codes and access tokens (see Section 4.1).
+   It can also help to detect mix-up attacks (see Section 4.4).
 
    Clients and authorization servers MUST NOT expose URLs that forward
    the user's browser to arbitrary URIs obtained from a query parameter
-   (open redirector) as described in Section 4.11.  Open redirectors can
-   enable exfiltration of authorization codes and access tokens.
+   (open redirectors) as described in Section 4.11.  Open redirectors
+   can enable exfiltration of authorization codes and access tokens.
 
    Clients MUST prevent Cross-Site Request Forgery (CSRF).  In this
    context, CSRF refers to requests to the redirection endpoint that do
@@ -364,10 +372,10 @@ Table of Contents
    in the authorization response is prevented and the aforementioned
    token leakage vectors are mitigated.
 
-   Clients SHOULD instead use the response type "code" (aka
+   Clients SHOULD instead use the response type code (i.e.,
    authorization code grant type) as specified in Section 2.1.1 or any
    other response type that causes the authorization server to issue
-   access tokens in the token response, such as the "code id_token"
+   access tokens in the token response, such as the code id_token
    response type.  This allows the authorization server to detect replay
    attempts by attackers and generally reduces the attack surface since
    access tokens are not exposed in URLs.  It also allows the
@@ -499,15 +507,15 @@ Table of Contents
    If the authorization response is sent with in-browser communication
    techniques like postMessage [WHATWG.postmessage_api] instead of HTTP
    redirects, both the initiator and receiver of the in-browser message
-   MUST be strictly verified as described in Section 4.18.
+   MUST be strictly verified as described in Section 4.17.
 
    To support browser-based clients, endpoints directly accessed by such
    clients including the Token Endpoint, Authorization Server Metadata
    Endpoint, jwks_uri Endpoint, and the Dynamic Client Registration
    Endpoint MAY support the use of Cross-Origin Resource Sharing (CORS,
    [WHATWG.CORS]).  However, CORS MUST NOT be supported at the
-   Authorization Endpoint as the client does not access this endpoint
-   directly, instead, the client redirects the user agent to it.
+   Authorization Endpoint, as the client does not access this endpoint
+   directly; instead, the client redirects the user agent to it.
 
 3.  The Updated OAuth 2.0 Attacker Model
 
@@ -523,7 +531,7 @@ Table of Contents
    The goal of this document is to ensure that the authorization of a
    resource owner (with a user agent) at an authorization server and the
    subsequent usage of the access token at a resource server is
-   protected, as good as practically possible, at least against the
+   protected, as well as practically possible, at least against the
    following attackers:
 
    *  (A1) Web Attackers that can set up and operate an arbitrary number
@@ -603,7 +611,7 @@ Table of Contents
       compromised by an attacker, an access token may be sent to an
       attacker-controlled resource server due to a misconfiguration, or
       a resource owner is social-engineered into using an attacker-
-      controlled resource server.  See also Section 4.9.2.
+      controlled resource server.  Also see Section 4.9.2.
 
    (A3), (A4) and (A5) typically occur together with either (A1) or
    (A2).  Attackers can collaborate to reach a common goal.
@@ -624,7 +632,7 @@ Table of Contents
    where new recommendations are made.
 
    This section further defines additional requirements beyond those
-   defined in Section Section 2 for certain cases and protocol options.
+   defined in Section 2 for certain cases and protocol options.
 
 4.1.  Insufficient Redirect URI Validation
 
@@ -1267,15 +1275,13 @@ Table of Contents
 4.5.3.1.  PKCE
 
    The PKCE mechanism specified in [RFC7636] can be used as a
-   countermeasure.  When the attacker attempts to inject an
-   authorization code, the check of the code_verifier fails: the client
-   uses its correct verifier, but the code is associated with a
-   code_challenge that does not match this verifier.  PKCE is a deployed
-   OAuth feature, although its originally intended use was solely
-   focused on securing native apps, not the broader use recommended by
-   this document.
+   countermeasure (even though it was originally designed to secure
+   native apps).  When the attacker attempts to inject an authorization
+   code, the check of the code_verifier fails: the client uses its
+   correct verifier, but the code is associated with a code_challenge
+   that does not match this verifier.
 
-   PKCE does not only protect against the autorization code injection
+   PKCE does not only protect against the authorization code injection
    attack but also protects authorization codes created for public
    clients: PKCE ensures that an attacker cannot redeem a stolen
    authorization code at the token endpoint of the authorization server
@@ -1284,7 +1290,7 @@ Table of Contents
 4.5.3.2.  Nonce
 
    OpenID Connect's existing nonce parameter can protect against
-   authorization code injection attacks.  The nonce value is a one-time
+   authorization code injection attacks.  The nonce value is one-time
    use and is created by the client.  The client is supposed to bind it
    to the user agent session and send it with the initial request to the
    OpenID Provider (OP).  The OP puts the received nonce value into the
@@ -1293,8 +1299,8 @@ Table of Contents
    authorization response, the nonce value in the client session and the
    nonce value in the ID token will not match and the attack is
    detected.  The assumption is that an attacker cannot get hold of the
-   user agent state on the victim's device, where the attacker has
-   stolen the respective authorization code.
+   user agent state on the victim's device (from which the attacker has
+   stolen the respective authorization code).
 
    It is important to note that this countermeasure only works if the
    client properly checks the nonce parameter in the ID Token and does
@@ -1322,8 +1328,8 @@ Table of Contents
    requirements.
 
    PKCE is the most obvious solution for OAuth clients as it is
-   available today (originally intended for OAuth native apps) whereas
-   nonce is appropriate for OpenID Connect clients.
+   available today, while nonce is appropriate for OpenID Connect
+   clients.
 
 4.5.4.  Limitations
 
@@ -1562,9 +1568,10 @@ Table of Contents
 
    *  Sender-constrained access tokens, as described in Section 4.10.1,
       SHOULD be used to prevent the attacker from replaying the access
-      tokens on other resource servers.  Depending on the severity of
-      the penetration, sender-constrained access tokens will also
-      prevent replay on the compromised system.
+      tokens on other resource servers.  If an attacker has only partial
+      access to the compromised system, like a read-only access to web
+      server logs, sender-constrained access tokens may also prevent
+      replay on the compromised system.
    *  Audience restriction as described in Section 4.10.2 SHOULD be used
       to prevent replay of captured access tokens on other resource
       servers.
@@ -1621,17 +1628,17 @@ Table of Contents
    use in practice:
 
    *  OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound
-      Access Tokens ([RFC8705]): The approach as specified in this
-      document allows the use of mutual TLS (mTLS) for both client
-      authentication and sender-constrained access tokens.  For the
-      purpose of sender-constrained access tokens, the client is
-      identified towards the resource server by the fingerprint of its
-      public key.  During the processing of an access token request, the
-      authorization server obtains the client's public key from the TLS
-      stack and associates its fingerprint with the respective access
-      tokens.  The resource server in the same way obtains the public
-      key from the TLS stack and compares its fingerprint with the
-      fingerprint associated with the access token.
+      Access Tokens ([RFC8705]): The approach specified in this document
+      allows the use of mutual TLS (mTLS) for both client authentication
+      and sender-constrained access tokens.  For the purpose of sender-
+      constrained access tokens, the client is identified towards the
+      resource server by the fingerprint of its public key.  During the
+      processing of an access token request, the authorization server
+      obtains the client's public key from the TLS stack and associates
+      its fingerprint with the respective access tokens.  The resource
+      server in the same way obtains the public key from the TLS stack
+      and compares its fingerprint with the fingerprint associated with
+      the access token.
    *  OAuth 2.0 Demonstrating Proof of Possession (DPoP) ([RFC9449]):
       DPoP outlines an application-level sender-constraining for access
       and refresh tokens.  It uses proof-of-possession based on a
@@ -1682,7 +1689,7 @@ Table of Contents
    (Section 3.3 of [RFC6749]).
 
    Instead of the URL, it is also possible to utilize the fingerprint of
-   the resource server's X.509 certificate as audience value.  This
+   the resource server's X.509 certificate as the audience value.  This
    variant would also allow detection of an attempt to spoof the
    legitimate resource server's URL by using a valid TLS certificate
    obtained from a different CA.  It might also be considered a privacy
@@ -1690,14 +1697,15 @@ Table of Contents
    server.
 
    Audience restriction may seem easier to use since it does not require
-   any crypto on the client side.  Still, since every access token is
-   bound to a specific resource server, the client also needs to obtain
-   a single resource server-specific access token when accessing several
-   resource servers.  (Resource indicators, as specified in [RFC8707],
-   can help to achieve this.)  [I-D.ietf-oauth-token-binding] has the
-   same property since different token-binding IDs must be associated
-   with the access token.  Using [RFC8705], on the other hand, allows a
-   client to use the access token at multiple resource servers.
+   any cryptography on the client side.  Still, since every access token
+   is bound to a specific resource server, the client also needs to
+   obtain a single resource server-specific access token when accessing
+   several resource servers.  (Resource indicators, as specified in
+   [RFC8707], can help to achieve this.)  [I-D.ietf-oauth-token-binding]
+   had the same property since different token-binding IDs must be
+   associated with the access token.  Using [RFC8705], on the other
+   hand, allows a client to use the access token at multiple resource
+   servers.
 
    It should be noted that audience restrictions, or generally speaking
    an indication by the client to the authorization server where it
@@ -1793,8 +1801,8 @@ Table of Contents
    Just as with clients, attackers could try to utilize a user's trust
    in the authorization server (and its URL in particular) for
    performing phishing attacks.  OAuth authorization servers regularly
-   redirect users to other websites (the clients), but must do so in a
-   safe way.
+   redirect users to other websites (the clients), but must do so
+   safely.
 
    [RFC6749], Section 4.1.2.1, already prevents open redirects by
    stating that the authorization server MUST NOT automatically redirect
@@ -1920,18 +1928,20 @@ Table of Contents
 4.14.  Refresh Token Protection
 
    Refresh tokens are a convenient and user-friendly way to obtain new
-   access tokens after the expiration of access tokens.  Refresh tokens
-   also add to the security of OAuth, since they allow the authorization
-   server to issue access tokens with a short lifetime and reduced
-   scope, thus reducing the potential impact of access token leakage.
+   access tokens.  They also add to the security of OAuth, since they
+   allow the authorization server to issue access tokens with a short
+   lifetime and reduced scope, thus reducing the potential impact of
+   access token leakage.
 
 4.14.1.  Discussion
 
    Refresh tokens are an attractive target for attackers since they
-   represent the overall grant a resource owner delegated to a certain
-   client.  If an attacker is able to exfiltrate and successfully replay
-   a refresh token, the attacker will be able to mint access tokens and
-   use them to access resource servers on behalf of the resource owner.
+   represent the full scope of grant a resource owner delegated to a
+   certain client and they are not further constrained to a specific
+   resource.  If an attacker is able to exfiltrate and successfully
+   replay a refresh token, the attacker will be able to mint access
+   tokens and use them to access resource servers on behalf of the
+   resource owner.
 
    [RFC6749] already provides robust baseline protection by requiring
 
@@ -2015,24 +2025,37 @@ Table of Contents
    Resource servers may make access control decisions based on the
    identity of a resource owner for which an access token was issued, or
    based on the identity of a client in the client credentials grant.
-   If both options are possible, depending on the details of the
-   implementation, a client's identity may be mistaken for the identity
-   of a resource owner.  For example, if a client is able to choose its
-   own client_id during registration with the authorization server, a
-   malicious client may set it to a value identifying an end-user (e.g.,
-   a sub value if OpenID Connect is used).  If the resource server
-   cannot properly distinguish between access tokens issued to clients
-   and access tokens issued to end-users, the client may then be able to
-   access resource of the end-user.
+   For example, [RFC9068] (JSON Web Token (JWT) Profile for OAuth 2.0
+   Access Tokens) describes a data structure for access tokens
+   containing a sub claim defined as follows:
+
+   |  In cases of access tokens obtained through grants where a resource
+   |  owner is involved, such as the authorization code grant, the value
+   |  of sub SHOULD correspond to the subject identifier of the resource
+   |  owner.  In cases of access tokens obtained through grants where no
+   |  resource owner is involved, such as the client credentials grant,
+   |  the value of sub SHOULD correspond to an identifier the
+   |  authorization server uses to indicate the client application.
+
+   If both options are possible, a resource server may mistake a
+   client's identity for the identity of a resource owner.  For example,
+   if a client is able to choose its own client_id during registration
+   with the authorization server, a malicious client may set it to a
+   value identifying a resource owner (e.g., a sub value if OpenID
+   Connect is used).  If the resource server cannot properly distinguish
+   between access tokens obtained with involvement of the resource owner
+   and those without, the client may accidentally be able to access
+   resources belonging to the resource owner.
+
+   This attack potentially affects not only implementations using
+   [RFC9068], but also similar, bespoke solutions.
 
 4.15.1.  Countermeasures
 
-   If the authorization server has a common namespace for client IDs and
-   user identifiers, causing the resource server to be unable to
-   distinguish an access token authorized by a resource owner from an
-   access token authorized by a client itself, the authorization server
-   SHOULD NOT allow clients to influence their client_id or any claim
-   that could cause confusion with a genuine resource owner.  Where this
+   Authorization servers SHOULD NOT allow clients to influence their
+   client_id or any claim that could cause confusion with a genuine
+   resource owner if a common namespace for client IDs and user
+   identifiers exists, such as in the sub claim shown above.  Where this
    cannot be avoided, authorization servers MUST provide other means for
    the resource server to distinguish between the two types of access
    tokens.
@@ -2094,58 +2117,19 @@ Table of Contents
    by the authorization server.  Even in such cases, additional
    countermeasures SHOULD still be employed.
 
-4.17.  Authorization Server Redirecting to Phishing Site
-
-   An attacker could utilize a correctly registered redirect URI to
-   perform phishing attacks.  The attacker could, for example, register
-   a client via dynamic client registration [RFC7591] and execute one of
-   the following attacks:
-
-   1.  Intentionally send an erroneous authorization request, e.g., by
-       using an invalid scope value, thus instructing the authorization
-       server to redirect the user-agent to its phishing site.
-   2.  Intentionally send a valid authorization request with client_id
-       and redirect_uri controlled by the attacker.  After the user
-       authenticates, the authorization server prompts the user to
-       provide consent to the request.  If the user notices an issue
-       with the request and declines the request, the authorization
-       server still redirects the user agent to the phishing site.  In
-       this case, the user agent will be redirected to the phishing site
-       regardless of the action taken by the user.
-   3.  Intentionally send a valid silent authentication request
-       (prompt=none) with client_id and redirect_uri controlled by the
-       attacker.  In this case, the authorization server will
-       automatically redirect the user agent to the phishing site.
-
-   The authorization server MUST take precautions to prevent these
-   threats.  The authorization server MUST always authenticate the user
-   first and, with the exception of the silent authentication use case,
-   prompt the user for credentials when needed, before redirecting the
-   user.  Based on its risk assessment, the authorization server needs
-   to decide whether it can trust the redirect URI or not.  It could
-   take into account URI analytics done internally or through some
-   external service to evaluate the credibility and trustworthiness
-   content behind the URI, and the source of the redirect URI and other
-   client data.
-
-   The authorization server SHOULD only automatically redirect the user
-   agent if it trusts the redirect URI.  If the URI is not trusted, the
-   authorization server MAY inform the user and rely on the user to make
-   the correct decision.
-
-4.18.  Attacks on In-Browser Communication Flows
+4.17.  Attacks on In-Browser Communication Flows
 
    If the authorization response is sent with in-browser communication
    techniques like postMessage [WHATWG.postmessage_api] instead of HTTP
    redirects, messages may inadvertently be sent to malicious origins or
    injected from malicious origins.
 
-4.18.1.  Examples
+4.17.1.  Examples
 
    The following non-normative pseudocode examples of attacks using in-
    browser communication are described in [research.rub]:
 
-4.18.1.1.  Insufficient Limitation of Receiver Origins
+4.17.1.1.  Insufficient Limitation of Receiver Origins
 
    When sending the authorization response or token response via
    postMessage, the authorization server sends the response to the
@@ -2161,7 +2145,7 @@ Table of Contents
      "*" // any website in the opener window can receive the message
    )
 
-4.18.1.2.  Insufficient URI Validation
+4.17.1.2.  Insufficient URI Validation
 
    When sending the authorization response or token response via
    postMessage, the authorization server may not check the receiver
@@ -2177,7 +2161,7 @@ Table of Contents
      "https://attacker.example" // attacker-provided value
    )
 
-4.18.1.3.  Injection after Insufficient Validation of Sender Origin
+4.17.1.3.  Injection after Insufficient Validation of Sender Origin
 
    A client that expects the authorization response or token response
    via postMessage may not validate the sender origin of the message.
@@ -2194,7 +2178,7 @@ Table of Contents
    the attack under some circumstances, but additional countermeasures
    as described next are generally required.
 
-4.18.2.  Recommendations
+4.17.2.  Recommendations
 
    When comparing client receiver origins against pre-registered
    origins, authorization servers MUST utilize exact string matching as
@@ -2342,13 +2326,13 @@ Table of Contents
    [OpenID.Core]
               Sakimura, N., Bradley, J., Jones, M., de Medeiros, B., and
               C. Mortimore, "OpenID Connect Core 1.0 incorporating
-              errata set 1", 8 November 2014,
+              errata set 2", 15 December 2023,
               <https://openid.net/specs/openid-connect-core-1_0.html>.
 
    [OpenID.Discovery]
               Sakimura, N., Bradley, J., Jones, M., and E. Jay, "OpenID
-              Connect Discovery 1.0 incorporating errata set 1", 8
-              November 2014, <https://openid.net/specs/openid-connect-
+              Connect Discovery 1.0 incorporating errata set 2", 15
+              December 2023, <https://openid.net/specs/openid-connect-
               discovery-1_0.html>.
 
    [OpenID.JARM]
@@ -2419,11 +2403,10 @@ Table of Contents
               Policy Level 2", July 2015, <https://www.w3.org/TR/CSP2>.
 
    [W3C.WebAuthn]
-              Balfanz, D., Czeskis, A., Hodges, J., Jones, J.C., Jones,
-              M.B., Kumar, A., Liao, A., Lindemann, R., and E. Lundberg,
-              "Web Authentication: An API for accessing Public Key
-              Credentials Level 1", 4 March 2019,
-              <https://www.w3.org/TR/2019/REC-webauthn-1-20190304/>.
+              Hodges, J., Jones, J.C., Jones, M.B., Kumar, A., and E.
+              Lundberg, "Web Authentication: An API for accessing Public
+              Key Credentials Level 2", 8 April 2021,
+              <https://www.w3.org/TR/2021/REC-webauthn-2-20210408/>.
 
    [W3C.WebCrypto]
               Watson, M., "Web Cryptography API", 26 January 2017,
@@ -2521,6 +2504,7 @@ Appendix A.  Document History
    -27
 
    *  Mostly editorial feedback from Microsoft incorporated
+   *  Feedback from SECDIR review incorporated
 
    -26
 
