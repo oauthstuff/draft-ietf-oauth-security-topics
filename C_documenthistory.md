@@ -5,6 +5,7 @@
    -27
 
    * Mostly editorial feedback from Microsoft incorporated
+   * Feedback from SECDIR review incorporated
 
    -26
 

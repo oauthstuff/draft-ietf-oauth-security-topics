@@ -22,8 +22,8 @@ challenges can be observed:
 	  creating new challenges with respect to security. Those challenges go beyond
 	  the original scope of [@!RFC6749], [@!RFC6750], and [@!RFC6819].
 
-    OAuth initially assumed static relationships between client,
-    authorization server, and resource servers. The URLs of the servers were
+    OAuth initially assumed static relationships between clients,
+    authorization servers, and resource servers. The URLs of the servers were
     known to the client at deployment time and built an anchor for the
     trust relationships among those parties. The validation of whether the
     client is talking to a legitimate server was based on TLS server
@@ -56,8 +56,8 @@ compatible with the new requirements and following the best practices described 
 this document may break interoperability. Nonetheless, it is RECOMMENDED that
 implementers upgrade their implementations and ecosystems as soon as feasible.
 
-OAuth 2.1, under developement as [@I-D.ietf-oauth-v2-1], will incorporate the
-security recommendations of this document.
+OAuth 2.1, under developement as [@I-D.ietf-oauth-v2-1], will incorporate
+security recommendations from this document.
 
 ## Structure
 

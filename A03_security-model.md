@@ -10,7 +10,7 @@ include new types of attackers and to define the attacker model more clearly.
 
 The goal of this document is to ensure that the authorization of a resource
 owner (with a user agent) at an authorization server and the subsequent usage of
-the access token at a resource server is protected, as good as practically
+the access token at a resource server is protected, as well as practically
 possible, at least against the following attackers:
 
   * (A1) Web Attackers that can set up and operate an arbitrary number of
@@ -81,7 +81,7 @@ attackers are relevant in particular:
     example, a resource server can be compromised by an attacker, an
     access token may be sent to an attacker-controlled resource server
     due to a misconfiguration, or a resource owner is social-engineered into
-    using an attacker-controlled resource server. See also (#comp_res_server).
+    using an attacker-controlled resource server. Also see (#comp_res_server).
 
 (A3), (A4) and (A5) typically occur together with either (A1) or (A2).
 Attackers can collaborate to reach a common goal.

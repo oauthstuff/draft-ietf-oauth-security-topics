@@ -1,42 +1,42 @@
 
 <reference anchor="OpenID.Core" target="https://openid.net/specs/openid-connect-core-1_0.html">
   <front>
-    <title>OpenID Connect Core 1.0 incorporating errata set 1</title>
+    <title>OpenID Connect Core 1.0 incorporating errata set 2</title>
     <author initials="N." surname="Sakimura" fullname="Nat Sakimura">
-      <organization>NRI</organization>
+      <organization>NAT.Consulting</organization>
     </author>
     <author initials="J." surname="Bradley" fullname="John Bradley">
-      <organization>Ping Identity</organization>
+      <organization>Yubico</organization>
     </author>
     <author initials="M." surname="Jones" fullname="Mike Jones">
-      <organization>Microsoft</organization>
+      <organization>Self-Issued Consulting</organization>
     </author>
     <author initials="B." surname="de Medeiros" fullname="Breno de Medeiros">
       <organization>Google</organization>
     </author>
     <author initials="C." surname="Mortimore" fullname="Chuck Mortimore">
-      <organization>Salesforce</organization>
+      <organization>Disney</organization>
     </author>
-    <date day="8" month="Nov" year="2014"/>
+    <date day="15" month="Dec" year="2023"/>
   </front>
 </reference>
 
 <reference anchor="OpenID.Discovery" target="https://openid.net/specs/openid-connect-discovery-1_0.html">
   <front>
-    <title>OpenID Connect Discovery 1.0 incorporating errata set 1</title>
+    <title>OpenID Connect Discovery 1.0 incorporating errata set 2</title>
     <author initials="N." surname="Sakimura" fullname="Nat Sakimura">
-      <organization>NRI</organization>
+      <organization>NAT.Consulting</organization>
     </author>
     <author initials="J." surname="Bradley" fullname="John Bradley">
-      <organization>Ping Identity</organization>
+      <organization>Yubico</organization>
     </author>
     <author initials="M." surname="Jones" fullname="Mike Jones">
-      <organization>Microsoft</organization>
+      <organization>Self-Issued Consulting</organization>
     </author>
     <author initials="E." surname="Jay" fullname="Edmund Jay">
       <organization>Illumila</organization>
     </author>
-    <date day="8" month="Nov" year="2014"/>
+    <date day="15" month="Dec" year="2023"/>
   </front>
 </reference>
 
@@ -198,19 +198,15 @@
   </front>
 </reference>
 
-<reference anchor="W3C.WebAuthn" target="https://www.w3.org/TR/2019/REC-webauthn-1-20190304/">
+<reference anchor="W3C.WebAuthn" target="https://www.w3.org/TR/2021/REC-webauthn-2-20210408/">
   <front>
-    <title>Web Authentication: An API for accessing Public Key Credentials Level 1</title>
-    <author fullname="Dirk Balfanz" surname="Balfanz" initials="D."><organization>Google</organization></author>
-    <author fullname="Alexei Czeskis" surname="Czeskis" initials="A."><organization>Google</organization></author>
+    <title>Web Authentication: An API for accessing Public Key Credentials Level 2</title>
     <author fullname="Jeff Hodges" surname="Hodges" initials="J."><organization>Google</organization></author>
     <author fullname="J.C. Jones" surname="Jones" initials="J.C."><organization>Mozilla</organization></author>
     <author fullname="Michael B. Jones" surname="Jones" initials="M.B."><organization>Microsoft</organization></author>
     <author fullname="Akshay Kumar" surname="Kumar" initials="A."><organization>Microsoft</organization></author>
-    <author fullname="Angelo Liao" surname="Liao" initials="A."><organization>Microsoft</organization></author>
-    <author fullname="Rolf Lindemann" surname="Lindemann" initials="R."><organization>Nok Nok Labs</organization></author>
     <author fullname="Emil Lundberg" surname="Lundberg" initials="E."><organization>Yubico</organization></author>
-    <date day="04" month="March" year="2019"/>
+    <date day="08" month="Apr" year="2021"/>
   </front>
 </reference>
 

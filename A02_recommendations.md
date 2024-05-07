@@ -1,7 +1,7 @@
 # Best Practices {#recommendations}
 
 This section describes the core set of security mechanisms and measures the
-OAuth working group considers best practices at the time of writing. Details
+OAuth working group considers to be best practices at the time of writing. Details
 about these security mechanisms and measures (including detailed attack
 descriptions) and requirements for less commonly used options are provided in
 (#attacks_and_mitigations).
@@ -10,13 +10,13 @@ descriptions) and requirements for less commonly used options are provided in
 
 When comparing client redirect URIs against pre-registered URIs, authorization
 servers MUST utilize exact string matching except for port numbers in
-`localhost` redirection URIs of native apps, see (#iuv_countermeasures). This
+`localhost` redirection URIs of native apps (see #iuv_countermeasures). This
 measure contributes to the prevention of leakage of authorization codes and
 access tokens (see (#insufficient_uri_validation)). It can also help to detect
 mix-up attacks (see (#mix_up)).
 
 Clients and authorization servers MUST NOT expose URLs that forward the user's browser to
-arbitrary URIs obtained from a query parameter (open redirector) as
+arbitrary URIs obtained from a query parameter (open redirectors) as
 described in (#open_redirection). Open redirectors can enable
 exfiltration of authorization codes and access tokens.
 
@@ -122,10 +122,10 @@ access tokens in the authorization response, unless access token injection
 in the authorization response is prevented and the aforementioned token leakage
 vectors are mitigated.
 
-Clients SHOULD instead use the response type "code" (aka authorization
+Clients SHOULD instead use the response type `code` (i.e., authorization
 code grant type) as specified in (#ac) or any other response type that
 causes the authorization server to issue access tokens in the token
-response, such as the "code id\_token" response type. This allows the
+response, such as the `code id_token` response type. This allows the
 authorization server to detect replay attempts by attackers and
 generally reduces the attack surface since access tokens are not
 exposed in URLs. It also allows the authorization server to
@@ -251,5 +251,5 @@ To support browser-based clients, endpoints directly accessed by such clients
 including the Token Endpoint, Authorization Server Metadata Endpoint, `jwks_uri`
 Endpoint, and the Dynamic Client Registration Endpoint MAY support the use of
 Cross-Origin Resource Sharing (CORS, [@WHATWG.CORS]). However, CORS MUST NOT be
-supported at the Authorization Endpoint as the client does not access this
-endpoint directly, instead, the client redirects the user agent to it.
+supported at the Authorization Endpoint, as the client does not access this
+endpoint directly; instead, the client redirects the user agent to it.
