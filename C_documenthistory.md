@@ -2,6 +2,10 @@
 
    [[ To be removed from the final specification ]]
 
+   -27
+
+   * Feedback from SECDIR review incorporated
+
    -26
 
    * Feedback from ARTART review incorporated

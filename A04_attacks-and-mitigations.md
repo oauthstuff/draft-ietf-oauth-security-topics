@@ -5,7 +5,7 @@ along with potential countermeasures. Attacks and mitigations already covered in
 [@!RFC6819] are not listed here, except where new recommendations are made.
 
 This section further defines additional requirements beyond those defined in
-Section (#recommendations) for certain cases and protocol options.
+(#recommendations) for certain cases and protocol options.
 
 ## Insufficient Redirect URI Validation {#insufficient_uri_validation}
 
@@ -36,7 +36,7 @@ These attacks are shown in detail in the following subsections.
 
 ### Redirect URI Validation Attacks on Authorization Code Grant {#insufficient_uri_validation_acg}
 
-For a client using the grant type code, an attack may work as
+For a client using the grant type `code`, an attack may work as
 follows:
 
 Assume the redirect URL pattern `https://*.somesite.example/*` is
@@ -612,14 +612,13 @@ instances, outlined in the following.
 
 #### PKCE {#pkce_as_injection_protection}
 
-The PKCE mechanism specified in [@!RFC7636] can be used as a countermeasure.
-When the attacker attempts to inject an authorization code, the check of the
+The PKCE mechanism specified in [@!RFC7636] can be used as a countermeasure
+(even though it was originally designed to secure native apps). When the
+attacker attempts to inject an authorization code, the check of the
 `code_verifier` fails: the client uses its correct verifier, but the code is
-associated with a `code_challenge` that does not match this verifier. PKCE is a
-deployed OAuth feature, although its originally intended use was solely focused
-on securing native apps, not the broader use recommended by this document.
+associated with a `code_challenge` that does not match this verifier.
 
-PKCE does not only protect against the autorization code injection attack but
+PKCE does not only protect against the authorization code injection attack but
 also protects authorization codes created for public clients: PKCE ensures that
 an attacker cannot redeem a stolen authorization code at the token endpoint of
 the authorization server without knowledge of the `code_verifier`.
@@ -627,15 +626,15 @@ the authorization server without knowledge of the `code_verifier`.
 #### Nonce {#nonce_as_injection_protection}
 
 OpenID Connect's existing `nonce` parameter can protect against authorization
-code injection attacks. The `nonce` value is a one-time use and is created by the
+code injection attacks. The `nonce` value is one-time use and is created by the
 client. The client is supposed to bind it to the user agent session and send it
 with the initial request to the OpenID Provider (OP). The OP puts the received `nonce` value into the ID Token that is issued
 as part of the code exchange at the token endpoint. If an attacker injects an
 authorization code in the authorization response, the nonce value in the client
 session and the nonce value in the ID token will not match and the attack is
 detected. The assumption is that an attacker cannot get hold of the user agent
-state on the victim's device, where the attacker has stolen the respective authorization
-code.
+state on the victim's device (from which the attacker has stolen the respective authorization
+code).
 
 It is important to note that this countermeasure only works if the client
 properly checks the `nonce` parameter in the ID Token and does not use any
@@ -661,7 +660,7 @@ using cryptographic means, or per-instance client credentials are
 conceivable, but lack support and bring new security requirements.
 
 PKCE is the most obvious solution for OAuth clients as it is available
-today (originally intended for OAuth native apps) whereas `nonce` is
+today, while `nonce` is
 appropriate for OpenID Connect clients.
 
 ### Limitations
@@ -882,8 +881,9 @@ order to cope with access token replay by malicious actors:
 
   * Sender-constrained access tokens, as described in (#pop_tokens),
     SHOULD be used to prevent the attacker from replaying the access
-    tokens on other resource servers. Depending on the severity of the
-    penetration, sender-constrained access tokens will also prevent
+    tokens on other resource servers. If an attacker has only partial
+    access to the compromised system, like a read-only access to web
+    server logs, sender-constrained access tokens may also prevent
     replay on the compromised system.
   * Audience restriction as described in (#aud_restriction) SHOULD be
     used to prevent replay of captured access tokens on other resource
@@ -941,7 +941,7 @@ Two methods for sender-constrained access tokens using proof-of-possession have
 been defined by the OAuth working group and are in use in practice:
 
   * OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound
-    Access Tokens ([@!RFC8705]): The approach as specified in this
+    Access Tokens ([@!RFC8705]): The approach specified in this
     document allows the use of mutual TLS (mTLS) for both client
     authentication and sender-constrained access tokens. For the
     purpose of sender-constrained access tokens, the client is
@@ -1005,19 +1005,19 @@ resource server. The mechanism in [@RFC8707] can be used for this or the
 information can be encoded in the scope value (Section 3.3 of [@!RFC6749]).
 
 Instead of the URL, it is also possible to utilize the fingerprint of
-the resource server's X.509 certificate as audience value. This
+the resource server's X.509 certificate as the audience value. This
 variant would also allow detection of an attempt to spoof the legitimate
 resource server's URL by using a valid TLS certificate obtained from a
 different CA. It might also be considered a privacy benefit to hide
 the resource server URL from the authorization server.
 
 Audience restriction may seem easier to use since it does not require
-any crypto on the client side. Still, since every access token is
+any cryptography on the client side. Still, since every access token is
 bound to a specific resource server, the client also needs to obtain a
 single resource server-specific access token when accessing several resource
 servers. (Resource indicators, as specified in
 [@RFC8707], can help to achieve this.)
-[@I-D.ietf-oauth-token-binding] has the same property since different
+[@I-D.ietf-oauth-token-binding] had the same property since different
 token-binding IDs must be associated with the access token. Using
 [@!RFC8705], on the other hand, allows a client to use the
 access token at multiple resource servers.
@@ -1117,7 +1117,7 @@ are described by OWASP [@owasp.redir].
 Just as with clients, attackers could try to utilize a user's trust in
 the authorization server (and its URL in particular) for performing
 phishing attacks. OAuth authorization servers regularly redirect users
-to other websites (the clients), but must do so in a safe way.
+to other websites (the clients), but must do so safely.
 
 [@!RFC6749], Section 4.1.2.1, already prevents open redirects by
 stating that the authorization server MUST NOT automatically redirect the user agent in case
@@ -1128,19 +1128,20 @@ redirect URI to perform phishing attacks. The attacker could, for
 example, register a client via dynamic client registration [@RFC7591]
 and execute one of the following attacks:
 
- 1. Intentionally send an erroneous authorization request, e.g., by
-    using an invalid scope value, thus instructing the authorization server to redirect the
-    user-agent to its phishing site.
- 1. Intentionally send a valid authorization request with `client_id`
-    and `redirect_uri` controlled by the attacker. After the user authenticates,
-    the authorization server prompts the user to provide consent to the request. If the user
-    notices an issue with the request and declines the request, the authorization server still
-    redirects the user agent to the phishing site. In this case, the user agent
-    will be redirected to the phishing site regardless of the action taken by
-    the user.
- 1. Intentionally send a valid silent authentication request (prompt=none)
-    with `client_id` and `redirect_uri` controlled by the attacker. In this case,
-    the authorization server will automatically redirect the user agent to the phishing site.
+ 1. Intentionally send an erroneous authorization request, e.g., by using an
+    invalid scope value, thus instructing the authorization server to redirect
+    the user-agent to its phishing site.
+ 1. Intentionally send a valid authorization request with `client_id` and
+    `redirect_uri` controlled by the attacker. After the user authenticates, the
+    authorization server prompts the user to provide consent to the request. If
+    the user notices an issue with the request and declines the request, the
+    authorization server still redirects the user agent to the phishing site. In
+    this case, the user agent will be redirected to the phishing site regardless
+    of the action taken by the user.
+ 1. Intentionally send a valid silent authentication request (`prompt=none`)
+    with `client_id` and `redirect_uri` controlled by the attacker. In this
+    case, the authorization server will automatically redirect the user agent to
+    the phishing site.
 
 The authorization server MUST take precautions to prevent these threats. The authorization server MUST always
 authenticate the user first and, with the exception of the silent authentication
@@ -1238,7 +1239,7 @@ messages.
 
 
 Refresh tokens are a convenient and user-friendly way to obtain new access
-tokens after the expiration of access tokens. Refresh tokens also add
+tokens. They also add
 to the security of OAuth, since they allow the authorization server to issue
 access tokens with a short lifetime and reduced scope, thus reducing the
 potential impact of access token leakage.
@@ -1246,8 +1247,8 @@ potential impact of access token leakage.
 ### Discussion
 
 Refresh tokens are an attractive target for attackers since they
-represent the overall grant a resource owner delegated to a certain
-client. If an attacker is able to exfiltrate and successfully replay a
+represent the full scope of grant a resource owner delegated to a certain
+client and they are not further constrained to a specific resource. If an attacker is able to exfiltrate and successfully replay a
 refresh token, the attacker will be able to mint access tokens and use
 them to access resource servers on behalf of the resource owner.
 
@@ -1333,27 +1334,38 @@ on the client policy or the grant associated with the refresh token
 ## Client Impersonating Resource Owner {#client_impersonating}
 
 Resource servers may make access control decisions based on the identity of a
-resource owner for which an access token was issued, or based on the identity
-of a client in the client credentials grant. If both options are possible,
-depending on the details of the implementation, a client's identity may be
-mistaken for the identity of a resource owner. For example, if a client is able
-to choose its own `client_id` during registration with the authorization server,
-a malicious client may set it to a value identifying an end-user (e.g., a `sub`
-value if OpenID Connect is used). If the resource server cannot properly
-distinguish between access tokens issued to clients and access tokens issued to
-end-users, the client may then be able to access resource of the end-user.
+resource owner for which an access token was issued, or based on the identity of
+a client in the client credentials grant. For example, [@!RFC9068] (JSON Web
+Token (JWT) Profile for OAuth 2.0 Access Tokens) describes a data structure for
+access tokens containing a `sub` claim defined as follows:
 
+> In cases of access tokens obtained through grants where a resource owner is
+> involved, such as the authorization code grant, the value of `sub` SHOULD
+> correspond to the subject identifier of the resource owner. In cases of access
+> tokens obtained through grants where no resource owner is involved, such as
+> the client credentials grant, the value of `sub` SHOULD correspond to an
+> identifier the authorization server uses to indicate the client application.
+
+If both options are possible, a resource server may mistake a client's identity
+for the identity of a resource owner. For example, if a client is able to choose
+its own `client_id` during registration with the authorization server, a
+malicious client may set it to a value identifying a resource owner (e.g., a
+`sub` value if OpenID Connect is used). If the resource server cannot properly
+distinguish between access tokens obtained with involvement of the resource
+owner and those without, the client may accidentally be able to access resources
+belonging to the resource owner.
+
+This attack potentially affects not only implementations using [@!RFC9068], but
+also similar, bespoke solutions.
 
 ### Countermeasures {#client_impersonating_countermeasures}
 
-If the authorization server has a common namespace for client IDs and user
-identifiers, causing the resource server to be unable to distinguish an access
-token authorized by a resource owner from an access token authorized by a client
-itself, the authorization server SHOULD NOT allow clients to influence their
-`client_id` or any claim that could cause confusion with a genuine resource
-owner. Where this cannot be avoided, authorization servers MUST provide other
-means for the resource server to distinguish between the two types of access
-tokens.
+Authorization servers SHOULD NOT allow clients to influence their `client_id` or
+any claim that could cause confusion with a genuine resource owner if a common
+namespace for client IDs and user identifiers exists, such as in the `sub` claim
+shown above. Where this cannot be avoided, authorization servers MUST provide
+other means for the resource server to distinguish between the two types of
+access tokens.
 
 ## Clickjacking {#clickjacking}
 
@@ -1411,40 +1423,6 @@ SHOULD be combined with others, including those described in
 [@!RFC6819], unless such legacy user agents are explicitly unsupported
 by the authorization server. Even in such cases, additional
 countermeasures SHOULD still be employed.
-
-## Authorization Server Redirecting to Phishing Site {#phishing_via_as}
-
-An attacker could utilize a correctly registered
-redirect URI to perform phishing attacks.  The attacker could, for
-example, register a client via dynamic client registration [RFC7591]
-and execute one of the following attacks:
-
- 1. Intentionally send an erroneous authorization request, e.g., by
-    using an invalid scope value, thus instructing the authorization server to redirect the
-    user-agent to its phishing site.
- 1. Intentionally send a valid authorization request with `client_id`
-    and `redirect_uri` controlled by the attacker. After the user authenticates,
-    the authorization server prompts the user to provide consent to the request. If the user
-    notices an issue with the request and declines the request, the authorization server still
-    redirects the user agent to the phishing site. In this case, the user agent
-    will be redirected to the phishing site regardless of the action taken by
-    the user.
- 1. Intentionally send a valid silent authentication request (prompt=none)
-    with `client_id` and `redirect_uri` controlled by the attacker. In this case,
-    the authorization server will automatically redirect the user agent to the phishing site.
-
-The authorization server MUST take precautions to prevent these threats. The authorization server MUST always
-authenticate the user first and, with the exception of the silent authentication
-use case, prompt the user for credentials when needed, before redirecting the
-user. Based on its risk assessment, the authorization server needs to decide whether it can trust
-the redirect URI or not. It could take into account  URI analytics done
-internally or through some external service to evaluate the credibility and
-trustworthiness content behind the URI, and the source of the redirect URI and
-other client data.
-
-The authorization server SHOULD only automatically redirect the user agent if it trusts the
-redirect URI.  If the URI is not trusted, the authorization server MAY inform the user and rely on
-the user to make the correct decision.
 
 ## Attacks on In-Browser Communication Flows {#rec_ibc}
 

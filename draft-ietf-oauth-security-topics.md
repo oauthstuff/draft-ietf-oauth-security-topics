@@ -6,6 +6,7 @@ area = "Security"
 workgroup = "Web Authorization Protocol"
 keyword = ["security", "oauth2", "best current practice"]
 updates = [ 6749, 6750, 6819 ]
+tocdepth = 4
 
 [seriesInfo]
 name = "Internet-Draft"
@@ -53,7 +54,7 @@ This document describes best current security practice for OAuth 2.0. It updates
 and extends the threat model and security advice given in RFC 6749,
 RFC 6750, and RFC 6819 to incorporate practical experiences gathered since
 OAuth 2.0 was published and covers new threats relevant due to the broader
-application of OAuth 2.0. It further deprecates some modes of operation that are
+application of OAuth 2.0. Further, it deprecates some modes of operation that are
 deemed less secure or even insecure.
 
 {mainmatter}
