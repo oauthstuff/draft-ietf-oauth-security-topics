@@ -53,7 +53,24 @@
   </front>
 </reference>
 
-
+<reference anchor="OpenID.MRT" target="https://openid.net/specs/oauth-v2-multiple-response-types-1_0.html">
+  <front>
+    <title>OAuth 2.0 Multiple Response Type Encoding Practices</title>
+    <author initials="B." surname="de Medeiros" fullname="Breno de Medeiros">
+      <organization>Google</organization>
+    </author>
+    <author initials="M." surname="Scurtescu" fullname="Mihai Scurtescu">
+      <organization>Google</organization>
+    </author>
+    <author initals="P." surname="Tarjan" fullname="Peter Tarjan">
+      <organization>Facebook</organization>
+    </author>
+    <author initials="M." surname="Jones" fullname="Mike Jones">
+      <organization>Microsoft</organization>
+    </author>
+    <date day="25" month="Feb" year="2014"/>
+  </front>
+</reference>
 
 <reference anchor="owasp.redir" target="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">
   <front>
