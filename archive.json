@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-05-07T00:58:04.357144+00:00",
+  "timestamp": "2024-05-09T00:58:26.815169+00:00",
   "repo": "oauthstuff/draft-ietf-oauth-security-topics",
   "labels": [
     {
@@ -1350,15 +1350,15 @@
       "id": "I_kwDODGW6jc6Hh_s8",
       "title": "Language around sender constraints and implicit flow gives a misleading impression",
       "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/92",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "will-bartlett",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "In my opinion, this language (from 2.1.2):\r\n\r\n> no viable method for sender-constraining exists to bind access tokens to a specific client (as recommended in Section 2.2) when the access tokens are issued in the authorization response\r\n\r\nleads the reader to the wrong conclusion. I'm not sure it's even literally true.\r\n\r\nIt's true that the IETF has not standardized a sender-constraining mechanism for the implicit flow. However, this fact is a result of the priorities of IETF contributors more-so than a technical limitation. On Microsoft Entra, we do have a viable method for sender-constraining the implicit flow (since 2018). It's not technically complex to define such a mechanism. Taking the form serialization method defined in [Open ID Connect Core](https://openid.net/specs/openid-connect-core-1_0.html) Section 13.2, the DPoP proof can be passed directly to the authorization endpoint in a POST request, e.g. in a parameter \"dpop\". This is all it really takes to define a viable method for sender-constraining access tokens issued from the authorization endpoint.\r\n\r\nMy suggestion would be to drop the word \"viable\" which leads the reader to think about technical viability and replace it with the word \"standardized\":\r\n\r\n> no **standardized** method for sender-constraining exists to bind access tokens to a specific client (as recommended in Section 2.2) when the access tokens are issued in the authorization response\r\n\r\nThis gives the correct impression - that the gap is around collaboration and interoperability.",
       "createdAt": "2024-05-01T17:02:13Z",
-      "updatedAt": "2024-05-01T18:02:48Z",
-      "closedAt": null,
+      "updatedAt": "2024-05-07T17:28:26Z",
+      "closedAt": "2024-05-07T17:28:26Z",
       "comments": []
     },
     {
@@ -1366,15 +1366,15 @@
       "id": "I_kwDODGW6jc6HiGSN",
       "title": "\"4.2 Credential Leakage via Referer Headers\" is out of date",
       "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/93",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "will-bartlett",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "Browsers largely mitigated the referer header threat in 2020 and 2021 when they updated the default Referrer Policy to \"strict-origin-when-cross-origin\". See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy#browser_compatibility. The BCP makes no mention of this fact.\r\n\r\nOddly, the BCP makes mention of a security bug that is more than a decade old and hasn't existed in any supported software stack in nearly as long (\"Chromium Issue 168213\"). These browser versions are vulnerable to many other techniques - e.g. they predate Spectre and the [Post-Spectre Threat Model Re-Think](https://chromium.googlesource.com/chromium/src/+/master/docs/security/side-channel-threat-model.md) and TLS 1.0 deprecation.\r\n\r\nI'd suggest moving the entirety of 4.2 to a separate section or appendix about historical attacks that are of limited relevance in contemporary software environments. If this is too large a change, 4.2 should at least explain the current context - that most forms of this attack are mitigated by default by the browser, and only same-origin attacks or attacks on ancient browser versions are relevant.\r\n\r\nI'd suggest striking all mentions of Chromium Issue 168213 - this bug isn't notable enough.",
       "createdAt": "2024-05-01T17:15:01Z",
-      "updatedAt": "2024-05-01T17:15:01Z",
-      "closedAt": null,
+      "updatedAt": "2024-05-07T17:28:27Z",
+      "closedAt": "2024-05-07T17:28:27Z",
       "comments": []
     },
     {
@@ -1430,15 +1430,15 @@
       "id": "I_kwDODGW6jc6IAqol",
       "title": "Mention response_mode=fragment in 4.1.2",
       "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/97",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "will-bartlett",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "Microsoft Entra supports response_mode=fragment from https://openid.net/specs/oauth-v2-multiple-response-types-1_0.html. Microsoft Entra's browser-based apps library (https://github.com/AzureAD/microsoft-authentication-library-for-js) uses this mode with the authorization code flow. The draft says:\r\n\r\n> Additionally, implicit clients can be subject to a further kind of attack.\r\n\r\nIt would be nice to clarify that both implicit clients and non-implicit clients using providers that support response_mode=fragment can be subject to this attack. ",
       "createdAt": "2024-05-06T22:14:33Z",
-      "updatedAt": "2024-05-06T22:15:44Z",
-      "closedAt": null,
+      "updatedAt": "2024-05-07T17:28:27Z",
+      "closedAt": "2024-05-07T17:28:27Z",
       "comments": [
         {
           "author": "will-bartlett",
@@ -1446,6 +1446,13 @@
           "body": "See also https://github.com/oauth-wg/oauth-browser-based-apps/issues/52 for why I care about this. Performant browser-based apps _prefer_ response_mode=fragment with the authorization code flow. ",
           "createdAt": "2024-05-06T22:15:43Z",
           "updatedAt": "2024-05-06T22:15:43Z"
+        },
+        {
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thanks, I added this to the existing PR: https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/96/files#diff-77ee9ab27bcd9251f5eb325749ff9ffc20ba0cdc7405ad3c8a7807ed8d529c43R109",
+          "createdAt": "2024-05-07T12:15:43Z",
+          "updatedAt": "2024-05-07T12:15:43Z"
         }
       ]
     }
@@ -3604,24 +3611,26 @@
       "id": "PR_kwDODGW6jc5uAsHn",
       "title": "Incorporate SECDIR feedback",
       "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/91",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "danielfett",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2024-04-29T13:00:59Z",
-      "updatedAt": "2024-05-04T17:33:47Z",
+      "updatedAt": "2024-05-07T07:04:34Z",
       "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
       "baseRefName": "master",
       "baseRefOid": "30b85244b78832d2f1847bac93fb59c4818cd276",
       "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
       "headRefName": "danielfett/mikes-feedback",
       "headRefOid": "323c4639c7259ad9bbfff58df7dcd64e21d4e039",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2024-05-07T07:04:33Z",
+      "mergedAt": "2024-05-07T07:04:33Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "6f1a4e755a67a86bdc64c8793de566258508f218"
+      },
       "comments": [],
       "reviews": [
         {
@@ -3777,24 +3786,26 @@
       "id": "PR_kwDODGW6jc5uiQDr",
       "title": "Microsoft feedback",
       "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/96",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "danielfett",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
-      "body": "",
+      "body": "Fixes #92\r\n\r\nFixes #93 \r\n\r\nFixes #97",
       "createdAt": "2024-05-04T08:44:47Z",
-      "updatedAt": "2024-05-06T20:38:50Z",
+      "updatedAt": "2024-05-07T17:28:26Z",
       "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
       "baseRefName": "master",
-      "baseRefOid": "30b85244b78832d2f1847bac93fb59c4818cd276",
+      "baseRefOid": "6f1a4e755a67a86bdc64c8793de566258508f218",
       "headRepository": "oauthstuff/draft-ietf-oauth-security-topics",
       "headRefName": "danielfett/ms-feedback",
-      "headRefOid": "4321830a0c9137539b2303a770a114204bacfdee",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "3c151a5d60dacde82bfe3c7185fb139d8a984e05",
+      "closedAt": "2024-05-07T17:28:26Z",
+      "mergedAt": "2024-05-07T17:28:26Z",
+      "mergedBy": "danielfett",
+      "mergeCommit": {
+        "oid": "e0f411f24d804385647b4f959212a0ba0ab8eb50"
+      },
       "comments": [],
       "reviews": [
         {
@@ -3829,6 +3840,99 @@
               "updatedAt": "2024-05-06T20:38:50Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc55xhp-",
+          "commit": {
+            "abbreviatedOid": "4321830"
+          },
+          "author": "danielfett",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-05-07T12:17:53Z",
+          "updatedAt": "2024-05-07T12:17:53Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "The text expresses that this is just an illustration of this particular bug, that has appeared, IIRC, in other forms in other browsers as well. So I think it is fine to keep this for historic reference. The intention is not to protect against all historic bugs in browsers.",
+              "createdAt": "2024-05-07T12:17:53Z",
+              "updatedAt": "2024-05-07T12:17:53Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc550Jy0",
+          "commit": {
+            "abbreviatedOid": "0cba2a2"
+          },
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-05-07T16:49:34Z",
+          "updatedAt": "2024-05-07T16:49:34Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "```suggestion\r\n<reference anchor=\"OAuth.Responses\" target=\"https://openid.net/specs/oauth-v2-multiple-response-types-1_0.html\">\r\n```",
+              "createdAt": "2024-05-07T16:49:34Z",
+              "updatedAt": "2024-05-07T16:49:34Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc550KCG",
+          "commit": {
+            "abbreviatedOid": "0cba2a2"
+          },
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-05-07T16:50:08Z",
+          "updatedAt": "2024-05-07T16:50:08Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "```suggestion\r\nAdditionally, implicit grants (and also other grants when using `response_mode=fragment` as defined in [@OAuth.Responses]) can be subject to a further kind of\r\n```",
+              "createdAt": "2024-05-07T16:50:08Z",
+              "updatedAt": "2024-05-07T16:50:08Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc550KTd",
+          "commit": {
+            "abbreviatedOid": "0cba2a2"
+          },
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-05-07T16:50:43Z",
+          "updatedAt": "2024-05-07T16:50:43Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "Please use the same reference name as in OpenID.Core",
+              "createdAt": "2024-05-07T16:50:43Z",
+              "updatedAt": "2024-05-07T16:50:44Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDODGW6jc550Kwq",
+          "commit": {
+            "abbreviatedOid": "0cba2a2"
+          },
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Please accept my suggestion to change OpenID.MRT to OAuth.Responses.",
+          "createdAt": "2024-05-07T16:51:44Z",
+          "updatedAt": "2024-05-07T16:51:44Z",
+          "comments": []
         }
       ]
     }
