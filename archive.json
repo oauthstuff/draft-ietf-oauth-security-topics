@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-05-09T00:58:26.815169+00:00",
+  "timestamp": "2024-05-12T01:03:11.773066+00:00",
   "repo": "oauthstuff/draft-ietf-oauth-security-topics",
   "labels": [
     {
@@ -1453,6 +1453,37 @@
           "body": "Thanks, I added this to the existing PR: https://github.com/oauthstuff/draft-ietf-oauth-security-topics/pull/96/files#diff-77ee9ab27bcd9251f5eb325749ff9ffc20ba0cdc7405ad3c8a7807ed8d529c43R109",
           "createdAt": "2024-05-07T12:15:43Z",
           "updatedAt": "2024-05-07T12:15:43Z"
+        }
+      ]
+    },
+    {
+      "number": 98,
+      "id": "I_kwDODGW6jc6Ih2mw",
+      "title": "Clarify nonce protection in 4.5.3.2",
+      "url": "https://github.com/oauthstuff/draft-ietf-oauth-security-topics/issues/98",
+      "state": "OPEN",
+      "author": "aaronpk",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics#section-4.5.3.2\r\n\r\nIt took me an extra read to notice that the sentence\r\n\r\n> The OP puts the received nonce value into the ID Token that is issued as part of the code exchange at the token endpoint.\r\n\r\nmeans that the ID token was received from the token endpoint, and doesn't apply to the ID token received from the redirect via `response_type=code+id_token`. \r\n\r\nI think this section would benefit from being explicit that this nonce protection only applies to an ID token obtained from the token endpoint, otherwise it is easy to misinterpret this to mean that the client should check the nonce in the ID token it got in the redirect, which would of course do nothing. I do realize this is spelled out pretty clearly in the numbered list below, but I think it should be made clearer up front as well.",
+      "createdAt": "2024-05-11T01:17:33Z",
+      "updatedAt": "2024-05-11T01:57:27Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "selfissued",
+          "authorAssociation": "COLLABORATOR",
+          "body": "That's not the case.  The provided `nonce` must be included in all ID Tokens, no matter what `response_type` was used.",
+          "createdAt": "2024-05-11T01:43:49Z",
+          "updatedAt": "2024-05-11T01:43:49Z"
+        },
+        {
+          "author": "aaronpk",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Yes that's not what I meant. I meant the language that says the client must validate the nonce in the ID token, it's not clear that it has to use an option that gets an ID token from the token endpoint in the first paragraph.",
+          "createdAt": "2024-05-11T01:57:26Z",
+          "updatedAt": "2024-05-11T01:57:26Z"
         }
       ]
     }
@@ -3793,7 +3824,7 @@
       "labels": [],
       "body": "Fixes #92\r\n\r\nFixes #93 \r\n\r\nFixes #97",
       "createdAt": "2024-05-04T08:44:47Z",
-      "updatedAt": "2024-05-07T17:28:26Z",
+      "updatedAt": "2024-05-10T23:54:43Z",
       "baseRepository": "oauthstuff/draft-ietf-oauth-security-topics",
       "baseRefName": "master",
       "baseRefOid": "6f1a4e755a67a86bdc64c8793de566258508f218",
@@ -3933,6 +3964,26 @@
           "createdAt": "2024-05-07T16:51:44Z",
           "updatedAt": "2024-05-07T16:51:44Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDODGW6jc56P5Zg",
+          "commit": {
+            "abbreviatedOid": "3c151a5"
+          },
+          "author": "aaronpk",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-05-10T23:54:43Z",
+          "updatedAt": "2024-05-10T23:54:43Z",
+          "comments": [
+            {
+              "originalPosition": 31,
+              "body": "There should be no trailing slash on the end of this URL",
+              "createdAt": "2024-05-10T23:54:43Z",
+              "updatedAt": "2024-05-10T23:54:44Z"
+            }
+          ]
         }
       ]
     }
