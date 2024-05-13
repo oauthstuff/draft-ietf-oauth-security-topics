@@ -207,7 +207,7 @@
   <format target="https://www.doc.ic.ac.uk/~maffeis/papers/jcs14.pdf" type="pdf" />
 </reference>
 
-<reference anchor="bug.chromium" target="https://issues.chromium.org/issues/40076763/">
+<reference anchor="bug.chromium" target="https://issues.chromium.org/issues/40076763">
   <front>
     <title>Referer header includes URL fragment when opening link using New Tab</title>
     <author></author>
