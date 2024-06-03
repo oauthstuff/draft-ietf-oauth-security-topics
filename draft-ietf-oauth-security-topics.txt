@@ -250,10 +250,10 @@ Table of Contents
 2.  Best Practices
 
    This section describes the core set of security mechanisms and
-   measures the OAuth working group considers to be best practices at
-   the time of writing.  Details about these security mechanisms and
-   measures (including detailed attack descriptions) and requirements
-   for less commonly used options are provided in Section 4.
+   measures that are considered to be best practices at the time of
+   writing.  Details about these security mechanisms and measures
+   (including detailed attack descriptions) and requirements for less
+   commonly used options are provided in Section 4.
 
 2.1.  Protecting Redirect-Based Flows
 
