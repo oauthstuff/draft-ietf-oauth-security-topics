@@ -6,11 +6,11 @@ Web Authorization Protocol                                T. Lodderstedt
 Internet-Draft                                                    SPRIND
 Updates: 6749, 6750, 6819 (if approved)                       J. Bradley
 Intended status: Best Current Practice                            Yubico
-Expires: 8 November 2024                                     A. Labunets
+Expires: 5 December 2024                                     A. Labunets
                                                   Independent Researcher
                                                                  D. Fett
                                                                 Authlete
-                                                              7 May 2024
+                                                             3 June 2024
 
 
                 OAuth 2.0 Security Best Current Practice
@@ -52,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 November 2024.
+   This Internet-Draft will expire on 5 December 2024.
 
 Copyright Notice
 
@@ -719,13 +719,13 @@ Table of Contents
    URL pattern https://*.somesite.example/* and the authorization server
    interprets this as "allow redirect URIs pointing to any host residing
    in the domain somesite.example".  If an attacker manages to establish
-   a host or subdomain in somesite.example, he can impersonate the
-   legitimate client.  This could be caused, for example, by a subdomain
-   takeover attack [research.udel], where an outdated CNAME record (say,
-   external-service.somesite.example) points to an external DNS name
-   that does no longer exist (say, customer-abc.service.example) and can
-   be taken over by an attacker (e.g., by registering as customer-abc
-   with the external service).
+   a host or subdomain in somesite.example, the attacker can impersonate
+   the legitimate client.  This could be caused, for example, by a
+   subdomain takeover attack [research.udel], where an outdated CNAME
+   record (say, external-service.somesite.example) points to an external
+   DNS name that does no longer exist (say, customer-
+   abc.service.example) and can be taken over by an attacker (e.g., by
+   registering as customer-abc with the external service).
 
 4.1.2.  Redirect URI Validation Attacks on Implicit Grant
 
@@ -859,7 +859,7 @@ Table of Contents
 
    As soon as the browser navigates to the attacker's page or loads the
    third-party content, the attacker receives the authorization response
-   URL and can extract code or state (and potentially access token).
+   URL and can extract code or state (and potentially access_token).
 
 4.2.2.  Leakage from the Authorization Server
 
@@ -1041,8 +1041,8 @@ Table of Contents
       a user's browser to the client (in which the user selects a
       certain authorization server and is then redirected by the client
       to that authorization server), as in Attacker A2 (see Section 3).
-      This capability can, for example, be the result of a man-in-the-
-      middle attack on the user's connection to the client.  In the
+      This capability can, for example, be the result of a attacker-in-
+      the-middle attack on the user's connection to the client.  In the
       attack, the user starts the flow with H-AS.  The attacker
       intercepts this request and changes the user's selection to A-AS.
       The rest of the attack proceeds as in Steps 2 and following above.
@@ -1298,16 +1298,16 @@ Table of Contents
    ID Token that is issued as part of the code exchange at the token
    endpoint.  If an attacker injects an authorization code in the
    authorization response, the nonce value in the client session and the
-   nonce value in the ID token will not match and the attack is
-   detected.  The assumption is that an attacker cannot get hold of the
-   user agent state on the victim's device (from which the attacker has
-   stolen the respective authorization code).
+   nonce value in the ID token received from the token endpoint will not
+   match and the attack is detected.  The assumption is that an attacker
+   cannot get hold of the user agent state on the victim's device (from
+   which the attacker has stolen the respective authorization code).
 
    It is important to note that this countermeasure only works if the
-   client properly checks the nonce parameter in the ID Token and does
-   not use any issued token until this check has succeeded.  More
-   precisely, a client protecting itself against code injection using
-   the nonce parameter
+   client properly checks the nonce parameter in the ID Token obtained
+   from the token endpoint and does not use any issued token until this
+   check has succeeded.  More precisely, a client protecting itself
+   against code injection using the nonce parameter
 
    1.  MUST validate the nonce in the ID Token obtained from the token
        endpoint, even if another ID Token was obtained from the
@@ -1399,10 +1399,10 @@ Table of Contents
 
 4.7.1.  Countermeasures
 
-   The traditional countermeasure is that clients pass a random value,
-   also known as a CSRF Token, in the state parameter that links the
-   request to the redirect URI to the user agent session as described.
-   This countermeasure is described in detail in [RFC6819],
+   The long-established countermeasure is that clients pass a random
+   value, also known as a CSRF Token, in the state parameter that links
+   the request to the redirect URI to the user agent session as
+   described.  This countermeasure is described in detail in [RFC6819],
    Section 5.3.5.  The same protection is provided by PKCE or the OpenID
    Connect nonce value.
 
@@ -2315,9 +2315,9 @@ Table of Contents
    [I-D.ietf-oauth-v2-1]
               Hardt, D., Parecki, A., and T. Lodderstedt, "The OAuth 2.1
               Authorization Framework", Work in Progress, Internet-
-              Draft, draft-ietf-oauth-v2-1-10, 9 January 2024,
+              Draft, draft-ietf-oauth-v2-1-11, 14 May 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-oauth-
-              v2-1-10>.
+              v2-1-11>.
 
    [OAuth.Post]
               Jones, M. and B. Campbell, "OAuth 2.0 Form Post Response
@@ -2458,7 +2458,7 @@ Table of Contents
    [bug.chromium]
               "Referer header includes URL fragment when opening link
               using New Tab",
-              <https://issues.chromium.org/issues/40076763/>.
+              <https://issues.chromium.org/issues/40076763>.
 
    [owasp.redir]
               "OWASP Cheat Sheet Series - Unvalidated Redirects and
@@ -2507,6 +2507,10 @@ Table of Contents
 Appendix A.  Document History
 
    [[ To be removed from the final specification ]]
+
+   -28
+
+   *  Various editorial fixes
 
    -27
 
