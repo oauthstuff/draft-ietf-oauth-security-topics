@@ -89,7 +89,7 @@
 
    -16
 
-   * Make MTLS a suggestion, not RECOMMENDED.
+   * Make MTLS a suggestion instead of RECOMMENDED.
    * Add important requirements when using nonce for code injection protection.
    * Highlight requirements for refresh token sender-constraining.
    * Make PKCE a MUST for public clients.
