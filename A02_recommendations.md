@@ -1,7 +1,7 @@
 # Best Practices {#recommendations}
 
-This section describes the core set of security mechanisms and measures the
-OAuth working group considers to be best practices at the time of writing. Details
+This section describes the core set of security mechanisms and measures that
+are considered to be best practices at the time of writing. Details
 about these security mechanisms and measures (including detailed attack
 descriptions) and requirements for less commonly used options are provided in
 (#attacks_and_mitigations).
