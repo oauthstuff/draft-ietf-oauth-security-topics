@@ -260,7 +260,7 @@ Table of Contents
    When comparing client redirect URIs against pre-registered URIs,
    authorization servers MUST utilize exact string matching except for
    port numbers in localhost redirection URIs of native apps (see
-   #iuv_countermeasures).  This measure contributes to the prevention of
+   Section 4.1.3).  This measure contributes to the prevention of
    leakage of authorization codes and access tokens (see Section 4.1).
    It can also help to detect mix-up attacks (see Section 4.4).
 
@@ -2507,6 +2507,10 @@ Table of Contents
 Appendix A.  Document History
 
    [[ To be removed from the final specification ]]
+
+   -29
+
+   *  Fix broken reference
 
    -28
 
