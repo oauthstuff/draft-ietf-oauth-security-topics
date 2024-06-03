@@ -92,7 +92,7 @@ registers the redirect URL pattern `https://*.somesite.example/*` and
 the authorization server interprets this as "allow redirect URIs
 pointing to any host residing in the domain `somesite.example`". If an
 attacker manages to establish a host or subdomain in
-`somesite.example`, he can impersonate the legitimate client. This
+`somesite.example`, the attacker can impersonate the legitimate client. This
 could be caused, for example, by a subdomain takeover attack [@research.udel], where an
 outdated CNAME record (say, `external-service.somesite.example`)
 points to an external DNS name that does no longer exist (say,
@@ -226,7 +226,7 @@ a successful authorization request, renders a page that
 
 As soon as the browser navigates to the attacker's page or loads the
 third-party content, the attacker receives the authorization response
-URL and can extract `code` or `state` (and potentially `access token`).
+URL and can extract `code` or `state` (and potentially `access_token`).
 
 
 ### Leakage from the Authorization Server
@@ -400,7 +400,7 @@ Variants:
     intercept and manipulate the first request/response pair from a user's
     browser to the client (in which the user selects a certain authorization server and is then
     redirected by the client to that authorization server), as in Attacker A2 (see (#secmodel)). This capability
-    can, for example, be the result of a man-in-the-middle attack on the user's
+    can, for example, be the result of a attacker-in-the-middle attack on the user's
     connection to the client. In the attack, the user starts the flow with H-AS.
     The attacker intercepts this request and changes the user's selection to
     A-AS. The rest of the attack proceeds as in Steps 2 and following above.
@@ -630,13 +630,13 @@ client. The client is supposed to bind it to the user agent session and send it
 with the initial request to the OpenID Provider (OP). The OP puts the received `nonce` value into the ID Token that is issued
 as part of the code exchange at the token endpoint. If an attacker injects an
 authorization code in the authorization response, the nonce value in the client
-session and the nonce value in the ID token will not match and the attack is
+session and the nonce value in the ID token received from the token endpoint will not match and the attack is
 detected. The assumption is that an attacker cannot get hold of the user agent
 state on the victim's device (from which the attacker has stolen the respective authorization
 code).
 
 It is important to note that this countermeasure only works if the client
-properly checks the `nonce` parameter in the ID Token and does not use any
+properly checks the `nonce` parameter in the ID Token obtained from the token endpoint and does not use any
 issued token until this check has succeeded. More precisely, a client protecting
 itself against code injection using the `nonce` parameter
 
@@ -729,7 +729,7 @@ variant of an attack known as Cross-Site Request Forgery (CSRF).
 
 ### Countermeasures {#csrf_countermeasures}
 
-The traditional countermeasure is that clients pass a random value, also
+The long-established countermeasure is that clients pass a random value, also
 known as a CSRF Token, in the `state` parameter that links the request to
 the redirect URI to the user agent session as described. This
 countermeasure is described in detail in [@!RFC6819], Section 5.3.5. The
