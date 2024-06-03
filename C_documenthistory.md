@@ -5,6 +5,7 @@
    -28
 
    * Various editorial fixes
+   * Address feedback from IESG ballot
 
    -27
 
