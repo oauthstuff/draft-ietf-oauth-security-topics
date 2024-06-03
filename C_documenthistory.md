@@ -2,6 +2,10 @@
 
    [[ To be removed from the final specification ]]
 
+   -29
+
+   * Fix broken reference
+
    -28
 
    * Various editorial fixes

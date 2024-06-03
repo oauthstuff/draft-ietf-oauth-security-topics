@@ -10,7 +10,7 @@ descriptions) and requirements for less commonly used options are provided in
 
 When comparing client redirect URIs against pre-registered URIs, authorization
 servers MUST utilize exact string matching except for port numbers in
-`localhost` redirection URIs of native apps (see #iuv_countermeasures). This
+`localhost` redirection URIs of native apps (see (#iuv_countermeasures)). This
 measure contributes to the prevention of leakage of authorization codes and
 access tokens (see (#insufficient_uri_validation)). It can also help to detect
 mix-up attacks (see (#mix_up)).
